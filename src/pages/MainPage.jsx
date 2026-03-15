@@ -15,7 +15,7 @@ const Main = styled.div`
 export default function MainPage() {
   return (
     <Main>
-      <NavLink to={"/itemlist"}>아이템 리스트 페이지로 이동</NavLink>
+      <NavLink to={"/alllist"}>아이템 리스트 페이지로 이동</NavLink>
       <NavLink to={"/login"}>로그인 페이지로 이동</NavLink>
     </Main>
   );
