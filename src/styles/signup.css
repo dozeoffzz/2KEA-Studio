@@ -1,0 +1,176 @@
+.signup-page {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  /* text-align: center; */
+  width: 100%;
+  min-height: 100vh;
+  /* 로고 넣기전 예비 패딩 */
+  padding: 80px 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* 회원가입 */
+.signup-container {
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 70px;
+}
+
+/* .membership - signup - birth - agreement 각 내용 동일 여백 */
+.membership-section,
+.signup-form,
+.birth-section,
+.birth-date,
+.agreement-section {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 25px;
+}
+
+/* 각 섹션 제목 중앙 */
+.membership-title,
+.membership-options,
+.signup-title,
+.birth-title,
+.agreement-title {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* input 정렬 */
+.form-group {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* input 너비 동일 텍스트 시작위치 동일 */
+.form-group label {
+  width: 100px;
+  text-align: left;
+  /* 반응형시 인풋 너비 줄어듬 상의해야함 */
+  /* flex-shrink: 0; */
+}
+
+/* 번호 영역 */
+.phone-row {
+  flex: 1;
+  display: flex;
+  gap: 15px;
+}
+
+/* input 테두리 제거 및 밑줄 */
+.form-group input {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid #333;
+  outline: none;
+}
+
+/* 전화번호 input/select 밑줄 */
+.phone-row select,
+.phone-row input {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid #333;
+  outline: none;
+  padding: 8px 0;
+  text-align: center;
+  background: transparent;
+}
+
+/* Date of Birth */
+.birth-date {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.birth-date input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #333;
+  outline: none;
+  text-align: center;
+}
+
+/* 이용 동의 */
+.agreement-box {
+  width: 100%;
+  background-color: #f5f5f3;
+  border-radius: 8px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 동의 제목 */
+.agreement-group-title {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* 한줄로 정의 */
+.agreement-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+/* 왼쪽 체크박스 텍스트  */
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+/* 개인정보 이용약관 아래 작은 글씨 */
+.item-desc {
+  width: 100%;
+  color: #999;
+  padding-left: 24px;
+  line-height: 1.5;
+}
+
+/* 오른쪽 동의함 체크박스 */
+.item-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* 화살표 */
+.arrow {
+  font-size: 18px;
+  color: #999;
+  align-self: center;
+}
+
+/* 구분선 */
+.agreement-divider {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 0;
+}
