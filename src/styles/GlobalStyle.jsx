@@ -1,5 +1,4 @@
 import { Global, css } from "@emotion/react";
-import { theme } from "./theme";
 
 const globalStyles = css`
   * {
@@ -48,13 +47,14 @@ const globalStyles = css`
   time,
   mark,
   audio,
-  video {
+  video,
+  input {
     margin: 0;
     padding: 0;
     border: 0;
     font-size: 100%;
-    font: inherit;
     vertical-align: baseline;
+    list-style: none;
   }
 
   article,
@@ -72,15 +72,13 @@ const globalStyles = css`
   }
 
   body {
-    font-family: Pretendard, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
-    color: ${theme.colors.text};
     transition:
       background-color 0.3s,
       color 0.3s;
   }
   ol,
-  ul {
+  li ul {
     list-style: none;
   }
 
@@ -107,6 +105,7 @@ const globalStyles = css`
   select,
   button {
     font-family: inherit;
+    background-color: transparent;
   }
 
   a {
