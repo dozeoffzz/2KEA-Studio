@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
-import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { ItemList } from "../services/Apiex";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { itemList } from "../services/Apiex";
 import backIcon from "../assets/icons/backIcon.svg";
+import { Theme } from "../styles/theme";
 
 const ItemListContainer = styled.div`
   display: flex;
@@ -22,11 +23,12 @@ const TitleWrap = styled.div`
 const BackBtnTitle = styled.div`
   padding: 0 54px;
   display: flex;
+  align-items: center;
   gap: 20px;
 `;
 
 const Title = styled.h2`
-  font-size: 26px;
+  font-size: ${Theme.fontsize.desktop.section};
 `;
 
 const NavLinkWrap = styled.div`
@@ -34,12 +36,16 @@ const NavLinkWrap = styled.div`
   padding-bottom: 20px;
   display: flex;
   gap: 40px;
-  border-bottom: 1px solid #999999;
+  border-bottom: 1px solid ${Theme.colors.textsecondary};
 `;
 
 const NavLinkList = styled(NavLink)`
-  font-size: 21px;
-  color: #999999;
+  font-size: ${Theme.fontsize.desktop.content};
+  color: ${Theme.colors.textsecondary};
+
+  &.active {
+    color: ${Theme.colors.blacktext};
+  }
 `;
 
 const ItemListMain = styled.div`
@@ -67,16 +73,17 @@ const ItemInfo = styled.div`
   align-items: center;
   width: 100%;
   height: 65px;
-  border-top: 1px solid #0c0c0c;
-  border-bottom: 1px solid #0c0c0c;
+  border-top: 1px solid ${Theme.colors.blacktext};
+  border-bottom: 1px solid ${Theme.colors.blacktext};
 `;
 
 const ItemNum = styled.span`
-  font-size: 42px;
+  color: ${Theme.colors.yellowaccent};
+  font-size: ${Theme.fontsize.desktop.section};
 `;
 
 const ItemName = styled.span`
-  font-size: 21px;
+  font-size: ${Theme.fontsize.desktop.content};
 `;
 
 const ItemImgWrap = styled.div`
@@ -90,15 +97,15 @@ const ItemContentWrap = styled.div`
   padding: 5px 0;
   width: 65px;
   height: 100%;
-  border-left: 1px solid #0c0c0c;
-  border-right: 1px solid #0c0c0c;
+  border-left: 1px solid ${Theme.colors.blacktext};
+  border-right: 1px solid ${Theme.colors.blacktext};
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const ItemContent = styled.p`
-  font-size: 12px;
+  font-size: ${Theme.fontsize.desktop.small};
   word-break: keep-all;
 
   /* 세로쓰기 설정 */
@@ -109,43 +116,58 @@ const ItemContent = styled.p`
 `;
 
 const ItemImg = styled.div`
-  background-color: #999999;
+  background-color: ${Theme.colors.overlay};
   flex: 1;
 `;
 
 const PageNationWrap = styled.div`
   display: flex;
+  justify-content: center;
+  width: 100%;
   gap: 70px;
-  font-size: 21px;
+  font-size: ${Theme.fontsize.desktop.content};
   margin-bottom: 40px;
 `;
 
-const PageNationButton = styled(NavLink)`
-  font-size: 21px;
+const CurrentPage = styled.button`
+  font-size: ${Theme.fontsize.desktop.content};
+  &.active {
+    border-bottom: 2px solid ${Theme.colors.blacktext};
+  }
 `;
 
-export default function ItemListPage() {
-  const goBack = useNavigate();
-  const handleGoBack = () => goBack(-1);
+const PageNationButton = styled.button`
+  font-size: ${Theme.fontsize.desktop.content};
+`;
+
+export default function LightingListPage() {
+  const [page, setPage] = useState(1);
+  const totalPages = [1];
+
+  const lightingPerPage = 7;
+  const LightingList = itemList.filter((item) => item.category === "lighting");
+  const startIndex = (page - 1) * lightingPerPage;
+  const currentItems = LightingList.slice(startIndex, startIndex + lightingPerPage);
+
   return (
     <>
       <ItemListContainer>
         <TitleWrap className="TitleWrap">
           <BackBtnTitle>
-            <button onClick={handleGoBack}>
+            <NavLink to={"/"}>
               <img src={backIcon} />
-            </button>
-            <Title>Seating</Title>
+            </NavLink>
+            <Title>Lighting</Title>
           </BackBtnTitle>
           <NavLinkWrap>
-            <NavLinkList>All</NavLinkList>
-            <NavLinkList>Seating</NavLinkList>
-            <NavLinkList>Tables</NavLinkList>
-            <NavLinkList>Lighting</NavLinkList>
+            <NavLinkList to={"/alllist"}>All</NavLinkList>
+            <NavLinkList to={"/seatinglist"}>Seating</NavLinkList>
+            <NavLinkList to={"/tablelist"}>Tables</NavLinkList>
+            <NavLinkList to={"/lightinglist"}>Lighting</NavLinkList>
           </NavLinkWrap>
         </TitleWrap>
         <ItemListMain>
-          {ItemList.map((item) => (
+          {currentItems.map((item) => (
             <Item key={item.id} large={item.large} to={`/detailpage/${item.id}`}>
               <ItemInfo>
                 <ItemNum>{item.num}</ItemNum>
@@ -157,15 +179,19 @@ export default function ItemListPage() {
                 <ItemContentWrap>
                   <ItemContent>{item.content}</ItemContent>
                 </ItemContentWrap>
-                <ItemImg>background</ItemImg>
+                <ItemImg></ItemImg>
               </ItemImgWrap>
             </Item>
           ))}
         </ItemListMain>
         <PageNationWrap>
-          <PageNationButton>First</PageNationButton>
-          <PageNationButton>Prev</PageNationButton>
-          <span>1</span>
+          <PageNationButton onClick={() => setPage(1)}>First</PageNationButton>
+          <PageNationButton onClick={() => setPage(1)}>Prev</PageNationButton>
+          {totalPages.map((list) => (
+            <CurrentPage key={list} onClick={() => setPage(list)} className={page === list ? "active" : ""}>
+              {list}
+            </CurrentPage>
+          ))}
           <PageNationButton>Next</PageNationButton>
           <PageNationButton>Last</PageNationButton>
         </PageNationWrap>

@@ -1,12 +1,12 @@
 import React from "react";
 import DeleteModal from "../components/modals/DeleteModal";
 import { useParams } from "react-router-dom";
-import { ItemList } from "../services/Apiex";
+import { itemList } from "../services/Apiex";
 
 export default function DetailedPage() {
   const { id } = useParams();
 
-  const item = ItemList.find((item) => item.id === Number(id));
+  const item = itemList.find((item) => item.id === Number(id));
 
   if (!item) {
     return <div>존재하지 않는 상품입니다.</div>;
