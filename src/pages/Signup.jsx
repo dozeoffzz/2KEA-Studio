@@ -247,6 +247,13 @@ export default function Signup() {
 
   const phone2Ref = useRef(null);
   const phone3Ref = useRef(null);
+  const birthMonthRef = useRef(null);
+  const birthDayRef = useRef(null);
+
+  // 에러 나면 해당 섹션으로 스크롤 이동
+  const formRef = useRef(null);
+  const birthRef = useRef(null);
+  const agreeRef = useRef(null);
 
   const [memberType, setMemberType] = useState("personal");
 
@@ -309,6 +316,16 @@ export default function Signup() {
     if (name === "phone2" && value.length === 4) {
       phone3Ref.current.focus();
     }
+
+    // 생년월일 자동 이동 - year 4자리 채우면 month로
+    if (name === "birthYear" && value.length === 4) {
+      birthMonthRef.current.focus();
+    }
+
+    // 생년월일 자동 이동 - month 2자리 채우면 day로
+    if (name === "birthMonth" && value.length === 2) {
+      birthDayRef.current.focus();
+    }
   }
 
   // password 타입은 한글 막는게 다르게 동작해서 따로 처리
@@ -370,8 +387,37 @@ export default function Signup() {
     };
     setErrors(newErrors);
 
-    // 하나라도 에러 있으면 멈추기
-    if (Object.values(newErrors).some((v) => v === true)) return;
+    // 하나라도 에러 있으면 첫번째 에러 위치로 스크롤 이동
+    if (Object.values(newErrors).some((v) => v === true)) {
+      // 폼 에러면 폼으로
+      if (
+        newErrors.id ||
+        newErrors.password ||
+        newErrors.name ||
+        newErrors.phone2 ||
+        newErrors.phone3 ||
+        newErrors.email
+      ) {
+        formRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        // 생년월일 에러면 생년월일로
+      } else if (
+        newErrors.birthYear ||
+        newErrors.birthMonth ||
+        newErrors.birthDay
+      ) {
+        birthRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        // 동의 에러면 동의로
+      } else if (newErrors.privacy || newErrors.service) {
+        agreeRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+      return;
+    }
 
     // 로컬스토리지에 저장 - 비밀번호 빼고 저장
     const userInfo = {
@@ -419,8 +465,8 @@ export default function Signup() {
           </MemberTypeBox>
         </SignupSection>
 
-        {/* 입력 폼 */}
-        <SignupForm onSubmit={handleSubmit}>
+        {/* 입력 폼 - ref 달아서 에러시 스크롤 이동 */}
+        <SignupForm onSubmit={handleSubmit} ref={formRef}>
           <FormRow>
             <FormLabel error={errors.id}>ID</FormLabel>
             <FormInput
@@ -505,8 +551,8 @@ export default function Signup() {
           </FormRow>
         </SignupForm>
 
-        {/* 생년월일 - yyyy mm dd 숫자만 */}
-        <SignupSection>
+        {/* 생년월일 - ref 달아서 에러시 스크롤 이동 */}
+        <SignupSection ref={birthRef}>
           <SectionTitle>Date of Birth</SectionTitle>
           <BirthInput
             error={errors.birthYear}
@@ -526,6 +572,7 @@ export default function Signup() {
             value={form.birthMonth}
             maxLength="2"
             inputMode="numeric"
+            ref={birthMonthRef}
             onChange={handleChange}
           />
           <BirthInput
@@ -536,12 +583,13 @@ export default function Signup() {
             value={form.birthDay}
             maxLength="2"
             inputMode="numeric"
+            ref={birthDayRef}
             onChange={handleChange}
           />
         </SignupSection>
 
-        {/* 이용 동의 */}
-        <SignupSection>
+        {/* 이용 동의 - ref 달아서 에러시 스크롤 이동 */}
+        <SignupSection ref={agreeRef}>
           <SectionTitle>Whole agreement</SectionTitle>
           <AgreeAllRow>
             <input
