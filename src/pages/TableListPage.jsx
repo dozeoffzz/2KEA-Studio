@@ -160,10 +160,10 @@ export default function TableListPage() {
             <Title>Tables</Title>
           </BackBtnTitle>
           <NavLinkWrap>
-            <NavLinkList to={"/alllist"}>All</NavLinkList>
-            <NavLinkList to={"/seatinglist"}>Seating</NavLinkList>
-            <NavLinkList to={"/tablelist"}>Tables</NavLinkList>
-            <NavLinkList to={"/lightinglist"}>Lighting</NavLinkList>
+            <NavLinkList to={"/allproducts"}>All</NavLinkList>
+            <NavLinkList to={"/seatingproducts"}>Seating</NavLinkList>
+            <NavLinkList to={"/tableproducts"}>Tables</NavLinkList>
+            <NavLinkList to={"/lightingproducts"}>Lighting</NavLinkList>
           </NavLinkWrap>
         </TitleWrap>
         <ItemListMain>

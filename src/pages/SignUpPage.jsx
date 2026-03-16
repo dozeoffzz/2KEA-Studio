@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import DeleteModal from "../components/modals/DeleteModal";
 import SignUpModal from "../components/modals/SignUpModal";
 
 export default function SignUpPage() {

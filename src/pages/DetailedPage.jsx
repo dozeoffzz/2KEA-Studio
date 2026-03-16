@@ -33,7 +33,6 @@ const SliderViewport = styled.div`
 const SlideItem = styled.div`
   position: absolute;
   top: 50%;
-
   left: ${(props) => {
     if (props.$position === "left") return "0%";
     if (props.$position === "center") return "50%";
