@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-import Header from "./components/Header";
-import Signup from "./pages/Signup";
-=======
 import EventModal from "./components/modals/EventModal";
 import OrderModal from "./components/modals/OrderModal";
 import DeleteModal from "./components/modals/DeleteModal";
@@ -20,17 +15,10 @@ import SeatingListPage from "./pages/SeatingListPage";
 import TableListPage from "./pages/TableListPage";
 import LightingListPage from "./pages/LightingListPage";
 import AllListPage from "./pages/AllListPage";
->>>>>>> dev
 
 export default function App() {
   return (
     <div>
-<<<<<<< HEAD
-      <Header />
-
-      {/* 회원가입 페이지 */}
-      <Signup />
-=======
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
@@ -44,7 +32,6 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
         </Route>
       </Routes>
->>>>>>> dev
     </div>
   );
 }

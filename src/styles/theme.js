@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-export const theme = {
-  colors: {
-    redaccent: "#752323",
-    greenaccent: "#898861",
-    white: "#fafafa",
-    black: "#0c0c0c",
-    witetext: "#fafafa",
-=======
 export const Theme = {
   colors: {
     redaccent: "#752323",
@@ -15,7 +6,6 @@ export const Theme = {
     white: "#fafafa",
     black: "#0c0c0c",
     whitetext: "#fafafa",
->>>>>>> dev
     blacktext: "#0c0c0c",
     textsecondary: "#999999",
     overlay: "#0c0c0c30",
