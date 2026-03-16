@@ -3,6 +3,7 @@ import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import lineLight from "../../assets/imgs/lineLight.svg";
 import styled from "@emotion/styled";
 import { createPortal } from "react-dom";
+import { Theme } from "../../styles/theme";
 
 const Overlay = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const Overlay = styled.div`
   right: 0;
   bottom: 0;
   z-index: 999;
-  background-color: #0c0c0c15;
+  background-color: ${Theme.colors.overlay};
 `;
 
 const OrderModalContainer = styled.div`
@@ -50,15 +51,15 @@ const OrderModalTitleWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 34px;
-  border-bottom: 1px solid #0c0c0c;
+  border-bottom: 1px solid ${Theme.colors.blacktext};
 `;
 
 const OrderModalTitle = styled.p`
-  font-size: 14px;
+  font-size: ${Theme.fontsize.desktop.content};
 `;
 
 const Content = styled.p`
-  font-size: 14px;
+  font-size: ${Theme.fontsize.desktop.content};
   text-align: center;
 `;
 
@@ -69,22 +70,22 @@ const DeleteButton = styled.button`
 `;
 
 const ButtonWrap = styled.div`
-  height: 25px;
+  height: 35px;
   display: flex;
   justify-content: flex-end;
-  font-size: 14px;
+  font-size: ${Theme.fontsize.desktop.content};
 `;
 const CloseButton = styled.button`
   width: 50%;
-  font-size: 14px;
-  background-color: #fafafa;
-  color: #0c0c0c;
+  font-size: ${Theme.fontsize.desktop.content};
+  background-color: ${Theme.colors.whitetext};
+  color: ${Theme.colors.blacktext};
 `;
 const Button = styled.button`
   width: 50%;
-  font-size: 14px;
-  background-color: #0c0c0c;
-  color: #fafafa;
+  font-size: ${Theme.fontsize.desktop.content};
+  background-color: ${Theme.colors.blacktext};
+  color: ${Theme.colors.whitetext};
 `;
 
 export default function OrderModal({ isOpen, onClose }) {

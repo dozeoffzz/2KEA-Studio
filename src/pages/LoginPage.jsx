@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import loginLight from "../assets/imgs/loginLight.svg";
 import loginChair from "../assets/imgs/loginChair.svg";
+import { Theme } from "../styles/theme";
 
 const LoginContainer = styled.div`
   position: relative;
@@ -14,7 +15,7 @@ const LoginContainer = styled.div`
 `;
 
 const Title = styled.p`
-  font-size: 32px;
+  font-size: ${Theme.fontsize.desktop.section};
   margin: 60px 0 100px 0;
 `;
 
@@ -29,19 +30,19 @@ const LoginForm = styled.form`
 const LoginInputWrap = styled.div`
   display: flex;
   gap: 40px;
-  border-bottom: 1px solid #0c0c0c;
-  font-size: 24px;
+  border-bottom: 1px solid ${Theme.colors.blacktext};
+  font-size: ${Theme.fontsize.desktop.content};
 `;
 
 const InputInfo = styled.p`
-  margin-bottom: 9px;
+  margin-bottom: 10px;
 `;
 
 const LoginInput = styled.input`
   border: none;
   outline: none;
   background-color: transparent;
-  font-size: 24px;
+  font-size: ${Theme.fontsize.desktop.content};
   margin-bottom: 10px;
 `;
 
@@ -52,15 +53,15 @@ const ButtonWrap = styled.div`
 `;
 
 const LoginButton = styled.button`
-  font-size: 24px;
+  font-size: ${Theme.fontsize.desktop.content};
 `;
 
 const SignupButton = styled(NavLink)`
-  font-size: 24px;
+  font-size: ${Theme.fontsize.desktop.content};
 `;
 
 const DesignText = styled.p`
-  font-size: 32px;
+  font-size: ${Theme.fontsize.desktop.section};
   text-align: center;
 `;
 
@@ -100,13 +101,7 @@ export default function LoginPage() {
         </LoginInputWrap>
         <LoginInputWrap>
           <InputInfo>Password</InputInfo>
-          <LoginInput
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={input.password}
-            onChange={handleChange}
-          />
+          <LoginInput name="password" type="password" placeholder="Password" value={input.password} onChange={handleChange} />
         </LoginInputWrap>
         <ButtonWrap>
           <LoginButton type="submit">
