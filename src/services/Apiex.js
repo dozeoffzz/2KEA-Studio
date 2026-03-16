@@ -6,6 +6,7 @@ export const itemList = [
     material: "Plastic",
     content: "선 하나로 완성된 디자인.",
     category: "seating",
+    price: 138000,
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ export const itemList = [
     material: "Fabric",
     content: "차분한 균형 속에서 완성된 절제된 아름다움.",
     category: "seating",
+    price: 114000,
   },
   {
     id: 3,
@@ -22,6 +24,7 @@ export const itemList = [
     material: "Rattan",
     content: "자연의 여유를 닮은 실루엣.",
     category: "seating",
+    price: 234000,
   },
   {
     id: 4,
@@ -30,6 +33,7 @@ export const itemList = [
     material: "Plastic",
     content: "단순한 형태 그러나 가장 강한 존재감.",
     category: "seating",
+    price: 78000,
   },
   {
     id: 5,
@@ -39,6 +43,7 @@ export const itemList = [
     large: "true",
     content: "시간이 쌓일수록 깊어지는 가죽의 가치.",
     category: "seating",
+    price: 2660000,
   },
   {
     id: 6,
@@ -47,6 +52,7 @@ export const itemList = [
     material: "Leather",
     content: "부드러운 볼륨이 공간에 새로운 리듬을 만든다.",
     category: "seating",
+    price: 720000,
   },
   {
     id: 7,
@@ -55,6 +61,7 @@ export const itemList = [
     material: "Wood",
     content: "장식이 아닌 구조로 완성된 의자.",
     category: "seating",
+    price: 89000,
   },
   {
     id: 8,
@@ -63,6 +70,7 @@ export const itemList = [
     material: "Fabric",
     content: "부드러운 실루엣 위에 내려앉은 조용한 우아함.",
     category: "seating",
+    price: 129000,
   },
   {
     id: 9,
@@ -71,6 +79,7 @@ export const itemList = [
     material: "Plastic",
     content: "묵직한 형태가 공간에 깊은 중심을 만든다.",
     category: "seating",
+    price: 210000,
   },
   {
     id: 10,
@@ -79,6 +88,7 @@ export const itemList = [
     material: "Wood",
     content: "곡선과 여백이 만들어내는 완벽한 균형.",
     category: "seating",
+    price: 270000,
   },
   {
     id: 11,
@@ -87,6 +97,7 @@ export const itemList = [
     material: "Leather",
     content: "따듯한 가죽 위로 흐르는 절제된 품격.",
     category: "seating",
+    price: 1270000,
   },
   {
     id: 12,
@@ -95,6 +106,7 @@ export const itemList = [
     material: "Rattan",
     content: "자연의 질감이 완성한 가장 편안한 형태.",
     category: "seating",
+    price: 98000,
   },
   {
     id: 13,
@@ -103,6 +115,7 @@ export const itemList = [
     material: "Wood",
     content: "디자인과 휴식이 만나는 가장 자연스러운 자리.",
     category: "seating",
+    price: 108000,
   },
   {
     id: 14,
@@ -112,6 +125,7 @@ export const itemList = [
     content: "부드러운 볼륨이 공간을 감싸는 순간.",
     large: "true",
     category: "seating",
+    price: 1890000,
   },
 
   {
@@ -121,6 +135,7 @@ export const itemList = [
     material: "Plastic",
     content: "구조만으로 완성된 형태.",
     category: "table",
+    price: 463000,
   },
   {
     id: 16,
@@ -130,6 +145,7 @@ export const itemList = [
     content: "일과 공간이 만나는 지점.",
     large: "true",
     category: "table",
+    price: 2370000,
   },
   {
     id: 17,
@@ -138,6 +154,7 @@ export const itemList = [
     material: "Metal",
     content: "단순한 선과 균형이 만들어낸 조용한 존재감.",
     category: "table",
+    price: 410000,
   },
   {
     id: 18,
@@ -146,6 +163,7 @@ export const itemList = [
     material: "Metal",
     content: "작은 테이블 하나로 완성되는 공간의 균형.",
     category: "table",
+    price: 465000,
   },
   {
     id: 19,
@@ -154,6 +172,7 @@ export const itemList = [
     material: "Wood",
     content: "겹겹이 쌓인 곡선 부드러운 구조의 미학.",
     category: "table",
+    price: 373000,
   },
   {
     id: 20,
@@ -162,6 +181,7 @@ export const itemList = [
     material: "Wood",
     content: "나무의 결 위로 흐르는 깊은 시간의 흔적.",
     category: "table",
+    price: 558000,
   },
   {
     id: 21,
@@ -170,6 +190,7 @@ export const itemList = [
     material: "Wood",
     content: "공간을 정리하는 가장 단순한 방법.",
     category: "table",
+    price: 982300,
   },
   {
     id: 22,
@@ -178,6 +199,7 @@ export const itemList = [
     material: "Fabric",
     content: "부드러운 빛이 공간의 온도를 바꾼다.",
     category: "lighting",
+    price: 115200,
   },
   {
     id: 23,
@@ -186,6 +208,7 @@ export const itemList = [
     material: "Metal",
     content: "구조 속에 담긴 빛 조명이 하나의 조형이 되다.",
     category: "lighting",
+    price: 289000,
   },
   {
     id: 24,
@@ -195,6 +218,7 @@ export const itemList = [
     content: "강렬한 컬러와 빛의 균형 공간을 깨우는 존재감.",
     large: "true",
     category: "lighting",
+    price: 425000,
   },
   {
     id: 25,
@@ -203,6 +227,7 @@ export const itemList = [
     material: "Metal",
     content: "단순 곡선위에 내려앉은 완벽한 빛.",
     category: "lighting",
+    price: 780000,
   },
   {
     id: 26,
@@ -211,6 +236,7 @@ export const itemList = [
     material: "Stone",
     content: "따듯한 빛이 만들어내는 조용한 중심.",
     category: "lighting",
+    price: 541000,
   },
   {
     id: 27,
@@ -219,6 +245,7 @@ export const itemList = [
     material: "Metal",
     content: "겹겹이 쌓인 빛 공간에 깊이를 더하다.",
     category: "lighting",
+    price: 324000,
   },
   {
     id: 28,
@@ -227,5 +254,6 @@ export const itemList = [
     material: "Metal",
     content: "어둠 속에서 더욱 선명해지는 빛의 본질.",
     category: "lighting",
+    price: 199000,
   },
 ];

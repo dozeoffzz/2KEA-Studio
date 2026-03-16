@@ -6,7 +6,7 @@ import SignUpModal from "./components/modals/SignUpModal";
 import TitleModal from "./components/modals/TitleModal";
 import { Route, Routes } from "react-router-dom";
 import DetailedPage from "./pages/DetailedPage";
-import ShoppingPage from "./pages/ShoppingCartPage";
+import ShoppingCartPage from "./pages/ShoppingCartPage";
 import SignUpPage from "./pages/SignUpPage";
 import Signup from "./pages/Signup";
 import MainPage from "./pages/MainPage";
@@ -24,11 +24,11 @@ export default function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
           <Route path="/detailpage/:id" element={<DetailedPage />} />
-          <Route path="/shopping" element={<ShoppingPage />} />
-          <Route path="/alllist" element={<AllListPage />} />
-          <Route path="/seatinglist" element={<SeatingListPage />} />
-          <Route path="/tablelist" element={<TableListPage />} />
-          <Route path="/lightinglist" element={<LightingListPage />} />
+          <Route path="/cart" element={<ShoppingCartPage />} />
+          <Route path="/allproducts" element={<AllListPage />} />
+          <Route path="/seatingproducts" element={<SeatingListPage />} />
+          <Route path="/tableproducts" element={<TableListPage />} />
+          <Route path="/lightingproducts" element={<LightingListPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Route>
