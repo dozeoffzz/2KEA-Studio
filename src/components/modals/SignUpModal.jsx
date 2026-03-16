@@ -16,6 +16,7 @@ const Overlay = styled.div`
   bottom: 0;
   z-index: 999;
   background-color: ${Theme.colors.overlay};
+  backdrop-filter: blur(2px);
 `;
 
 const SignUpModalContainer = styled.div`

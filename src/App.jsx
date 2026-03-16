@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import DetailedPage from "./pages/DetailedPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage";
 import SignUpPage from "./pages/SignUpPage";
+import Signup from "./pages/Signup";
 import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/LoginPage";
 import MainLayout from "./components/layout/MainLayout";
