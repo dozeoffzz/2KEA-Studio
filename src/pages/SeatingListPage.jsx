@@ -143,10 +143,13 @@ const PageNationButton = styled.button`
 export default function SeatingListPage() {
   const [page, setPage] = useState(1);
   const totalPages = [1, 2];
-
+  // 한페이지에 7개 상품 보여주기
   const seatingPerPage = 7;
+  // 의자만 보여주기
   const SeatingList = itemList.filter((item) => item.category === "seating");
+  // 기본 시작 페이지
   const startIndex = (page - 1) * seatingPerPage;
+  // 한페이지에 7개 상품 보여주기
   const currentItems = SeatingList.slice(startIndex, startIndex + seatingPerPage);
 
   return (

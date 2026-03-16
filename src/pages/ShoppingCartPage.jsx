@@ -222,6 +222,7 @@ export default function ShoppingCartPage() {
   return (
     <CartContainer>
       <CartList>
+        {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
         {addProduct.map((item) => (
           <Item key={item.id}>
             <button>
