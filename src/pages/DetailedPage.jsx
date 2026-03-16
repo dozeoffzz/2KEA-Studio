@@ -3,9 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { itemList } from "../services/Apiex";
 import { Theme } from "../styles/theme";
 import styled from "@emotion/styled";
-import detailImg from "../assets/imgs/Frame 111.svg";
-import mainImg from "../assets/imgs/mainImg.svg";
-import mainImg2 from "../assets/imgs/mainImg2.svg";
+import detailImg1 from "../assets/imgs/detail/detailImg1.svg";
+import detailImg2 from "../assets/imgs/detail/detailImg2.webp";
+import detailImg3 from "../assets/imgs/detail/detailImg3.webp";
+import detailImg4 from "../assets/imgs/detail/detailImg4.webp";
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -19,7 +20,8 @@ const ImgGallery = styled.section`
 const SliderWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 760px;
+  height: 45vw;
+  max-height: 760px;
   overflow: hidden;
 `;
 
@@ -39,8 +41,11 @@ const SlideItem = styled.div`
     return "50%";
   }};
 
-  width: 986px;
-  height: 843px;
+  width: 50vw;
+  max-width: 986px;
+  height: 45vw;
+  max-height: 843px;
+
   overflow: hidden;
   transform-origin: center center;
   will-change: transform, left, opacity;
@@ -57,7 +62,6 @@ const SlideItem = styled.div`
     if (props.$position === "center") {
       return "translate(-50%, -50%) scale(1)";
     }
-
     return "translate(-50%, -50%) scale(0.65)";
   }};
 `;
@@ -74,22 +78,18 @@ const SlideImage = styled.img`
 const ArrowButton = styled.button`
   position: absolute;
   top: 50%;
-  border: none;
-  background: transparent;
   font-size: 52px;
   color: ${Theme.colors.textsecondary};
-  cursor: pointer;
-  z-index: 10;
 `;
 
 const LeftArrow = styled(ArrowButton)`
-  left: 50%;
-  transform: translate(calc(-50% - 560px), -50%);
+  left: 20%;
+  transform: translateY(-50%);
 `;
 
 const RightArrow = styled(ArrowButton)`
-  left: 50%;
-  transform: translate(calc(-50% + 560px), -50%);
+  right: 20%;
+  transform: translateY(-50%);
 `;
 
 const ProductName = styled.p`
@@ -232,7 +232,7 @@ export default function DetailedPage() {
   }
 
   // 이미지 배열
-  const imageSlides = [item.image || mainImg2, item.detailImage1 || mainImg, item.detailImage2 || mainImg];
+  const imageSlides = [item.image || detailImg3, item.image || detailImg2, item.image || detailImg4];
   const prevIndex = currentIndex === 0 ? imageSlides.length - 1 : currentIndex - 1;
   const nextIndex = currentIndex === imageSlides.length - 1 ? 0 : currentIndex + 1;
 
@@ -291,7 +291,7 @@ export default function DetailedPage() {
 
       <DetailSection>
         <LeftContent>
-          <DetailImg src={detailImg} alt={`${item.name} 상세 이미지`} />
+          <DetailImg src={detailImg1} alt={`${item.name} 상세 이미지`} />
         </LeftContent>
 
         <RightContent>
@@ -334,7 +334,7 @@ export default function DetailedPage() {
               <CardBtn onClick={() => navigate("/")}>Buy</CardBtn>
             </ButtonGroup>
 
-            <Back onClick={() => navigate(-1)}>다른 상품 보러가기</Back>
+            <Back onClick={() => navigate("/alllist")}>다른 상품 보러가기</Back>
 
             <MoreInfo>
               <MoreInfoList>제품 관리 정보</MoreInfoList>
