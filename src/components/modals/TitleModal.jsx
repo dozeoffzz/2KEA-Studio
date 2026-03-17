@@ -100,8 +100,7 @@ const Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ active }) =>
-    active ? Theme.colors.black : "#b3b3b3"};
+  background-color: ${({ active }) => (active ? Theme.colors.black : "#b3b3b3")};
 `;
 
 // 버튼 위 선을 포함한 버튼 래퍼
@@ -133,12 +132,7 @@ const CloseButton = styled(TodayCloseButton)`
 // activeIndex: 현재 활성화된 점 번호
 // animationState: 전환 애니메이션 상태
 // onClose, onTodayClose: 버튼 클릭 함수
-export default function TitleModal({
-  activeIndex = 0,
-  animationState = "active",
-  onClose,
-  onTodayClose,
-}) {
+export default function TitleModal({ activeIndex = 0, animationState = "active", onClose, onTodayClose }) {
   return (
     <Overlay animationState={animationState}>
       <TitleModalContainer animationState={animationState}>
@@ -151,9 +145,7 @@ export default function TitleModal({
               <span>공간의 온도를 바꾸는 2KEA만의 새로운</span>
               <span>실루엣을 만나보세요</span>
             </Content>
-            <SecondContent>
-              모던한 감각으로 재해석한 2KEA의 새로운 오브제
-            </SecondContent>
+            <SecondContent>모던한 감각으로 재해석한 2KEA의 새로운 오브제</SecondContent>
             <SecondContent>신제품 출시 기념 전 지역 무료 배송</SecondContent>
 
             {/* 현재 모달 순서를 보여주는 점 3개 */}
@@ -168,9 +160,7 @@ export default function TitleModal({
         <BottomArea>
           {/* 하단 버튼 영역 */}
           <ButtonWrap>
-            <TodayCloseButton onClick={onTodayClose}>
-              오늘 하루 열지 않기
-            </TodayCloseButton>
+            <TodayCloseButton onClick={onTodayClose}>오늘 하루 열지 않기</TodayCloseButton>
             <CloseButton onClick={onClose}>닫기</CloseButton>
           </ButtonWrap>
         </BottomArea>

@@ -13,9 +13,13 @@ const Overlay = styled.div`
   position: fixed;
   inset: 0;
   z-index: 999;
+<<<<<<< HEAD
   background-color: rgba(12, 12, 12, 0.12);
   transition: opacity 0.42s ease;
   opacity: ${({ animationState }) => (animationState === "exit" ? 0 : 1)};
+=======
+  background-color: ${Theme.colors.overlay};
+>>>>>>> 346adba (fix: 모달 수정,추가)
 `;
 
 // 예약 모달 전체 박스
@@ -56,20 +60,34 @@ const TextStack = styled.div`
 
 // 메인 제목
 const Title = styled.span`
+<<<<<<< HEAD
   font-size: 32px;
 `;
 
 // 부제목
 const SecondTitle = styled.span`
   font-size: 14px;
+=======
+  margin-bottom: 35px;
+  font-size: ${Theme.fontsize.desktop.section};
+`;
+
+const SecondTitle = styled.span`
+  margin-bottom: 35px;
+  font-size: ${Theme.fontsize.desktop.small};
+>>>>>>> 5b1bf9c (fix: 모달 수정,추가)
 `;
 
 // 두 줄 이상 본문
 const Content = styled.span`
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
   font-size: 14px;
   line-height: 1.6;
+=======
+  font-size: ${Theme.fontsize.desktop.small};
+>>>>>>> 5b1bf9c (fix: 모달 수정,추가)
 `;
 
 // 추가 본문
@@ -99,8 +117,7 @@ const Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ active }) =>
-    active ? Theme.colors.black : "#b3b3b3"};
+  background-color: ${({ active }) => (active ? Theme.colors.black : "#b3b3b3")};
 `;
 
 // 버튼 위 선을 포함한 버튼 래퍼
@@ -149,9 +166,7 @@ export default function ReservationModal({
             <SecondTitle>- 성수 쇼룸 예약자 안내 -</SecondTitle>
 
             <Content>
-              <span>
-                평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,
-              </span>
+              <span>평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,</span>
               <span>예약자 우선으로 상담이 진행됩니다.</span>
             </Content>
 

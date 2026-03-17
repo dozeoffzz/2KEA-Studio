@@ -33,16 +33,14 @@ const LoginForm = styled.form`
 const LoginInputWrap = styled.div`
   display: flex;
   gap: 40px;
-  border-bottom: 1px solid
-    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   font-size: ${Theme.fontsize.desktop.content};
 `;
 
 // error 나면 빨간색으로
 const InputInfo = styled.p`
   margin-bottom: 10px;
-  color: ${({ error }) =>
-    error ? Theme.colors.redaccent : Theme.colors.blacktext};
+  color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
 `;
 
 const LoginInput = styled.input`
@@ -155,13 +153,7 @@ export default function LoginPage() {
         {/* ID 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.id}>
           <InputInfo error={errors.id}>ID</InputInfo>
-          <LoginInput
-            name="id"
-            type="text"
-            placeholder="ID"
-            value={input.id}
-            onChange={handleChange}
-          />
+          <LoginInput name="id" type="text" placeholder="ID" value={input.id} onChange={handleChange} />
         </LoginInputWrap>
 
         {/* Password 입력 - 에러 시 스타일 변경 */}

@@ -16,7 +16,6 @@ const Overlay = styled.div`
   bottom: 0;
   z-index: 999;
   background-color: ${Theme.colors.overlay};
-  backdrop-filter: blur(2px);
 `;
 
 const SignUpModalContainer = styled.div`
@@ -26,7 +25,7 @@ const SignUpModalContainer = styled.div`
   position: relative;
   min-width: 400px;
   min-height: 242px;
-  background-color: ${Theme.colors.white};
+  background-color: #cfcfcf;
   box-shadow: 4px 4px 10px;
 `;
 
@@ -77,14 +76,21 @@ const ButtonWrap = styled.div`
   font-size: ${Theme.fontsize.desktop.content};
 `;
 
+const CloseButton = styled.button`
+  width: 50%;
+  font-size: ${Theme.fontsize.desktop.content};
+  background-color: ${Theme.colors.whitetext};
+  color: ${Theme.colors.blacktext};
+`;
+
 const Button = styled.button`
-  width: 100%;
+  width: 50%;
   font-size: ${Theme.fontsize.desktop.content};
   background-color: ${Theme.colors.black};
   color: ${Theme.colors.whitetext};
 `;
 
-export default function SignUpModal({ isOpen, onClose }) {
+export default function MoveCartModal({ isOpen, onClose }) {
   const targetElement = document.querySelector("#modal-root");
   if (!isOpen) return null;
 
@@ -94,16 +100,17 @@ export default function SignUpModal({ isOpen, onClose }) {
         <SignUpModalWrap>
           <LineLignt src={lineLight} />
           <SignUpModalTitleWrap>
-            <SignUpModalTitle>회원 가입</SignUpModalTitle>
+            <SignUpModalTitle>카트 이동</SignUpModalTitle>
             <DeleteButton onClick={onClose}>
               <img src={deleteIcon} />
             </DeleteButton>
           </SignUpModalTitleWrap>
           <div>
-            <Content>회원가입이 완료되었습니다.</Content>
+            <Content>카트로 이동하시겠습니까?</Content>
           </div>
         </SignUpModalWrap>
         <ButtonWrap>
+          <CloseButton onClick={onClose}>취소</CloseButton>
           <Button onClick={onClose}>확인</Button>
         </ButtonWrap>
       </SignUpModalContainer>

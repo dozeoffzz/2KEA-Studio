@@ -254,19 +254,19 @@ export default function ShoppingCartPage() {
         <OrderInfoForm>
           <OrderName>
             <p>Name</p>
-            <InputName placeholder="Name" />
+            <InputName placeholder="Name" type="text" />
           </OrderName>
           <OrderPhone>
             <p>Phone</p>
-            <InputPhone placeholder="Phone" />
+            <InputPhone placeholder="Phone" type="text" />
           </OrderPhone>
           <OrderEmail>
             <p>Email</p>
-            <InputEmail placeholder="Email" />
+            <InputEmail placeholder="Email" type="email" />
           </OrderEmail>
           <OrderAddress>
             <p>Address</p>
-            <InputAddress placeholder="Address" />
+            <InputAddress placeholder="Address" type="address" />
           </OrderAddress>
         </OrderInfoForm>
         <ThanksMsg>Thanks</ThanksMsg>

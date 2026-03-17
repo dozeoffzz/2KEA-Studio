@@ -17,6 +17,7 @@ import LightingListPage from "./pages/LightingListPage";
 import AllListPage from "./pages/AllListPage";
 import MainIntroModal from "./components/modals/MainIntroModal";
 import InstagramModal from "./components/modals/InstagramModal";
+import NotFoundPage from "./pages/NotFoundPage";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/lightingproducts" element={<LightingListPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </div>
