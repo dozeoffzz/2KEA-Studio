@@ -22,7 +22,7 @@ const EventModalContainer = styled.div`
   flex-direction: column;
   width: 500px;
   height: 400px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
 `;
 
 const EventModalWrap = styled.div`
@@ -87,10 +87,15 @@ export default function EventModal() {
           <Title>EVENT</Title>
           <SecondTitle>- 성수 쇼룸 구매 이벤트 -</SecondTitle>
           <Content>
-            성수 쇼룸에서 소파 및 조명 구매 대상으로 <span>초이스 쿠션 증정 이벤트를 진행중 입니다.</span>
+            성수 쇼룸에서 소파 및 조명 구매 대상으로{" "}
+            <span>초이스 쿠션 증정 이벤트를 진행중 입니다.</span>
           </Content>
-          <SecondContent>더욱더 설레는 마음으로 쇼룸에 찾아와 주세요 :&#41;</SecondContent>
-          <EventInfo>* 초이스쿠션 종류는 재고 상황에 따라 상이합니다.</EventInfo>
+          <SecondContent>
+            더욱더 설레는 마음으로 쇼룸에 찾아와 주세요 :&#41;
+          </SecondContent>
+          <EventInfo>
+            * 초이스쿠션 종류는 재고 상황에 따라 상이합니다.
+          </EventInfo>
           <EventInfo>* 3월 27일 ~ 4월 3일 단 7일동안 진행됩니다.</EventInfo>
         </EventModalWrap>
         <ButtonWrap>

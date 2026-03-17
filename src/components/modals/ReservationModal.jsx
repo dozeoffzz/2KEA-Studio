@@ -22,7 +22,7 @@ const EventModalContainer = styled.div`
   flex-direction: column;
   width: 500px;
   height: 400px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
 `;
 
 const EventModalWrap = styled.div`
