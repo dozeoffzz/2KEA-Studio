@@ -7,8 +7,7 @@ import TitleModal from "./components/modals/TitleModal";
 import { Route, Routes } from "react-router-dom";
 import DetailedPage from "./pages/DetailedPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage";
-import SignUpPage from "./pages/SignUpPage";
-import Signup from "./pages/Signup";
+import SignupPage from "./pages/SignupPage";
 import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/LoginPage";
 import MainLayout from "./components/layout/MainLayout";
@@ -29,7 +28,7 @@ export default function App() {
           <Route path="/seatingproducts" element={<SeatingListPage />} />
           <Route path="/tableproducts" element={<TableListPage />} />
           <Route path="/lightingproducts" element={<LightingListPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Route>
       </Routes>
