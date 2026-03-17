@@ -3,9 +3,6 @@ import { NavLink } from "react-router-dom";
 
 export default function Footer() {
   return (
-<<<<<<< HEAD
-    <div style={{ height: "350px", borderTop: "1px solid #0c0c0c" }}></div>
-=======
     <div
       style={{
         height: "350px",
@@ -21,6 +18,5 @@ export default function Footer() {
       <NavLink to={"/cart"}>쇼핑 카트 페이지로 이동</NavLink>
       <NavLink to={"/login"}>로그인 페이지로 이동</NavLink>
     </div>
->>>>>>> dev
   );
 }
