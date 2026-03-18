@@ -32,9 +32,15 @@ export const Theme = {
       small: "14px",
     },
   },
+  // New
   breakpoints: {
-    mobile: "576px",
-    tablet: "768px",
-    desktop: "992px",
+    mobile: 576,
+    tablet: 768,
+    desktop: 992,
+  },
+  media: {
+    mobile: "@media (max-width: 767px)",
+    tablet: "@media (min-width: 768px) and (max-width: 991px)",
+    desktop: "@media (min-width: 992px)",
   },
 };

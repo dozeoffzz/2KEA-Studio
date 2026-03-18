@@ -136,6 +136,14 @@ const InfoTitle = styled.p`
   border-bottom: 3px solid ${Theme.colors.black};
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
+
+  ${({ theme }) => theme.media.tablet} {
+    padding: 60px 24px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    padding: 60px 16px;
+  }
 `;
 
 const InfoRow = styled.div`
