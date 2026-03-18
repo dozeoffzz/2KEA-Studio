@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { GlobalStyles } from "./styles/GlobalStyle.jsx";
 
+// Event,Reservation,TitleModal 띄우기 용도 (후에 삭제)
 const rootElement = document.getElementById("root");
 
 let modalRoot = document.getElementById("modal-root");
