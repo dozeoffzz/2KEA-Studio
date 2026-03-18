@@ -3,12 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { itemList } from "../services/Apiex";
 import { Theme } from "../styles/theme";
 import styled from "@emotion/styled";
+// 테스트용 이미지
 import detailImg1 from "../assets/imgs/detail/detailImg1.svg";
 import detailImg2 from "../assets/imgs/detail/detailImg2.webp";
 import detailImg3 from "../assets/imgs/detail/detailImg3.webp";
 import detailImg4 from "../assets/imgs/detail/detailImg4.webp";
 
-const MainWrapper = styled.div`
+const MainWrap = styled.div`
   width: 100%;
   background-color: ${Theme.colors.white};
 `;
@@ -17,7 +18,7 @@ const ImgGallery = styled.section`
   margin-bottom: 72px;
 `;
 
-const SliderWrapper = styled.div`
+const SliderWrap = styled.div`
   position: relative;
   width: 100%;
   height: 45vw;
@@ -25,14 +26,16 @@ const SliderWrapper = styled.div`
   overflow: hidden;
 `;
 
-const SliderViewport = styled.div`
+const Slider = styled.div`
   width: 100%;
   height: 100%;
 `;
 
+// 슬라이드 이미지 위치 지정
 const SlideItem = styled.div`
   position: absolute;
   top: 50%;
+
   left: ${(props) => {
     if (props.$position === "left") return "0%";
     if (props.$position === "center") return "50%";
@@ -40,45 +43,42 @@ const SlideItem = styled.div`
     return "50%";
   }};
 
+  // 이미지 최대 크기 설정
   width: 50vw;
-  max-width: 986px;
   height: 45vw;
+  max-width: 986px;
   max-height: 843px;
-
   overflow: hidden;
-  transform-origin: center center;
-  will-change: transform, left, opacity;
-  backface-visibility: hidden;
+
+  // 애니메이션 효과
   transition:
-    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-    left 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.55s ease,
+    left 0.55s ease,
+    opacity 0.55s ease;
 
+  // 중앙 이미지 강조
   z-index: ${(props) => (props.$position === "center" ? 3 : 2)};
-  opacity: ${(props) => (props.$position === "center" ? 1 : 0.8)};
+  opacity: ${(props) => (props.$position === "center" ? 1 : 0.6)};
 
-  transform: ${(props) => {
-    if (props.$position === "center") {
-      return "translate(-50%, -50%) scale(1)";
-    }
-    return "translate(-50%, -50%) scale(0.65)";
-  }};
+  transform: ${(props) =>
+    props.$position === "center" ? "translate(-50%, -50%) scale(1)" : "translate(-50%, -50%) scale(0.65)"};
 `;
 
-const SlideImage = styled.img`
+const SlideImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  user-select: none;
-  pointer-events: none;
 `;
 
+// 슬라이드 좌우 화살표
 const ArrowButton = styled.button`
   position: absolute;
   top: 50%;
   font-size: 52px;
   color: ${Theme.colors.textsecondary};
+  background: none;
+  z-index: 10;
 `;
 
 const LeftArrow = styled(ArrowButton)`
@@ -91,6 +91,7 @@ const RightArrow = styled(ArrowButton)`
   transform: translateY(-50%);
 `;
 
+// 제품명
 const ProductName = styled.p`
   margin-top: 100px;
   text-align: center;
@@ -98,12 +99,12 @@ const ProductName = styled.p`
   color: ${Theme.colors.blacktext};
 `;
 
-// 왼쪽 구역
 const DetailSection = styled.section`
   display: flex;
   padding: 20px 130px;
 `;
 
+// 왼쪽 상세 이미지 구역
 const LeftContent = styled.div`
   flex: 1;
 `;
@@ -114,7 +115,7 @@ const DetailImg = styled.img`
   max-height: 1552px;
 `;
 
-// 오른쪽 구역
+// 오른쪽 주문 정보 구역
 const RightContent = styled.aside`
   width: 535px;
 `;
@@ -151,7 +152,8 @@ const Label = styled.span`
 
 const Value = styled.span``;
 
-const QuantityWrap = styled.div`
+// 수량 설정
+const QtyWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -177,7 +179,7 @@ const Price = styled.p`
 `;
 
 // shopping cart, buy 버튼
-const ButtonGroup = styled.div`
+const BtnGroup = styled.div`
   margin-top: 22px;
 `;
 
@@ -195,18 +197,20 @@ const Back = styled.button`
   width: 100%;
   margin: 117px 0px 20px 0px;
   padding-bottom: 12px;
+  border: none;
   border-bottom: 2px solid ${Theme.colors.textsecondary};
+  background: none;
   color: ${Theme.colors.blacktext};
   font-size: ${Theme.fontsize.desktop.content};
   text-align: left;
 `;
 
-// 추가 정보 영역
-const MoreInfo = styled.div`
+// 추가 정보
+const MoreInfoWrap = styled.div`
   margin-top: 12px;
 `;
 
-const MoreInfoList = styled.div`
+const MoreInfo = styled.div`
   padding: 12px 0;
   border-bottom: 1px solid ${Theme.colors.textsecondary};
   font-size: ${Theme.fontsize.desktop.content};
@@ -221,8 +225,11 @@ export default function DetailedPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // 수량
   const [quantity, setQuantity] = useState(1);
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // 슬라이드 인덱스
+  const [imgIdx, setImgIdx] = useState(0);
 
   const item = itemList.find((item) => item.id === Number(id));
 
@@ -230,60 +237,71 @@ export default function DetailedPage() {
     return <div>존재하지 않는 상품입니다.</div>;
   }
 
-  // 이미지 배열
-  const imageSlides = [item.image || detailImg3, item.image || detailImg2, item.image || detailImg4];
-  const prevIndex = currentIndex === 0 ? imageSlides.length - 1 : currentIndex - 1;
-  const nextIndex = currentIndex === imageSlides.length - 1 ? 0 : currentIndex + 1;
+  // 슬라이드 이미지 배열
+  const img = [item.image || detailImg2, item.image || detailImg3, item.image || detailImg4];
+  const lastIdx = img.length - 1;
+
+  // 이전 인덱스 구하기
+  const getPrevIdx = (index) => {
+    return index === 0 ? lastIdx : index - 1;
+  };
+
+  // 다음 인덱스 구하기
+  const getNextIdx = (index) => {
+    return index === lastIdx ? 0 : index + 1;
+  };
+
+  // 현재 기준 양옆 이미지 인덱스
+  const prevIdx = getPrevIdx(imgIdx);
+  const nextIdx = getNextIdx(imgIdx);
+
+  // 이미지 위치 지정
+  const getImgPosition = (idx) => {
+    if (idx === imgIdx) return "center";
+    if (idx === prevIdx) return "left";
+    if (idx === nextIdx) return "right";
+    return "";
+  };
 
   // 총 금액 계산
   const totalPrice = item.price * quantity;
 
+  // 수량 줄이기
   const handleDecrease = () => {
     if (quantity > 1) {
       setQuantity((prev) => prev - 1);
     }
   };
 
+  // 수량 늘리기
   const handleIncrease = () => {
     setQuantity((prev) => prev + 1);
   };
 
+  // 전 이미지로
   const handlePrevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? imageSlides.length - 1 : prev - 1));
+    setImgIdx((prev) => getPrevIdx(prev));
   };
 
+  // 다음 이미지로
   const handleNextSlide = () => {
-    setCurrentIndex((prev) => (prev === imageSlides.length - 1 ? 0 : prev + 1));
+    setImgIdx((prev) => getNextIdx(prev));
   };
 
   return (
-    <MainWrapper>
+    <MainWrap>
       <ImgGallery>
-        <SliderWrapper>
-          {/* 좌우 화살표 */}
+        <SliderWrap>
           <LeftArrow onClick={handlePrevSlide}>‹</LeftArrow>
           <RightArrow onClick={handleNextSlide}>›</RightArrow>
-
-          <SliderViewport>
-            {imageSlides.map((src, index) => {
-              let currentPosition = "";
-
-              if (index === currentIndex) {
-                currentPosition = "center";
-              } else if (index === prevIndex) {
-                currentPosition = "left";
-              } else if (index === nextIndex) {
-                currentPosition = "right";
-              }
-
-              return (
-                <SlideItem key={index} $position={currentPosition}>
-                  <SlideImage src={src} alt={`${item.name} 슬라이드 이미지 ${index + 1}`} />
-                </SlideItem>
-              );
-            })}
-          </SliderViewport>
-        </SliderWrapper>
+          <Slider>
+            {img.map((src, idx) => (
+              <SlideItem key={idx} $position={getImgPosition(idx)}>
+                <SlideImg src={src} alt={`${item.name} 슬라이드 이미지 ${idx + 1}`} />
+              </SlideItem>
+            ))}
+          </Slider>
+        </SliderWrap>
 
         <ProductName>{item.name} Detail</ProductName>
       </ImgGallery>
@@ -319,32 +337,32 @@ export default function DetailedPage() {
               </InfoRow>
             </InfoGroup>
 
-            <QuantityWrap>
+            <QtyWrap>
               <QtyBtn onClick={handleDecrease}>-</QtyBtn>
               <QtyValue>{quantity}</QtyValue>
               <QtyBtn onClick={handleIncrease}>+</QtyBtn>
-            </QuantityWrap>
+            </QtyWrap>
 
             <Price>상품 금액: {item.price.toLocaleString()}원</Price>
             <Price>총 금액: {totalPrice.toLocaleString()}원</Price>
 
-            <ButtonGroup>
-              <CardBtn onClick={() => navigate("/shoppingcart")}>Shopping Cart</CardBtn>
-              <CardBtn onClick={() => navigate("/")}>Buy</CardBtn>
-            </ButtonGroup>
+            <BtnGroup>
+              <CardBtn onClick={() => navigate("/")}>Shopping Cart</CardBtn>
+              <CardBtn onClick={() => navigate("/cart")}>Buy</CardBtn>
+            </BtnGroup>
 
             <Back onClick={() => navigate("/alllist")}>다른 상품 보러가기</Back>
 
-            <MoreInfo>
-              <MoreInfoList>제품 관리 정보</MoreInfoList>
-              <MoreInfoList>교환 및 반품 정보</MoreInfoList>
-              <MoreInfoList>고객 확인 사항</MoreInfoList>
-              <MoreInfoList>상품 고시 정보</MoreInfoList>
-              <MoreInfoList>커스터마이징</MoreInfoList>
-            </MoreInfo>
+            <MoreInfoWrap>
+              <MoreInfo>제품 관리 정보</MoreInfo>
+              <MoreInfo>교환 및 반품 정보</MoreInfo>
+              <MoreInfo>고객 확인 사항</MoreInfo>
+              <MoreInfo>상품 고시 정보</MoreInfo>
+              <MoreInfo>커스터마이징</MoreInfo>
+            </MoreInfoWrap>
           </StickyBox>
         </RightContent>
       </DetailSection>
-    </MainWrapper>
+    </MainWrap>
   );
 }

@@ -30,4 +30,9 @@ export const Theme = {
       small: "14px",
     },
   },
+  breakpoints: {
+    mobile: "576px",
+    tablet: "768px",
+    desktop: "992px",
+  },
 };
