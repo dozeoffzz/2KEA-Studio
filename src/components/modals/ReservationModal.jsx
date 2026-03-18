@@ -63,19 +63,9 @@ const Title = styled.span`
 const SecondTitle = styled.span`
   font-size: ${Theme.fontsize.desktop.small};
   margin-bottom: 35px;
-  font-size: ${Theme.fontsize.desktop.section};
-`;
-
-<<<<<<< HEAD
-const SecondTitle = styled.span`
-  margin-bottom: 35px;
-  font-size: ${Theme.fontsize.desktop.small};
->>>>>>> 5b1bf9c (fix: 모달 수정,추가)
 `;
 
 // 두 줄 이상 본문
-=======
->>>>>>> 2ba4c7b (feat: 상세페이지, 쇼핑카트 연결)
 const Content = styled.span`
   display: flex;
   flex-direction: column;
@@ -142,12 +132,7 @@ const CloseButton = styled(TodayCloseButton)`
 // activeIndex: 현재 활성화된 점 번호
 // animationState: 전환 애니메이션 상태
 // onClose, onTodayClose: 버튼 클릭 함수
-export default function ReservationModal({
-  activeIndex = 2,
-  animationState = "active",
-  onClose,
-  onTodayClose,
-}) {
+export default function ReservationModal({ activeIndex = 2, animationState = "active", onClose, onTodayClose }) {
   return (
     <Overlay animationState={animationState}>
       <ReservationModalContainer animationState={animationState}>
@@ -182,9 +167,7 @@ export default function ReservationModal({
         <BottomArea>
           {/* 하단 버튼 영역 */}
           <ButtonWrap>
-            <TodayCloseButton onClick={onTodayClose}>
-              오늘 하루 열지 않기
-            </TodayCloseButton>
+            <TodayCloseButton onClick={onTodayClose}>오늘 하루 열지 않기</TodayCloseButton>
             <CloseButton onClick={onClose}>닫기</CloseButton>
           </ButtonWrap>
         </BottomArea>

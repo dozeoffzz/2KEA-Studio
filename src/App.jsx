@@ -23,7 +23,7 @@ import CompletedPage from "./pages/completedPage";
 export default function App() {
   return (
     <div>
-      {isHomePage && <MainIntroModal />}
+      {/* {isHomePage && <MainIntroModal />} */}
 
       <Routes>
         <Route element={<MainLayout />}>
