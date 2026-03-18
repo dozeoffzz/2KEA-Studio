@@ -80,6 +80,7 @@ const FormRow = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 // error 나면 빨간색으로
@@ -100,6 +101,43 @@ const FormInput = styled.input`
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
   padding-left: 5px;
+`;
+
+// error 멘트 - 빨간색
+const ErrorMsg = styled.span`
+  width: 100%;
+  padding-left: 100px;
+  font-size: ${Theme.fontsize.desktop.small};
+  color: ${Theme.colors.redaccent};
+  margin-top: 4px;
+`;
+
+// 성공 멘트 - 초록색
+const SuccessMsg = styled.span`
+  width: 100%;
+  padding-left: 100px;
+  font-size: ${Theme.fontsize.desktop.small};
+  color: ${Theme.colors.greenaccent};
+  margin-top: 4px;
+`;
+
+// 아이디 인풋이랑 중복확인 버튼 묶음
+const IdInputWrap = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+// 중복확인 버튼
+const CheckBtn = styled.button`
+  font-size: ${Theme.fontsize.desktop.small};
+  color: ${Theme.colors.blacktext};
+  border: 1px solid ${Theme.colors.blacktext};
+  padding: 4px 10px;
+  white-space: nowrap;
+  background: transparent;
+  cursor: pointer;
 `;
 
 const PhoneWrap = styled.div`
@@ -140,6 +178,15 @@ const BirthInput = styled.input`
   text-align: center;
   font-size: ${Theme.fontsize.desktop.content};
   padding: 0 5px;
+`;
+
+// 생년월일 error 멘트
+const BirthMsg = styled.span`
+  font-size: ${Theme.fontsize.desktop.small};
+  color: ${Theme.colors.redaccent};
+  margin-top: 4px;
+  text-align: center;
+  width: 100%;
 `;
 
 const AgreeAllRow = styled.div`
@@ -224,6 +271,13 @@ const AgreeDivider = styled.hr`
   margin: 0;
 `;
 
+// 동의 error 멘트
+const AgreeMsg = styled.span`
+  font-size: ${Theme.fontsize.desktop.small};
+  color: ${Theme.colors.redaccent};
+  margin-top: 4px;
+`;
+
 const SignupBtn = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.whitetext};
@@ -233,9 +287,11 @@ const SignupBtn = styled.button`
 
 export default function Signup() {
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     id: "",
     password: "",
+    passwordCheck: "",
     name: "",
     phone1: "010",
     phone2: "",
@@ -244,7 +300,6 @@ export default function Signup() {
     birthYear: "",
     birthMonth: "",
     birthDay: "",
-    agree: false,
   });
 
   const phone2Ref = useRef(null);
@@ -252,7 +307,7 @@ export default function Signup() {
   const birthMonthRef = useRef(null);
   const birthDayRef = useRef(null);
 
-  // 에러 나면 해당 섹션으로 스크롤 이동
+  // error 나면 해당 섹션으로 스크롤 이동
   const formRef = useRef(null);
   const birthRef = useRef(null);
   const agreeRef = useRef(null);
@@ -274,6 +329,7 @@ export default function Signup() {
   const [errors, setErrors] = useState({
     id: false,
     password: false,
+    passwordCheck: false,
     name: false,
     phone2: false,
     phone3: false,
@@ -285,9 +341,81 @@ export default function Signup() {
     service: false,
   });
 
+  // 각 에러/성공 멘트
+  const [msgs, setMsgs] = useState({
+    id: "",
+    password: "",
+    passwordCheck: "",
+    name: "",
+    phone: "",
+    email: "",
+    birthYear: "",
+    birthMonth: "",
+    birthDay: "",
+    agree: "",
+  });
+
+  // 아이디 중복확인 했는지 여부
+  const [idChecked, setIdChecked] = useState(false);
+  const [idCheckPassed, setIdCheckPassed] = useState(false);
+
   // 회원가입 완료 모달
-  const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 아이디 중복확인 버튼
+  function handleIdCheck() {
+    // 막아놓은 아이디 목록
+    const blockedIds = [
+      "12345",
+      "test",
+      "user",
+      "2kea",
+      "aaaaa",
+      "fffff",
+      "fffff",
+      "dlgofkd",
+      "chldmsdn",
+      "dlrkfka",
+      "chldnjsgml",
+      "dlduddus",
+      "rrrrr",
+    ];
+
+    if (form.id.length < 5) {
+      setErrors({ ...errors, id: true });
+      setMsgs({ ...msgs, id: "아이디는 5글자 이상 입력해주세요" });
+      setIdChecked(false);
+      setIdCheckPassed(false);
+      return;
+    }
+
+    if (blockedIds.includes(form.id.toLowerCase())) {
+      setErrors({ ...errors, id: true });
+      setMsgs({ ...msgs, id: "사용할 수 없는 아이디입니다" });
+      setIdChecked(true);
+      setIdCheckPassed(false);
+      return;
+    }
+
+    // 로컬스토리지에 저장된 아이디랑 비교
+    const saved = localStorage.getItem("userInfo");
+    if (saved) {
+      const savedUser = JSON.parse(saved);
+      if (savedUser.id === form.id) {
+        setErrors({ ...errors, id: true });
+        setMsgs({ ...msgs, id: "이미 가입된 아이디입니다" });
+        setIdChecked(true);
+        setIdCheckPassed(false);
+        return;
+      }
+    }
+
+    // 통과
+    setErrors({ ...errors, id: false });
+    setMsgs({ ...msgs, id: "사용 가능한 아이디입니다" });
+    setIdChecked(true);
+    setIdCheckPassed(true);
+  }
 
   function handleChange(e) {
     const name = e.target.name;
@@ -302,7 +430,8 @@ export default function Signup() {
     if (name === "birthYear" || name === "birthMonth" || name === "birthDay") {
       value = value.replace(/[^0-9]/g, "");
     }
-    // 생년월이 최대 2026 12 31 까지만 사용할수 있도록
+
+    // 생년월일 최대 2026 12 31 까지만
     if (name === "birthYear") {
       if (value.length === 4 && Number(value) > 2026) return;
     }
@@ -314,15 +443,53 @@ export default function Signup() {
     }
 
     // 아이디 비밀번호 이메일 한글 못쓰게
-    if (name === "id" || name === "password" || name === "email") {
+    if (
+      name === "id" ||
+      name === "password" ||
+      name === "passwordCheck" ||
+      name === "email"
+    ) {
       value = value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
     }
 
     setForm({ ...form, [name]: value });
 
-    // 뭔가 입력하면 에러 없애기
+    // 아이디 바꾸면 중복확인 초기화
+    if (name === "id") {
+      setIdChecked(false);
+      setIdCheckPassed(false);
+      setMsgs({ ...msgs, id: "" });
+    }
+
+    // 비밀번호 확인 - 입력하면서 바로 체크
+    if (name === "passwordCheck") {
+      if (value === form.password && value !== "") {
+        setMsgs({ ...msgs, passwordCheck: "비밀번호가 일치합니다" });
+        setErrors({ ...errors, passwordCheck: false });
+      } else if (value !== "") {
+        setMsgs({ ...msgs, passwordCheck: "비밀번호가 일치하지 않습니다" });
+        setErrors({ ...errors, passwordCheck: true });
+      } else {
+        setMsgs({ ...msgs, passwordCheck: "" });
+      }
+      return;
+    }
+
+    // password 바뀌면 passwordCheck도 다시 체크
+    if (name === "password" && form.passwordCheck !== "") {
+      if (value !== form.passwordCheck) {
+        setMsgs({ ...msgs, passwordCheck: "비밀번호가 일치하지 않습니다" });
+        setErrors({ ...errors, passwordCheck: true });
+      } else {
+        setMsgs({ ...msgs, passwordCheck: "비밀번호가 일치합니다" });
+        setErrors({ ...errors, passwordCheck: false });
+      }
+    }
+
+    // 뭔가 입력하면 error 없애기
     if (errors[name]) {
       setErrors({ ...errors, [name]: false });
+      setMsgs({ ...msgs, [name]: "" });
     }
 
     // phone2 4자리 채우면 phone3으로 자동 이동
@@ -345,7 +512,12 @@ export default function Signup() {
   function handleComposition(e) {
     if (e.type === "compositionend") {
       const name = e.target.name;
-      if (name === "id" || name === "password" || name === "email") {
+      if (
+        name === "id" ||
+        name === "password" ||
+        name === "passwordCheck" ||
+        name === "email"
+      ) {
         const value = e.target.value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
         setForm({ ...form, [name]: value });
       }
@@ -359,6 +531,7 @@ export default function Signup() {
     // 체크하면 에러 없애기
     if (errors[name]) {
       setErrors({ ...errors, [name]: false });
+      setMsgs({ ...msgs, agree: "" });
     }
   }
 
@@ -375,44 +548,130 @@ export default function Signup() {
       email: checked,
     });
 
-    // 전체동의 누르면 동의 관련 에러 다 없애기
+    // 전체동의 누르면 동의 관련 error 다 없애기
     if (checked) {
       setErrors({ ...errors, privacy: false, service: false });
+      setMsgs({ ...msgs, agree: "" });
     }
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    // 빈칸이거나 조건 안맞으면 true로 바꿔서 빨갛게 표시
-    const newErrors = {
-      id: form.id.length < 5,
-      password: form.password.length < 8,
-      name: form.name.trim() === "",
-      phone2: form.phone2.trim() === "",
-      phone3: form.phone3.trim() === "",
-      email: form.email.trim() === "",
-      birthYear: form.birthYear.length !== 4,
-      birthMonth: form.birthMonth.trim() === "",
-      birthDay: form.birthDay.trim() === "",
-      privacy: !agreement.privacy,
-      service: !agreement.service,
-    };
-    setErrors(newErrors);
+    let hasError = false;
+    let newErrors = { ...errors };
+    let newMsgs = { ...msgs };
 
-    // 하나라도 에러 있으면 첫번째 에러 위치로 스크롤 이동
-    if (Object.values(newErrors).some((v) => v === true)) {
-      // 폼 에러면 폼으로
+    // 아이디
+    if (form.id.trim() === "") {
+      newErrors.id = true;
+      newMsgs.id = "아이디를 입력해주세요";
+      hasError = true;
+    } else if (form.id.length < 5) {
+      newErrors.id = true;
+      newMsgs.id = "아이디는 5글자 이상 입력해주세요";
+      hasError = true;
+    } else if (!idChecked) {
+      newErrors.id = true;
+      newMsgs.id = "아이디 중복확인을 해주세요";
+      hasError = true;
+    } else if (!idCheckPassed) {
+      newErrors.id = true;
+      hasError = true;
+    }
+
+    // 비밀번호
+    if (form.password.trim() === "") {
+      newErrors.password = true;
+      newMsgs.password = "비밀번호를 입력해주세요";
+      hasError = true;
+    } else if (form.password.length < 8) {
+      newErrors.password = true;
+      newMsgs.password = "비밀번호는 8글자 이상 입력해주세요";
+      hasError = true;
+    }
+
+    // 비밀번호 확인
+    if (form.passwordCheck.trim() === "") {
+      newErrors.passwordCheck = true;
+      newMsgs.passwordCheck = "비밀번호를 한번 더 입력해주세요";
+      hasError = true;
+    } else if (form.password !== form.passwordCheck) {
+      newErrors.passwordCheck = true;
+      newMsgs.passwordCheck = "비밀번호가 일치하지 않습니다";
+      hasError = true;
+    }
+
+    // 이름
+    if (form.name.trim() === "") {
+      newErrors.name = true;
+      newMsgs.name = "이름을 입력해주세요";
+      hasError = true;
+    }
+
+    // 전화번호
+    if (form.phone2.trim() === "") {
+      newErrors.phone2 = true;
+      newMsgs.phone = "전화번호를 입력해주세요";
+      hasError = true;
+    }
+    if (form.phone3.trim() === "") {
+      newErrors.phone3 = true;
+      newMsgs.phone = "전화번호를 입력해주세요";
+      hasError = true;
+    }
+
+    // 이메일
+    if (form.email.trim() === "") {
+      newErrors.email = true;
+      newMsgs.email = "이메일을 입력해주세요";
+      hasError = true;
+    }
+
+    // 생년월일
+    if (form.birthYear.length !== 4) {
+      newErrors.birthYear = true;
+      newMsgs.birthYear = "ex) 2002 · 숫자 4자리로 입력해주세요";
+      hasError = true;
+    }
+    if (form.birthMonth.trim() === "") {
+      newErrors.birthMonth = true;
+      newMsgs.birthMonth = "ex) 11 · 월을 입력해주세요";
+      hasError = true;
+    }
+    if (form.birthDay.trim() === "") {
+      newErrors.birthDay = true;
+      newMsgs.birthDay = "ex) 18 · 일을 입력해주세요";
+      hasError = true;
+    }
+
+    // 이용동의
+    if (!agreement.privacy) {
+      newErrors.privacy = true;
+      newMsgs.agree = "필수 약관에 동의해주세요";
+      hasError = true;
+    }
+    if (!agreement.service) {
+      newErrors.service = true;
+      newMsgs.agree = "필수 약관에 동의해주세요";
+      hasError = true;
+    }
+
+    setErrors(newErrors);
+    setMsgs(newMsgs);
+
+    // 하나라도 에러 있으면 스크롤 이동
+    if (hasError) {
       if (
         newErrors.id ||
         newErrors.password ||
+        newErrors.passwordCheck ||
         newErrors.name ||
         newErrors.phone2 ||
         newErrors.phone3 ||
         newErrors.email
       ) {
         formRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-        // 생년월일 에러면 생년월일로
       } else if (
         newErrors.birthYear ||
         newErrors.birthMonth ||
@@ -422,7 +681,6 @@ export default function Signup() {
           behavior: "smooth",
           block: "center",
         });
-        // 동의 에러면 동의로
       } else if (newErrors.privacy || newErrors.service) {
         agreeRef.current.scrollIntoView({
           behavior: "smooth",
@@ -443,9 +701,7 @@ export default function Signup() {
     };
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-    // 유효성 검사 통과 시 모달 열기
     setIsModalOpen(true);
-    setIsOpen(true);
   }
 
   return (
@@ -482,18 +738,32 @@ export default function Signup() {
 
         {/* 입력 폼 - ref 달아서 에러시 스크롤 이동 */}
         <SignupForm onSubmit={handleSubmit} ref={formRef}>
+          {/* 아이디 - 오른쪽에 중복확인 버튼 */}
           <FormRow>
             <FormLabel error={errors.id}>ID</FormLabel>
-            <FormInput
-              error={errors.id}
-              type="text"
-              name="id"
-              value={form.id}
-              placeholder="5글자 이상 입력하세요"
-              onChange={handleChange}
-              onCompositionEnd={handleComposition}
-            />
+            <IdInputWrap>
+              <FormInput
+                error={errors.id}
+                type="text"
+                name="id"
+                value={form.id}
+                placeholder="5글자 이상 입력하세요"
+                onChange={handleChange}
+                onCompositionEnd={handleComposition}
+              />
+              <CheckBtn type="button" onClick={handleIdCheck}>
+                중복확인
+              </CheckBtn>
+            </IdInputWrap>
+            {msgs.id &&
+              (idCheckPassed ? (
+                <SuccessMsg>{msgs.id}</SuccessMsg>
+              ) : (
+                <ErrorMsg>{msgs.id}</ErrorMsg>
+              ))}
           </FormRow>
+
+          {/* 비밀번호 */}
           <FormRow>
             <FormLabel error={errors.password}>Password</FormLabel>
             <FormInput
@@ -505,7 +775,30 @@ export default function Signup() {
               onChange={handleChange}
               onCompositionEnd={handleComposition}
             />
+            {msgs.password && <ErrorMsg>{msgs.password}</ErrorMsg>}
           </FormRow>
+
+          {/* 비밀번호 확인 */}
+          <FormRow>
+            <FormLabel error={errors.passwordCheck}></FormLabel>
+            <FormInput
+              error={errors.passwordCheck}
+              type="password"
+              name="passwordCheck"
+              value={form.passwordCheck}
+              placeholder="비밀번호를 한번 더 입력하세요"
+              onChange={handleChange}
+              onCompositionEnd={handleComposition}
+            />
+            {msgs.passwordCheck &&
+              (msgs.passwordCheck === "비밀번호가 일치합니다" ? (
+                <SuccessMsg>{msgs.passwordCheck}</SuccessMsg>
+              ) : (
+                <ErrorMsg>{msgs.passwordCheck}</ErrorMsg>
+              ))}
+          </FormRow>
+
+          {/* 이름 */}
           <FormRow>
             <FormLabel error={errors.name}>Name</FormLabel>
             <FormInput
@@ -515,7 +808,10 @@ export default function Signup() {
               value={form.name}
               onChange={handleChange}
             />
+            {msgs.name && <ErrorMsg>{msgs.name}</ErrorMsg>}
           </FormRow>
+
+          {/* 전화번호 */}
           <FormRow>
             <FormLabel error={errors.phone2}>Phone</FormLabel>
             <PhoneWrap>
@@ -552,7 +848,10 @@ export default function Signup() {
                 onChange={handleChange}
               />
             </PhoneWrap>
+            {msgs.phone && <ErrorMsg>{msgs.phone}</ErrorMsg>}
           </FormRow>
+
+          {/* 이메일 */}
           <FormRow>
             <FormLabel error={errors.email}>Email</FormLabel>
             <FormInput
@@ -563,6 +862,7 @@ export default function Signup() {
               onChange={handleChange}
               onCompositionEnd={handleComposition}
             />
+            {msgs.email && <ErrorMsg>{msgs.email}</ErrorMsg>}
           </FormRow>
         </SignupForm>
 
@@ -579,6 +879,7 @@ export default function Signup() {
             inputMode="numeric"
             onChange={handleChange}
           />
+          {msgs.birthYear && <BirthMsg>{msgs.birthYear}</BirthMsg>}
           <BirthInput
             error={errors.birthMonth}
             type="text"
@@ -590,6 +891,7 @@ export default function Signup() {
             ref={birthMonthRef}
             onChange={handleChange}
           />
+          {msgs.birthMonth && <BirthMsg>{msgs.birthMonth}</BirthMsg>}
           <BirthInput
             error={errors.birthDay}
             type="text"
@@ -601,6 +903,7 @@ export default function Signup() {
             ref={birthDayRef}
             onChange={handleChange}
           />
+          {msgs.birthDay && <BirthMsg>{msgs.birthDay}</BirthMsg>}
         </SignupSection>
 
         {/* 이용 동의 - ref 달아서 에러시 스크롤 이동 */}
@@ -710,22 +1013,14 @@ export default function Signup() {
               </AgreeItemRow>
             </div>
           </AgreeBox>
+
+          {msgs.agree && <AgreeMsg>{msgs.agree}</AgreeMsg>}
         </SignupSection>
 
-        {/* 기존 버튼에서 handleSubmit을 실행 */}
         <SignupBtn onClick={handleSubmit}>Sign Up</SignupBtn>
       </SignupWrap>
 
-      {/* isOpen과 setIsOpen 연결 */}
-      <SignUpModal
-        isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-          navigate("/");
-        }}
-      />
-
-      {/* 기존 모달 유지 */}
+      {/* 회원가입 완료 모달 */}
       <SignUpModal
         isOpen={isModalOpen}
         onClose={() => {
