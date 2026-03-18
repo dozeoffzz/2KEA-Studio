@@ -5,6 +5,8 @@ import { Theme } from "../styles/theme";
 import LIST_DATA from "../data/imageList";
 import TopArea from "../components/common/TopArea";
 import ScrollReveal from "../components/common/ScrollReveal";
+// 인스타
+import InstagramModal from "../components/modals/InstagramModal";
 
 //이미지 임포트
 import sofaImage from "../assets/imgs/main/sofa.webp";
@@ -471,6 +473,9 @@ export default function MainPage() {
     setSlide((prev) => prev - 1);
   };
 
+  // 인스타그램 qr
+  const [isInstaOpen, setIsInstaOpen] = useState(true);
+
   return (
     <MainSection>
       <TopArea />
@@ -478,7 +483,11 @@ export default function MainPage() {
         <ScrollReveal>
           <SofaImageBox>
             <SofaImage src={sofaImage} alt="Sofa Image" />
-            <SofaHoverImage src={sofaHover} alt="Sofa Hover Image" className="sofa-hover-img" />
+            <SofaHoverImage
+              src={sofaHover}
+              alt="Sofa Hover Image"
+              className="sofa-hover-img"
+            />
             <div>
               <h3>Classic Leather, Timeless Modern</h3>
               <span>The perfect balance of warmth and structure.</span>
@@ -528,8 +537,15 @@ export default function MainPage() {
                 {/* 이미지 데이터 배열 받아오기 */}
                 {LIST_DATA.map((image) => (
                   <ListImageWrapper key={image.id}>
-                    <DefaultImage src={image.defaultSrc} alt={`List Image ${image.id}`} />
-                    <HoverImage src={image.hoverSrc} alt={`Hover List Image ${image.id}`} className="list-hover-img" />
+                    <DefaultImage
+                      src={image.defaultSrc}
+                      alt={`List Image ${image.id}`}
+                    />
+                    <HoverImage
+                      src={image.hoverSrc}
+                      alt={`Hover List Image ${image.id}`}
+                      className="list-hover-img"
+                    />
                   </ListImageWrapper>
                 ))}
               </ListSlide>
@@ -600,7 +616,11 @@ export default function MainPage() {
           <BottomImageBox>
             <FirstArea>
               <ChairImage src={chairImage} alt="Desk Image" />
-              <ChairHoverImage src={chairHover} alt="Hover Desk Image" className="hover-img" />
+              <ChairHoverImage
+                src={chairHover}
+                alt="Hover Desk Image"
+                className="hover-img"
+              />
               <div>
                 <h3>TIMELESS TRACE</h3>
                 <p>Preserving simple beauty in modern space.</p>
@@ -608,7 +628,11 @@ export default function MainPage() {
             </FirstArea>
             <SecondArea>
               <DeskImage src={deskImage} alt="Bed Image" />
-              <DeskHoverImage src={deskHover} alt="Hover Bed Image" className="hover-img" />
+              <DeskHoverImage
+                src={deskHover}
+                alt="Hover Bed Image"
+                className="hover-img"
+              />
               <Desktext>
                 <h3>The Whisper of Morning Light</h3>
                 <div>
@@ -632,6 +656,12 @@ export default function MainPage() {
           </BottomImageBox>
         </ScrollReveal>
       </Contents>
+
+      {/* 인스타 qr */}
+      <InstagramModal
+        isOpen={isInstaOpen}
+        onClose={() => setIsInstaOpen(false)}
+      />
     </MainSection>
   );
 }

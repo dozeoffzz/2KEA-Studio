@@ -49,25 +49,44 @@ const Content = styled.span`
 
 const SecondContent = styled(Content)``;
 
+const BottomArea = styled.div`
+  width: 100%;
+`;
+
+const DotArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  padding: 0 0 28px;
+`;
+
+const Dot = styled.span`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: ${({ active }) =>
+    active ? Theme.colors.black : "#b3b3b3"};
+`;
+
 const ButtonWrap = styled.div`
   display: flex;
   width: 100%;
+  border-top: 1px solid ${Theme.colors.black};
 `;
 
 const TodayCloseButton = styled.button`
   width: 50%;
   min-height: 45px;
   text-align: center;
-  background-color: #fafafa;
-  color: #0c0c0c;
+  background-color: ${Theme.colors.white};
+  color: ${Theme.colors.black};
   font-size: 14px;
 `;
 
 const CloseButton = styled(TodayCloseButton)`
-  background-color: #fafafa;
-  color: #0c0c0c;
-  background-color: #0c0c0c;
-  color: #fafafa;
+  background-color: ${Theme.colors.black};
+  color: ${Theme.colors.white};
 `;
 
 export default function TitleModal() {
@@ -88,10 +107,18 @@ export default function TitleModal() {
           </SecondContent>
           <SecondContent>신제품 출시 기념 전 지역 무료 배송</SecondContent>
         </TitleModalWrap>
-        <ButtonWrap>
-          <TodayCloseButton>오늘 하루 열지 않기</TodayCloseButton>
-          <CloseButton>닫기</CloseButton>
-        </ButtonWrap>
+
+        <BottomArea>
+          <DotArea>
+            <Dot active />
+            <Dot />
+            <Dot />
+          </DotArea>
+          <ButtonWrap>
+            <TodayCloseButton>오늘 하루 열지 않기</TodayCloseButton>
+            <CloseButton>닫기</CloseButton>
+          </ButtonWrap>
+        </BottomArea>
       </TitleModalContainer>
     </Overlay>,
     targetElement,

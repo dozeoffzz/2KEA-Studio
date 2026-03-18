@@ -16,7 +16,17 @@ if (!modalRoot) {
   document.body.appendChild(modalRoot);
 }
 
-createRoot(rootElement).render(
+// Event,Reservation,TitleModal 띄우기 용도 (후에 삭제)
+const rootElement = document.getElementById("root");
+
+let modalRoot = document.getElementById("modal-root");
+if (!modalRoot) {
+  modalRoot = document.createElement("div");
+  modalRoot.setAttribute("id", "modal-root");
+  document.body.appendChild(modalRoot);
+}
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider theme={Theme}>
       <BrowserRouter>
