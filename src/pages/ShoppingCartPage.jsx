@@ -87,10 +87,15 @@ const CartList = styled.ul`
 
 const Item = styled.li`
   display: grid;
-  grid-template-columns: 40px 198px 1fr 200px;
+  grid-template-columns: 40px 198px 1fr 200px 60px;
   gap: 40px;
   align-items: center;
   min-height: 231px;
+`;
+
+const CheckBox = styled.input`
+  width: 20px;
+  height: 20px;
 `;
 
 const ItemImg = styled.div`
@@ -103,7 +108,7 @@ const ItemInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-left: 100px;
+  margin-left: 80px;
   font-size: ${Theme.fontsize.desktop.content};
 `;
 
@@ -112,12 +117,21 @@ const ItemName = styled.p`
 `;
 
 const QuantityWrap = styled.div`
-  margin-right: 40px;
+  margin-right: 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   font-size: ${Theme.fontsize.desktop.content};
   gap: 20px;
+`;
+
+const DeleteProduct = styled.button`
+  margin-right: 20px;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const Quantity = styled.div`
@@ -203,12 +217,12 @@ const TotalPrice = styled.div`
 
 const ButtonWrap = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 40px;
 `;
 
 const DeleteButton = styled.button`
-  min-width: 290px;
+  min-width: 180px;
   min-height: 50px;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.whitetext};
@@ -225,9 +239,7 @@ export default function ShoppingCartPage() {
         {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
         {addProduct.map((item) => (
           <Item key={item.id}>
-            <button>
-              <img src={DeleteProductBtn} />
-            </button>
+            <CheckBox type="checkbox" />
             <ItemImg></ItemImg>
             <ItemInfoWrap>
               <ItemName>{item.name}</ItemName>
@@ -246,6 +258,9 @@ export default function ShoppingCartPage() {
                 <UpButton>+</UpButton>
               </QuantityUpDown>
             </QuantityWrap>
+            <DeleteProduct>
+              <img src={DeleteProductBtn} />
+            </DeleteProduct>
           </Item>
         ))}
       </CartList>
@@ -286,7 +301,8 @@ export default function ShoppingCartPage() {
         </TotalPrice>
         <ButtonWrap>
           <DeleteButton onClick={() => setIsOpen(true)}>Delete All</DeleteButton>
-          <OrderButton onClick={() => setIsOpen(true)}>Buy</OrderButton>
+          <OrderButton onClick={() => setIsOpen(true)}>Cheked Buy</OrderButton>
+          <OrderButton onClick={() => setIsOpen(true)}>Buy All</OrderButton>
         </ButtonWrap>
       </OrderInfoWrap>
       <DeleteModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
