@@ -120,6 +120,8 @@ const Main = styled.main`
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  margin-bottom: 100px;
 `;
 
 // 404 콘텐츠가 들어가는 상단 섹션

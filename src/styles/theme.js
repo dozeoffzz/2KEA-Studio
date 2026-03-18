@@ -1,5 +1,3 @@
-import { BREAKPOINTS, MEDIA } from "./breakpoints";
-
 export const Theme = {
   colors: {
     redaccent: "#752323",
@@ -42,7 +40,6 @@ export const Theme = {
   fontweight: {
     qrweight: "700",
   },
-  breakpoints: {
   breakpoint: {
     mobile: 576,
     tablet: 768,

@@ -13,13 +13,9 @@ const Overlay = styled.div`
   position: fixed;
   inset: 0;
   z-index: 999;
-<<<<<<< HEAD
   background-color: rgba(12, 12, 12, 0.12);
   transition: opacity 0.42s ease;
   opacity: ${({ animationState }) => (animationState === "exit" ? 0 : 1)};
-=======
-  background-color: ${Theme.colors.overlay};
->>>>>>> 346adba (fix: 모달 수정,추가)
 `;
 
 // 예약 모달 전체 박스
@@ -60,18 +56,17 @@ const TextStack = styled.div`
 
 // 메인 제목
 const Title = styled.span`
-<<<<<<< HEAD
   font-size: 32px;
 `;
 
 // 부제목
 const SecondTitle = styled.span`
-  font-size: 14px;
-=======
+  font-size: ${Theme.fontsize.desktop.small};
   margin-bottom: 35px;
   font-size: ${Theme.fontsize.desktop.section};
 `;
 
+<<<<<<< HEAD
 const SecondTitle = styled.span`
   margin-bottom: 35px;
   font-size: ${Theme.fontsize.desktop.small};
@@ -79,15 +74,13 @@ const SecondTitle = styled.span`
 `;
 
 // 두 줄 이상 본문
+=======
+>>>>>>> 2ba4c7b (feat: 상세페이지, 쇼핑카트 연결)
 const Content = styled.span`
   display: flex;
   flex-direction: column;
-<<<<<<< HEAD
-  font-size: 14px;
   line-height: 1.6;
-=======
   font-size: ${Theme.fontsize.desktop.small};
->>>>>>> 5b1bf9c (fix: 모달 수정,추가)
 `;
 
 // 추가 본문

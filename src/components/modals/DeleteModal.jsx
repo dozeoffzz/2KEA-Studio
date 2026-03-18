@@ -4,6 +4,7 @@ import lineLight from "../../assets/imgs/lineLight.svg";
 import styled from "@emotion/styled";
 import { createPortal } from "react-dom";
 import { Theme } from "../../styles/theme";
+import { useCartStore } from "../../stores/useCartStore";
 
 const Overlay = styled.div`
   display: flex;
@@ -95,6 +96,7 @@ const Button = styled.button`
 
 export default function DeleteModal({ isOpen, onClose }) {
   const targetElement = document.querySelector("#modal-root");
+  const { clearCart } = useCartStore();
   if (!isOpen) return null;
   return createPortal(
     <Overlay>
@@ -113,7 +115,14 @@ export default function DeleteModal({ isOpen, onClose }) {
         </DeleteModalWrap>
         <ButtonWrap>
           <CloseButton onClick={onClose}>취소</CloseButton>
-          <Button>삭제</Button>
+          <Button
+            onClick={() => {
+              clearCart();
+              onClose();
+            }}
+          >
+            삭제
+          </Button>
         </ButtonWrap>
       </DeleteModalContainer>
     </Overlay>,

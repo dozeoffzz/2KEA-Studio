@@ -4,6 +4,7 @@ import lineLight from "../../assets/imgs/lineLight.svg";
 import styled from "@emotion/styled";
 import { createPortal } from "react-dom";
 import { Theme } from "../../styles/theme";
+import { useNavigate } from "react-router-dom";
 
 const Overlay = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ const SignUpModalWrap = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 59px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
 `;
 
 const LineLignt = styled.img`
@@ -43,6 +44,8 @@ const LineLignt = styled.img`
   top: 0;
   left: 40px;
   opacity: 70%;
+  width: 100px;
+  height: 150px;
 `;
 
 const SignUpModalTitleWrap = styled.div`
@@ -92,6 +95,7 @@ const Button = styled.button`
 
 export default function MoveCartModal({ isOpen, onClose }) {
   const targetElement = document.querySelector("#modal-root");
+  const navigate = useNavigate();
   if (!isOpen) return null;
 
   return createPortal(
@@ -106,12 +110,23 @@ export default function MoveCartModal({ isOpen, onClose }) {
             </DeleteButton>
           </SignUpModalTitleWrap>
           <div>
-            <Content>카트로 이동하시겠습니까?</Content>
+            <Content>
+              카트에 상품을 담았습니다
+              <br />
+              카트로 이동하시겠습니까?
+            </Content>
           </div>
         </SignUpModalWrap>
         <ButtonWrap>
           <CloseButton onClick={onClose}>취소</CloseButton>
-          <Button onClick={onClose}>확인</Button>
+          <Button
+            onClick={() => {
+              onClose();
+              navigate("/cart");
+            }}
+          >
+            확인
+          </Button>
         </ButtonWrap>
       </SignUpModalContainer>
     </Overlay>,

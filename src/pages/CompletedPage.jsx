@@ -2,6 +2,7 @@ import React from "react";
 import CompletedIcon from "../assets/icons/completedIcon.svg";
 import styled from "@emotion/styled";
 import { Theme } from "../styles/theme";
+import { NavLink } from "react-router-dom";
 
 const CompletedContainer = styled.div`
   height: 100vh;
@@ -27,6 +28,10 @@ const CompletedTitle = styled.h2`
 const CompletedMsg = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
 `;
+const GotoMain = styled(NavLink)`
+  font-size: ${Theme.fontsize.desktop.content};
+  margin-top: 20px;
+`;
 export default function CompletedPage() {
   // 현재 날짜 보여주기
   const Today = new Date();
@@ -39,6 +44,7 @@ export default function CompletedPage() {
         <CompletedMsg>감사합니다.</CompletedMsg>
         <CompletedMsg>{TodaySort}</CompletedMsg>
         <CompletedMsg>주문번호: 20-76040312</CompletedMsg>
+        <GotoMain to={"/"}>메인으로</GotoMain>
       </CompletedWrap>
     </CompletedContainer>
   );

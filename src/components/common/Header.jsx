@@ -8,6 +8,7 @@ const HeaderWrap = styled.header`
   height: 100px;
   flex-shrink: 0;
   background-color: transparent;
+  z-index: 10;
 `;
 
 // 1920 기준 헤더 내부 정렬용 박스

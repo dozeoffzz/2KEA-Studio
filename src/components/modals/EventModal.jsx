@@ -83,13 +83,13 @@ const Content = styled.span`
 
 // 추가 본문
 const SecondContent = styled.span`
-  font-size: 14px;
+  font-size: ${Theme.fontsize.desktop.small};
   line-height: 1.6;
 `;
 
 // 이벤트 안내 문구
 const EventInfo = styled.span`
-  font-size: 14px;
+  font-size: ${Theme.fontsize.desktop.small};
   line-height: 1.4;
 `;
 
@@ -129,7 +129,7 @@ const TodayCloseButton = styled.button`
   text-align: center;
   background-color: ${Theme.colors.white};
   color: ${Theme.colors.black};
-  font-size: 14px;
+  font-size: ${Theme.fontsize.desktop.small};
   border: none;
   cursor: pointer;
   color: #0c0c0c;

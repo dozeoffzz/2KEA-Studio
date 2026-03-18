@@ -4,61 +4,14 @@ import DeleteProductBtn from "../assets/icons/deleteProductButton.svg";
 import styled from "@emotion/styled";
 import { Theme } from "../styles/theme";
 import OrderModal from "../components/modals/OrderModal";
-
-// 쇼핑카트 담기 장바구니 예시버전
-const addProduct = [
-  {
-    id: 1,
-    num: "001",
-    name: "Seraph Curve",
-    material: "Plastic",
-    content: "선 하나로 완성된 디자인.",
-    category: "seating",
-    price: 138000,
-    quantity: 2,
-    checked: false,
-  },
-  {
-    id: 2,
-    num: "002",
-    name: "Ember Lounge",
-    material: "Fabric",
-    content: "차분한 균형 속에서 완성된 절제된 아름다움.",
-    category: "seating",
-    price: 114000,
-    quantity: 1,
-    checked: false,
-  },
-  {
-    id: 3,
-    num: "003",
-    name: "Coco Hanging",
-    material: "Rattan",
-    content: "자연의 여유를 닮은 실루엣.",
-    category: "seating",
-    price: 234000,
-    quantity: 1,
-    checked: false,
-  },
-  {
-    id: 4,
-    num: "004",
-    name: "Nero Chair",
-    material: "Plastic",
-    content: "단순한 형태 그러나 가장 강한 존재감.",
-    category: "seating",
-    price: 78000,
-    quantity: 1,
-    checked: false,
-  },
-];
+import { useCartStore } from "../stores/useCartStore";
 
 const CartContainer = styled.div`
-  padding: 40px;
+  padding: 40px 80px 40px 80px;
   display: grid;
   grid-template-columns: 2fr 1fr;
   height: 100vh;
-  gap: 40px;
+  gap: 120px;
 `;
 
 const CartList = styled.ul`
@@ -92,7 +45,7 @@ const CartList = styled.ul`
 
 const Item = styled.li`
   display: grid;
-  grid-template-columns: 40px 198px 1fr 200px 60px;
+  grid-template-columns: 40px 150px 1fr 200px 60px;
   gap: 40px;
   align-items: center;
   min-height: 231px;
@@ -239,29 +192,42 @@ const OrderButton = styled(DeleteButton)``;
 export default function ShoppingCartPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [OrderIsOpen, setOrderIsOpen] = useState(false);
-  const [cartItem, setCartItem] = useState(addProduct);
+  // useCaretStore에서 정의한 함수 구조분해로 가져오기
+  const { cartItems, handleQuantity, handleCheck, handleDelete } = useCartStore();
 
-  const handleQuantity = (id, type) => {
-    setCartItem((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          if (type === "inc") return { ...item, quantity: item.quantity + 1 };
-          if (type === "dec") return { ...item, quantity: item.quantity };
-        }
-      }),
-    );
-  };
-
+  // 체크된 상품의 총 가격
+  const totalPrice = cartItems.filter((item) => item.checked).reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+  // 폼 새로고침 방지
   const handleSubmit = (e) => {
     e.preventDefault();
+  };
+  // 상품이 없으면 버튼이 안눌리게 하기
+  const HaveItems = cartItems.length > 0;
+  const HaveCheckedItems = cartItems.some((item) => item.checked);
+
+  const handleOrder = () => {
+    // 상품이 없다면 되돌아 가라!
+    if (!HaveItems) return;
+    // 있으면 모달
+    setOrderIsOpen(true);
+  };
+
+  const handleCheckedOrder = () => {
+    if (!HaveCheckedItems) return;
+    setOrderIsOpen(true);
+  };
+
+  const handleDeleteAll = () => {
+    if (!HaveItems) return;
+    setIsOpen(true);
   };
   return (
     <CartContainer>
       <CartList>
         {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
-        {addProduct.map((item) => (
+        {cartItems.map((item) => (
           <Item key={item.id}>
-            <CheckBox type="checkbox" />
+            <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
             <ItemImg></ItemImg>
             <ItemInfoWrap>
               <ItemName>{item.name}</ItemName>
@@ -275,12 +241,13 @@ export default function ShoppingCartPage() {
                 <p>{item.quantity}</p>
               </Quantity>
               <QuantityUpDown>
-                <UpButton>-</UpButton>
+                {/* 아이템 아이디, 프롭스를 useCartStore에 넘김 */}
+                <UpButton onClick={() => handleQuantity(item.id, "dec")}>-</UpButton>
                 <p>{item.quantity}</p>
-                <UpButton>+</UpButton>
+                <UpButton onClick={() => handleQuantity(item.id, "inc")}>+</UpButton>
               </QuantityUpDown>
             </QuantityWrap>
-            <DeleteProduct>
+            <DeleteProduct onClick={() => handleDelete(item.id)}>
               <img src={DeleteProductBtn} />
             </DeleteProduct>
           </Item>
@@ -309,7 +276,7 @@ export default function ShoppingCartPage() {
         <ThanksMsg>Thanks</ThanksMsg>
         <ProductPriceWrap>
           <ProductPriceList>
-            {addProduct.map((item) => (
+            {cartItems.map((item) => (
               <ProductPrice key={item.id}>
                 <p>{item.name}</p>
                 <p>{item.price.toLocaleString()} ₩</p>
@@ -319,14 +286,14 @@ export default function ShoppingCartPage() {
         </ProductPriceWrap>
         <TotalPrice>
           <p>Total Price :</p>
-          <p>총 가격 ₩</p>
+          <p>{totalPrice.toLocaleString()} ₩</p>
         </TotalPrice>
         <ButtonWrap>
-          <DeleteButton onClick={() => setIsOpen(true)}>Delete All</DeleteButton>
-          <OrderButton type="submit" onClick={() => setOrderIsOpen(true)}>
+          <DeleteButton onClick={handleDeleteAll}>Delete All</DeleteButton>
+          <OrderButton type="submit" onClick={handleCheckedOrder}>
             Cheked Buy
           </OrderButton>
-          <OrderButton type="submit" onClick={() => setOrderIsOpen(true)}>
+          <OrderButton type="submit" onClick={handleOrder}>
             Buy All
           </OrderButton>
         </ButtonWrap>
