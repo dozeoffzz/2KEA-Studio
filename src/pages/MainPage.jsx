@@ -1,7 +1,6 @@
 //패키지 및 컴포넌트 임포트
 import styled from "@emotion/styled";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Theme } from "../styles/theme";
 import LIST_DATA from "../data/imageList";
 import TopArea from "../components/common/TopArea";
