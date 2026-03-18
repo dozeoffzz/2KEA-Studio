@@ -35,7 +35,7 @@ const DeleteModalWrap = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 59px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
 `;
 
 const LineLignt = styled.img`

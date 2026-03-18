@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { createPortal } from "react-dom";
+import { Theme } from "../../styles/theme";
 
 const Overlay = styled.div`
   display: flex;
@@ -22,7 +23,7 @@ const TitleModalContainer = styled.div`
   flex-direction: column;
   width: 500px;
   height: 400px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
 `;
 
 const TitleModalWrap = styled.div`
@@ -79,9 +80,12 @@ export default function TitleModal() {
           <Title>TITLE</Title>
           <SecondTitle>- 신규 컬렉션 런칭 -</SecondTitle>
           <Content>
-            공간의 온도를 바꾸는 2KEA만의 새로운 <span>실루엣을 만나보세요</span>
+            공간의 온도를 바꾸는 2KEA만의 새로운{" "}
+            <span>실루엣을 만나보세요</span>
           </Content>
-          <SecondContent>모던한 감각으로 재해석한 2KEA의 새로운 오브제</SecondContent>
+          <SecondContent>
+            모던한 감각으로 재해석한 2KEA의 새로운 오브제
+          </SecondContent>
           <SecondContent>신제품 출시 기념 전 지역 무료 배송</SecondContent>
         </TitleModalWrap>
         <ButtonWrap>

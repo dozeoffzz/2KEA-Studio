@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { createPortal } from "react-dom";
+import { Theme } from "../../styles/theme";
 
 const Overlay = styled.div`
   display: flex;
@@ -22,7 +23,7 @@ const EventModalContainer = styled.div`
   flex-direction: column;
   width: 500px;
   height: 400px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
 `;
 
 const EventModalWrap = styled.div`

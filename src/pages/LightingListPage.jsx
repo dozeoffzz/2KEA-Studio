@@ -147,7 +147,10 @@ export default function LightingListPage() {
   const lightingPerPage = 7;
   const LightingList = itemList.filter((item) => item.category === "lighting");
   const startIndex = (page - 1) * lightingPerPage;
-  const currentItems = LightingList.slice(startIndex, startIndex + lightingPerPage);
+  const currentItems = LightingList.slice(
+    startIndex,
+    startIndex + lightingPerPage,
+  );
 
   return (
     <>
@@ -168,7 +171,11 @@ export default function LightingListPage() {
         </TitleWrap>
         <ItemListMain>
           {currentItems.map((item) => (
-            <Item key={item.id} large={item.large} to={`/detailpage/${item.id}`}>
+            <Item
+              key={item.id}
+              large={item.large}
+              to={`/detailpage/${item.id}`}
+            >
               <ItemInfo>
                 <ItemNum>{item.num}</ItemNum>
                 <ItemName>
@@ -188,7 +195,11 @@ export default function LightingListPage() {
           <PageNationButton onClick={() => setPage(1)}>First</PageNationButton>
           <PageNationButton onClick={() => setPage(1)}>Prev</PageNationButton>
           {totalPages.map((list) => (
-            <CurrentPage key={list} onClick={() => setPage(list)} className={page === list ? "active" : ""}>
+            <CurrentPage
+              key={list}
+              onClick={() => setPage(list)}
+              className={page === list ? "active" : ""}
+            >
               {list}
             </CurrentPage>
           ))}

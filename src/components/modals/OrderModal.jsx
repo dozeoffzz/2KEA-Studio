@@ -15,7 +15,7 @@ const Overlay = styled.div`
   right: 0;
   bottom: 0;
   z-index: 999;
-  background-color: ${Theme.colors.overlay};
+  background-color: ${Theme.colors.white};
 `;
 
 const OrderModalContainer = styled.div`

@@ -9,6 +9,8 @@ export const Theme = {
     blacktext: "#0c0c0c",
     textsecondary: "#999999",
     overlay: "#0c0c0c30",
+    grayline: "#dddddd",
+    graybg: "#f5f5f3",
   },
   fontsize: {
     desktop: {
