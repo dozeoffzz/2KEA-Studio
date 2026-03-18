@@ -15,11 +15,14 @@ import SeatingListPage from "./pages/SeatingListPage";
 import TableListPage from "./pages/TableListPage";
 import LightingListPage from "./pages/LightingListPage";
 import AllListPage from "./pages/AllListPage";
+import MainIntroModal from "./components/modals/MainIntroModal";
 import InstagramModal from "./components/modals/InstagramModal";
 
 export default function App() {
   return (
     <div>
+      {isHomePage && <MainIntroModal />}
+
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />

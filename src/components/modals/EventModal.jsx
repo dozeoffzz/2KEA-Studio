@@ -1,8 +1,11 @@
+// 통합 메인 모달에서 사용되는 개별 모달 컴포넌트
 import styled from "@emotion/styled";
 import React from "react";
-import { createPortal } from "react-dom";
 import { Theme } from "../../styles/theme";
 
+// 모달 바깥 어두운 배경
+
+// 화면 전체를 덮는 오버레이
 const Overlay = styled.div`
   display: flex;
   justify-content: center;
@@ -10,9 +13,12 @@ const Overlay = styled.div`
   position: fixed;
   inset: 0;
   z-index: 999;
-  background-color: #0c0c0c15;
+  background-color: rgba(12, 12, 12, 0.12);
+  transition: opacity 0.42s ease;
+  opacity: ${({ animationState }) => (animationState === "exit" ? 0 : 1)};
 `;
 
+// 이벤트 모달 전체 박스
 const EventModalContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -21,14 +27,25 @@ const EventModalContainer = styled.div`
   height: 400px;
   padding-top: 20px;
   background-color: ${Theme.colors.white};
+  transition:
+    transform 0.42s ease,
+    opacity 0.42s ease;
+  transform: ${({ animationState }) => {
+    if (animationState === "enter") return "translateX(24px)";
+    if (animationState === "exit") return "translateX(-24px)";
+    return "translateX(0)";
+  }};
+  opacity: ${({ animationState }) => (animationState === "exit" ? 0 : 1)};
 `;
 
+// 텍스트 내용을 세로로 정리하는 영역
 const EventModalWrap = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
 `;
 
+// 제목, 본문, 점을 세로로 쌓는 영역
 const TextStack = styled.div`
   display: flex;
   flex-direction: column;
@@ -37,6 +54,7 @@ const TextStack = styled.div`
   gap: 32px;
 `;
 
+// 안내 문구 여러 줄 묶음
 const InfoStack = styled.div`
   display: flex;
   flex-direction: column;
@@ -44,14 +62,17 @@ const InfoStack = styled.div`
   gap: 8px;
 `;
 
+// 메인 제목
 const Title = styled.span`
   font-size: 32px;
 `;
 
+// 부제목
 const SecondTitle = styled.span`
   font-size: 14px;
 `;
 
+// 두 줄 이상 본문
 const Content = styled.span`
   display: flex;
   flex-direction: column;
@@ -59,20 +80,24 @@ const Content = styled.span`
   line-height: 1.6;
 `;
 
+// 추가 본문
 const SecondContent = styled.span`
   font-size: 14px;
   line-height: 1.6;
 `;
 
+// 이벤트 안내 문구
 const EventInfo = styled.span`
   font-size: 14px;
   line-height: 1.4;
 `;
 
+// 하단 버튼 영역 전체
 const BottomArea = styled.div`
   width: 100%;
 `;
 
+// 점 3개 영역
 const DotArea = styled.div`
   display: flex;
   justify-content: center;
@@ -81,6 +106,7 @@ const DotArea = styled.div`
   padding: 0 0 28px;
 `;
 
+// 각 점 스타일
 const Dot = styled.span`
   width: 10px;
   height: 10px;
@@ -89,12 +115,14 @@ const Dot = styled.span`
     active ? Theme.colors.black : "#b3b3b3"};
 `;
 
+// 버튼 위 선을 포함한 버튼 래퍼
 const ButtonWrap = styled.div`
   display: flex;
   width: 100%;
   border-top: 1px solid ${Theme.colors.black};
 `;
 
+// 오늘 하루 열지 않기 버튼
 const TodayCloseButton = styled.button`
   width: 50%;
   min-height: 45px;
@@ -106,19 +134,27 @@ const TodayCloseButton = styled.button`
   cursor: pointer;
 `;
 
+// 닫기 버튼
 const CloseButton = styled(TodayCloseButton)`
   background-color: ${Theme.colors.black};
   color: ${Theme.colors.white};
 `;
 
-export default function EventModal() {
-  const targetElement = document.querySelector("#modal-root");
-  if (!targetElement) return null;
-
-  return createPortal(
-    <Overlay>
-      <EventModalContainer>
+// EventModal 컴포넌트
+// activeIndex: 현재 활성화된 점 번호
+// animationState: 전환 애니메이션 상태
+// onClose, onTodayClose: 버튼 클릭 함수
+export default function EventModal({
+  activeIndex = 1,
+  animationState = "active",
+  onClose,
+  onTodayClose,
+}) {
+  return (
+    <Overlay animationState={animationState}>
+      <EventModalContainer animationState={animationState}>
         <EventModalWrap>
+          {/* 제목과 본문 내용 영역 */}
           <TextStack>
             <Title>EVENT</Title>
 
@@ -140,22 +176,25 @@ export default function EventModal() {
               <EventInfo>* 3월 27일 ~ 4월 3일 단 7일동안 진행됩니다.</EventInfo>
             </InfoStack>
 
+            {/* 현재 모달 순서를 보여주는 점 3개 */}
             <DotArea>
-              <Dot active />
-              <Dot />
-              <Dot />
+              <Dot active={activeIndex === 0} />
+              <Dot active={activeIndex === 1} />
+              <Dot active={activeIndex === 2} />
             </DotArea>
           </TextStack>
         </EventModalWrap>
 
         <BottomArea>
+          {/* 하단 버튼 영역 */}
           <ButtonWrap>
-            <TodayCloseButton>오늘 하루 열지 않기</TodayCloseButton>
-            <CloseButton>닫기</CloseButton>
+            <TodayCloseButton onClick={onTodayClose}>
+              오늘 하루 열지 않기
+            </TodayCloseButton>
+            <CloseButton onClick={onClose}>닫기</CloseButton>
           </ButtonWrap>
         </BottomArea>
       </EventModalContainer>
-    </Overlay>,
-    targetElement,
+    </Overlay>
   );
 }
