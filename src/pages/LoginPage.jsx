@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import loginLight from "../assets/imgs/loginLight.svg";
-import loginChair from "../assets/imgs/loginChair.svg";
+import lineLight from "../assets/imgs/lineLight.svg";
+import lineChair from "../assets/imgs/lineChair.svg";
 import { Theme } from "../styles/theme";
 
 const LoginContainer = styled.div`
@@ -180,8 +180,8 @@ export default function LoginPage() {
         and sensuous furniture is everything.
       </DesignText>
 
-      <LightImg src={loginLight} />
-      <ChairImg src={loginChair} />
+      <LightImg src={lineLight} />
+      <ChairImg src={lineChair} />
     </LoginContainer>
   );
 }

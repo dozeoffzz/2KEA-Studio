@@ -4,6 +4,7 @@ import lineLight from "../../assets/imgs/lineLight.svg";
 import styled from "@emotion/styled";
 import { createPortal } from "react-dom";
 import { Theme } from "../../styles/theme";
+import { NavLink } from "react-router-dom";
 
 const Overlay = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const Overlay = styled.div`
   right: 0;
   bottom: 0;
   z-index: 999;
-  background-color: ${Theme.colors.white};
+  background-color: ${Theme.colors.overlay};
 `;
 
 const OrderModalContainer = styled.div`
@@ -25,7 +26,7 @@ const OrderModalContainer = styled.div`
   position: relative;
   min-width: 400px;
   min-height: 242px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
   box-shadow: 4px 4px 10px;
 `;
 
@@ -35,7 +36,7 @@ const OrderModalWrap = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 59px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
 `;
 
 const LineLignt = styled.img`
@@ -43,6 +44,8 @@ const LineLignt = styled.img`
   top: 0;
   left: 40px;
   opacity: 70%;
+  width: 100px;
+  height: 150px;
 `;
 
 const OrderModalTitleWrap = styled.div`
@@ -80,17 +83,22 @@ const CloseButton = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
   background-color: ${Theme.colors.whitetext};
   color: ${Theme.colors.blacktext};
+  border-top: 1px solid ${Theme.colors.black};
 `;
-const Button = styled.button`
+const Button = styled(NavLink)`
   width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: ${Theme.fontsize.desktop.content};
   background-color: ${Theme.colors.blacktext};
   color: ${Theme.colors.whitetext};
+  border-top: 1px solid ${Theme.colors.black};
 `;
 
-export default function OrderModal({ isOpen, onClose }) {
+export default function OrderModal({ OrderIsOpen, OrderOnClose }) {
   const targetElement = document.querySelector("#modal-root");
-  if (!isOpen) return null;
+  if (!OrderIsOpen) return null;
 
   return createPortal(
     <Overlay>
@@ -99,7 +107,7 @@ export default function OrderModal({ isOpen, onClose }) {
           <LineLignt src={lineLight} />
           <OrderModalTitleWrap>
             <OrderModalTitle>상품 주문</OrderModalTitle>
-            <DeleteButton onClick={onClose}>
+            <DeleteButton onClick={OrderOnClose}>
               <img src={deleteIcon} />
             </DeleteButton>
           </OrderModalTitleWrap>
@@ -108,8 +116,8 @@ export default function OrderModal({ isOpen, onClose }) {
           </div>
         </OrderModalWrap>
         <ButtonWrap>
-          <CloseButton onClick={onClose}>취소</CloseButton>
-          <Button>구매</Button>
+          <CloseButton onClick={OrderOnClose}>취소</CloseButton>
+          <Button to={"/completed"}>구매</Button>
         </ButtonWrap>
       </OrderModalContainer>
     </Overlay>,

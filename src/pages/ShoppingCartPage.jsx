@@ -3,6 +3,7 @@ import DeleteModal from "../components/modals/DeleteModal";
 import DeleteProductBtn from "../assets/icons/deleteProductButton.svg";
 import styled from "@emotion/styled";
 import { Theme } from "../styles/theme";
+import OrderModal from "../components/modals/OrderModal";
 
 // 쇼핑카트 담기 장바구니 예시버전
 const addProduct = [
@@ -15,6 +16,7 @@ const addProduct = [
     category: "seating",
     price: 138000,
     quantity: 2,
+    checked: false,
   },
   {
     id: 2,
@@ -25,6 +27,7 @@ const addProduct = [
     category: "seating",
     price: 114000,
     quantity: 1,
+    checked: false,
   },
   {
     id: 3,
@@ -35,6 +38,7 @@ const addProduct = [
     category: "seating",
     price: 234000,
     quantity: 1,
+    checked: false,
   },
   {
     id: 4,
@@ -45,6 +49,7 @@ const addProduct = [
     category: "seating",
     price: 78000,
     quantity: 1,
+    checked: false,
   },
 ];
 
@@ -233,6 +238,23 @@ const OrderButton = styled(DeleteButton)``;
 
 export default function ShoppingCartPage() {
   const [isOpen, setIsOpen] = useState(false);
+  const [OrderIsOpen, setOrderIsOpen] = useState(false);
+  const [cartItem, setCartItem] = useState(addProduct);
+
+  const handleQuantity = (id, type) => {
+    setCartItem((prev) =>
+      prev.map((item) => {
+        if (item.id === id) {
+          if (type === "inc") return { ...item, quantity: item.quantity + 1 };
+          if (type === "dec") return { ...item, quantity: item.quantity };
+        }
+      }),
+    );
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
     <CartContainer>
       <CartList>
@@ -266,7 +288,7 @@ export default function ShoppingCartPage() {
       </CartList>
       <OrderInfoWrap>
         {/* 주문 폼 */}
-        <OrderInfoForm>
+        <OrderInfoForm onSubmit={handleSubmit}>
           <OrderName>
             <p>Name</p>
             <InputName placeholder="Name" type="text" />
@@ -301,11 +323,16 @@ export default function ShoppingCartPage() {
         </TotalPrice>
         <ButtonWrap>
           <DeleteButton onClick={() => setIsOpen(true)}>Delete All</DeleteButton>
-          <OrderButton onClick={() => setIsOpen(true)}>Cheked Buy</OrderButton>
-          <OrderButton onClick={() => setIsOpen(true)}>Buy All</OrderButton>
+          <OrderButton type="submit" onClick={() => setOrderIsOpen(true)}>
+            Cheked Buy
+          </OrderButton>
+          <OrderButton type="submit" onClick={() => setOrderIsOpen(true)}>
+            Buy All
+          </OrderButton>
         </ButtonWrap>
       </OrderInfoWrap>
       <DeleteModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <OrderModal OrderIsOpen={OrderIsOpen} OrderOnClose={() => setOrderIsOpen(false)} />
     </CartContainer>
   );
 }

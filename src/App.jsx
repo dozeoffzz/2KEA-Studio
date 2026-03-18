@@ -18,6 +18,7 @@ import AllListPage from "./pages/AllListPage";
 import MainIntroModal from "./components/modals/MainIntroModal";
 import InstagramModal from "./components/modals/InstagramModal";
 import NotFoundPage from "./pages/NotFoundPage";
+import CompletedPage from "./pages/completedPage";
 
 export default function App() {
   return (
@@ -27,14 +28,15 @@ export default function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
-          <Route path="/detailpage/:id" element={<DetailedPage />} />
+          <Route path="/products/:category/:id" element={<DetailedPage />} />
           <Route path="/cart" element={<ShoppingCartPage />} />
-          <Route path="/allproducts" element={<AllListPage />} />
-          <Route path="/seatingproducts" element={<SeatingListPage />} />
-          <Route path="/tableproducts" element={<TableListPage />} />
-          <Route path="/lightingproducts" element={<LightingListPage />} />
+          <Route path="/products" element={<AllListPage />} />
+          <Route path="/products/seating" element={<SeatingListPage />} />
+          <Route path="/products/tables" element={<TableListPage />} />
+          <Route path="/products/lighting" element={<LightingListPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/completed" element={<CompletedPage />} />
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
       </Routes>

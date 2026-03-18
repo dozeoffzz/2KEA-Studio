@@ -224,7 +224,7 @@ export default function Footer() {
       </FooterInner>
       <div>
         <NavLink to={"/"}>메인 페이지로 이동</NavLink>
-        <NavLink to={"/allproducts"}>아이템 리스트 페이지로 이동</NavLink>
+        <NavLink to={"/products"}>아이템 리스트 페이지로 이동</NavLink>
         <NavLink to={"/cart"}>쇼핑 카트 페이지로 이동</NavLink>
         <NavLink to={"/login"}>로그인 페이지로 이동</NavLink>
         <NavLink to={"/*"}>404 페이지로 이동</NavLink>

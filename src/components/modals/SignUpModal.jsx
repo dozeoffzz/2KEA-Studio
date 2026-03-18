@@ -36,7 +36,7 @@ const SignUpModalWrap = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 59px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
 `;
 
 const LineLignt = styled.img`
@@ -44,6 +44,8 @@ const LineLignt = styled.img`
   top: 0;
   left: 40px;
   opacity: 70%;
+  width: 100px;
+  height: 150px;
 `;
 
 const SignUpModalTitleWrap = styled.div`
@@ -82,6 +84,7 @@ const Button = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
   background-color: ${Theme.colors.black};
   color: ${Theme.colors.whitetext};
+  border-top: 1px solid ${Theme.colors.black};
 `;
 
 export default function SignUpModal({ isOpen, onClose }) {

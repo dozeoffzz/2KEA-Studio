@@ -359,7 +359,7 @@ export default function DetailedPage() {
               <CardBtn onClick={() => navigate("/cart")}>Buy</CardBtn>
             </BtnGroup>
 
-            <Back onClick={() => navigate("/alllist")}>다른 상품 보러가기</Back>
+            <Back onClick={() => navigate("/allproducts")}>다른 상품 보러가기</Back>
 
             <MoreInfoWrap>
               <MoreInfo>제품 관리 정보</MoreInfo>

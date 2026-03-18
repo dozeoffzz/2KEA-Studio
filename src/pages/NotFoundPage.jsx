@@ -6,7 +6,6 @@ import cushionImg from "../assets/imgs/Cushion.svg";
 const Page = styled.div`
   width: 100%;
   min-height: 100vh;
-  background: #ffffff;
   color: #0c0c0c;
 `;
 
@@ -16,7 +15,6 @@ const Frame = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #ffffff;
 `;
 
 // 상단 헤더 영역
