@@ -2,8 +2,9 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { Theme } from "../styles/theme";
+import { Link } from "react-router-dom";
 import LIST_DATA from "../data/imageList";
-import TopArea from "../components/common/TopArea";
+import TopArea from "../components/main/TopArea";
 import ScrollReveal from "../components/common/ScrollReveal";
 // 인스타
 import InstagramModal from "../components/modals/InstagramModal";
@@ -29,8 +30,6 @@ const MainSection = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 265px;
-  margin-bottom: 265px;
   margin-top: -100px;
   overflow: hidden;
 `;
@@ -41,7 +40,7 @@ const Contents = styled.div`
   flex-direction: column;
   gap: 130px;
   width: 100%;
-  padding: 0 50px 0;
+  padding: 265px 50px 0;
 `;
 
 //소파 이미지 영역
@@ -52,17 +51,42 @@ const SofaImageBox = styled.div`
   width: 100%;
   max-width: 1592px;
   height: 1111px;
-  padding: 0 80px 0 140px;
-  pointer-events: none; //패딩 호버 방지용
+  margin: 0 80px 0 140px;
 
-  div {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin: -50px 0 0 -100px;
-    z-index: 3;
+  &:hover .sofa-hover-img {
+    opacity: 1;
   }
+`;
+
+const SofaImage = styled.img`
+  min-width: 1592px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const SofaHoverImage = styled.img`
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 1592px;
+  width: 100%;
+  height: 100%;
+  margin-left: auto;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  cursor: pointer;
+`;
+
+const SofaDesc = styled.div`
+  position: relative;
+  bottom: 50px;
+  right: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 3;
 
   h3 {
     font-size: ${Theme.fontsize.desktop.title};
@@ -76,62 +100,28 @@ const SofaImageBox = styled.div`
     font-weight: 400;
     margin-left: 32px;
   }
-
-  &:hover .sofa-hover-img {
-    opacity: 1;
-  }
-`;
-
-const SofaImage = styled.img`
-  min-width: 1592px;
-  width: 100%;
-  height: 100%;
-  pointer-events: auto; //실제 요소에만 호버시 이벤트 발생
-  object-fit: cover;
-`;
-
-const SofaHoverImage = styled.img`
-  position: absolute;
-  top: 0;
-  right: -140px;
-  min-width: 1592px;
-  width: 100%;
-  height: 100%;
-  margin-left: auto;
-  pointer-events: auto; // 클릭 이벤트 충돌 방지
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out;
-  z-index: 2;
-  cursor: pointer;
 `;
 
 //리스트 영역
 const ItemList = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 
-const ListTitle = styled.div`
-  position: relative;
+const ListTitle = styled.p`
+  font-size: ${Theme.fontsize.desktop.title};
+  line-height: ${Theme.fontsize.desktop.title};
+  text-align: center;
+`;
+
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 15px;
+  right: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-
-  p {
-    font-size: ${Theme.fontsize.desktop.title};
-    line-height: ${Theme.fontsize.desktop.title};
-    text-align: center;
-  }
-
-  div {
-    position: absolute;
-    right: 0;
-    display: flex;
-    gap: 10px;
-  }
+  gap: 10px;
 `;
 
 const LeftSlideButton = styled.button`
@@ -139,7 +129,7 @@ const LeftSlideButton = styled.button`
   height: ${Theme.fontsize.desktop.section};
   background-color: inherit;
   border: none;
-  color: #4c4c4c;
+  color: ${Theme.colors.textsecondary};
   cursor: pointer;
   transition: transform 0.3s;
 
@@ -154,7 +144,7 @@ const LeftSlideButton = styled.button`
   }
 `;
 
-const RightSlidebutton = styled(LeftSlideButton)``;
+const RightSlideButton = styled(LeftSlideButton)``;
 
 const ListImageBox = styled.div`
   width: calc((436px * 4) + (20px * 3));
@@ -175,7 +165,6 @@ const ListImageWrapper = styled.div`
   width: 436px;
   height: 550px;
   flex-shrink: 0;
-  cursor: pointer;
 
   &:hover .list-hover-img {
     opacity: 1;
@@ -201,7 +190,7 @@ const HoverImage = styled.img`
 const LightImageBox = styled.div`
   display: flex;
   align-items: center;
-  gap: 64px;
+  gap: 48px;
   width: 100%;
   height: 985px;
   padding: 32px;
@@ -226,7 +215,7 @@ const LightImage = styled.img`
   }
 `;
 
-//수직 텍스트 --> 어떻게 해야하지..?
+//수직 텍스트
 const LightVerticalText = styled.div`
   display: flex;
   flex-direction: column;
@@ -273,14 +262,16 @@ const ChairImageBox = styled.div`
 
 //의자 영역 텍스트
 const ChairCommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 32px;
+  padding-left: 16px;
+  transform: translateY(-45px);
 `;
 
 const TopChairComment = styled.p`
-  position: relative;
   font-size: ${Theme.fontsize.desktop.section};
   font-weight: 400;
-  z-index: 2;
 `;
 
 const BottomChairComment = styled(TopChairComment)`
@@ -289,6 +280,7 @@ const BottomChairComment = styled(TopChairComment)`
 
 const ChairVerticalText = styled(LightVerticalText)`
   height: 100%;
+  padding-top: 280px;
   transform: rotate(180deg);
   justify-content: center;
 
@@ -458,6 +450,19 @@ const DeskHoverImage = styled.img`
   transition: opacity 0.6s ease-in-out;
 `;
 
+const BottomTextContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 265px;
+`;
+
+const BottomText = styled.p`
+  font-size: 100px;
+  font-weight: 400;
+`;
+
 export default function MainPage() {
   const [slide, setSlide] = useState(0); //리스트 슬라이드 저장값
 
@@ -483,64 +488,57 @@ export default function MainPage() {
         <ScrollReveal>
           <SofaImageBox>
             <SofaImage src={sofaImage} alt="Sofa Image" />
-            <SofaHoverImage
-              src={sofaHover}
-              alt="Sofa Hover Image"
-              className="sofa-hover-img"
-            />
-            <div>
+            <Link to={"/detailpage/1"}>
+              <SofaHoverImage src={sofaHover} alt="Sofa Hover Image" className="sofa-hover-img" />
+            </Link>
+            <SofaDesc>
               <h3>Classic Leather, Timeless Modern</h3>
               <span>The perfect balance of warmth and structure.</span>
-            </div>
+            </SofaDesc>
           </SofaImageBox>
         </ScrollReveal>
         <ScrollReveal>
           <ItemList>
-            <ListTitle>
-              <p>NEW TRACE: THE COLLECTION</p>
-              <div>
-                <RightSlidebutton onClick={previousSlide}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-chevron-left"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
-                    />
-                  </svg>
-                </RightSlidebutton>
-                <LeftSlideButton onClick={nextSlide}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-chevron-right"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
-                    />
-                  </svg>
-                </LeftSlideButton>
-              </div>
-            </ListTitle>
+            <ListTitle>NEW TRACE: THE COLLECTION</ListTitle>
+            <ButtonContainer>
+              <RightSlideButton onClick={previousSlide}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-chevron-left"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
+                  />
+                </svg>
+              </RightSlideButton>
+              <LeftSlideButton onClick={nextSlide}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-chevron-right"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
+                  />
+                </svg>
+              </LeftSlideButton>
+            </ButtonContainer>
             <ListImageBox>
               {/* 슬라이드용 컴포넌트 */}
               <ListSlide slide={slide}>
                 {/* 이미지 데이터 배열 받아오기 */}
                 {LIST_DATA.map((image) => (
                   <ListImageWrapper key={image.id}>
-                    <DefaultImage
-                      src={image.defaultSrc}
-                      alt={`List Image ${image.id}`}
-                    />
+                    <DefaultImage src={image.defaultSrc} alt={`List Image ${image.id}`} />
                     <HoverImage
                       src={image.hoverSrc}
                       alt={`Hover List Image ${image.id}`}
@@ -555,7 +553,9 @@ export default function MainPage() {
         <ScrollReveal>
           <LightImageBox>
             <LightImageContainer>
-              <LightImage src={lightImage} alt="Light Image" />
+              <Link to={"/detailpage/1"}>
+                <LightImage src={lightImage} alt="Light Image" />
+              </Link>
             </LightImageContainer>
             <LightVerticalText>
               <p>For Deep Sleep and Dream</p>
@@ -586,7 +586,9 @@ export default function MainPage() {
           <ChairImageBox>
             <div>
               <LeftImageContainer>
-                <LeftChair src={leftChair} alt="Left Chair Image" />
+                <Link to={"/detailpage/1"}>
+                  <LeftChair src={leftChair} alt="Left Chair Image" />
+                </Link>
               </LeftImageContainer>
               <ChairCommentContainer>
                 <TopChairComment>
@@ -608,7 +610,9 @@ export default function MainPage() {
               <div></div>
             </ChairVerticalText>
             <RightImageContainer>
-              <RightChair src={rightChair} alt="Right Chair Image" />
+              <Link to={"/detailpage/1"}>
+                <RightChair src={rightChair} alt="Right Chair Image" />
+              </Link>
             </RightImageContainer>
           </ChairImageBox>
         </ScrollReveal>
@@ -616,11 +620,9 @@ export default function MainPage() {
           <BottomImageBox>
             <FirstArea>
               <ChairImage src={chairImage} alt="Desk Image" />
-              <ChairHoverImage
-                src={chairHover}
-                alt="Hover Desk Image"
-                className="hover-img"
-              />
+              <Link to={"/detailpage/1"}>
+                <ChairHoverImage src={chairHover} alt="Hover Desk Image" className="hover-img" />
+              </Link>
               <div>
                 <h3>TIMELESS TRACE</h3>
                 <p>Preserving simple beauty in modern space.</p>
@@ -628,11 +630,9 @@ export default function MainPage() {
             </FirstArea>
             <SecondArea>
               <DeskImage src={deskImage} alt="Bed Image" />
-              <DeskHoverImage
-                src={deskHover}
-                alt="Hover Bed Image"
-                className="hover-img"
-              />
+              <Link to={"/detailpage/1"}>
+                <DeskHoverImage src={deskHover} alt="Hover Bed Image" className="hover-img" />
+              </Link>
               <Desktext>
                 <h3>The Whisper of Morning Light</h3>
                 <div>
@@ -656,12 +656,13 @@ export default function MainPage() {
           </BottomImageBox>
         </ScrollReveal>
       </Contents>
-
+      <ScrollReveal>
+        <BottomTextContainer>
+          <BottomText>STUDIO</BottomText>
+        </BottomTextContainer>
+      </ScrollReveal>
       {/* 인스타 qr */}
-      <InstagramModal
-        isOpen={isInstaOpen}
-        onClose={() => setIsInstaOpen(false)}
-      />
+      <InstagramModal isOpen={isInstaOpen} onClose={() => setIsInstaOpen(false)} />
     </MainSection>
   );
 }
