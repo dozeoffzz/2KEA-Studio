@@ -4,7 +4,7 @@ import lineLight from "../../assets/imgs/lineLight.svg";
 import styled from "@emotion/styled";
 import { createPortal } from "react-dom";
 import { Theme } from "../../styles/theme";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Overlay = styled.div`
   display: flex;
@@ -19,7 +19,7 @@ const Overlay = styled.div`
   background-color: ${Theme.colors.overlay};
 `;
 
-const OrderModalContainer = styled.div`
+const SignUpModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -30,7 +30,7 @@ const OrderModalContainer = styled.div`
   box-shadow: 4px 4px 10px;
 `;
 
-const OrderModalWrap = styled.div`
+const SignUpModalWrap = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -48,16 +48,16 @@ const LineLignt = styled.img`
   height: 150px;
 `;
 
-const OrderModalTitleWrap = styled.div`
+const SignUpModalTitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 34px;
-  border-bottom: 1px solid ${Theme.colors.blacktext};
+  border-bottom: 1px solid ${Theme.colors.black};
 `;
 
-const OrderModalTitle = styled.p`
+const SignUpModalTitle = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
 `;
 
@@ -78,48 +78,57 @@ const ButtonWrap = styled.div`
   justify-content: flex-end;
   font-size: ${Theme.fontsize.desktop.content};
 `;
+
 const CloseButton = styled.button`
   width: 50%;
   font-size: ${Theme.fontsize.desktop.content};
   background-color: ${Theme.colors.whitetext};
   color: ${Theme.colors.blacktext};
-  border-top: 1px solid ${Theme.colors.black};
-`;
-const Button = styled(NavLink)`
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: ${Theme.fontsize.desktop.content};
-  background-color: ${Theme.colors.blacktext};
-  color: ${Theme.colors.whitetext};
-  border-top: 1px solid ${Theme.colors.black};
 `;
 
-export default function OrderModal({ OrderIsOpen, OrderOnClose }) {
+const Button = styled.button`
+  width: 50%;
+  font-size: ${Theme.fontsize.desktop.content};
+  background-color: ${Theme.colors.black};
+  color: ${Theme.colors.whitetext};
+`;
+
+export default function MoveCartModal({ isOpen, onClose }) {
   const targetElement = document.querySelector("#modal-root");
-  if (!OrderIsOpen) return null;
+  const navigate = useNavigate();
+  if (!isOpen) return null;
 
   return createPortal(
     <Overlay>
-      <OrderModalContainer>
-        <OrderModalWrap>
+      <SignUpModalContainer>
+        <SignUpModalWrap>
           <LineLignt src={lineLight} />
-          <OrderModalTitleWrap>
-            <OrderModalTitle>상품 주문</OrderModalTitle>
-            <DeleteButton onClick={OrderOnClose}>
+          <SignUpModalTitleWrap>
+            <SignUpModalTitle>카트 이동</SignUpModalTitle>
+            <DeleteButton onClick={onClose}>
               <img src={deleteIcon} />
             </DeleteButton>
-          </OrderModalTitleWrap>
+          </SignUpModalTitleWrap>
           <div>
-            <Content>구매하시겠습니까?</Content>
+            <Content>
+              카트에 상품을 담았습니다
+              <br />
+              카트로 이동하시겠습니까?
+            </Content>
           </div>
-        </OrderModalWrap>
+        </SignUpModalWrap>
         <ButtonWrap>
-          <CloseButton onClick={OrderOnClose}>취소</CloseButton>
-          <Button to={"/completed"}>구매</Button>
+          <CloseButton onClick={onClose}>취소</CloseButton>
+          <Button
+            onClick={() => {
+              onClose();
+              navigate("/cart");
+            }}
+          >
+            확인
+          </Button>
         </ButtonWrap>
-      </OrderModalContainer>
+      </SignUpModalContainer>
     </Overlay>,
     targetElement,
   );

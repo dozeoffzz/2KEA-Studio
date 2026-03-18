@@ -539,11 +539,7 @@ export default function MainPage() {
                 {LIST_DATA.map((image) => (
                   <ListImageWrapper key={image.id}>
                     <DefaultImage src={image.defaultSrc} alt={`List Image ${image.id}`} />
-                    <HoverImage
-                      src={image.hoverSrc}
-                      alt={`Hover List Image ${image.id}`}
-                      className="list-hover-img"
-                    />
+                    <HoverImage src={image.hoverSrc} alt={`Hover List Image ${image.id}`} className="list-hover-img" />
                   </ListImageWrapper>
                 ))}
               </ListSlide>

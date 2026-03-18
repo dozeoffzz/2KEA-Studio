@@ -160,15 +160,17 @@ export default function TableListPage() {
             <Title>Tables</Title>
           </BackBtnTitle>
           <NavLinkWrap>
-            <NavLinkList to={"/allproducts"}>All</NavLinkList>
-            <NavLinkList to={"/seatingproducts"}>Seating</NavLinkList>
-            <NavLinkList to={"/tableproducts"}>Tables</NavLinkList>
-            <NavLinkList to={"/lightingproducts"}>Lighting</NavLinkList>
+            <NavLinkList to={"/products"} end>
+              All
+            </NavLinkList>
+            <NavLinkList to={"/products/seating"}>Seating</NavLinkList>
+            <NavLinkList to={"/products/tables"}>Tables</NavLinkList>
+            <NavLinkList to={"/products/lighting"}>Lighting</NavLinkList>
           </NavLinkWrap>
         </TitleWrap>
         <ItemListMain>
           {currentItems.map((item) => (
-            <Item key={item.id} large={item.large} to={`/detailpage/${item.id}`}>
+            <Item key={item.id} large={item.large} to={`/products/${item.category}/${item.id}`}>
               <ItemInfo>
                 <ItemNum>{item.num}</ItemNum>
                 <ItemName>

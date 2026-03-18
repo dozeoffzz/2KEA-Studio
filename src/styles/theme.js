@@ -2,6 +2,7 @@ export const Theme = {
   colors: {
     redaccent: "#752323",
     greenaccent: "#898861",
+    greentext: "#6A7620",
     yellowaccent: "#dda351",
     white: "#fafafa",
     black: "#0c0c0c",
@@ -39,7 +40,7 @@ export const Theme = {
   fontweight: {
     qrweight: "700",
   },
-  breakpoints: {
+  breakpoint: {
     mobile: 576,
     tablet: 768,
     desktop: 992,

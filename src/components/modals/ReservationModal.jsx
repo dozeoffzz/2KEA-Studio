@@ -61,15 +61,16 @@ const Title = styled.span`
 
 // 부제목
 const SecondTitle = styled.span`
-  font-size: 14px;
+  font-size: ${Theme.fontsize.desktop.small};
+  margin-bottom: 35px;
 `;
 
 // 두 줄 이상 본문
 const Content = styled.span`
   display: flex;
   flex-direction: column;
-  font-size: 14px;
   line-height: 1.6;
+  font-size: ${Theme.fontsize.desktop.small};
 `;
 
 // 추가 본문
@@ -99,8 +100,7 @@ const Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ active }) =>
-    active ? Theme.colors.black : "#b3b3b3"};
+  background-color: ${({ active }) => (active ? Theme.colors.black : "#b3b3b3")};
 `;
 
 // 버튼 위 선을 포함한 버튼 래퍼
@@ -132,12 +132,7 @@ const CloseButton = styled(TodayCloseButton)`
 // activeIndex: 현재 활성화된 점 번호
 // animationState: 전환 애니메이션 상태
 // onClose, onTodayClose: 버튼 클릭 함수
-export default function ReservationModal({
-  activeIndex = 2,
-  animationState = "active",
-  onClose,
-  onTodayClose,
-}) {
+export default function ReservationModal({ activeIndex = 2, animationState = "active", onClose, onTodayClose }) {
   return (
     <Overlay animationState={animationState}>
       <ReservationModalContainer animationState={animationState}>
@@ -149,9 +144,7 @@ export default function ReservationModal({
             <SecondTitle>- 성수 쇼룸 예약자 안내 -</SecondTitle>
 
             <Content>
-              <span>
-                평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,
-              </span>
+              <span>평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,</span>
               <span>예약자 우선으로 상담이 진행됩니다.</span>
             </Content>
 
@@ -174,9 +167,7 @@ export default function ReservationModal({
         <BottomArea>
           {/* 하단 버튼 영역 */}
           <ButtonWrap>
-            <TodayCloseButton onClick={onTodayClose}>
-              오늘 하루 열지 않기
-            </TodayCloseButton>
+            <TodayCloseButton onClick={onTodayClose}>오늘 하루 열지 않기</TodayCloseButton>
             <CloseButton onClick={onClose}>닫기</CloseButton>
           </ButtonWrap>
         </BottomArea>

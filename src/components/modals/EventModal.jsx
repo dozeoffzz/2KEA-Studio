@@ -64,31 +64,32 @@ const InfoStack = styled.div`
 
 // 메인 제목
 const Title = styled.span`
-  font-size: 32px;
+  margin-bottom: 35px;
+  font-size: ${Theme.fontsize.desktop.section};
 `;
 
 // 부제목
 const SecondTitle = styled.span`
-  font-size: 14px;
+  margin-bottom: 35px;
+  font-size: ${Theme.fontsize.desktop.small};
 `;
 
 // 두 줄 이상 본문
 const Content = styled.span`
   display: flex;
   flex-direction: column;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: ${Theme.fontsize.desktop.small};
 `;
 
 // 추가 본문
 const SecondContent = styled.span`
-  font-size: 14px;
+  font-size: ${Theme.fontsize.desktop.small};
   line-height: 1.6;
 `;
 
 // 이벤트 안내 문구
 const EventInfo = styled.span`
-  font-size: 14px;
+  font-size: ${Theme.fontsize.desktop.small};
   line-height: 1.4;
 `;
 
@@ -111,8 +112,7 @@ const Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ active }) =>
-    active ? Theme.colors.black : "#b3b3b3"};
+  background-color: ${({ active }) => (active ? Theme.colors.black : "#b3b3b3")};
 `;
 
 // 버튼 위 선을 포함한 버튼 래퍼
@@ -129,9 +129,11 @@ const TodayCloseButton = styled.button`
   text-align: center;
   background-color: ${Theme.colors.white};
   color: ${Theme.colors.black};
-  font-size: 14px;
+  font-size: ${Theme.fontsize.desktop.small};
   border: none;
   cursor: pointer;
+  color: #0c0c0c;
+  font-size: ${Theme.fontsize.desktop.small};
 `;
 
 // 닫기 버튼
@@ -144,12 +146,7 @@ const CloseButton = styled(TodayCloseButton)`
 // activeIndex: 현재 활성화된 점 번호
 // animationState: 전환 애니메이션 상태
 // onClose, onTodayClose: 버튼 클릭 함수
-export default function EventModal({
-  activeIndex = 1,
-  animationState = "active",
-  onClose,
-  onTodayClose,
-}) {
+export default function EventModal({ activeIndex = 1, animationState = "active", onClose, onTodayClose }) {
   return (
     <Overlay animationState={animationState}>
       <EventModalContainer animationState={animationState}>
@@ -165,14 +162,10 @@ export default function EventModal({
               <span>초이스 쿠션 증정 이벤트를 진행중 입니다.</span>
             </Content>
 
-            <SecondContent>
-              더욱더 설레는 마음으로 쇼룸에 찾아와 주세요 :)
-            </SecondContent>
+            <SecondContent>더욱더 설레는 마음으로 쇼룸에 찾아와 주세요 :)</SecondContent>
 
             <InfoStack>
-              <EventInfo>
-                * 초이스쿠션 종류는 재고 상황에 따라 상이합니다.
-              </EventInfo>
+              <EventInfo>* 초이스쿠션 종류는 재고 상황에 따라 상이합니다.</EventInfo>
               <EventInfo>* 3월 27일 ~ 4월 3일 단 7일동안 진행됩니다.</EventInfo>
             </InfoStack>
 
@@ -188,9 +181,7 @@ export default function EventModal({
         <BottomArea>
           {/* 하단 버튼 영역 */}
           <ButtonWrap>
-            <TodayCloseButton onClick={onTodayClose}>
-              오늘 하루 열지 않기
-            </TodayCloseButton>
+            <TodayCloseButton onClick={onTodayClose}>오늘 하루 열지 않기</TodayCloseButton>
             <CloseButton onClick={onClose}>닫기</CloseButton>
           </ButtonWrap>
         </BottomArea>

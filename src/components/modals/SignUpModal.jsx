@@ -36,7 +36,7 @@ const SignUpModalWrap = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 59px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
 `;
 
 const LineLignt = styled.img`
@@ -44,6 +44,8 @@ const LineLignt = styled.img`
   top: 0;
   left: 40px;
   opacity: 70%;
+  width: 100px;
+  height: 150px;
 `;
 
 const SignUpModalTitleWrap = styled.div`
@@ -52,7 +54,7 @@ const SignUpModalTitleWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 34px;
-  border-bottom: 1px solid #0c0c0c;
+  border-bottom: 1px solid ${Theme.colors.black};
 `;
 
 const SignUpModalTitle = styled.p`
@@ -77,18 +79,12 @@ const ButtonWrap = styled.div`
   font-size: ${Theme.fontsize.desktop.content};
 `;
 
-const CloseButton = styled.button`
-  width: 50%;
-  font-size: ${Theme.fontsize.desktop.content};
-  background-color: ${Theme.colors.whitetext};
-  color: #0c0c0c;
-`;
-
 const Button = styled.button`
-  width: 50%;
+  width: 100%;
   font-size: ${Theme.fontsize.desktop.content};
-  background-color: #0c0c0c;
+  background-color: ${Theme.colors.black};
   color: ${Theme.colors.whitetext};
+  border-top: 1px solid ${Theme.colors.black};
 `;
 
 export default function SignUpModal({ isOpen, onClose }) {
@@ -111,7 +107,6 @@ export default function SignUpModal({ isOpen, onClose }) {
           </div>
         </SignUpModalWrap>
         <ButtonWrap>
-          <CloseButton>Welcome</CloseButton>
           <Button onClick={onClose}>확인</Button>
         </ButtonWrap>
       </SignUpModalContainer>

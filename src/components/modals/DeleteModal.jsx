@@ -4,6 +4,7 @@ import lineLight from "../../assets/imgs/lineLight.svg";
 import styled from "@emotion/styled";
 import { createPortal } from "react-dom";
 import { Theme } from "../../styles/theme";
+import { useCartStore } from "../../stores/useCartStore";
 
 const Overlay = styled.div`
   display: flex;
@@ -25,7 +26,7 @@ const DeleteModalContainer = styled.div`
   position: relative;
   min-width: 400px;
   min-height: 242px;
-  background-color: #cfcfcf;
+  background-color: ${Theme.colors.white};
   box-shadow: 4px 4px 10px;
 `;
 
@@ -43,6 +44,8 @@ const LineLignt = styled.img`
   top: 0;
   left: 40px;
   opacity: 70%;
+  width: 100px;
+  height: 150px;
 `;
 
 const DeleteModalTitleWrap = styled.div`
@@ -81,16 +84,19 @@ const CloseButton = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
   background-color: ${Theme.colors.whitetext};
   color: ${Theme.colors.blacktext};
+  border-top: 1px solid ${Theme.colors.black};
 `;
 const Button = styled.button`
   width: 50%;
   font-size: ${Theme.fontsize.desktop.content};
   background-color: ${Theme.colors.blacktext};
   color: ${Theme.colors.whitetext};
+  border-top: 1px solid ${Theme.colors.black};
 `;
 
 export default function DeleteModal({ isOpen, onClose }) {
   const targetElement = document.querySelector("#modal-root");
+  const { clearCart } = useCartStore();
   if (!isOpen) return null;
   return createPortal(
     <Overlay>
@@ -109,7 +115,14 @@ export default function DeleteModal({ isOpen, onClose }) {
         </DeleteModalWrap>
         <ButtonWrap>
           <CloseButton onClick={onClose}>취소</CloseButton>
-          <Button>삭제</Button>
+          <Button
+            onClick={() => {
+              clearCart();
+              onClose();
+            }}
+          >
+            삭제
+          </Button>
         </ButtonWrap>
       </DeleteModalContainer>
     </Overlay>,

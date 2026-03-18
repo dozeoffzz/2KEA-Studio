@@ -3,57 +3,15 @@ import DeleteModal from "../components/modals/DeleteModal";
 import DeleteProductBtn from "../assets/icons/deleteProductButton.svg";
 import styled from "@emotion/styled";
 import { Theme } from "../styles/theme";
-
-// 쇼핑카트 담기 장바구니 예시버전
-const addProduct = [
-  {
-    id: 1,
-    num: "001",
-    name: "Seraph Curve",
-    material: "Plastic",
-    content: "선 하나로 완성된 디자인.",
-    category: "seating",
-    price: 138000,
-    quantity: 2,
-  },
-  {
-    id: 2,
-    num: "002",
-    name: "Ember Lounge",
-    material: "Fabric",
-    content: "차분한 균형 속에서 완성된 절제된 아름다움.",
-    category: "seating",
-    price: 114000,
-    quantity: 1,
-  },
-  {
-    id: 3,
-    num: "003",
-    name: "Coco Hanging",
-    material: "Rattan",
-    content: "자연의 여유를 닮은 실루엣.",
-    category: "seating",
-    price: 234000,
-    quantity: 1,
-  },
-  {
-    id: 4,
-    num: "004",
-    name: "Nero Chair",
-    material: "Plastic",
-    content: "단순한 형태 그러나 가장 강한 존재감.",
-    category: "seating",
-    price: 78000,
-    quantity: 1,
-  },
-];
+import OrderModal from "../components/modals/OrderModal";
+import { useCartStore } from "../stores/useCartStore";
 
 const CartContainer = styled.div`
-  padding: 40px;
+  padding: 40px 80px 40px 80px;
   display: grid;
   grid-template-columns: 2fr 1fr;
   height: 100vh;
-  gap: 40px;
+  gap: 120px;
 `;
 
 const CartList = styled.ul`
@@ -87,10 +45,15 @@ const CartList = styled.ul`
 
 const Item = styled.li`
   display: grid;
-  grid-template-columns: 40px 198px 1fr 200px;
+  grid-template-columns: 40px 150px 1fr 200px 60px;
   gap: 40px;
   align-items: center;
   min-height: 231px;
+`;
+
+const CheckBox = styled.input`
+  width: 20px;
+  height: 20px;
 `;
 
 const ItemImg = styled.div`
@@ -103,7 +66,7 @@ const ItemInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-left: 100px;
+  margin-left: 80px;
   font-size: ${Theme.fontsize.desktop.content};
 `;
 
@@ -112,12 +75,21 @@ const ItemName = styled.p`
 `;
 
 const QuantityWrap = styled.div`
-  margin-right: 40px;
+  margin-right: 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   font-size: ${Theme.fontsize.desktop.content};
   gap: 20px;
+`;
+
+const DeleteProduct = styled.button`
+  margin-right: 20px;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const Quantity = styled.div`
@@ -203,12 +175,12 @@ const TotalPrice = styled.div`
 
 const ButtonWrap = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 40px;
 `;
 
 const DeleteButton = styled.button`
-  min-width: 290px;
+  min-width: 180px;
   min-height: 50px;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.whitetext};
@@ -219,15 +191,43 @@ const OrderButton = styled(DeleteButton)``;
 
 export default function ShoppingCartPage() {
   const [isOpen, setIsOpen] = useState(false);
+  const [OrderIsOpen, setOrderIsOpen] = useState(false);
+  // useCaretStore에서 정의한 함수 구조분해로 가져오기
+  const { cartItems, handleQuantity, handleCheck, handleDelete } = useCartStore();
+
+  // 체크된 상품의 총 가격
+  const totalPrice = cartItems.filter((item) => item.checked).reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+  // 폼 새로고침 방지
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+  // 상품이 없으면 버튼이 안눌리게 하기
+  const HaveItems = cartItems.length > 0;
+  const HaveCheckedItems = cartItems.some((item) => item.checked);
+
+  const handleOrder = () => {
+    // 상품이 없다면 되돌아 가라!
+    if (!HaveItems) return;
+    // 있으면 모달
+    setOrderIsOpen(true);
+  };
+
+  const handleCheckedOrder = () => {
+    if (!HaveCheckedItems) return;
+    setOrderIsOpen(true);
+  };
+
+  const handleDeleteAll = () => {
+    if (!HaveItems) return;
+    setIsOpen(true);
+  };
   return (
     <CartContainer>
       <CartList>
         {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
-        {addProduct.map((item) => (
+        {cartItems.map((item) => (
           <Item key={item.id}>
-            <button>
-              <img src={DeleteProductBtn} />
-            </button>
+            <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
             <ItemImg></ItemImg>
             <ItemInfoWrap>
               <ItemName>{item.name}</ItemName>
@@ -241,38 +241,42 @@ export default function ShoppingCartPage() {
                 <p>{item.quantity}</p>
               </Quantity>
               <QuantityUpDown>
-                <UpButton>-</UpButton>
+                {/* 아이템 아이디, 프롭스를 useCartStore에 넘김 */}
+                <UpButton onClick={() => handleQuantity(item.id, "dec")}>-</UpButton>
                 <p>{item.quantity}</p>
-                <UpButton>+</UpButton>
+                <UpButton onClick={() => handleQuantity(item.id, "inc")}>+</UpButton>
               </QuantityUpDown>
             </QuantityWrap>
+            <DeleteProduct onClick={() => handleDelete(item.id)}>
+              <img src={DeleteProductBtn} />
+            </DeleteProduct>
           </Item>
         ))}
       </CartList>
       <OrderInfoWrap>
         {/* 주문 폼 */}
-        <OrderInfoForm>
+        <OrderInfoForm onSubmit={handleSubmit}>
           <OrderName>
             <p>Name</p>
-            <InputName placeholder="Name" />
+            <InputName placeholder="Name" type="text" />
           </OrderName>
           <OrderPhone>
             <p>Phone</p>
-            <InputPhone placeholder="Phone" />
+            <InputPhone placeholder="Phone" type="text" />
           </OrderPhone>
           <OrderEmail>
             <p>Email</p>
-            <InputEmail placeholder="Email" />
+            <InputEmail placeholder="Email" type="email" />
           </OrderEmail>
           <OrderAddress>
             <p>Address</p>
-            <InputAddress placeholder="Address" />
+            <InputAddress placeholder="Address" type="address" />
           </OrderAddress>
         </OrderInfoForm>
         <ThanksMsg>Thanks</ThanksMsg>
         <ProductPriceWrap>
           <ProductPriceList>
-            {addProduct.map((item) => (
+            {cartItems.map((item) => (
               <ProductPrice key={item.id}>
                 <p>{item.name}</p>
                 <p>{item.price.toLocaleString()} ₩</p>
@@ -282,14 +286,20 @@ export default function ShoppingCartPage() {
         </ProductPriceWrap>
         <TotalPrice>
           <p>Total Price :</p>
-          <p>총 가격 ₩</p>
+          <p>{totalPrice.toLocaleString()} ₩</p>
         </TotalPrice>
         <ButtonWrap>
-          <DeleteButton onClick={() => setIsOpen(true)}>Delete All</DeleteButton>
-          <OrderButton onClick={() => setIsOpen(true)}>Buy</OrderButton>
+          <DeleteButton onClick={handleDeleteAll}>Delete All</DeleteButton>
+          <OrderButton type="submit" onClick={handleCheckedOrder}>
+            Cheked Buy
+          </OrderButton>
+          <OrderButton type="submit" onClick={handleOrder}>
+            Buy All
+          </OrderButton>
         </ButtonWrap>
       </OrderInfoWrap>
       <DeleteModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <OrderModal OrderIsOpen={OrderIsOpen} OrderOnClose={() => setOrderIsOpen(false)} />
     </CartContainer>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { itemList } from "../services/Apiex";
 import { Theme } from "../styles/theme";
 import styled from "@emotion/styled";
@@ -8,6 +8,8 @@ import detailImg1 from "../assets/imgs/detail/detailImg1.svg";
 import detailImg2 from "../assets/imgs/detail/detailImg2.webp";
 import detailImg3 from "../assets/imgs/detail/detailImg3.webp";
 import detailImg4 from "../assets/imgs/detail/detailImg4.webp";
+import { useCartStore } from "../stores/useCartStore";
+import MoveCartModal from "../components/modals/MoveCartModal";
 
 const MainWrap = styled.div`
   width: 100%;
@@ -232,6 +234,9 @@ const MoreInfo = styled.div`
 export default function DetailedPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addItem } = useCartStore();
+  // 모달 끄고 닫기
+  const [isOpen, setIsOpen] = useState();
 
   // 수량
   const [quantity, setQuantity] = useState(1);
@@ -295,6 +300,16 @@ export default function DetailedPage() {
   const handleNextSlide = () => {
     setImgIdx((prev) => getNextIdx(prev));
   };
+  // 상품 추가
+  const handleAdd = () => {
+    addItem({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      category: item.category,
+      quantity: quantity,
+    });
+  };
 
   return (
     <MainWrap>
@@ -355,11 +370,25 @@ export default function DetailedPage() {
             <Price>총 금액: {totalPrice.toLocaleString()}원</Price>
 
             <BtnGroup>
-              <CardBtn onClick={() => navigate("/")}>Shopping Cart</CardBtn>
-              <CardBtn onClick={() => navigate("/cart")}>Buy</CardBtn>
+              <CardBtn
+                onClick={() => {
+                  handleAdd();
+                  setIsOpen(true);
+                }}
+              >
+                Shopping Cart
+              </CardBtn>
+              <CardBtn
+                onClick={() => {
+                  handleAdd();
+                  navigate("/cart");
+                }}
+              >
+                Buy
+              </CardBtn>
             </BtnGroup>
 
-            <Back onClick={() => navigate("/alllist")}>다른 상품 보러가기</Back>
+            <Back onClick={() => navigate("/allproducts")}>다른 상품 보러가기</Back>
 
             <MoreInfoWrap>
               <MoreInfo>제품 관리 정보</MoreInfo>
@@ -371,6 +400,7 @@ export default function DetailedPage() {
           </StickyBox>
         </RightContent>
       </DetailSection>
+      <MoveCartModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </MainWrap>
   );
 }
