@@ -17,7 +17,19 @@ const MainWrap = styled.div`
 `;
 
 const ImgGallery = styled.section`
-  margin-bottom: 72px;
+  margin-bottom: 104px;
+
+  @media screen and (max-width: 1200px) {
+    margin-bottom: 36px;
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    margin-bottom: 22px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-bottom: 18px;
+  }
 `;
 
 const SliderWrap = styled.div`
@@ -26,6 +38,18 @@ const SliderWrap = styled.div`
   height: 45vw;
   max-height: 760px;
   overflow: hidden;
+
+  ${({ theme }) => theme.media.tablet} {
+    height: 58vw;
+    min-height: 360px;
+    max-height: 620px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    height: 72vw;
+    min-height: 260px;
+    max-height: 420px;
+  }
 `;
 
 const Slider = styled.div`
@@ -81,16 +105,42 @@ const ArrowButton = styled.button`
   color: ${Theme.colors.textsecondary};
   background: none;
   z-index: 10;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 40px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 40px;
+    height: 40px;
+    font-size: 26px;
+  }
 `;
 
 const LeftArrow = styled(ArrowButton)`
   left: 20%;
   transform: translateY(-50%);
+
+  ${({ theme }) => theme.media.mobile} {
+    left: 18%;
+  }
+
+  @media screen and (max-width: 500px) {
+    left: 15%;
+  }
 `;
 
 const RightArrow = styled(ArrowButton)`
   right: 20%;
   transform: translateY(-50%);
+
+  ${({ theme }) => theme.media.mobile} {
+    right: 18%;
+  }
+
+  @media screen and (max-width: 500px) {
+    right: 15%;
+  }
 `;
 
 // 제품명
@@ -99,52 +149,99 @@ const ProductName = styled.p`
   text-align: center;
   font-size: ${Theme.fontsize.desktop.section};
   color: ${Theme.colors.blacktext};
+
+  ${({ theme }) => theme.media.tablet} {
+    margin-top: 56px;
+    font-size: ${Theme.fontsize.tablet.section};
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-top: 40px;
+    font-size: ${Theme.fontsize.mobile?.section || "22px"};
+  }
 `;
 
 const DetailSection = styled.section`
   display: flex;
-  padding: 20px 130px;
+  gap: 100px;
+  justify-content: space-around;
+  padding: 0px 50px 200px 50px;
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    gap: 90px;
+    padding: 0px 120px 108px 120px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 47px;
+    padding: 0px 24px 40px 24px;
+  }
 `;
 
 // 왼쪽 상세 이미지 구역
 const LeftContent = styled.div`
-  flex: 1;
+  display: flex;
+  justify-content: center;
 `;
 
 const DetailImg = styled.img`
   width: 100%;
+  min-width: 687px;
+  min-height: 1030px;
   max-width: 891px;
-  max-height: 1552px;
+  max-height: 1307px;
+
+  ${({ theme }) => theme.media.mobile} {
+    min-width: 100%;
+    min-height: auto;
+    max-width: 100%;
+    max-height: auto;
+  }
 `;
 
 // 오른쪽 주문 정보 구역
 const RightContent = styled.aside`
-  width: 535px;
+  width: 100%;
+  max-width: 535px;
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (max-width: 1200px) {
+    margin: 0 auto;
+  }
 `;
 
 // 주문박스 고정
 const StickyBox = styled.div`
   position: sticky;
   top: 100px;
+
+  ${({ theme }) => theme.media.tablet} {
+    position: static;
+  }
 `;
 
 const InfoGroup = styled.div`
-  margin-bottom: 36px;
+  margin-bottom: 50px;
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-bottom: 24px;
+  }
 `;
 
 const InfoTitle = styled.p`
-  padding-bottom: 12px;
-  margin-bottom: 12px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
   border-bottom: 3px solid ${Theme.colors.black};
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
 
-  ${({ theme }) => theme.media.tablet} {
-    padding: 60px 24px;
-  }
-
   ${({ theme }) => theme.media.mobile} {
-    padding: 60px 16px;
+    font-size: ${Theme.fontsize.mobile?.small || "12px"};
   }
 `;
 
@@ -154,13 +251,21 @@ const InfoRow = styled.div`
   margin-bottom: 10px;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 14px;
+    margin-bottom: 8px;
+    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+  }
 `;
 
 const Label = styled.span`
   min-width: 72px;
 `;
 
-const Value = styled.span``;
+const Value = styled.span`
+  word-break: keep-all;
+`;
 
 // 수량 설정
 const QtyWrap = styled.div`
@@ -169,16 +274,29 @@ const QtyWrap = styled.div`
   align-items: center;
   gap: 20px;
   margin: 28px 0 18px;
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 14px;
+    margin: 22px 0 14px;
+  }
 `;
 
 const QtyBtn = styled.button`
   color: ${Theme.colors.blacktext};
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+  }
 `;
 
 const QtyValue = styled.span`
   color: ${Theme.colors.blacktext};
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+  }
 `;
 
 const Price = styled.p`
@@ -186,6 +304,10 @@ const Price = styled.p`
   text-align: right;
   color: ${Theme.colors.blacktext};
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+  }
 `;
 
 // shopping cart, buy 버튼
@@ -200,6 +322,12 @@ const CardBtn = styled.button`
   background-color: ${Theme.colors.black};
   color: ${Theme.colors.whitetext};
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    height: 38px;
+    margin-top: 10px;
+    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+  }
 `;
 
 // 다른 상품 보러가기 버튼
@@ -213,11 +341,24 @@ const Back = styled.button`
   color: ${Theme.colors.blacktext};
   font-size: ${Theme.fontsize.desktop.content};
   text-align: left;
+
+  ${({ theme }) => theme.media.tablet} {
+    margin-top: 56px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-top: 40px;
+    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+  }
 `;
 
 // 추가 정보
 const MoreInfoWrap = styled.div`
   margin-top: 12px;
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-top: 4px;
+  }
 `;
 
 const MoreInfo = styled.div`
@@ -228,6 +369,10 @@ const MoreInfo = styled.div`
 
   &:last-child {
     border-bottom: none;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile?.small || "12px"};
   }
 `;
 
