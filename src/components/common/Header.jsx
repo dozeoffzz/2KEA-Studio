@@ -22,10 +22,6 @@ const HeaderContainer = styled.header`
     rgba(250, 250, 250, 0) 100%
   );
   transition: all 0.4s ease;
-
-  @media (max-width: 1279px) {
-    display: flex;
-  }
 `;
 // 상단 헤더 영역
 const HeaderWrap = styled.div`
@@ -51,13 +47,12 @@ const Brand = styled(NavLink)`
   font-size: ${Theme.fontsize.desktop.section};
   text-align: center;
 
-  @media (max-width: 1279px) {
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.section};
   }
 
-  @media (max-width: 768px) {
-    min-width: 140px;
-    font-size: 24px;
-    line-height: 1;
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.section};
   }
 `;
 
@@ -90,14 +85,38 @@ const RightMenu = styled(LeftMenu)`
 
 const Font = styled(NavLink)`
   font-size: ${Theme.fontsize.desktop.small};
+
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.small};
+  }
 `;
 
 const Products = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.content};
+  }
 `;
 
 const LogOut = styled.button`
   font-size: ${Theme.fontsize.desktop.small};
+
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.small};
+  }
 `;
 
 export default function Header() {
@@ -106,7 +125,11 @@ export default function Header() {
   const navigate = useNavigate();
   return (
     // useState로 값변경하기 위해 프롭스 전달
-    <HeaderContainer isOpen={isOpen} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
+    <HeaderContainer
+      isOpen={isOpen}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
       <HeaderWrap>
         <PlusButton>
           <img src={plusIcon} />
@@ -121,7 +144,11 @@ export default function Header() {
         </MenuButton>
       </HeaderWrap>
       {/* // useState로 값변경하기 위해 프롭스 전달 */}
-      <MenuWrap isOpen={isOpen} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
+      <MenuWrap
+        isOpen={isOpen}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
         {/* 왼쪽메뉴 */}
         <LeftMenu>
           <Products>Products</Products>
