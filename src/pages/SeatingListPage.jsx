@@ -6,6 +6,7 @@ import backIcon from "../assets/icons/backIcon.svg";
 import { Theme } from "../styles/theme";
 
 const ItemListContainer = styled.div`
+  margin-top: 100px;
   display: flex;
   justify-content: center;
   flex-direction: column;

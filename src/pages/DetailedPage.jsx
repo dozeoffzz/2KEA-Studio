@@ -12,6 +12,7 @@ import { useCartStore } from "../stores/useCartStore";
 import MoveCartModal from "../components/modals/MoveCartModal";
 
 const MainWrap = styled.div`
+  margin-top: 100px;
   width: 100%;
   background-color: ${Theme.colors.white};
 `;

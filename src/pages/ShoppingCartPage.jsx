@@ -7,6 +7,7 @@ import OrderModal from "../components/modals/OrderModal";
 import { useCartStore } from "../stores/useCartStore";
 
 const CartContainer = styled.div`
+  margin-top: 100px;
   padding: 40px 80px 40px 80px;
   display: grid;
   grid-template-columns: 2fr 1fr;

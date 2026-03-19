@@ -4,6 +4,7 @@ import cushionImg from "../assets/imgs/Cushion.svg";
 
 // 페이지 전체 배경과 기본 글자색
 const Page = styled.div`
+  margin-top: 100px;
   width: 100%;
   min-height: 100vh;
   color: #0c0c0c;

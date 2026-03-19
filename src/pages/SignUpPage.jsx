@@ -5,6 +5,7 @@ import { Theme } from "../styles/theme";
 import SignUpModal from "../components/modals/SignUpModal";
 
 const SignupPage = styled.div`
+  margin-top: 100px;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -88,15 +89,13 @@ const FormLabel = styled.label`
   width: 100px;
   text-align: left;
   font-size: ${Theme.fontsize.desktop.content};
-  color: ${({ error }) =>
-    error ? Theme.colors.redaccent : Theme.colors.blacktext};
+  color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
 `;
 
 const FormInput = styled.input`
   flex: 1;
   border: none;
-  border-bottom: 1px solid
-    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   outline: none;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
@@ -160,8 +159,7 @@ const PhoneSelect = styled.select`
 const PhoneInput = styled.input`
   flex: 1;
   border: none;
-  border-bottom: 1px solid
-    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   outline: none;
   padding: 8px 0 8px 5px;
   text-align: center;
@@ -172,8 +170,7 @@ const PhoneInput = styled.input`
 const BirthInput = styled.input`
   width: 100%;
   border: none;
-  border-bottom: 1px solid
-    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   outline: none;
   text-align: center;
   font-size: ${Theme.fontsize.desktop.content};
@@ -228,8 +225,7 @@ const AgreeItemLabel = styled.label`
   gap: 8px;
   flex: 1;
   font-size: ${Theme.fontsize.desktop.content};
-  color: ${({ error }) =>
-    error ? Theme.colors.redaccent : Theme.colors.blacktext};
+  color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
 `;
 
 // 개인정보 이용약관 아래 작은 글씨
@@ -443,12 +439,7 @@ export default function Signup() {
     }
 
     // 아이디 비밀번호 이메일 한글 못쓰게
-    if (
-      name === "id" ||
-      name === "password" ||
-      name === "passwordCheck" ||
-      name === "email"
-    ) {
+    if (name === "id" || name === "password" || name === "passwordCheck" || name === "email") {
       value = value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
     }
 
@@ -512,12 +503,7 @@ export default function Signup() {
   function handleComposition(e) {
     if (e.type === "compositionend") {
       const name = e.target.name;
-      if (
-        name === "id" ||
-        name === "password" ||
-        name === "passwordCheck" ||
-        name === "email"
-      ) {
+      if (name === "id" || name === "password" || name === "passwordCheck" || name === "email") {
         const value = e.target.value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
         setForm({ ...form, [name]: value });
       }
@@ -672,11 +658,7 @@ export default function Signup() {
         newErrors.email
       ) {
         formRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else if (
-        newErrors.birthYear ||
-        newErrors.birthMonth ||
-        newErrors.birthDay
-      ) {
+      } else if (newErrors.birthYear || newErrors.birthMonth || newErrors.birthDay) {
         birthRef.current.scrollIntoView({
           behavior: "smooth",
           block: "center",
@@ -755,12 +737,7 @@ export default function Signup() {
                 중복확인
               </CheckBtn>
             </IdInputWrap>
-            {msgs.id &&
-              (idCheckPassed ? (
-                <SuccessMsg>{msgs.id}</SuccessMsg>
-              ) : (
-                <ErrorMsg>{msgs.id}</ErrorMsg>
-              ))}
+            {msgs.id && (idCheckPassed ? <SuccessMsg>{msgs.id}</SuccessMsg> : <ErrorMsg>{msgs.id}</ErrorMsg>)}
           </FormRow>
 
           {/* 비밀번호 */}
@@ -801,13 +778,7 @@ export default function Signup() {
           {/* 이름 */}
           <FormRow>
             <FormLabel error={errors.name}>Name</FormLabel>
-            <FormInput
-              error={errors.name}
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-            />
+            <FormInput error={errors.name} type="text" name="name" value={form.name} onChange={handleChange} />
             {msgs.name && <ErrorMsg>{msgs.name}</ErrorMsg>}
           </FormRow>
 
@@ -815,11 +786,7 @@ export default function Signup() {
           <FormRow>
             <FormLabel error={errors.phone2}>Phone</FormLabel>
             <PhoneWrap>
-              <PhoneSelect
-                name="phone1"
-                value={form.phone1}
-                onChange={handleChange}
-              >
+              <PhoneSelect name="phone1" value={form.phone1} onChange={handleChange}>
                 <option>010</option>
                 <option>011</option>
                 <option>022</option>
@@ -910,14 +877,8 @@ export default function Signup() {
         <SignupSection ref={agreeRef}>
           <SectionTitle>Whole agreement</SectionTitle>
           <AgreeAllRow>
-            <input
-              type="checkbox"
-              name="all"
-              checked={agreement.all}
-              onChange={handleAllAgree}
-            />
-            이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신 (선택) 에 모두
-            동의합니다.
+            <input type="checkbox" name="all" checked={agreement.all} onChange={handleAllAgree} />
+            이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신 (선택) 에 모두 동의합니다.
           </AgreeAllRow>
 
           <AgreeBox>
@@ -926,13 +887,8 @@ export default function Signup() {
               <AgreeGroupTitle>홈페이지 개인정보 처리 동의</AgreeGroupTitle>
               <AgreeItemRow>
                 <AgreeItemLabel error={errors.privacy}>
-                  <input
-                    type="checkbox"
-                    name="privacy"
-                    checked={agreement.privacy}
-                    onChange={handleAgreement}
-                  />
-                  [ 필수 ] 개인정보 이용약관
+                  <input type="checkbox" name="privacy" checked={agreement.privacy} onChange={handleAgreement} />[ 필수
+                  ] 개인정보 이용약관
                 </AgreeItemLabel>
                 <AgreeArrow>›</AgreeArrow>
               </AgreeItemRow>
@@ -947,18 +903,11 @@ export default function Signup() {
 
             {/* 서비스 약관 및 개인정보 동의 */}
             <div>
-              <AgreeGroupTitle>
-                Avie much 서비스 약관 및 개인정보 동의
-              </AgreeGroupTitle>
+              <AgreeGroupTitle>Avie much 서비스 약관 및 개인정보 동의</AgreeGroupTitle>
               <AgreeItemRow>
                 <AgreeItemLabel error={errors.service}>
-                  <input
-                    type="checkbox"
-                    name="service"
-                    checked={agreement.service}
-                    onChange={handleAgreement}
-                  />
-                  [ 필수 ] 쇼핑몰 이용약관
+                  <input type="checkbox" name="service" checked={agreement.service} onChange={handleAgreement} />[ 필수
+                  ] 쇼핑몰 이용약관
                 </AgreeItemLabel>
                 <AgreeArrow>›</AgreeArrow>
               </AgreeItemRow>
@@ -985,12 +934,7 @@ export default function Signup() {
                 <span>SMS 수신을 동의하십니까?</span>
                 <AgreeOptWrap>
                   <AgreeOptLabel>
-                    <input
-                      type="checkbox"
-                      name="sms"
-                      checked={agreement.sms}
-                      onChange={handleAgreement}
-                    />
+                    <input type="checkbox" name="sms" checked={agreement.sms} onChange={handleAgreement} />
                     동의함
                   </AgreeOptLabel>
                   <AgreeArrow>›</AgreeArrow>
@@ -1000,12 +944,7 @@ export default function Signup() {
                 <span>이메일 수신을 동의하십니까?</span>
                 <AgreeOptWrap>
                   <AgreeOptLabel>
-                    <input
-                      type="checkbox"
-                      name="email"
-                      checked={agreement.email}
-                      onChange={handleAgreement}
-                    />
+                    <input type="checkbox" name="email" checked={agreement.email} onChange={handleAgreement} />
                     동의함
                   </AgreeOptLabel>
                   <AgreeArrow>›</AgreeArrow>
