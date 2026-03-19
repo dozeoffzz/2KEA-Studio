@@ -4,8 +4,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import lineLight from "../assets/imgs/lineLight.svg";
 import lineChair from "../assets/imgs/lineChair.svg";
 import { Theme } from "../styles/theme";
+import { useAuthStore } from "../stores/useAuthStore";
 
 const LoginContainer = styled.div`
+  margin-top: 100px;
   position: relative;
   width: 100%;
   height: 100vh;
@@ -94,6 +96,11 @@ const ChairImg = styled.img`
 export default function LoginPage() {
   const [input, setInput] = useState({ id: "", password: "" });
   const navigate = useNavigate();
+  const { login } = useAuthStore();
+
+  const handleLogin = () => {
+    login();
+  };
 
   // 로그인 버튼 눌렀을 때 빈칸이면 빨갛게 표시
   const [errors, setErrors] = useState({
@@ -170,7 +177,16 @@ export default function LoginPage() {
 
         <ButtonWrap>
           {/* 로그인 버튼 handleSubmit을 통해 검사 후 이동하게 수정 */}
-          <LoginButton type="submit">Login</LoginButton>
+          <LoginButton
+            type="submit"
+            onClick={() => {
+              // handleSubmit();
+              handleLogin();
+              navigate("/");
+            }}
+          >
+            Login
+          </LoginButton>
           <SignupButton to={"/signup"}>Sign Up</SignupButton>
         </ButtonWrap>
       </LoginForm>

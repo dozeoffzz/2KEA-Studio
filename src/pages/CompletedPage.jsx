@@ -5,6 +5,7 @@ import { Theme } from "../styles/theme";
 import { NavLink } from "react-router-dom";
 
 const CompletedContainer = styled.div`
+  margin-top: 100px;
   height: 100vh;
   width: 100%;
   display: flex;

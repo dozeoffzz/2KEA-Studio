@@ -30,7 +30,7 @@ const MainSection = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: -100px;
+  /* margin-top: -100px; */
   overflow: hidden;
 `;
 

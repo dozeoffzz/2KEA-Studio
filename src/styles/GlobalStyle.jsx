@@ -48,7 +48,8 @@ const globalStyles = css`
   mark,
   audio,
   video,
-  input {
+  input,
+  button {
     margin: 0;
     padding: 0;
     border: 0;
