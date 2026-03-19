@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Navigate, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Theme } from "../../styles/theme";
 import plusIcon from "../../assets/icons/plusIcon.svg";
 import menuIcon from "../../assets/icons/menuIcon.svg";
@@ -47,11 +47,10 @@ const Brand = styled(NavLink)`
   font-size: ${Theme.fontsize.desktop.section};
   text-align: center;
 
-  ${Theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};
   }
-
-  ${Theme.media.mobile} {
+  ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.phone.section};
   }
 `;
@@ -125,11 +124,7 @@ export default function Header() {
   const navigate = useNavigate();
   return (
     // useState로 값변경하기 위해 프롭스 전달
-    <HeaderContainer
-      isOpen={isOpen}
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
+    <HeaderContainer isOpen={isOpen} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
       <HeaderWrap>
         <PlusButton>
           <img src={plusIcon} />
@@ -144,11 +139,7 @@ export default function Header() {
         </MenuButton>
       </HeaderWrap>
       {/* // useState로 값변경하기 위해 프롭스 전달 */}
-      <MenuWrap
-        isOpen={isOpen}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-      >
+      <MenuWrap isOpen={isOpen} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
         {/* 왼쪽메뉴 */}
         <LeftMenu>
           <Products>Products</Products>

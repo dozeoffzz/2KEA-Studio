@@ -11,8 +11,15 @@ const CartContainer = styled.div`
   padding: 40px 80px 40px 80px;
   display: grid;
   grid-template-columns: 2fr 1fr;
-  height: 100vh;
+  min-height: 100vh;
   gap: 120px;
+
+  ${({ theme }) => theme.media.tablet} {
+    grid-template-columns: 1fr;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const CartList = styled.ul`
@@ -50,6 +57,18 @@ const Item = styled.li`
   gap: 40px;
   align-items: center;
   min-height: 231px;
+
+  ${({ theme }) => theme.media.tablet} {
+    grid-template-columns: 30px 120px 1fr 100px 40px;
+    grid-template-rows: auto auto auto;
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    grid-template-columns: 1fr;
+    grid-template-columns: 30px 100px 1fr 80px 40px;
+    grid-template-rows: auto auto auto;
+    font-size: ${Theme.fontsize.phone.content};
+  }
 `;
 
 const CheckBox = styled.input`
@@ -61,6 +80,13 @@ const ItemImg = styled.div`
   width: 198px;
   height: 231px;
   background-color: ${Theme.colors.overlay};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.section};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.section};
+  }
 `;
 
 const ItemInfoWrap = styled.div`
@@ -73,6 +99,13 @@ const ItemInfoWrap = styled.div`
 
 const ItemName = styled.p`
   font-size: ${Theme.fontsize.desktop.section};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.section};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.section};
+  }
 `;
 
 const QuantityWrap = styled.div`
