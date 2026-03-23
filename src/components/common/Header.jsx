@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Theme } from "../../styles/theme";
 import plusIcon from "../../assets/icons/plusIcon.svg";
 import menuIcon from "../../assets/icons/menuIcon.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "../../stores/useAuthStore";
 
 const HeaderContainer = styled.header`
@@ -18,7 +18,7 @@ const HeaderContainer = styled.header`
 
   background: linear-gradient(
     to bottom,
-    rgba(250, 250, 250, ${(props) => (props.isOpen ? 1 : 0)}) 0%,
+    rgba(250, 250, 250, ${(props) => (props.isOpen || props.isScroll ? 1 : 0)}) 0%,
     rgba(250, 250, 250, 0) 100%
   );
   transition: all 0.4s ease;
@@ -37,6 +37,10 @@ const HeaderWrap = styled.div`
 const PlusButton = styled.button`
   margin-top: 30px;
   width: 32px;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 15px;
+  }
 `;
 
 // 가운데 브랜드 로고 텍스트
@@ -59,6 +63,10 @@ const Brand = styled(NavLink)`
 const MenuButton = styled.button`
   margin-top: 30px;
   width: 32px;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 15px;
+  }
 `;
 
 const MenuWrap = styled.div`
@@ -120,13 +128,37 @@ const LogOut = styled.button`
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
   const { isLogin, logout } = useAuthStore();
+
+  // 스크롤할때 헤더 불투명하게 하기위해 y축 스크롤이 0보다 크면 트루
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScroll(true);
+      } else {
+        setIsScroll(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    // 유즈이펙트 클린업 함수
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   const navigate = useNavigate();
+
+  const ClickOpenMenu = () => {
+    setIsOpen((prev) => !prev);
+  };
   return (
-    // useState로 값변경하기 위해 프롭스 전달
-    <HeaderContainer isOpen={isOpen} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
+    // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달
+    <HeaderContainer
+      isScroll={isScroll}
+      isOpen={isOpen}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
       <HeaderWrap>
-        <PlusButton>
+        <PlusButton onClick={ClickOpenMenu}>
           <img src={plusIcon} />
         </PlusButton>
         <Brand to={"/"}>
@@ -134,7 +166,7 @@ export default function Header() {
             2KEA <br /> STUDIO
           </h1>
         </Brand>
-        <MenuButton>
+        <MenuButton onClick={ClickOpenMenu}>
           <img src={menuIcon} />
         </MenuButton>
       </HeaderWrap>

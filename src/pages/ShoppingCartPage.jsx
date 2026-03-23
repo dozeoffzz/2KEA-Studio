@@ -5,29 +5,40 @@ import styled from "@emotion/styled";
 import { Theme } from "../styles/theme";
 import OrderModal from "../components/modals/OrderModal";
 import { useCartStore } from "../stores/useCartStore";
+import { NavLink } from "react-router-dom";
 
 const CartContainer = styled.div`
   margin-top: 100px;
-  padding: 40px 80px 40px 80px;
+  padding: 40px 80px;
   display: grid;
   grid-template-columns: 2fr 1fr;
-  min-height: 100vh;
   gap: 120px;
+  min-height: calc(100vh - 100px);
 
   ${({ theme }) => theme.media.tablet} {
+    padding: 30px 60px;
     grid-template-columns: 1fr;
+    height: auto;
   }
   ${({ theme }) => theme.media.mobile} {
+    padding: 20px 20px;
     grid-template-columns: 1fr;
+    height: auto;
+  }
+  @media screen and (max-width: 1024px) {
+    padding: 20px 20px;
+    grid-template-columns: 1fr;
+    height: auto;
   }
 `;
 
 const CartList = styled.ul`
-  display: grid;
-  grid-template-rows: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 100px);
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
 
@@ -49,52 +60,96 @@ const CartList = styled.ul`
     border: 3px solid transparent;
     background-clip: content-box;
   }
+
+  ${({ theme }) => theme.media.tablet} {
+    height: auto;
+    overflow: visible;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    height: auto;
+    overflow: visible;
+  }
+  @media screen and (max-width: 1024px) {
+    height: auto;
+  }
 `;
 
 const Item = styled.li`
   display: grid;
-  grid-template-columns: 40px 150px 1fr 200px 60px;
-  gap: 40px;
+  grid-template-columns: 40px 1fr 2fr 2fr 40px;
+  column-gap: 20px;
   align-items: center;
   min-height: 231px;
 
   ${({ theme }) => theme.media.tablet} {
-    grid-template-columns: 30px 120px 1fr 100px 40px;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: 40px 1fr 1fr 1fr 40px;
+    grid-template-rows: auto;
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    grid-template-columns: 1fr;
-    grid-template-columns: 30px 100px 1fr 80px 40px;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: 20px 120px 1fr 40px;
+    grid-template-rows: auto auto;
+    column-gap: 18px;
+    row-gap: 10px;
     font-size: ${Theme.fontsize.phone.content};
+    min-height: auto;
+    align-items: start;
   }
 `;
 
 const CheckBox = styled.input`
   width: 20px;
   height: 20px;
+
+  ${({ theme }) => theme.media.mobile} {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+  }
 `;
 
 const ItemImg = styled.div`
+  position: relative;
   width: 198px;
   height: 231px;
   background-color: ${Theme.colors.overlay};
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.section};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.section};
+    width: 132px;
+    height: 153px;
+
+    grid-column: 2;
+    grid-row: 1 / 3;
   }
+`;
+
+const Img = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  transition: opacity 0.9s ease;
 `;
 
 const ItemInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-left: 80px;
+  gap: 5px;
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.content};
+    grid-column: 3;
+    grid-row: 1;
+  }
 `;
 
 const ItemName = styled.p`
@@ -104,10 +159,21 @@ const ItemName = styled.p`
     font-size: ${Theme.fontsize.tablet.section};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.section};
+    font-size: ${Theme.fontsize.phone.content};
   }
 `;
 
+const ItemDelevery = styled.p`
+  font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.small};
+    display: none;
+  }
+`;
 const QuantityWrap = styled.div`
   margin-right: 20px;
   display: flex;
@@ -115,11 +181,29 @@ const QuantityWrap = styled.div`
   align-items: flex-end;
   font-size: ${Theme.fontsize.desktop.content};
   gap: 20px;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    margin-right: 0;
+    margin-top: 100px;
+    font-size: ${Theme.fontsize.phone.content};
+    grid-column: 4;
+    grid-row: 1;
+    gap: 5px;
+  }
 `;
 
 const DeleteProduct = styled.button`
   margin-right: 20px;
 
+  ${({ theme }) => theme.media.mobile} {
+    margin-right: 0;
+    grid-column: 4;
+    grid-row: 1;
+    /* align-self: center; */
+  }
   img {
     width: 20px;
     height: 20px;
@@ -129,6 +213,13 @@ const DeleteProduct = styled.button`
 const Quantity = styled.div`
   display: flex;
   gap: 80px;
+
+  ${({ theme }) => theme.media.tablet} {
+    gap: 40px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    gap: 20px;
+  }
 `;
 
 const QuantityUpDown = styled.div`
@@ -139,14 +230,20 @@ const QuantityUpDown = styled.div`
 
 const UpButton = styled.button`
   font-size: ${Theme.fontsize.desktop.section};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.content};
+  }
 `;
 
 const OrderInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 40px;
-  height: 100%;
+  width: 100%;
 `;
 
 const OrderInfoForm = styled.form`
@@ -162,6 +259,13 @@ const OrderName = styled.div`
   align-items: center;
   font-size: ${Theme.fontsize.desktop.content};
   border-bottom: 1px solid ${Theme.colors.black};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.small};
+  }
 `;
 const OrderPhone = styled(OrderName)``;
 const OrderEmail = styled(OrderName)``;
@@ -181,6 +285,13 @@ const ThanksMsg = styled.p`
   display: flex;
   align-self: center;
   font-size: ${Theme.fontsize.desktop.section};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.section};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.section};
+  }
 `;
 
 const ProductPriceWrap = styled.div`
@@ -188,6 +299,13 @@ const ProductPriceWrap = styled.div`
   border-top: 1px solid ${Theme.colors.black};
   border-bottom: 1px solid ${Theme.colors.black};
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.small};
+  }
 `;
 
 const ProductPriceList = styled.ul`
@@ -201,16 +319,41 @@ const ProductPrice = styled.li`
   justify-content: space-between;
 `;
 
+const ProductPriceQuantity = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
+const TotalQuantity = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1px;
+`;
+
 const TotalPrice = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.small};
+  }
 `;
 
 const ButtonWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 40px;
+  gap: 20px;
+
+  ${({ theme }) => theme.media.mobile} {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
 `;
 
 const DeleteButton = styled.button`
@@ -219,6 +362,16 @@ const DeleteButton = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.whitetext};
   background-color: ${Theme.colors.black};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.small};
+  }
+  @media screen and (max-width: 1024px) {
+    flex: 1;
+  }
 `;
 
 const OrderButton = styled(DeleteButton)``;
@@ -226,6 +379,7 @@ const OrderButton = styled(DeleteButton)``;
 export default function ShoppingCartPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [OrderIsOpen, setOrderIsOpen] = useState(false);
+  const [hoverImg, setHoverImg] = useState(null);
   // useCaretStore에서 정의한 함수 구조분해로 가져오기
   const { cartItems, handleQuantity, handleCheck, handleDelete } = useCartStore();
 
@@ -255,19 +409,25 @@ export default function ShoppingCartPage() {
     if (!HaveItems) return;
     setIsOpen(true);
   };
+
   return (
     <CartContainer>
       <CartList>
         {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
-        {cartItems.map((item) => (
+        {cartItems.map((item, index) => (
           <Item key={item.id}>
             <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
-            <ItemImg></ItemImg>
+            <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
+              <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+                <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
+                <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
+              </ItemImg>
+            </NavLink>
             <ItemInfoWrap>
               <ItemName>{item.name}</ItemName>
               <p>{item.price.toLocaleString()} ₩</p>
-              <p>적립금: -</p>
-              <p>배송비: 무료</p>
+              <ItemDelevery>적립금: -</ItemDelevery>
+              <ItemDelevery>배송비: 무료</ItemDelevery>
             </ItemInfoWrap>
             <QuantityWrap>
               <Quantity>
@@ -310,12 +470,17 @@ export default function ShoppingCartPage() {
         <ThanksMsg>Thanks</ThanksMsg>
         <ProductPriceWrap>
           <ProductPriceList>
-            {cartItems.map((item) => (
-              <ProductPrice key={item.id}>
-                <p>{item.name}</p>
-                <p>{item.price.toLocaleString()} ₩</p>
-              </ProductPrice>
-            ))}
+            {cartItems
+              .filter((item) => item.checked)
+              .map((item) => (
+                <ProductPrice key={item.id}>
+                  <p>{item.name}</p>
+                  <ProductPriceQuantity>
+                    <p>{(item.price * item.quantity).toLocaleString()} ₩</p>
+                    <TotalQuantity>{item.quantity}</TotalQuantity>
+                  </ProductPriceQuantity>
+                </ProductPrice>
+              ))}
           </ProductPriceList>
         </ProductPriceWrap>
         <TotalPrice>

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
+import { Theme } from "../../styles/theme";
 
 // 하단 푸터 전체 영역
 const FooterWrap = styled.footer`
@@ -8,77 +9,70 @@ const FooterWrap = styled.footer`
   flex-shrink: 0;
   background: linear-gradient(180deg, #fafafa 0%, #fafafa 35%, #d9d9d9 68%, #999999 100%);
 
-  @media (max-width: 1279px) {
+  ${({ theme }) => theme.media.tablet} {
+    height: auto;
+  }
+  ${({ theme }) => theme.media.mobile} {
     height: auto;
   }
 `;
 
 // 푸터 내부 기준 박스
 const FooterInner = styled.div`
-  position: relative;
   width: 100%;
   max-width: 1920px;
   height: 100%;
   margin: 0 auto;
 
-  @media (max-width: 1279px) {
-    max-width: 100%;
+  ${({ theme }) => theme.media.tablet} {
+    height: auto;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    height: auto;
   }
 `;
 
 // 푸터 상단 정보 영역
 const FooterTop = styled.div`
-  position: relative;
+  padding: 50px 100px;
+  display: flex;
+  justify-content: space-between;
   width: 100%;
-  height: 249px;
+  gap: 10px;
 
-  @media (max-width: 1279px) {
-    height: auto;
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    padding: 44px 24px 36px;
+  ${({ theme }) => theme.media.tablet} {
+    padding: 50px 50px;
   }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 28px;
-    padding: 32px 20px 24px;
+  ${({ theme }) => theme.media.mobile} {
+    padding: 50px 30px;
   }
 `;
 
 // 푸터 공통 제목
 const FooterTitle = styled.h3`
-  font-size: 23px;
-  line-height: 1;
-  font-weight: 400;
+  font-size: ${Theme.fontsize.desktop.content};
   margin: 0 0 22px;
 
-  @media (max-width: 768px) {
-    font-size: 20px;
-    margin-bottom: 16px;
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
   }
 `;
 
 // CUSTOMER SERVICE 블록
-const CustomerBlock = styled.div`
-  position: absolute;
-  top: 63px;
-  left: 74px;
-
-  @media (max-width: 1279px) {
-    position: static;
-  }
-`;
+const CustomerBlock = styled.div``;
 
 // CUSTOMER SERVICE 설명 텍스트
 const CustomerText = styled.p`
-  font-size: 18px;
-  line-height: 1.5;
-  margin: 0 0 2px;
+  font-size: ${Theme.fontsize.desktop.small};
 
-  @media (max-width: 768px) {
-    font-size: 15px;
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 10px;
   }
 `;
 
@@ -86,98 +80,89 @@ const CustomerText = styled.p`
 const InquiryLink = styled.a`
   display: inline-block;
   margin-top: 8px;
-  font-size: 18px;
-  line-height: 1.3;
-  color: #0c0c0c;
-  text-decoration: none;
+  font-size: ${Theme.fontsize.desktop.content};
+  color: ${Theme.colors.blacktext};
 
-  @media (max-width: 768px) {
-    font-size: 15px;
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 9px;
   }
 `;
 
 // CONTACT / SOCIAL 오른쪽 컬럼 묶음
 const RightColumns = styled.div`
-  position: absolute;
-  top: 53px;
-  right: 166px;
   display: flex;
-  gap: 91px;
+  gap: 90px;
 
-  @media (max-width: 1279px) {
-    position: static;
-    gap: 56px;
-  }
-
-  @media (max-width: 768px) {
-    gap: 40px;
-    flex-wrap: wrap;
+  ${({ theme }) => theme.media.mobile} {
+    gap: 10px;
   }
 `;
 
 // 오른쪽 단일 컬럼
 const Column = styled.div`
-  min-width: 120px;
+  display: flex;
+  flex-direction: column;
 `;
 
 // CONTACT / SOCIAL 항목 텍스트
 const ColumnItem = styled.p`
-  font-size: 18px;
-  line-height: 1.45;
-  margin: 0 0 4px;
+  font-size: ${Theme.fontsize.desktop.small};
+  margin: 0 0 4px 0;
 
-  @media (max-width: 768px) {
-    font-size: 15px;
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
+`;
+
+const ColumnItemLink = styled.a`
+  font-size: ${Theme.fontsize.desktop.small};
+  margin: 0 0 4px 0;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
   }
 `;
 
 // 푸터 하단 사업자 정보 영역
 const FooterBottom = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  padding: 0 100px;
+  display: flex;
+  align-items: center;
   width: 100%;
-  height: 110px;
-  border-top: 1px solid #0c0c0c;
-  padding: 24px 74px 0;
+  border-top: 1px solid ${Theme.colors.black};
+  font-size: ${Theme.fontsize.desktop.small};
 
-  @media (max-width: 1279px) {
-    position: static;
-    height: auto;
-    padding: 22px 24px 20px;
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+    padding: 0 50px;
   }
-
-  @media (max-width: 768px) {
-    padding: 18px 20px 18px;
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 8px;
+    padding: 0 30px;
   }
 `;
 
 // 푸터 하단 일반 텍스트
 const BottomText = styled.p`
-  font-size: 16px;
-  line-height: 1.35;
-  margin: 0;
-
-  @media (max-width: 768px) {
-    font-size: 14px;
-  }
+  margin-top: 25px;
 `;
 
 // 이용약관 / 개인정보 보호정책 묶음
 const BottomLinks = styled.div`
   display: flex;
   gap: 18px;
-  margin: 2px 0;
-  font-size: 16px;
-  line-height: 1.35;
-
-  @media (max-width: 768px) {
-    flex-wrap: wrap;
-    gap: 10px 16px;
-    font-size: 14px;
-  }
 `;
+
+const Copyright = styled.p``;
 
 export default function Footer() {
   return (
@@ -204,31 +189,36 @@ export default function Footer() {
 
             <Column>
               <FooterTitle>SOCIAL</FooterTitle>
-              <ColumnItem>Instagram</ColumnItem>
-              <ColumnItem>Github</ColumnItem>
-              <ColumnItem>Pinterest</ColumnItem>
-              <ColumnItem>YouTube</ColumnItem>
+              <ColumnItemLink href="https://www.instagram.com/2kea_studio/" target="_blank" rel="noopener noreferrer">
+                Instagram
+              </ColumnItemLink>
+              <ColumnItemLink href="https://github.com/dozeoffzz/2KEA-Studio" target="_blank" rel="noopener noreferrer">
+                Github
+              </ColumnItemLink>
+              <ColumnItemLink href="https://kr.pinterest.com/" target="_blank" rel="noopener noreferrer">
+                Pinterest
+              </ColumnItemLink>
+              <ColumnItemLink href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
+                YouTube
+              </ColumnItemLink>
             </Column>
           </RightColumns>
         </FooterTop>
 
         {/* 푸터 맨 아래 사업자 정보 */}
         <FooterBottom>
-          <BottomText>광주광역시 XX XX 대표 이가람, 이영연, 이해랑, 최은우, 최원희 사업자번호 XXX-XX-XXXXX</BottomText>
-          <BottomLinks>
-            <span>이용약관</span>
-            <span>개인정보 보호정책</span>
-          </BottomLinks>
-          <BottomText>©2KEA right reversed</BottomText>
+          <div>
+            <BottomText>
+              광주광역시 XX XX 대표 이가람, 이영연, 이해랑, 최은우, 최원희 사업자번호 XXX-XX-XXXXX
+            </BottomText>
+            <BottomLinks>
+              <span>이용약관</span>
+              <span>개인정보 보호정책</span>
+            </BottomLinks>
+            <Copyright>©2KEA rights reversed</Copyright>
+          </div>
         </FooterBottom>
       </FooterInner>
-      <div>
-        <NavLink to={"/"}>메인 페이지로 이동</NavLink>
-        <NavLink to={"/products"}>아이템 리스트 페이지로 이동</NavLink>
-        <NavLink to={"/cart"}>쇼핑 카트 페이지로 이동</NavLink>
-        <NavLink to={"/login"}>로그인 페이지로 이동</NavLink>
-        <NavLink to={"/*"}>404 페이지로 이동</NavLink>
-      </div>
     </FooterWrap>
   );
 }
