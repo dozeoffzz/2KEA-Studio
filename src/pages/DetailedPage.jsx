@@ -416,20 +416,9 @@ export default function DetailedPage() {
   const { addItem } = useCartStore();
 
   // products api 받아오기
-  const [item, setItem] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const res = await fetchProducts();
-        setItem(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    getProducts();
-  }, []);
   // 모달 끄고 닫기
   const [isOpen, setIsOpen] = useState(false);
 
@@ -442,26 +431,60 @@ export default function DetailedPage() {
   // 아코디언 열고 닫기
   const [openIdx, setOpenIdx] = useState(null);
 
-  // 상품 찾기
-  const item = itemList.find((item) => item.id === Number(id));
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await fetchProducts();
+        setProducts(res.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  // 상품이 존재하지 않을 때 처리
-  if (!item) {
-    return <div>존재하지 않는 상품입니다.</div>;
-  const items = item.find((item) => item.id === Number(id));
+    getProducts();
+  }, []);
 
-  if (!items) {
+  // 현재 상세페이지에 해당하는 상품 찾기
+  const product = products.find((item) => item.id === Number(id));
+
+  if (isLoading) {
     return (
       <div
-        style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", fontSize: "32px" }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          fontSize: "32px",
+        }}
       >
-        2KEA STUDIO
+        Loading...
+      </div>
+    );
+  }
+
+  // 상품이 존재하지 않을 때 처리
+  if (!product) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          fontSize: "32px",
+        }}
+      >
+        존재하지 않는 상품입니다.
       </div>
     );
   }
 
   // 슬라이드 이미지 배열
-  const img = [items.src?.[0] || detailImg2, items.src?.[1] || detailImg3, items.src?.[0] || detailImg4];
+  const img = [product.src?.[0] || detailImg2, product.src?.[1] || detailImg3, product.src?.[2] || detailImg4];
+
   const lastIdx = img.length - 1;
 
   // 이전 인덱스 구하기
@@ -487,7 +510,7 @@ export default function DetailedPage() {
   };
 
   // 총 금액 계산
-  const totalPrice = items.price * quantity;
+  const totalPrice = product.price * quantity;
 
   // 수량 줄이기
   const handleDecrease = () => {
@@ -514,11 +537,11 @@ export default function DetailedPage() {
   // 상품 추가
   const handleAdd = () => {
     addItem({
-      id: items.id,
-      name: items.name,
-      price: items.price,
-      category: items.category,
-      src: items.src,
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      category: product.category,
+      src: product.src,
       quantity: quantity,
     });
   };
@@ -571,18 +594,18 @@ export default function DetailedPage() {
           <Slider>
             {img.map((src, idx) => (
               <SlideItem key={idx} $position={getImgPosition(idx)}>
-                <SlideImg src={src} alt={`${items.name} 슬라이드 이미지 ${idx + 1}`} />
+                <SlideImg src={src} alt={`${product.name} 슬라이드 이미지 ${idx + 1}`} />
               </SlideItem>
             ))}
           </Slider>
         </SliderWrap>
 
-        <ProductName>{items.name} Detail</ProductName>
+        <ProductName>{product.name} Detail</ProductName>
       </ImgGallery>
 
       <DetailSection>
         <LeftContent>
-          <DetailImg src={detailImg1} alt={`${items.name} 상세 이미지`} />
+          <DetailImg src={detailImg1} alt={`${product.name} 상세 이미지`} />
         </LeftContent>
 
         <RightContent>
@@ -591,7 +614,7 @@ export default function DetailedPage() {
               <InfoTitle>Note</InfoTitle>
               <InfoRow>
                 <Label>Promotion</Label>
-                <Value>{items.material}</Value>
+                <Value>{product.material}</Value>
               </InfoRow>
             </InfoGroup>
 
@@ -621,7 +644,7 @@ export default function DetailedPage() {
               </QtyBtn>
             </QtyWrap>
 
-            <Price>상품 금액: {items.price.toLocaleString()}원</Price>
+            <Price>상품 금액: {product.price.toLocaleString()}원</Price>
             <Price>총 금액: {totalPrice.toLocaleString()}원</Price>
 
             <BtnGroup>
@@ -656,11 +679,11 @@ export default function DetailedPage() {
 
                 return (
                   <AccordionItem key={accordion.title}>
-                    // 아코디언 열고 닫기
                     <AccordionBtn type="button" onClick={() => handleAccordionToggle(idx)}>
                       <span>{accordion.title}</span>
                       <AccordionIcon>{isActive ? "−" : "+"}</AccordionIcon>
                     </AccordionBtn>
+
                     <AccordionBody $isOpen={isActive}>
                       <AccordionContent>{accordion.content}</AccordionContent>
                     </AccordionBody>
