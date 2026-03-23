@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { itemList } from "../services/Apiex";
 import backIcon from "../assets/icons/backIcon.svg";
 import { Theme } from "../styles/theme";
+import { fetchProducts } from "../apis/productsApi";
 
 // 페이지 전체 바깥 영역
 
@@ -259,6 +259,7 @@ const ItemContent = styled.p`
 
 // 회색 배경 이미지 박스
 const ItemImg = styled.div`
+  position: relative;
   background-color: ${Theme.colors.overlay};
   flex: 1;
   display: flex;
@@ -283,15 +284,18 @@ const ItemImg = styled.div`
   }
 `;
 
-// 실제 상품 이미지
-const ItemImage = styled.img`
+// 하단 페이지네이션 영역
+const Img = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  display: block;
+  object-fit: cover;
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  transition: opacity 0.9s ease;
 `;
 
-// 하단 페이지네이션 영역
 const PageNationWrap = styled.div`
   display: flex;
   justify-content: center;
@@ -354,93 +358,81 @@ export default function LightingListPage() {
   // 현재 페이지 번호 상태
   const [page, setPage] = useState(1);
   const totalPages = [1];
+  const [hoverImg, setHoverImg] = useState(null);
 
-  const perPage = 7;
-  const lightingList = itemList.filter((item) => item.category === "lighting");
-  const startIndex = (page - 1) * perPage;
-  const currentItems = lightingList.slice(startIndex, startIndex + perPage);
+  // products api 받아오기
+  const [item, setItem] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await fetchProducts();
+        setItem(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getProducts();
+  }, []);
+
+  const lightingPerPage = 7;
+  const lightingItem = item.filter((item) => item.category === "lighting");
+  const startIndex = (page - 1) * lightingPerPage;
+  const currentItems = lightingItem.slice(startIndex, startIndex + lightingPerPage);
 
   return (
-    <ItemListContainer>
-      <TitleWrap className="TitleWrap">
-        <BackBtnTitle>
-          <BackButton to={"/"}>
-            <img src={backIcon} alt="뒤로가기" />
-          </BackButton>
-          <Title>Lighting</Title>
-        </BackBtnTitle>
-
-        <NavLinkWrap>
-          <NavLinkList to={"/products"} end>
-            All
-          </NavLinkList>
-          <NavLinkList to={"/products/seating"}>Seating</NavLinkList>
-          <NavLinkList to={"/products/tables"}>Tables</NavLinkList>
-          <NavLinkList to={"/products/lighting"}>Lighting</NavLinkList>
-        </NavLinkWrap>
-      </TitleWrap>
-
-      {/* 상품 리스트 */}
-      <ItemListMain>
-        {currentItems.map((item) => (
-          <Item
-            key={item.id}
-            large={item.large}
-            to={`/products/${item.category}/${item.id}`}
-          >
-            {/* 상품 상단 정보 */}
-            <ItemInfo>
-              <ItemNum>{item.num}</ItemNum>
-              <ItemName>
-                {item.name} | {item.material}
-              </ItemName>
-            </ItemInfo>
-
-            {/* 설명 영역 + 이미지 영역 */}
-            <ItemImgWrap>
-              <ItemContentWrap>
-                <ItemContent>{item.content}</ItemContent>
-              </ItemContentWrap>
-
-              <ItemImg large={item.large}>
-                <ItemImage
-                  src={item.img || item.image || item.thumbnail}
-                  alt={item.name}
-                />
-              </ItemImg>
-            </ItemImgWrap>
-          </Item>
-        ))}
-      </ItemListMain>
-
-      {/* 페이지 이동 버튼 */}
-      <PageNationWrap>
-        <PageNationButton onClick={() => setPage(1)}>First</PageNationButton>
-        <PageNationButton onClick={() => setPage(page > 1 ? page - 1 : 1)}>
-          Prev
-        </PageNationButton>
-
-        {totalPages.map((list) => (
-          <CurrentPage
-            key={list}
-            onClick={() => setPage(list)}
-            className={page === list ? "active" : ""}
-          >
-            {list}
-          </CurrentPage>
-        ))}
-
-        <PageNationButton
-          onClick={() =>
-            setPage(page < totalPages.length ? page + 1 : totalPages.length)
-          }
-        >
-          Next
-        </PageNationButton>
-        <PageNationButton onClick={() => setPage(totalPages.length)}>
-          Last
-        </PageNationButton>
-      </PageNationWrap>
-    </ItemListContainer>
+    <>
+      <ItemListContainer>
+        <TitleWrap className="TitleWrap">
+          <BackBtnTitle>
+            <NavLink to={"/"}>
+              <img src={backIcon} />
+            </NavLink>
+            <Title>Lighting</Title>
+          </BackBtnTitle>
+          <NavLinkWrap>
+            <NavLinkList to={"/products"} end>
+              All
+            </NavLinkList>
+            <NavLinkList to={"/products/seating"}>Seating</NavLinkList>
+            <NavLinkList to={"/products/tables"}>Tables</NavLinkList>
+            <NavLinkList to={"/products/lighting"}>Lighting</NavLinkList>
+          </NavLinkWrap>
+        </TitleWrap>
+        <ItemListMain>
+          {currentItems.map((item, index) => (
+            <Item key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
+              <ItemInfo>
+                <ItemNum>{item.num}</ItemNum>
+                <ItemName>
+                  {item.name} | {item.material}
+                </ItemName>
+              </ItemInfo>
+              <ItemImgWrap>
+                <ItemContentWrap>
+                  <ItemContent>{item.content}</ItemContent>
+                </ItemContentWrap>
+                <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+                  <Img src={item.src[0]} alt={item.name} visible={hoverImg !== index} />
+                  <Img src={item.src[1]} alt={item.name} visible={hoverImg === index} />
+                </ItemImg>
+              </ItemImgWrap>
+            </Item>
+          ))}
+        </ItemListMain>
+        <PageNationWrap>
+          <PageNationButton onClick={() => setPage(1)}>First</PageNationButton>
+          <PageNationButton onClick={() => setPage(1)}>Prev</PageNationButton>
+          {totalPages.map((list) => (
+            <CurrentPage key={list} onClick={() => setPage(list)} className={page === list ? "active" : ""}>
+              {list}
+            </CurrentPage>
+          ))}
+          <PageNationButton>Next</PageNationButton>
+          <PageNationButton>Last</PageNationButton>
+        </PageNationWrap>
+      </ItemListContainer>
+    </>
   );
 }
