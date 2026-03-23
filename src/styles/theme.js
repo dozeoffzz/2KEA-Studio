@@ -21,6 +21,7 @@ export const Theme = {
       title: "48px",
       section: "32px",
       content: "18px",
+      medium: "16px",
       small: "14px",
     },
     tablet: {

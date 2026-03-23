@@ -6,10 +6,8 @@ import bgImage from "../../assets/imgs/main/rightchair.webp";
 
 const Overlay = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 40px;
+  bottom: 140px;
   z-index: 999;
   background-color: ${Theme.colors.overlay};
   display: flex;
@@ -19,7 +17,8 @@ const Overlay = styled.div`
 
 const ModalBox = styled.div`
   position: relative;
-  width: 400px;
+  width: 330px;
+  height: 340px;
 `;
 
 // 오른쪽 상단 x 버튼
@@ -29,7 +28,8 @@ const CloseBtn = styled.button`
   right: 10px;
   background: transparent;
   color: ${Theme.colors.blacktext};
-  font-size: 20px;
+  font-size: 18px;
+  font-family: sans-serif;
   cursor: pointer;
   z-index: 10;
 `;
@@ -40,8 +40,8 @@ const ModalInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 40px 30px;
+  gap: 14px;
+  padding: 20px 15px;
   background-image: url(${bgImage});
   background-size: cover;
   background-position: center;
@@ -91,13 +91,13 @@ const InstaLabel = styled.p`
 const QrBox = styled.div`
   position: relative;
   z-index: 1;
-  width: 160px;
-  height: 160px;
+  width: 140px;
+  height: 140px;
   background-color: ${Theme.colors.white};
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 8px;
 `;
 
 const QrImage = styled.img`
@@ -117,7 +117,7 @@ const BottomText = styled.p`
 const ScanText = styled.p`
   position: relative;
   z-index: 1;
-  font-size: ${Theme.fontsize.desktop.content};
+  font-size: ${Theme.fontsize.desktop.medium};
   color: ${Theme.colors.blacktext};
 `;
 

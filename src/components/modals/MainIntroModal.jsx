@@ -34,7 +34,9 @@ const slideInContent = keyframes`
 // 화면 전체를 덮는 오버레이
 const Overlay = styled.div`
   position: fixed;
-  inset: 0;
+  top: 220px;
+  left: 40px;
+  /* inset: 0; */
   z-index: 999;
   display: flex;
   justify-content: center;
@@ -44,8 +46,8 @@ const Overlay = styled.div`
 
 // 모달 전체 프레임
 const ModalFrame = styled.div`
-  width: 500px;
-  height: 400px;
+  width: 450px;
+  height: 370px;
   display: flex;
   flex-direction: column;
   background-color: ${Theme.colors.white};
@@ -77,7 +79,7 @@ const TextStack = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 24px;
+  gap: 20px;
 `;
 
 // 메인 제목
