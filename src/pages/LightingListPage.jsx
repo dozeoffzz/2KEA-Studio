@@ -122,7 +122,7 @@ const NavLinkList = styled(NavLink)`
 // 상품 카드 리스트 그리드
 const ItemListMain = styled.div`
   width: 100%;
-  max-width: 1680px;
+  max-width: 1920px;
   margin: 0 auto;
   padding: 40px 40px;
   display: grid;
@@ -386,9 +386,9 @@ export default function LightingListPage() {
       <ItemListContainer>
         <TitleWrap className="TitleWrap">
           <BackBtnTitle>
-            <NavLink to={"/"}>
+            <BackButton to={"/"}>
               <img src={backIcon} />
-            </NavLink>
+            </BackButton>
             <Title>Lighting</Title>
           </BackBtnTitle>
           <NavLinkWrap>
