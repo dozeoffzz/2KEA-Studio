@@ -8,7 +8,7 @@ export async function fetchProducts() {
     console.log({ data });
     return data;
   } catch (error) {
-    console.log("false");
+    console.log("false :");
     console.log(error);
   }
 }
