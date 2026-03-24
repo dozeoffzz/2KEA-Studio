@@ -106,7 +106,7 @@ const QrImage = styled.img`
   object-fit: cover;
 `;
 
-const BottomText = styled.p`
+const DownText = styled.p`
   position: relative;
   z-index: 1;
   font-size: ${Theme.fontsize.desktop.small};
@@ -151,7 +151,7 @@ export default function InstagramModal({ isOpen, onClose }) {
             <QrImage src={qrCode} alt="인스타그램 QR 코드" />
           </QrBox>
 
-          <BottomText>- 팔로우 시 신제품 소식과 스타일링 팁 제공 -</BottomText>
+          <DownText>- 팔로우 시 신제품 소식과 스타일링 팁 제공 -</DownText>
           <ScanText>[QR] 스캔하여 스토리를 만나보세요</ScanText>
         </ModalInner>
       </ModalBox>

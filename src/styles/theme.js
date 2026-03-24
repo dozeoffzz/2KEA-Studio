@@ -23,18 +23,23 @@ export const Theme = {
       content: "18px",
       medium: "16px",
       small: "14px",
+      mini: "12px",
     },
     tablet: {
       title: "36px",
       section: "26px",
       content: "16px",
+      medium: "15px",
       small: "14px",
+      mini: "12px",
     },
     phone: {
       title: "28px",
       section: "22px",
       content: "16px",
+      medium: "15px",
       small: "14px",
+      mini: "12px",
     },
   },
   // New
