@@ -60,17 +60,12 @@ const SecondTitle = styled(FirstTitle)`
     transform 1.8s ease-in-out;
 `;
 
-// onAnimationEnd 애니메이션 끝나면 MainPage한테 알려주기
-export default function TopArea({ onAnimationEnd = () => {} }) {
+export default function TopArea() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   //이미지 로딩시 상태 변경하기
   const loadCompleted = () => {
     setIsLoaded(true);
-    // transition끝나면 바로 알림
-    setTimeout(() => {
-      onAnimationEnd();
-    }, 1000);
   };
 
   //onLoad 이벤트로 이미지 로딩시 실행됨
