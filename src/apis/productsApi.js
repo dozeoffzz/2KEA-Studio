@@ -1,14 +1,20 @@
 import { apiClient } from "./apiClient";
 
-export async function fetchProducts() {
+export async function fetchProducts({ category = "all", page = 1, limit = 7 }) {
   try {
-    const response = await apiClient("/products");
+    const query = new URLSearchParams();
+    // 카테고리 all이면 category를 보내지 않음(products)
+    if (category && category !== "all") {
+      query.append("category", category);
+    }
+
+    query.append("page", page);
+    query.append("limit", limit);
+    const response = await apiClient(`/products?${query.toString()}`);
 
     const data = await response.json();
-    console.log({ data });
     return data;
   } catch (error) {
-    console.log("false :");
-    console.log(error);
+    console.log(error, "false");
   }
 }

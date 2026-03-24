@@ -14,6 +14,16 @@ const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  ${({ theme }) => theme.media.tablet} {
+    height: auto;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    height: auto;
+  }
+  @media screen and (max-width: 1024px) {
+    height: auto;
+  }
 `;
 
 const Title = styled.p`
@@ -67,19 +77,31 @@ const LoginInput = styled.input`
   font-size: ${Theme.fontsize.desktop.content};
   margin-bottom: 10px;
   flex: 1;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.small};
+  }
 `;
 
 const ButtonWrap = styled.div`
   display: flex;
   gap: 30px;
   margin: 40px 0 250px 0;
+  ${({ theme }) => theme.media.tablet} {
+    margin: 40px 0 80px 0;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    margin: 40px 0 80px 0;
+  }
 `;
 
 const LoginButton = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
   background: none;
   border: none;
-  cursor: pointer;
   padding: 0;
 
   ${({ theme }) => theme.media.tablet} {
@@ -107,7 +129,7 @@ const DesignText = styled.p`
   text-align: center;
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.content};
+    font-size: ${Theme.fontsize.tablet.section};
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.content};
@@ -214,7 +236,13 @@ export default function LoginPage() {
         {/* Password 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.password}>
           <InputInfo error={errors.password}>Password</InputInfo>
-          <LoginInput name="password" type="password" placeholder="Password" value={input.password} onChange={handleChange} />
+          <LoginInput
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={input.password}
+            onChange={handleChange}
+          />
         </LoginInputWrap>
 
         <ButtonWrap>

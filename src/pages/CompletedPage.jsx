@@ -21,17 +21,49 @@ const CompletedWrap = styled.div`
   align-items: center;
 `;
 
+const CheckImg = styled.img`
+  width: 112px;
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 100px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    width: 80px;
+  }
+`;
+
 const CompletedTitle = styled.h2`
   font-size: ${Theme.fontsize.desktop.section};
   margin-bottom: 20px;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.section};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.section};
+  }
 `;
 
 const CompletedMsg = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.small};
+  }
 `;
 const GotoMain = styled(NavLink)`
   font-size: ${Theme.fontsize.desktop.content};
   margin-top: 20px;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.phone.small};
+  }
 `;
 export default function CompletedPage() {
   // 현재 날짜 보여주기
@@ -40,7 +72,7 @@ export default function CompletedPage() {
   return (
     <CompletedContainer>
       <CompletedWrap>
-        <img src={CompletedIcon} />
+        <CheckImg src={CompletedIcon} />
         <CompletedTitle>상품 주문이 완료되었습니다.</CompletedTitle>
         <CompletedMsg>감사합니다.</CompletedMsg>
         <CompletedMsg>{TodaySort}</CompletedMsg>

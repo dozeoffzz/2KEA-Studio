@@ -18,7 +18,8 @@ import AllListPage from "./pages/AllListPage";
 import MainIntroModal from "./components/modals/MainIntroModal";
 import InstagramModal from "./components/modals/InstagramModal";
 import NotFoundPage from "./pages/NotFoundPage";
-import CompletedPage from "./pages/completedPage";
+import CompletedPage from "./pages/CompletedPage";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 export default function App() {
   return (

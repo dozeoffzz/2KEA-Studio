@@ -356,8 +356,9 @@ const PageNationButton = styled.button`
 // 페이지 컴포넌트
 export default function AllListPage() {
   // 현재 페이지 번호 상태
-  const [page, setPage] = useState(1);
-  const totalPages = [1, 2, 3, 4];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [category, setCategory] = useState("all");
   const [hoverImg, setHoverImg] = useState(null);
 
   // products api 받아오기
@@ -366,21 +367,19 @@ export default function AllListPage() {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await fetchProducts();
+        // 페이지 api 받은데로 카테고리,현재페이지,보여줄 상품 제안수 보내기
+        const res = await fetchProducts({ category, page: currentPage, limit: 7 });
         setItem(res.data);
+        setTotalPage(res.totalPage);
       } catch (err) {
         console.log(err);
       }
     };
 
     getProducts();
-  }, []);
-
-  // 한페이지에 7개 상품 보여주기
-  const allPerPage = 7;
-  // 기본 시작 페이지
-  const startIndex = (page - 1) * allPerPage;
-  const currentItems = item.slice(startIndex, startIndex + allPerPage);
+  }, [currentPage, category]);
+  // 페이지네이션을 위해 배열로 만들어 주기
+  const totalPages = Array.from({ length: totalPage }, (_, i) => i + 1);
 
   return (
     <>
@@ -396,13 +395,19 @@ export default function AllListPage() {
             <NavLinkList to={"/products"} end>
               All
             </NavLinkList>
-            <NavLinkList to={"/products/seating"}>Seating</NavLinkList>
-            <NavLinkList to={"/products/tables"}>Tables</NavLinkList>
-            <NavLinkList to={"/products/lighting"}>Lighting</NavLinkList>
+            <NavLinkList to={"/products/seating"} onClick={() => setCategory("seating")}>
+              Seating
+            </NavLinkList>
+            <NavLinkList to={"/products/tables"} onClick={() => setCategory("table")}>
+              Tables
+            </NavLinkList>
+            <NavLinkList to={"/products/lighting"} onClick={() => setCategory("lighting")}>
+              Lighting
+            </NavLinkList>
           </NavLinkWrap>
         </TitleWrap>
         <ItemListMain>
-          {currentItems.map((item, index) => (
+          {item.map((item, index) => (
             <Item key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
               <ItemInfo>
                 <ItemNum category={item.category}>{item.num}</ItemNum>
@@ -424,17 +429,25 @@ export default function AllListPage() {
           ))}
         </ItemListMain>
         <PageNationWrap>
-          <PageNationButton onClick={() => setPage(1)}>First</PageNationButton>
-          <PageNationButton onClick={() => setPage(page > 1 ? page - 1 : 1)}>Prev</PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(1)}>First</PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}>
+            Prev
+          </PageNationButton>
           {totalPages.map((list) => (
-            <CurrentPage key={list} onClick={() => setPage(list)} className={page === list ? "active" : ""}>
+            <CurrentPage
+              key={list}
+              onClick={() => setCurrentPage(list)}
+              className={currentPage === list ? "active" : ""}
+            >
               {list}
             </CurrentPage>
           ))}
-          <PageNationButton onClick={() => setPage(page < totalPages.length ? page + 1 : totalPages.length)}>
+          <PageNationButton
+            onClick={() => setCurrentPage(currentPage < totalPage.length ? currentPage + 1 : totalPage.length)}
+          >
             Next
           </PageNationButton>
-          <PageNationButton onClick={() => setPage(4)}>Last</PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(4)}>Last</PageNationButton>
         </PageNationWrap>
       </ItemListContainer>
     </>

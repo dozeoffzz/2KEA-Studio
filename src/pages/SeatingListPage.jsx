@@ -355,8 +355,9 @@ const PageNationButton = styled.button`
 // 페이지 컴포넌트
 export default function SeatingListPage() {
   // 현재 페이지 번호 상태
-  const [page, setPage] = useState(1);
-  const totalPages = [1, 2];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [category, setCategory] = useState("seating");
   const [hoverImg, setHoverImg] = useState(null);
 
   // products api 받아오기
@@ -365,23 +366,19 @@ export default function SeatingListPage() {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await fetchProducts();
+        // 페이지 api 받은데로 카테고리,현재페이지,보여줄 상품 제안수 보내기
+        const res = await fetchProducts({ category, page: currentPage, limit: 7 });
         setItem(res.data);
+        setTotalPage(res.totalPage);
       } catch (err) {
         console.log(err);
       }
     };
 
     getProducts();
-  }, []);
-  // 한페이지에 7개 상품 보여주기
-  const seatingPerPage = 7;
-  // 의자만 보여주기
-  const seatingItem = item.filter((item) => item.category === "seating");
-  // 기본 시작 페이지
-  const startIndex = (page - 1) * seatingPerPage;
-  // 한페이지에 7개 상품 보여주기
-  const currentItems = seatingItem.slice(startIndex, startIndex + seatingPerPage);
+  }, [currentPage, category]);
+  // 페이지네이션을 위해 배열로 만들어 주기
+  const totalPages = Array.from({ length: totalPage }, (_, i) => i + 1);
 
   return (
     <>
@@ -397,13 +394,19 @@ export default function SeatingListPage() {
             <NavLinkList to={"/products"} end>
               All
             </NavLinkList>
-            <NavLinkList to={"/products/seating"}>Seating</NavLinkList>
-            <NavLinkList to={"/products/tables"}>Tables</NavLinkList>
-            <NavLinkList to={"/products/lighting"}>Lighting</NavLinkList>
+            <NavLinkList to={"/products/seating"} onClick={() => setCategory("seating")}>
+              Seating
+            </NavLinkList>
+            <NavLinkList to={"/products/tables"} onClick={() => setCategory("table")}>
+              Tables
+            </NavLinkList>
+            <NavLinkList to={"/products/lighting"} onClick={() => setCategory("lighting")}>
+              Lighting
+            </NavLinkList>
           </NavLinkWrap>
         </TitleWrap>
         <ItemListMain>
-          {currentItems.map((item, index) => (
+          {item.map((item, index) => (
             <Item key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
               <ItemInfo>
                 <ItemNum>{item.num}</ItemNum>
@@ -424,15 +427,19 @@ export default function SeatingListPage() {
           ))}
         </ItemListMain>
         <PageNationWrap>
-          <PageNationButton onClick={() => setPage(1)}>First</PageNationButton>
-          <PageNationButton onClick={() => setPage(1)}>Prev</PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(1)}>First</PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(1)}>Prev</PageNationButton>
           {totalPages.map((list) => (
-            <CurrentPage key={list} onClick={() => setPage(list)} className={page === list ? "active" : ""}>
+            <CurrentPage
+              key={list}
+              onClick={() => setCurrentPage(list)}
+              className={currentPage === list ? "active" : ""}
+            >
               {list}
             </CurrentPage>
           ))}
-          <PageNationButton onClick={() => setPage(2)}>Next</PageNationButton>
-          <PageNationButton onClick={() => setPage(2)}>Last</PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(2)}>Next</PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(2)}>Last</PageNationButton>
         </PageNationWrap>
       </ItemListContainer>
     </>

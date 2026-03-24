@@ -169,6 +169,9 @@ const ItemDelevery = styled.p`
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
+  @media screen and (max-width: 400px) {
+    display: none;
+  }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
     display: none;
@@ -425,7 +428,7 @@ export default function ShoppingCartPage() {
             </NavLink>
             <ItemInfoWrap>
               <ItemName>{item.name}</ItemName>
-              <p>{item.price.toLocaleString()} ₩</p>
+              <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>
               <ItemDelevery>적립금: -</ItemDelevery>
               <ItemDelevery>배송비: 무료</ItemDelevery>
             </ItemInfoWrap>
