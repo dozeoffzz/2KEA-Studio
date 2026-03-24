@@ -40,6 +40,12 @@ const Overlay = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(12, 12, 12, 0.12);
+  padding: 16px;
+  box-sizing: border-box;
+
+  ${({ theme }) => theme.media.mobile} {
+    padding: 12px;
+  }
 `;
 
 // 모달 전체 프레임
@@ -49,16 +55,27 @@ const ModalFrame = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${Theme.colors.white};
+  overflow: hidden;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 350px;
+    height: 330px;
+  }
 `;
 
 // 텍스트 내용이 들어가는 상단 영역
 const ContentArea = styled.div`
   flex: 1;
-  padding-top: 20px;
+  padding: 20px 24px 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  ${({ theme }) => theme.media.mobile} {
+    padding: 18px 16px 0;
+  }
 `;
 
 // 실제로 바뀌는 내용만 감싸는 박스
@@ -72,22 +89,34 @@ const AnimatedContent = styled.div`
 // 제목, 본문 등을 세로로 쌓는 영역
 const TextStack = styled.div`
   width: 100%;
-  min-height: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 24px;
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 18px;
+  }
 `;
 
 // 메인 제목
 const Title = styled.span`
   font-size: 32px;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 24px;
+  }
 `;
 
 // 부제목
 const SecondTitle = styled.span`
   font-size: 14px;
+  line-height: 1.5;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 // 두 줄 이상 본문
@@ -95,13 +124,21 @@ const Content = styled.span`
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.6;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 // 한 줄 본문
 const SingleLineText = styled.span`
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.6;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 // 안내 문구 여러 줄 묶음
@@ -116,6 +153,10 @@ const InfoStack = styled.div`
 const InfoText = styled.span`
   font-size: 14px;
   line-height: 1.4;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 // 점 3개가 들어가는 영역
@@ -141,8 +182,7 @@ const Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ active }) =>
-    active ? Theme.colors.black : "#b3b3b3"};
+  background-color: ${({ active }) => (active ? Theme.colors.black : "#b3b3b3")};
 `;
 
 // 하단 버튼 전체 영역
@@ -166,6 +206,11 @@ const BaseButton = styled.button`
   font-size: 14px;
   text-align: center;
   cursor: pointer;
+
+  ${({ theme }) => theme.media.mobile} {
+    min-height: 40px;
+    font-size: 12px;
+  }
 `;
 
 // 오늘 하루 열지 않기 버튼
@@ -206,10 +251,7 @@ const modalContents = [
     blocks: [
       {
         type: "content",
-        lines: [
-          "성수 쇼룸에서 소파 및 조명 구매 대상으로",
-          "초이스 쿠션 증정 이벤트를 진행중 입니다.",
-        ],
+        lines: ["성수 쇼룸에서 소파 및 조명 구매 대상으로", "초이스 쿠션 증정 이벤트를 진행중 입니다."],
       },
       {
         type: "single",
@@ -217,10 +259,7 @@ const modalContents = [
       },
       {
         type: "info",
-        lines: [
-          "* 초이스쿠션 종류는 재고 상황에 따라 상이합니다.",
-          "* 3월 27일 ~ 4월 3일 단 7일동안 진행됩니다.",
-        ],
+        lines: ["* 초이스쿠션 종류는 재고 상황에 따라 상이합니다.", "* 3월 27일 ~ 4월 3일 단 7일동안 진행됩니다."],
       },
     ],
   },
@@ -230,17 +269,11 @@ const modalContents = [
     blocks: [
       {
         type: "content",
-        lines: [
-          "평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,",
-          "예약자 우선으로 상담이 진행됩니다.",
-        ],
+        lines: ["평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,", "예약자 우선으로 상담이 진행됩니다."],
       },
       {
         type: "content",
-        lines: [
-          "상담 예약은 평일에만 진행되며,",
-          "주말에는 예약 없이 방문 가능합니다",
-        ],
+        lines: ["상담 예약은 평일에만 진행되며,", "주말에는 예약 없이 방문 가능합니다"],
       },
       {
         type: "single",
@@ -318,10 +351,7 @@ export default function MainIntroModalCarousel() {
   };
 
   // 현재 인덱스에 맞는 모달 내용 가져오기
-  const currentContent = useMemo(
-    () => modalContents[currentIndex],
-    [currentIndex],
-  );
+  const currentContent = useMemo(() => modalContents[currentIndex], [currentIndex]);
 
   // 안 보이게 되어 있으면 렌더링하지 않음
   if (!isVisible) return null;
@@ -352,9 +382,7 @@ export default function MainIntroModalCarousel() {
 
         <BottomArea>
           <ButtonWrap>
-            <TodayCloseButton onClick={handleTodayClose}>
-              오늘 하루 열지 않기
-            </TodayCloseButton>
+            <TodayCloseButton onClick={handleTodayClose}>오늘 하루 열지 않기</TodayCloseButton>
             <CloseButton onClick={handleClose}>닫기</CloseButton>
           </ButtonWrap>
         </BottomArea>
