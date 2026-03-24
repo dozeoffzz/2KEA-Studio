@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 // 테스트용 이미지
 import { useCartStore } from "../stores/useCartStore";
 import MoveCartModal from "../components/modals/MoveCartModal";
-import { fetchProducts } from "../apis/productsApi";
+import { detailApi } from "../apis/detailApi";
 
 const MainWrap = styled.div`
   margin-top: 100px;
@@ -412,7 +412,7 @@ export default function DetailedPage() {
   const { addItem } = useCartStore();
 
   // products api 받아오기
-  const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // 모달 끄고 닫기
@@ -430,9 +430,10 @@ export default function DetailedPage() {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await fetchProducts();
+        const res = await detailApi(id);
         console.log("fetchProducts 결과:", res);
-        setProducts(res.data);
+        setProduct(res.data);
+        console.log(detailImgs);
       } catch (err) {
         console.log(err);
       } finally {
@@ -441,10 +442,7 @@ export default function DetailedPage() {
     };
 
     getProducts();
-  }, []);
-
-  // 현재 상세페이지에 해당하는 상품 찾기
-  const product = products.find((item) => item.id === Number(id));
+  }, [id]);
 
   if (isLoading) {
     return (
@@ -480,7 +478,7 @@ export default function DetailedPage() {
   }
 
   // 슬라이드 이미지
-  const rawImg = (product.src || []).filter(Boolean).map((src) => src.trim());
+  const rawImg = product.slideImgs || [];
 
   let img = [];
 
@@ -488,11 +486,13 @@ export default function DetailedPage() {
     img = rawImg;
   } else if (rawImg.length === 2) {
     img = [rawImg[0], rawImg[1], rawImg[0]];
+  } else if (rawImg.length === 1) {
+    img = [rawImg[0], rawImg[0], rawImg[0]];
   }
 
   // 상세 이미지
   // 이 부분부터 안 돼요ㅠㅠㅠ
-  const detailImgs = (product.detailImg || []).filter(Boolean).map((src) => src.trim());
+  const detailImgs = product.detailImg || [];
 
   const lastIdx = img.length - 1;
 
@@ -550,7 +550,7 @@ export default function DetailedPage() {
       name: product.name,
       price: product.price,
       category: product.category,
-      src: product.src,
+      src: product.slideImgs,
       quantity: quantity,
     });
   };
@@ -613,7 +613,9 @@ export default function DetailedPage() {
       </ImgGallery>
 
       <DetailSection>
-        <LeftContent>{detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}</LeftContent>
+        <LeftContent>
+          {detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}
+        </LeftContent>
         <RightContent>
           <StickyBox>
             <InfoGroup>
