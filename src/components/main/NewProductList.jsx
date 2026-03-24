@@ -4,7 +4,7 @@ import ScrollReveal from "../common/ScrollReveal";
 import { Theme } from "../../styles/theme";
 
 //API 호출
-import { getMainPage } from "../../api/mainPageApi";
+import { fetchMain } from "../../apis/mainApi";
 
 //스타일 컴포넌트
 const ItemList = styled.div`
@@ -165,7 +165,7 @@ export default function NewProductList() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const result = await getMainPage();
+        const result = await fetchMain();
         // 데이터가 배열인지 확인 후 저장하기
         if (result && Array.isArray(result.data.recommendations)) {
           setList(result.data.recommendations);
