@@ -25,7 +25,7 @@ export default function App() {
   return (
     <div>
       {MainPage && <MainIntroModal />}
-
+      <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />

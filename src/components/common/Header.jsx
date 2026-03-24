@@ -12,7 +12,8 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background: #0c0c0ca0;
+  background: ${Theme.colors.overlay};
+  backdrop-filter: blur(3px);
   opacity: ${(props) => (props.isOpen ? 1 : 0)};
   pointer-events: none;
 
