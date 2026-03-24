@@ -1022,10 +1022,7 @@ export default function MainPage() {
       </ScrollReveal>
 
       {isIntroOpen && <MainIntroModalCarousel />}
-      <InstagramModal
-        isOpen={isInstaOpen}
-        onClose={() => setIsInstaOpen(false)}
-      />
+      <InstagramModal isOpen={isInstaOpen} onClose={() => setIsInstaOpen(false)} />
     </MainSection>
   );
 }

@@ -61,8 +61,8 @@ const SecondTitle = styled(FirstTitle)`
 `;
 
 // onAnimationEnd 애니메이션 끝나면 MainPage한테 알려주기
-export default function TopArea({ onAnimationEnd }) {
-  const [isLoaded, setIsLoaded] = useState(false); 
+export default function TopArea({ onAnimationEnd = () => {} }) {
+  const [isLoaded, setIsLoaded] = useState(false);
 
   //이미지 로딩시 상태 변경하기
   const loadCompleted = () => {
