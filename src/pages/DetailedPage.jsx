@@ -3,10 +3,6 @@ import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { Theme } from "../styles/theme";
 import styled from "@emotion/styled";
 // 테스트용 이미지
-import detailImg1 from "../assets/imgs/detail/detailImg1.svg";
-import detailImg2 from "../assets/imgs/detail/detailImg2.webp";
-import detailImg3 from "../assets/imgs/detail/detailImg3.webp";
-import detailImg4 from "../assets/imgs/detail/detailImg4.webp";
 import { useCartStore } from "../stores/useCartStore";
 import MoveCartModal from "../components/modals/MoveCartModal";
 import { fetchProducts } from "../apis/productsApi";
@@ -435,6 +431,7 @@ export default function DetailedPage() {
     const getProducts = async () => {
       try {
         const res = await fetchProducts();
+        console.log("fetchProducts 결과:", res);
         setProducts(res.data);
       } catch (err) {
         console.log(err);
@@ -482,8 +479,20 @@ export default function DetailedPage() {
     );
   }
 
-  // 슬라이드 이미지 배열
-  const img = [product.src?.[0] || detailImg2, product.src?.[1] || detailImg3, product.src?.[2] || detailImg4];
+  // 슬라이드 이미지
+  const rawImg = (product.src || []).filter(Boolean).map((src) => src.trim());
+
+  let img = [];
+
+  if (rawImg.length >= 3) {
+    img = rawImg;
+  } else if (rawImg.length === 2) {
+    img = [rawImg[0], rawImg[1], rawImg[0]];
+  }
+
+  // 상세 이미지
+  // 이 부분부터 안 돼요ㅠㅠㅠ
+  const detailImgs = (product.detailImg || []).filter(Boolean).map((src) => src.trim());
 
   const lastIdx = img.length - 1;
 
@@ -604,10 +613,7 @@ export default function DetailedPage() {
       </ImgGallery>
 
       <DetailSection>
-        <LeftContent>
-          <DetailImg src={detailImg1} alt={`${product.name} 상세 이미지`} />
-        </LeftContent>
-
+        <LeftContent>{detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}</LeftContent>
         <RightContent>
           <StickyBox>
             <InfoGroup>
