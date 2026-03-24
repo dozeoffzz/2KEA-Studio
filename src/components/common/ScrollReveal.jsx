@@ -2,16 +2,23 @@ import styled from "@emotion/styled";
 import { useEffect, useRef, useState } from "react";
 
 const FadeContainer = styled.div`
+  padding: 0 15px;
   //구조분해 할당(isVisible 상태에 따라 투명도 전환)
-  opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   //구조분해 할당(isVisible 상태에 따라 위치 전환)
-  transform: translateY(${({ $isVisible }) => ($isVisible ? "0" : "30px")});
+  transform: translateY(${({ isVisible }) => (isVisible ? "0" : "30px")});
   //구조분해 할당(mouseEvent 상태에 따라 마우스 이벤트 여부 결정)
-  pointer-events: ${({ $mouseEvent }) => ($mouseEvent ? "auto" : "none")};
+  pointer-events: ${({ mouseEvent }) => (mouseEvent ? "auto" : "none")};
   transition:
     opacity 0.6s ease-in-out,
     transform 0.6s ease-in-out;
-  width: 100%;
+
+  ${({ theme }) => theme.media.tablet} {
+    padding: 0 12px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0 2px;
+  }
 `;
 
 export default function ScrollReveal({ children }) {
@@ -57,7 +64,7 @@ export default function ScrollReveal({ children }) {
   }, []); //빈 의존성 배열: 딱 한번만 실행
 
   return (
-    <FadeContainer ref={domRef} $isVisible={isVisible} $mouseEvent={mouseEvent}>
+    <FadeContainer ref={domRef} isVisible={isVisible} mouseEvent={mouseEvent}>
       {children}
     </FadeContainer>
   );
