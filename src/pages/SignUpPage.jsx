@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Theme } from "../styles/theme";
 import SignUpModal from "../components/modals/SignUpModal";
+import TermsModal from "../components/modals/TermsModal";
 import bgchair from "../assets/imgs/signup/chair.png";
 
 const SignupPage = styled.div`
@@ -74,7 +75,7 @@ const SignupTitle = styled.h2`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.section};
+    font-size: ${Theme.fontsize.mobile.section};
   }
 `;
 
@@ -116,7 +117,7 @@ const SectionTitle = styled.p`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
     margin-bottom: 10px;
   }
 `;
@@ -138,7 +139,7 @@ const MemberTypeBox = styled.div`
   // 모바일
   ${Theme.media.mobile} {
     gap: 30px;
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -190,7 +191,7 @@ const FormLabel = styled.label`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
     width: 70px;
   }
 `;
@@ -212,7 +213,7 @@ const FormInput = styled.input`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -233,7 +234,7 @@ const ErrorMsg = styled.span`
   // 모바일
   ${Theme.media.mobile} {
     padding-left: 80px;
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -254,7 +255,7 @@ const SuccessMsg = styled.span`
   // 모바일
   ${Theme.media.mobile} {
     padding-left: 80px;
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -282,7 +283,7 @@ const CheckBtn = styled.button`
   }
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
     padding: 4px 8px;
   }
 `;
@@ -323,7 +324,7 @@ const PhoneSelect = styled.select`
   // 모바일
   ${Theme.media.mobile} {
     width: 60px;
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -344,7 +345,7 @@ const PhoneInput = styled.input`
   }
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -366,7 +367,7 @@ const BirthInput = styled.input`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -385,7 +386,7 @@ const BirthMsg = styled.span`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -403,7 +404,7 @@ const AgreeAllRow = styled.div`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -437,7 +438,7 @@ const AgreeGroupTitle = styled.p`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -465,7 +466,7 @@ const AgreeItemLabel = styled.label`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -486,7 +487,7 @@ const AgreeItemDesc = styled.span`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -512,7 +513,7 @@ const AgreeOptLabel = styled.label`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -533,7 +534,7 @@ const AgreeViewBtn = styled.button`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.mini};
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -556,7 +557,7 @@ const AgreeMsg = styled.span`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -574,7 +575,7 @@ const SignupBtn = styled.button`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
     padding: 10px 28px;
   }
 `;
@@ -642,7 +643,7 @@ export default function Signup() {
     password: "",
     passwordCheck: "",
     name: "",
-    phone: "",
+    mobile: "",
     email: "",
     birthYear: "",
     birthMonth: "",
@@ -656,6 +657,9 @@ export default function Signup() {
 
   // 회원가입 완료 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 약관 모달 선택한거 열리게
+  const [modalType, setModalType] = useState(null);
 
   // 아이디 영문 필수, 숫자와 _ 만 허용
   const idRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9_]+$/;
@@ -947,12 +951,12 @@ export default function Signup() {
     // 전화번호
     if (form.phone2.trim() === "") {
       newErrors.phone2 = true;
-      newMsgs.phone = "전화번호를 입력해주세요";
+      newMsgs.mobile = "전화번호를 입력해주세요";
       hasError = true;
     }
     if (form.phone3.trim() === "") {
       newErrors.phone3 = true;
-      newMsgs.phone = "전화번호를 입력해주세요";
+      newMsgs.mobile = "전화번호를 입력해주세요";
       hasError = true;
     }
 
@@ -1030,7 +1034,7 @@ export default function Signup() {
       userType: memberType,
       id: form.id,
       name: form.name,
-      phone: `${form.phone1}-${form.phone2}-${form.phone3}`,
+      mobile: `${form.phone1}-${form.phone2}-${form.phone3}`,
       email: form.email,
       birthdate: `${form.birthYear}-${form.birthMonth}-${form.birthDay}`,
       agreeTerms: agreement.agreeTerms,
@@ -1187,7 +1191,7 @@ export default function Signup() {
                 onChange={handleChange}
               />
             </PhoneWrap>
-            {msgs.phone && <ErrorMsg>{msgs.phone}</ErrorMsg>}
+            {msgs.mobile && <ErrorMsg>{msgs.mobile}</ErrorMsg>}
           </FormRow>
 
           {/* 이메일 */}
@@ -1265,7 +1269,12 @@ export default function Signup() {
               <AgreeGroupTitle>
                 홈페이지 개인정보 처리 동의
                 {/* 약관보기 버튼 */}
-                <AgreeViewBtn type="button">약관보기</AgreeViewBtn>
+                <AgreeViewBtn
+                  type="button"
+                  onClick={() => setModalType("privacy")}
+                >
+                  약관보기
+                </AgreeViewBtn>
               </AgreeGroupTitle>
               <AgreeItemRow>
                 <AgreeItemLabel error={errors.agreePrivacy}>
@@ -1291,7 +1300,12 @@ export default function Signup() {
               <AgreeGroupTitle>
                 Avie much 서비스 약관 및 개인정보 동의
                 {/* 약관보기 버튼 */}
-                <AgreeViewBtn type="button">약관보기</AgreeViewBtn>
+                <AgreeViewBtn
+                  type="button"
+                  onClick={() => setModalType("terms")}
+                >
+                  약관보기
+                </AgreeViewBtn>
               </AgreeGroupTitle>
               <AgreeItemRow>
                 <AgreeItemLabel error={errors.agreeTerms}>
@@ -1324,7 +1338,12 @@ export default function Signup() {
               <AgreeGroupTitle>
                 [ 선택 ] 쇼핑정보 수신 동의
                 {/* 약관보기 버튼 */}
-                <AgreeViewBtn type="button">약관보기</AgreeViewBtn>
+                <AgreeViewBtn
+                  type="button"
+                  onClick={() => setModalType("marketing")}
+                >
+                  약관보기
+                </AgreeViewBtn>
               </AgreeGroupTitle>
 
               <AgreeItemRow>
@@ -1372,6 +1391,8 @@ export default function Signup() {
           navigate("/");
         }}
       />
+      {/* 약관 모달 선택하면 나오게  */}
+      <TermsModal type={modalType} onClose={() => setModalType(null)} />
     </SignupPage>
   );
 }
