@@ -61,7 +61,7 @@ export default function ScrollReveal({ children }) {
       observer.disconnect();
       clearTimeout(timer);
     }; //클린업 함수(언마운트 시 감시하지 않기, 타이머 정리)
-  }, []); //빈 의존성 배열: 딱 한번만 실행
+  }, []);
 
   return (
     <FadeContainer ref={domRef} isVisible={isVisible} mouseEvent={mouseEvent}>
