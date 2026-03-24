@@ -17,8 +17,16 @@ const Overlay = styled.div`
 
 const ModalBox = styled.div`
   position: relative;
+<<<<<<< HEAD
   width: 330px;
   height: 340px;
+=======
+  width: 400px;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 270px;
+  }
+>>>>>>> dev
 `;
 
 // 오른쪽 상단 x 버튼
@@ -32,6 +40,10 @@ const CloseBtn = styled.button`
   font-family: sans-serif;
   cursor: pointer;
   z-index: 10;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 15px;
+  }
 `;
 
 // 모달 배경 이미지
@@ -46,6 +58,10 @@ const ModalInner = styled.div`
   background-size: cover;
   background-position: center;
   text-align: center;
+
+  ${({ theme }) => theme.media.mobile} {
+    padding: 20px 15px;
+  }
 
   // 이미지 위에 반투명 레이어 올려서 연하게
   &::before {
@@ -67,6 +83,10 @@ const Title = styled.p`
   color: ${Theme.colors.blacktext};
   font-weight: 400;
   letter-spacing: 2px;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 18px;
+  }
 `;
 
 const SubTitle = styled.p`
@@ -77,6 +97,10 @@ const SubTitle = styled.p`
   font-weight: ${Theme.fontweight.qrweight};
   color: ${Theme.colors.qrtext};
   line-height: 1.6;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 16px;
+  }
 `;
 
 const InstaLabel = styled.p`
@@ -85,6 +109,10 @@ const InstaLabel = styled.p`
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.blacktext};
   letter-spacing: 2px;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 // qr 이미지 박스
@@ -97,7 +125,12 @@ const QrBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: 10px;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 const QrImage = styled.img`
@@ -112,6 +145,10 @@ const DownText = styled.p`
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.blacktext};
   letter-spacing: 1px;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 11px;
+  }
 `;
 
 const ScanText = styled.p`
@@ -119,6 +156,10 @@ const ScanText = styled.p`
   z-index: 1;
   font-size: ${Theme.fontsize.desktop.medium};
   color: ${Theme.colors.blacktext};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 14px;
+  }
 `;
 
 // isOpen - 모달 열고 닫는 상태값

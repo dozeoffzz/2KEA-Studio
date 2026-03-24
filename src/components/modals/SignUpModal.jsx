@@ -28,6 +28,11 @@ const SignUpModalContainer = styled.div`
   min-height: 242px;
   background-color: ${Theme.colors.white};
   box-shadow: 4px 4px 10px;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 250px;
+    height: 180px;
+  }
 `;
 
 const SignUpModalWrap = styled.div`
@@ -37,6 +42,10 @@ const SignUpModalWrap = styled.div`
   justify-content: space-between;
   gap: 59px;
   background-color: ${Theme.colors.white};
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 32px;
+  }
 `;
 
 const LineLignt = styled.img`
@@ -59,17 +68,39 @@ const SignUpModalTitleWrap = styled.div`
 
 const SignUpModalTitle = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const Content = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
   text-align: center;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const DeleteButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 24px;
   height: 24px;
+  padding: 0;
   background-color: transparent;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 16px;
+    height: 16px;
+
+    img {
+      width: 10px;
+      height: 10px;
+    }
+  }
 `;
 
 const ButtonWrap = styled.div`
@@ -77,6 +108,10 @@ const ButtonWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    height: 28px;
+  }
 `;
 
 const Button = styled.button`
@@ -85,6 +120,10 @@ const Button = styled.button`
   background-color: ${Theme.colors.black};
   color: ${Theme.colors.whitetext};
   border-top: 1px solid ${Theme.colors.black};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 export default function SignUpModal({ isOpen, onClose }) {

@@ -1,15 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, NavLink } from "react-router-dom";
-import { itemList } from "../services/Apiex";
 import { Theme } from "../styles/theme";
 import styled from "@emotion/styled";
 // 테스트용 이미지
-import detailImg1 from "../assets/imgs/detail/detailImg1.svg";
-import detailImg2 from "../assets/imgs/detail/detailImg2.webp";
-import detailImg3 from "../assets/imgs/detail/detailImg3.webp";
-import detailImg4 from "../assets/imgs/detail/detailImg4.webp";
 import { useCartStore } from "../stores/useCartStore";
 import MoveCartModal from "../components/modals/MoveCartModal";
+import { fetchProducts } from "../apis/productsApi";
 
 const MainWrap = styled.div`
   margin-top: 100px;
@@ -158,7 +154,7 @@ const ProductName = styled.p`
 
   ${({ theme }) => theme.media.mobile} {
     margin-top: 40px;
-    font-size: ${Theme.fontsize.mobile?.section || "22px"};
+    font-size: 22px;
   }
 `;
 
@@ -242,7 +238,7 @@ const InfoTitle = styled.p`
   color: ${Theme.colors.blacktext};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -256,7 +252,7 @@ const InfoRow = styled.div`
   ${({ theme }) => theme.media.mobile} {
     gap: 14px;
     margin-bottom: 8px;
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -287,7 +283,7 @@ const QtyBtn = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -296,7 +292,7 @@ const QtyValue = styled.span`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -307,7 +303,7 @@ const Price = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -327,7 +323,7 @@ const CardBtn = styled.button`
   ${({ theme }) => theme.media.mobile} {
     height: 38px;
     margin-top: 10px;
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -349,11 +345,11 @@ const Back = styled.button`
 
   ${({ theme }) => theme.media.mobile} {
     margin-top: 40px;
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
-// 추가 정보
+// 추가 정보 아코디언
 const MoreInfoWrap = styled.div`
   margin-top: 12px;
 
@@ -362,18 +358,51 @@ const MoreInfoWrap = styled.div`
   }
 `;
 
-const MoreInfo = styled.div`
-  padding: 12px 0;
+const AccordionItem = styled.div`
   border-bottom: 1px solid ${Theme.colors.textsecondary};
+
+  &:last-child {
+    border-bottom: 1px solid ${Theme.colors.textsecondary};
+  }
+`;
+
+const AccordionBtn = styled.button`
+  width: 100%;
+  padding: 12px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: ${Theme.colors.textsecondary};
+  font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
+`;
+
+// 아코디언 열림/닫힘 아이콘
+const AccordionIcon = styled.span`
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.textsecondary};
 
-  &:last-child {
-    border-bottom: none;
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
   }
+`;
+
+const AccordionBody = styled.div`
+  max-height: ${(props) => (props.$isOpen ? "200px" : "0")};
+  overflow: hidden;
+  transition: 0.45s ease;
+`;
+
+const AccordionContent = styled.div`
+  padding: 0px 0px 16px;
+  color: ${Theme.colors.textsecondary};
+  font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -381,8 +410,13 @@ export default function DetailedPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCartStore();
+
+  // products api 받아오기
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   // 모달 끄고 닫기
-  const [isOpen, setIsOpen] = useState();
+  const [isOpen, setIsOpen] = useState(false);
 
   // 수량
   const [quantity, setQuantity] = useState(1);
@@ -390,14 +424,76 @@ export default function DetailedPage() {
   // 슬라이드 인덱스
   const [imgIdx, setImgIdx] = useState(0);
 
-  const item = itemList.find((item) => item.id === Number(id));
+  // 아코디언 열고 닫기
+  const [openIdx, setOpenIdx] = useState(null);
 
-  if (!item) {
-    return <div>존재하지 않는 상품입니다.</div>;
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await fetchProducts();
+        console.log("fetchProducts 결과:", res);
+        setProducts(res.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getProducts();
+  }, []);
+
+  // 현재 상세페이지에 해당하는 상품 찾기
+  const product = products.find((item) => item.id === Number(id));
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          fontSize: "32px",
+        }}
+      >
+        Loading...
+      </div>
+    );
   }
 
-  // 슬라이드 이미지 배열
-  const img = [item.image || detailImg2, item.image || detailImg3, item.image || detailImg4];
+  // 상품이 존재하지 않을 때 처리
+  if (!product) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          fontSize: "32px",
+        }}
+      >
+        존재하지 않는 상품입니다.
+      </div>
+    );
+  }
+
+  // 슬라이드 이미지
+  const rawImg = (product.src || []).filter(Boolean).map((src) => src.trim());
+
+  let img = [];
+
+  if (rawImg.length >= 3) {
+    img = rawImg;
+  } else if (rawImg.length === 2) {
+    img = [rawImg[0], rawImg[1], rawImg[0]];
+  }
+
+  // 상세 이미지
+  // 이 부분부터 안 돼요ㅠㅠㅠ
+  const detailImgs = (product.detailImg || []).filter(Boolean).map((src) => src.trim());
+
   const lastIdx = img.length - 1;
 
   // 이전 인덱스 구하기
@@ -423,7 +519,7 @@ export default function DetailedPage() {
   };
 
   // 총 금액 계산
-  const totalPrice = item.price * quantity;
+  const totalPrice = product.price * quantity;
 
   // 수량 줄이기
   const handleDecrease = () => {
@@ -446,47 +542,85 @@ export default function DetailedPage() {
   const handleNextSlide = () => {
     setImgIdx((prev) => getNextIdx(prev));
   };
+
   // 상품 추가
   const handleAdd = () => {
     addItem({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      category: item.category,
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      category: product.category,
+      src: product.src,
       quantity: quantity,
     });
   };
+
+  // 아코디언 열고 닫기
+  const handleAccordionToggle = (idx) => {
+    setOpenIdx((prev) => (prev === idx ? null : idx));
+  };
+
+  // 추가 정보 내용
+  const accordionItems = [
+    {
+      title: "제품 관리 정보",
+      content:
+        "직사광선이나 고온다습한 환경은 제품의 변형 및 변색 원인이 될 수 있으므로 피해주세요. 오염이 발생한 경우에는 부드러운 마른 천으로 가볍게 닦아 관리해 주세요. 거친 수세미, 화학 세제, 강한 마찰은 표면 손상의 원인이 될 수 있습니다.",
+    },
+    {
+      title: "교환 및 반품 정보",
+      content:
+        "단순 변심에 의한 교환 및 반품은 상품 수령 후 7일 이내 접수 가능합니다. 단, 제품을 사용하였거나 고객 부주의로 인한 훼손이 발생한 경우에는 교환 및 반품이 제한될 수 있습니다. 상품의 포장, 구성품, 안내서 등이 누락되지 않은 상태로 접수해 주셔야 합니다.",
+    },
+    {
+      title: "고객 확인 사항",
+      content:
+        "모니터 해상도 및 촬영 환경에 따라 실제 제품의 색상은 화면과 다르게 보일 수 있습니다. 측정 방식에 따라 사이즈는 약간의 오차가 발생할 수 있습니다. 소재 및 제작 공정 특성상 미세한 스크래치, 결 차이, 톤 차이는 불량 사유에 해당하지 않습니다.",
+    },
+    {
+      title: "상품 고시 정보",
+      content:
+        "품명, 소재, 색상, 사이즈 등 세부 정보는 상세페이지 내 상품 정보를 참고해 주세요. 제조국 및 제조 관련 정보는 상품별 상세 안내 기준에 따라 제공됩니다. 배송 및 설치 관련 내용 또한 상품 안내 정보를 함께 확인해 주세요.",
+    },
+    {
+      title: "커스터마이징",
+      content:
+        "사이즈 및 마감 방식에 따라 주문 제작이 가능한 상품입니다. 맞춤 제작 특성상 상담 후 제작이 진행되며, 제작 완료 후 교환 및 반품은 어려울 수 있습니다. 원하시는 사양이 있는 경우 문의를 통해 상세 안내를 받아보실 수 있습니다.",
+    },
+  ];
 
   return (
     <MainWrap>
       <ImgGallery>
         <SliderWrap>
-          <LeftArrow onClick={handlePrevSlide}>‹</LeftArrow>
-          <RightArrow onClick={handleNextSlide}>›</RightArrow>
+          <LeftArrow type="button" onClick={handlePrevSlide}>
+            ‹
+          </LeftArrow>
+          <RightArrow type="button" onClick={handleNextSlide}>
+            ›
+          </RightArrow>
+
           <Slider>
             {img.map((src, idx) => (
               <SlideItem key={idx} $position={getImgPosition(idx)}>
-                <SlideImg src={src} alt={`${item.name} 슬라이드 이미지 ${idx + 1}`} />
+                <SlideImg src={src} alt={`${product.name} 슬라이드 이미지 ${idx + 1}`} />
               </SlideItem>
             ))}
           </Slider>
         </SliderWrap>
 
-        <ProductName>{item.name} Detail</ProductName>
+        <ProductName>{product.name} Detail</ProductName>
       </ImgGallery>
 
       <DetailSection>
-        <LeftContent>
-          <DetailImg src={detailImg1} alt={`${item.name} 상세 이미지`} />
-        </LeftContent>
-
+        <LeftContent>{detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}</LeftContent>
         <RightContent>
           <StickyBox>
             <InfoGroup>
               <InfoTitle>Note</InfoTitle>
               <InfoRow>
                 <Label>Promotion</Label>
-                <Value>{item.material}</Value>
+                <Value>{product.material}</Value>
               </InfoRow>
             </InfoGroup>
 
@@ -507,16 +641,21 @@ export default function DetailedPage() {
             </InfoGroup>
 
             <QtyWrap>
-              <QtyBtn onClick={handleDecrease}>-</QtyBtn>
+              <QtyBtn type="button" onClick={handleDecrease}>
+                -
+              </QtyBtn>
               <QtyValue>{quantity}</QtyValue>
-              <QtyBtn onClick={handleIncrease}>+</QtyBtn>
+              <QtyBtn type="button" onClick={handleIncrease}>
+                +
+              </QtyBtn>
             </QtyWrap>
 
-            <Price>상품 금액: {item.price.toLocaleString()}원</Price>
+            <Price>상품 금액: {product.price.toLocaleString()}원</Price>
             <Price>총 금액: {totalPrice.toLocaleString()}원</Price>
 
             <BtnGroup>
               <CardBtn
+                type="button"
                 onClick={() => {
                   handleAdd();
                   setIsOpen(true);
@@ -524,7 +663,9 @@ export default function DetailedPage() {
               >
                 Shopping Cart
               </CardBtn>
+
               <CardBtn
+                type="button"
                 onClick={() => {
                   handleAdd();
                   navigate("/cart");
@@ -534,18 +675,32 @@ export default function DetailedPage() {
               </CardBtn>
             </BtnGroup>
 
-            <Back onClick={() => navigate("/allproducts")}>다른 상품 보러가기</Back>
+            <Back type="button" onClick={() => navigate(-1)}>
+              다른 상품 보러가기
+            </Back>
 
             <MoreInfoWrap>
-              <MoreInfo>제품 관리 정보</MoreInfo>
-              <MoreInfo>교환 및 반품 정보</MoreInfo>
-              <MoreInfo>고객 확인 사항</MoreInfo>
-              <MoreInfo>상품 고시 정보</MoreInfo>
-              <MoreInfo>커스터마이징</MoreInfo>
+              {accordionItems.map((accordion, idx) => {
+                const isActive = openIdx === idx;
+
+                return (
+                  <AccordionItem key={accordion.title}>
+                    <AccordionBtn type="button" onClick={() => handleAccordionToggle(idx)}>
+                      <span>{accordion.title}</span>
+                      <AccordionIcon>{isActive ? "−" : "+"}</AccordionIcon>
+                    </AccordionBtn>
+
+                    <AccordionBody $isOpen={isActive}>
+                      <AccordionContent>{accordion.content}</AccordionContent>
+                    </AccordionBody>
+                  </AccordionItem>
+                );
+              })}
             </MoreInfoWrap>
           </StickyBox>
         </RightContent>
       </DetailSection>
+
       <MoveCartModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </MainWrap>
   );

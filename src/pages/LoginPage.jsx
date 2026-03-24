@@ -24,11 +24,19 @@ const Title = styled.p`
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   min-width: 495px;
   min-height: 42px;
   gap: 10px;
   position: relative;
   z-index: 10;
+
+  ${({ theme }) => theme.media.tablet} {
+    min-width: 400px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    min-width: 300px;
+  }
 `;
 
 // error 나면 빨간색으로
@@ -37,6 +45,13 @@ const LoginInputWrap = styled.div`
   gap: 40px;
   border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 // error 나면 빨간색으로
@@ -66,17 +81,37 @@ const LoginButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 0;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 const SignupButton = styled(NavLink)`
   font-size: ${Theme.fontsize.desktop.content};
   text-decoration: none;
   color: inherit;
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 const DesignText = styled.p`
   font-size: ${Theme.fontsize.desktop.section};
   text-align: center;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 const LightImg = styled.img`
@@ -84,6 +119,12 @@ const LightImg = styled.img`
   top: 0;
   left: 150px;
   opacity: 30%;
+  ${({ theme }) => theme.media.tablet} {
+    display: none;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    display: none;
+  }
 `;
 
 const ChairImg = styled.img`
@@ -91,6 +132,13 @@ const ChairImg = styled.img`
   bottom: 100px;
   right: 200px;
   opacity: 30%;
+
+  ${({ theme }) => theme.media.tablet} {
+    display: none;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    display: none;
+  }
 `;
 
 export default function LoginPage() {
@@ -166,13 +214,7 @@ export default function LoginPage() {
         {/* Password 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.password}>
           <InputInfo error={errors.password}>Password</InputInfo>
-          <LoginInput
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={input.password}
-            onChange={handleChange}
-          />
+          <LoginInput name="password" type="password" placeholder="Password" value={input.password} onChange={handleChange} />
         </LoginInputWrap>
 
         <ButtonWrap>
@@ -180,7 +222,7 @@ export default function LoginPage() {
           <LoginButton
             type="submit"
             onClick={() => {
-              // handleSubmit();
+              handleSubmit();
               handleLogin();
               navigate("/");
             }}

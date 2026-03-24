@@ -25,6 +25,7 @@ export const itemList = [
     content: "자연의 여유를 닮은 실루엣.",
     category: "seating",
     price: 234000,
+    src: ["abc", "dfg"],
   },
   {
     id: 4,

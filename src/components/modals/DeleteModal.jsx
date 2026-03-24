@@ -24,10 +24,15 @@ const DeleteModalContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  min-width: 400px;
-  min-height: 242px;
+  width: 400px;
+  height: 242px;
   background-color: ${Theme.colors.white};
   box-shadow: 4px 4px 10px;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 250px;
+    height: 180px;
+  }
 `;
 
 const DeleteModalWrap = styled.div`
@@ -37,6 +42,10 @@ const DeleteModalWrap = styled.div`
   justify-content: space-between;
   gap: 59px;
   background-color: ${Theme.colors.white};
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 32px;
+  }
 `;
 
 const LineLignt = styled.img`
@@ -59,17 +68,35 @@ const DeleteModalTitleWrap = styled.div`
 
 const DeleteModalTitle = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const Content = styled.p`
   text-align: center;
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const DeleteButton = styled.button`
   width: 24px;
   height: 24px;
   background-color: transparent;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 16px;
+    height: 16px;
+
+    img {
+      width: 10px;
+      height: 10px;
+    }
+  }
 `;
 
 const ButtonWrap = styled.div`
@@ -77,6 +104,10 @@ const ButtonWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    height: 28px;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -85,13 +116,22 @@ const CloseButton = styled.button`
   background-color: ${Theme.colors.whitetext};
   color: ${Theme.colors.blacktext};
   border-top: 1px solid ${Theme.colors.black};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
+
 const Button = styled.button`
   width: 50%;
   font-size: ${Theme.fontsize.desktop.content};
   background-color: ${Theme.colors.blacktext};
   color: ${Theme.colors.whitetext};
   border-top: 1px solid ${Theme.colors.black};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 export default function DeleteModal({ isOpen, onClose }) {
