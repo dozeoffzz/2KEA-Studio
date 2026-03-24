@@ -60,7 +60,7 @@ const LoginInputWrap = styled.div`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -82,7 +82,7 @@ const LoginInput = styled.input`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -108,7 +108,7 @@ const LoginButton = styled.button`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -120,7 +120,7 @@ const SignupButton = styled(NavLink)`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 

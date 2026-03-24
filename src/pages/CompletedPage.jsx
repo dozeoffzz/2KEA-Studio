@@ -40,7 +40,7 @@ const CompletedTitle = styled.h2`
     font-size: ${Theme.fontsize.tablet.section};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.section};
+    font-size: ${Theme.fontsize.mobile.section};
   }
 `;
 
@@ -51,7 +51,7 @@ const CompletedMsg = styled.p`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 const GotoMain = styled(NavLink)`
@@ -62,7 +62,7 @@ const GotoMain = styled(NavLink)`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 export default function CompletedPage() {

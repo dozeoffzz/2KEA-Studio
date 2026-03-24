@@ -25,11 +25,6 @@ const CartContainer = styled.div`
     grid-template-columns: 1fr;
     height: auto;
   }
-  @media screen and (max-width: 1024px) {
-    padding: 20px 20px;
-    grid-template-columns: 1fr;
-    height: auto;
-  }
 `;
 
 const CartList = styled.ul`
@@ -37,7 +32,8 @@ const CartList = styled.ul`
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  height: calc(100vh - 100px);
+  /* height: calc(100vh - 100px); */
+  height: 100vh;
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
@@ -69,9 +65,6 @@ const CartList = styled.ul`
     height: auto;
     overflow: visible;
   }
-  @media screen and (max-width: 1024px) {
-    height: auto;
-  }
 `;
 
 const Item = styled.li`
@@ -79,7 +72,7 @@ const Item = styled.li`
   grid-template-columns: 40px 1fr 2fr 2fr 40px;
   column-gap: 20px;
   align-items: center;
-  min-height: 231px;
+  min-height: 230px;
 
   ${({ theme }) => theme.media.tablet} {
     grid-template-columns: 40px 1fr 1fr 1fr 40px;
@@ -174,7 +167,6 @@ const ItemDelevery = styled.p`
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
-    display: none;
   }
 `;
 const QuantityWrap = styled.div`
@@ -253,6 +245,13 @@ const OrderInfoForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  ${({ theme }) => theme.media.tablet} {
+    padding: 0 30px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0 15px;
+  }
 `;
 
 const OrderName = styled.div`
@@ -284,7 +283,7 @@ const InputEmail = styled(InputName)``;
 const InputAddress = styled(InputName)``;
 
 const ThanksMsg = styled.p`
-  padding: 50px;
+  padding: 5px;
   display: flex;
   align-self: center;
   font-size: ${Theme.fontsize.desktop.section};
@@ -469,6 +468,14 @@ export default function ShoppingCartPage() {
             <p>Address</p>
             <InputAddress placeholder="Address" type="address" />
           </OrderAddress>
+          <OrderAddress>
+            <p style={{ whiteSpace: "nowrap" }}>Base Address</p>
+            <InputAddress placeholder="Base Address" type="address" />
+          </OrderAddress>
+          {/* <OrderAddress>
+            <p style={{ whiteSpace: "nowrap" }}>Street Address</p>
+            <InputAddress placeholder="Street Address" type="address" />
+          </OrderAddress> */}
         </OrderInfoForm>
         <ThanksMsg>Thanks</ThanksMsg>
         <ProductPriceWrap>

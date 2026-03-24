@@ -95,7 +95,7 @@ const Message = styled.p`
     font-size: ${Theme.fontsize.tablet.title};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -144,7 +144,7 @@ const ActionBackButton = styled.button`
   }
   ${({ theme }) => theme.media.mobile} {
     padding: 0 0 5px;
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 const ActionBackMainButton = styled(ActionBackButton)``;
