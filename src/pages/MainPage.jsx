@@ -1,11 +1,13 @@
 //패키지 및 컴포넌트 임포트
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Theme } from "../styles/theme";
 import { Link } from "react-router-dom";
 import LIST_DATA from "../data/imageList";
 import TopArea from "../components/main/TopArea";
 import ScrollReveal from "../components/common/ScrollReveal";
+//이벤트 광고 3
+import MainIntroModalCarousel from "../components/modals/MainIntroModal";
 // 인스타
 import InstagramModal from "../components/modals/InstagramModal";
 
@@ -479,7 +481,17 @@ export default function MainPage() {
   };
 
   // 인스타그램 qr
-  const [isInstaOpen, setIsInstaOpen] = useState(true);
+  const [isInstaOpen, setIsInstaOpen] = useState(false);
+  const [isIntroOpen, setIsIntroOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInstaOpen(true);
+      setIsIntroOpen(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <MainSection>
@@ -489,7 +501,11 @@ export default function MainPage() {
           <SofaImageBox>
             <SofaImage src={sofaImage} alt="Sofa Image" />
             <Link to={"/detailpage/1"}>
-              <SofaHoverImage src={sofaHover} alt="Sofa Hover Image" className="sofa-hover-img" />
+              <SofaHoverImage
+                src={sofaHover}
+                alt="Sofa Hover Image"
+                className="sofa-hover-img"
+              />
             </Link>
             <SofaDesc>
               <h3>Classic Leather, Timeless Modern</h3>
@@ -538,8 +554,15 @@ export default function MainPage() {
                 {/* 이미지 데이터 배열 받아오기 */}
                 {LIST_DATA.map((image) => (
                   <ListImageWrapper key={image.id}>
-                    <DefaultImage src={image.defaultSrc} alt={`List Image ${image.id}`} />
-                    <HoverImage src={image.hoverSrc} alt={`Hover List Image ${image.id}`} className="list-hover-img" />
+                    <DefaultImage
+                      src={image.defaultSrc}
+                      alt={`List Image ${image.id}`}
+                    />
+                    <HoverImage
+                      src={image.hoverSrc}
+                      alt={`Hover List Image ${image.id}`}
+                      className="list-hover-img"
+                    />
                   </ListImageWrapper>
                 ))}
               </ListSlide>
@@ -563,7 +586,7 @@ export default function MainPage() {
               Your Gentle Companion."
               <br />
               <br />
-              Leave the day’s exhaustion behind
+              Leave the day's exhaustion behind
               <br />
               and return to the warmth of
               <br />
@@ -617,7 +640,11 @@ export default function MainPage() {
             <FirstArea>
               <ChairImage src={chairImage} alt="Desk Image" />
               <Link to={"/detailpage/1"}>
-                <ChairHoverImage src={chairHover} alt="Hover Desk Image" className="hover-img" />
+                <ChairHoverImage
+                  src={chairHover}
+                  alt="Hover Desk Image"
+                  className="hover-img"
+                />
               </Link>
               <div>
                 <h3>TIMELESS TRACE</h3>
@@ -627,7 +654,11 @@ export default function MainPage() {
             <SecondArea>
               <DeskImage src={deskImage} alt="Bed Image" />
               <Link to={"/detailpage/1"}>
-                <DeskHoverImage src={deskHover} alt="Hover Bed Image" className="hover-img" />
+                <DeskHoverImage
+                  src={deskHover}
+                  alt="Hover Bed Image"
+                  className="hover-img"
+                />
               </Link>
               <Desktext>
                 <h3>The Whisper of Morning Light</h3>
@@ -657,8 +688,12 @@ export default function MainPage() {
           <BottomText>STUDIO</BottomText>
         </BottomTextContainer>
       </ScrollReveal>
-      {/* 인스타 qr */}
-      <InstagramModal isOpen={isInstaOpen} onClose={() => setIsInstaOpen(false)} />
+
+      {isIntroOpen && <MainIntroModalCarousel />}
+      <InstagramModal
+        isOpen={isInstaOpen}
+        onClose={() => setIsInstaOpen(false)}
+      />
     </MainSection>
   );
 }

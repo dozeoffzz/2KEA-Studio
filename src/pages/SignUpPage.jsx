@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Theme } from "../styles/theme";
 import SignUpModal from "../components/modals/SignUpModal";
+import TermsModal from "../components/modals/TermsModal";
+import bgchair from "../assets/imgs/signup/chair.png";
 
 const SignupPage = styled.div`
   margin-top: 100px;
@@ -12,6 +14,12 @@ const SignupPage = styled.div`
   min-height: 100vh;
   padding: 80px 0;
 
+  /* 배경 이미지 */
+  background-image: url(${bgchair});
+  background-size: cover;
+  background-position: right 0%;
+  background-attachment: fixed;
+
   // 체크박스 크기 다 똑같이
   input[type="checkbox"] {
     width: 15px;
@@ -20,6 +28,16 @@ const SignupPage = styled.div`
     flex-shrink: 0;
     position: relative;
     top: -2px;
+  }
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    padding: 60px 0;
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    padding: 40px 0;
   }
 `;
 
@@ -31,6 +49,17 @@ const SignupWrap = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 70px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    gap: 60px;
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    gap: 55px;
+    padding: 0 30px;
+  }
 `;
 
 const SignupTitle = styled.h2`
@@ -38,6 +67,16 @@ const SignupTitle = styled.h2`
   text-align: center;
   font-size: ${Theme.fontsize.desktop.section};
   color: ${Theme.colors.blacktext};
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.section};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.section};
+  }
 `;
 
 // membership form birth agreement 섹션 다 이걸로
@@ -48,6 +87,18 @@ const SignupSection = styled.section`
   flex-direction: column;
   align-items: flex-start;
   gap: 25px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    max-width: 440px;
+    gap: 20px;
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    max-width: 350px;
+    gap: 16px;
+  }
 `;
 
 // 각 섹션 위에 있는 제목들
@@ -57,6 +108,18 @@ const SectionTitle = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
   margin-bottom: 20px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+    margin-bottom: 14px;
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+    margin-bottom: 10px;
+  }
 `;
 
 // 개인회원 사업자회원 선택하는 부분
@@ -66,6 +129,18 @@ const MemberTypeBox = styled.div`
   justify-content: center;
   gap: 60px;
   font-size: ${Theme.fontsize.desktop.content};
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    gap: 40px;
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    gap: 30px;
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 const SignupForm = styled.form`
@@ -74,6 +149,18 @@ const SignupForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 25px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    max-width: 440px;
+    gap: 30px;
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    max-width: 350px;
+    gap: 18px;
+  }
 `;
 
 // id pw name 이런것들 한줄씩
@@ -82,6 +169,10 @@ const FormRow = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+
+  @media (max-width: 991px) {
+    flex-wrap: wrap;
+  }
 `;
 
 // error 나면 빨간색으로
@@ -89,17 +180,41 @@ const FormLabel = styled.label`
   width: 100px;
   text-align: left;
   font-size: ${Theme.fontsize.desktop.content};
-  color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  color: ${({ error }) =>
+    error ? Theme.colors.redaccent : Theme.colors.blacktext};
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+    width: 80px;
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+    width: 70px;
+  }
 `;
 
 const FormInput = styled.input`
   flex: 1;
   border: none;
-  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid
+    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   outline: none;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
   padding-left: 5px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 // error 멘트 - 빨간색
@@ -109,6 +224,18 @@ const ErrorMsg = styled.span`
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.redaccent};
   margin-top: 4px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    padding-left: 90px;
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    padding-left: 80px;
+    font-size: ${Theme.fontsize.mobile.small};
+  }
 `;
 
 // 성공 멘트 - 초록색
@@ -118,6 +245,18 @@ const SuccessMsg = styled.span`
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.greenaccent};
   margin-top: 4px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    padding-left: 90px;
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    padding-left: 80px;
+    font-size: ${Theme.fontsize.mobile.small};
+  }
 `;
 
 // 아이디 인풋이랑 중복확인 버튼 묶음
@@ -137,16 +276,38 @@ const CheckBtn = styled.button`
   white-space: nowrap;
   background: transparent;
   cursor: pointer;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+    padding: 4px 8px;
+  }
 `;
 
 const PhoneWrap = styled.div`
   flex: 1;
   display: flex;
   gap: 15px;
+  min-width: 0;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    gap: 10px;
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    gap: 8px;
+  }
 `;
 
 const PhoneSelect = styled.select`
-  flex: 1;
+  width: 80px;
+  flex: none;
   border: none;
   border-bottom: 1px solid ${Theme.colors.blacktext};
   outline: none;
@@ -154,27 +315,60 @@ const PhoneSelect = styled.select`
   text-align: center;
   background: transparent;
   font-size: ${Theme.fontsize.desktop.content};
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    width: 70px;
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  // 모바일
+  ${Theme.media.mobile} {
+    width: 60px;
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 const PhoneInput = styled.input`
   flex: 1;
+  min-width: 0;
   border: none;
-  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid
+    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   outline: none;
   padding: 8px 0 8px 5px;
   text-align: center;
   font-size: ${Theme.fontsize.desktop.content};
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 // 생년월일 인풋 가운데 정렬
 const BirthInput = styled.input`
   width: 100%;
   border: none;
-  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid
+    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   outline: none;
   text-align: center;
   font-size: ${Theme.fontsize.desktop.content};
   padding: 0 5px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 // 생년월일 error 멘트
@@ -184,6 +378,16 @@ const BirthMsg = styled.span`
   margin-top: 4px;
   text-align: center;
   width: 100%;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
 `;
 
 const AgreeAllRow = styled.div`
@@ -192,6 +396,16 @@ const AgreeAllRow = styled.div`
   gap: 8px;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 // 동의 항목들 감싸는 회색 박스
@@ -203,12 +417,29 @@ const AgreeBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  // 모바일
+  ${Theme.media.mobile} {
+    padding: 16px 14px;
+    gap: 14px;
+  }
 `;
 
 const AgreeGroupTitle = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
   margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 const AgreeItemRow = styled.div`
@@ -225,7 +456,18 @@ const AgreeItemLabel = styled.label`
   gap: 8px;
   flex: 1;
   font-size: ${Theme.fontsize.desktop.content};
-  color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  color: ${({ error }) =>
+    error ? Theme.colors.redaccent : Theme.colors.blacktext};
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+  }
 `;
 
 // 개인정보 이용약관 아래 작은 글씨
@@ -237,9 +479,19 @@ const AgreeItemDesc = styled.span`
   padding-left: 24px;
   line-height: 1.5;
   margin-top: 6px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
 `;
 
-// sms 이메일 동의함이랑 화살표 묶음
+// sms 이메일 약관보기 버튼 하나로
 const AgreeOptWrap = styled.div`
   display: flex;
   align-items: center;
@@ -253,12 +505,37 @@ const AgreeOptLabel = styled.label`
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.blacktext};
   white-space: nowrap;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
 `;
 
-const AgreeArrow = styled.span`
-  font-size: 18px;
+// 약관보기 버튼
+const AgreeViewBtn = styled.button`
+  font-size: ${Theme.fontsize.desktop.mini};
   color: ${Theme.colors.textsecondary};
-  flex-shrink: 0;
+  background: transparent;
+  text-decoration: underline;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.mini};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+  }
 `;
 
 const AgreeDivider = styled.hr`
@@ -272,6 +549,16 @@ const AgreeMsg = styled.span`
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.redaccent};
   margin-top: 4px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
 `;
 
 const SignupBtn = styled.button`
@@ -279,6 +566,18 @@ const SignupBtn = styled.button`
   color: ${Theme.colors.whitetext};
   background-color: ${Theme.colors.blacktext};
   padding: 12px 40px;
+
+  // 태블릿
+  ${Theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+    padding: 10px 32px;
+  }
+
+  // 모바일
+  ${Theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.content};
+    padding: 10px 28px;
+  }
 `;
 
 export default function Signup() {
@@ -308,13 +607,14 @@ export default function Signup() {
   const birthRef = useRef(null);
   const agreeRef = useRef(null);
 
-  const [memberType, setMemberType] = useState("personal");
+  // api userType 값이랑 맞춰서 한글로
+  const [memberType, setMemberType] = useState("개인회원");
 
   const [agreement, setAgreement] = useState({
     all: false,
-    privacy: false,
+    agreePrivacy: false,
     privacyPolicy: false,
-    service: false,
+    agreeTerms: false,
     servicePolicy: false,
     sms: false,
     store: false,
@@ -333,8 +633,8 @@ export default function Signup() {
     birthYear: false,
     birthMonth: false,
     birthDay: false,
-    privacy: false,
-    service: false,
+    agreePrivacy: false,
+    agreeTerms: false,
   });
 
   // 각 에러/성공 멘트
@@ -343,7 +643,7 @@ export default function Signup() {
     password: "",
     passwordCheck: "",
     name: "",
-    phone: "",
+    mobile: "",
     email: "",
     birthYear: "",
     birthMonth: "",
@@ -351,66 +651,85 @@ export default function Signup() {
     agree: "",
   });
 
-  // 아이디 중복확인 했는지 여부
+  // 아이디 중복확인 했는지
   const [idChecked, setIdChecked] = useState(false);
   const [idCheckPassed, setIdCheckPassed] = useState(false);
 
   // 회원가입 완료 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 아이디 중복확인 버튼
-  function handleIdCheck() {
-    // 막아놓은 아이디 목록
-    const blockedIds = [
-      "12345",
-      "test",
-      "user",
-      "2kea",
-      "aaaaa",
-      "fffff",
-      "fffff",
-      "dlgofkd",
-      "chldmsdn",
-      "dlrkfka",
-      "chldnjsgml",
-      "dlduddus",
-      "rrrrr",
-    ];
+  // 약관 모달 선택한거 열리게
+  const [modalType, setModalType] = useState(null);
 
-    if (form.id.length < 5) {
+  // 아이디 영문 필수, 숫자와 _ 만 허용
+  const idRegex = /^(?=.*[a-zA-Z])[a-zA-Z0-9_]+$/;
+
+  // 비밀번호 영문, 숫자, 특수문자 각 1개 이상
+  const pwRegex = /(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])/;
+
+  // 이름 한글만 2~10글자
+  const nameRegex = /^[가-힣]{2,10}$/;
+
+  // 아이디 중복확인
+  async function handleIdCheck() {
+    // 빈칸 체크
+    if (form.id.trim() === "") {
       setErrors({ ...errors, id: true });
-      setMsgs({ ...msgs, id: "아이디는 5글자 이상 입력해주세요" });
+      setMsgs({ ...msgs, id: "아이디를 입력해주세요" });
       setIdChecked(false);
       setIdCheckPassed(false);
       return;
     }
 
-    if (blockedIds.includes(form.id.toLowerCase())) {
+    // 5~10글자
+    if (form.id.length < 5 || form.id.length > 10) {
       setErrors({ ...errors, id: true });
-      setMsgs({ ...msgs, id: "사용할 수 없는 아이디입니다" });
-      setIdChecked(true);
+      setMsgs({ ...msgs, id: "아이디는 5~10글자로 입력해주세요" });
+      setIdChecked(false);
       setIdCheckPassed(false);
       return;
     }
 
-    // 로컬스토리지에 저장된 아이디랑 비교
-    const saved = localStorage.getItem("userInfo");
-    if (saved) {
-      const savedUser = JSON.parse(saved);
-      if (savedUser.id === form.id) {
-        setErrors({ ...errors, id: true });
-        setMsgs({ ...msgs, id: "이미 가입된 아이디입니다" });
-        setIdChecked(true);
-        setIdCheckPassed(false);
-        return;
-      }
+    // 영문 필수, 숫자와 _ 만 허용
+    if (!idRegex.test(form.id)) {
+      setErrors({ ...errors, id: true });
+      setMsgs({ ...msgs, id: "영문이 반드시 포함되어야 합니다" });
+      setIdChecked(false);
+      setIdCheckPassed(false);
+      return;
     }
 
-    // 통과
-    setErrors({ ...errors, id: false });
-    setMsgs({ ...msgs, id: "사용 가능한 아이디입니다" });
-    setIdChecked(true);
-    setIdCheckPassed(true);
+    // api로 중복확인 요청
+    try {
+      const res = await fetch(
+        "https://api.mylecture.kr/api/team2/auth/check-id",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: form.id }),
+        },
+      );
+      // 콘솔로 중복결과 확인
+      const data = await res.json();
+
+      if (data.success) {
+        // 사용 가능한 아이디
+        setErrors({ ...errors, id: false });
+        setMsgs({ ...msgs, id: data.message });
+        setIdChecked(true);
+        setIdCheckPassed(true);
+      } else {
+        // 중복이거나 금지어 포함
+        setErrors({ ...errors, id: true });
+        setMsgs({ ...msgs, id: data.message });
+        setIdChecked(true);
+        setIdCheckPassed(false);
+      }
+    } catch (error) {
+      // 네트워크 오류
+      setMsgs({ ...msgs, id: "중복확인 중 오류가 발생했습니다" });
+      console.log(error);
+    }
   }
 
   function handleChange(e) {
@@ -439,13 +758,28 @@ export default function Signup() {
     }
 
     // 아이디 비밀번호 이메일 한글 못쓰게
-    if (name === "id" || name === "password" || name === "passwordCheck" || name === "email") {
+    if (
+      name === "id" ||
+      name === "password" ||
+      name === "passwordCheck" ||
+      name === "email"
+    ) {
       value = value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+    }
+
+    // 아이디 스페이스바 못쓰게
+    if (name === "id") {
+      value = value.replace(/\s/g, "");
+    }
+
+    // 이름 한글만 입력
+    if (name === "name") {
+      value = value.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
     }
 
     setForm({ ...form, [name]: value });
 
-    // 아이디 바꾸면 중복확인 초기화
+    // 아이디 바꾸면 중복확인 초기화되서 다시하게
     if (name === "id") {
       setIdChecked(false);
       setIdCheckPassed(false);
@@ -503,7 +837,12 @@ export default function Signup() {
   function handleComposition(e) {
     if (e.type === "compositionend") {
       const name = e.target.name;
-      if (name === "id" || name === "password" || name === "passwordCheck" || name === "email") {
+      if (
+        name === "id" ||
+        name === "password" ||
+        name === "passwordCheck" ||
+        name === "email"
+      ) {
         const value = e.target.value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
         setForm({ ...form, [name]: value });
       }
@@ -525,18 +864,19 @@ export default function Signup() {
     const checked = e.target.checked;
     setAgreement({
       all: checked,
-      privacy: checked,
+      agreePrivacy: checked,
       privacyPolicy: checked,
-      service: checked,
+      agreeTerms: checked,
       servicePolicy: checked,
       store: checked,
-      sms: checked,
-      email: checked,
+      // sms, 이메일은 선택 항목이라 전체동의해도 선택 안되게
+      sms: false,
+      email: false,
     });
 
     // 전체동의 누르면 동의 관련 error 다 없애기
     if (checked) {
-      setErrors({ ...errors, privacy: false, service: false });
+      setErrors({ ...errors, agreePrivacy: false, agreeTerms: false });
       setMsgs({ ...msgs, agree: "" });
     }
   }
@@ -553,9 +893,13 @@ export default function Signup() {
       newErrors.id = true;
       newMsgs.id = "아이디를 입력해주세요";
       hasError = true;
-    } else if (form.id.length < 5) {
+    } else if (form.id.length < 5 || form.id.length > 10) {
       newErrors.id = true;
-      newMsgs.id = "아이디는 5글자 이상 입력해주세요";
+      newMsgs.id = "아이디는 5~10글자로 입력해주세요";
+      hasError = true;
+    } else if (!idRegex.test(form.id)) {
+      newErrors.id = true;
+      newMsgs.id = "영문이 반드시 포함되어야 합니다";
       hasError = true;
     } else if (!idChecked) {
       newErrors.id = true;
@@ -566,14 +910,19 @@ export default function Signup() {
       hasError = true;
     }
 
-    // 비밀번호
+    // 비밀번호 - 8~15글자, 영문/숫자/특수문자 각 1개 이상
     if (form.password.trim() === "") {
       newErrors.password = true;
       newMsgs.password = "비밀번호를 입력해주세요";
       hasError = true;
-    } else if (form.password.length < 8) {
+    } else if (form.password.length < 8 || form.password.length > 15) {
       newErrors.password = true;
-      newMsgs.password = "비밀번호는 8글자 이상 입력해주세요";
+      newMsgs.password = "비밀번호는 8~15글자로 입력해주세요";
+      hasError = true;
+    } else if (!pwRegex.test(form.password)) {
+      newErrors.password = true;
+      newMsgs.password =
+        "영문, 숫자, 특수문자(!@#$%^&*()_+)를 각 1개 이상씩 포함해주세요";
       hasError = true;
     }
 
@@ -588,22 +937,26 @@ export default function Signup() {
       hasError = true;
     }
 
-    // 이름
+    // 이름 - 한글만, 2~10글자
     if (form.name.trim() === "") {
       newErrors.name = true;
       newMsgs.name = "이름을 입력해주세요";
+      hasError = true;
+    } else if (!nameRegex.test(form.name)) {
+      newErrors.name = true;
+      newMsgs.name = "이름은 한글로 2~10글자 입력해주세요";
       hasError = true;
     }
 
     // 전화번호
     if (form.phone2.trim() === "") {
       newErrors.phone2 = true;
-      newMsgs.phone = "전화번호를 입력해주세요";
+      newMsgs.mobile = "전화번호를 입력해주세요";
       hasError = true;
     }
     if (form.phone3.trim() === "") {
       newErrors.phone3 = true;
-      newMsgs.phone = "전화번호를 입력해주세요";
+      newMsgs.mobile = "전화번호를 입력해주세요";
       hasError = true;
     }
 
@@ -631,14 +984,14 @@ export default function Signup() {
       hasError = true;
     }
 
-    // 이용동의
-    if (!agreement.privacy) {
-      newErrors.privacy = true;
+    // 이용동의 - api 키 이름으로
+    if (!agreement.agreePrivacy) {
+      newErrors.agreePrivacy = true;
       newMsgs.agree = "필수 약관에 동의해주세요";
       hasError = true;
     }
-    if (!agreement.service) {
-      newErrors.service = true;
+    if (!agreement.agreeTerms) {
+      newErrors.agreeTerms = true;
       newMsgs.agree = "필수 약관에 동의해주세요";
       hasError = true;
     }
@@ -658,12 +1011,16 @@ export default function Signup() {
         newErrors.email
       ) {
         formRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else if (newErrors.birthYear || newErrors.birthMonth || newErrors.birthDay) {
+      } else if (
+        newErrors.birthYear ||
+        newErrors.birthMonth ||
+        newErrors.birthDay
+      ) {
         birthRef.current.scrollIntoView({
           behavior: "smooth",
           block: "center",
         });
-      } else if (newErrors.privacy || newErrors.service) {
+      } else if (newErrors.agreePrivacy || newErrors.agreeTerms) {
         agreeRef.current.scrollIntoView({
           behavior: "smooth",
           block: "center",
@@ -672,14 +1029,17 @@ export default function Signup() {
       return;
     }
 
-    // 로컬스토리지에 저장 - 비밀번호 빼고 저장
+    // 로컬스토리지에 저장
     const userInfo = {
+      userType: memberType,
       id: form.id,
       name: form.name,
-      phone: `${form.phone1}-${form.phone2}-${form.phone3}`,
+      mobile: `${form.phone1}-${form.phone2}-${form.phone3}`,
       email: form.email,
-      birth: `${form.birthYear}-${form.birthMonth}-${form.birthDay}`,
-      memberType: memberType,
+      birthdate: `${form.birthYear}-${form.birthMonth}-${form.birthDay}`,
+      agreeTerms: agreement.agreeTerms,
+      agreePrivacy: agreement.agreePrivacy,
+      agreeMarketing: agreement.sms || agreement.email,
     };
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
@@ -699,9 +1059,9 @@ export default function Signup() {
               <input
                 type="radio"
                 name="memberType"
-                value="personal"
-                checked={memberType === "personal"}
-                onChange={() => setMemberType("personal")}
+                value="개인회원"
+                checked={memberType === "개인회원"}
+                onChange={() => setMemberType("개인회원")}
               />
               개인회원
             </label>
@@ -709,9 +1069,9 @@ export default function Signup() {
               <input
                 type="radio"
                 name="memberType"
-                value="business"
-                checked={memberType === "business"}
-                onChange={() => setMemberType("business")}
+                value="사업자회원"
+                checked={memberType === "사업자회원"}
+                onChange={() => setMemberType("사업자회원")}
               />
               사업자회원
             </label>
@@ -729,7 +1089,7 @@ export default function Signup() {
                 type="text"
                 name="id"
                 value={form.id}
-                placeholder="5글자 이상 입력하세요"
+                placeholder="영문 포함 5~10글자"
                 onChange={handleChange}
                 onCompositionEnd={handleComposition}
               />
@@ -737,7 +1097,12 @@ export default function Signup() {
                 중복확인
               </CheckBtn>
             </IdInputWrap>
-            {msgs.id && (idCheckPassed ? <SuccessMsg>{msgs.id}</SuccessMsg> : <ErrorMsg>{msgs.id}</ErrorMsg>)}
+            {msgs.id &&
+              (idCheckPassed ? (
+                <SuccessMsg>{msgs.id}</SuccessMsg>
+              ) : (
+                <ErrorMsg>{msgs.id}</ErrorMsg>
+              ))}
           </FormRow>
 
           {/* 비밀번호 */}
@@ -748,7 +1113,7 @@ export default function Signup() {
               type="password"
               name="password"
               value={form.password}
-              placeholder="8글자 이상 입력하세요"
+              placeholder="영문, 숫자, 특수문자 포함 8~15글자"
               onChange={handleChange}
               onCompositionEnd={handleComposition}
             />
@@ -778,7 +1143,14 @@ export default function Signup() {
           {/* 이름 */}
           <FormRow>
             <FormLabel error={errors.name}>Name</FormLabel>
-            <FormInput error={errors.name} type="text" name="name" value={form.name} onChange={handleChange} />
+            <FormInput
+              error={errors.name}
+              type="text"
+              name="name"
+              value={form.name}
+              placeholder="한글로 2~10글자"
+              onChange={handleChange}
+            />
             {msgs.name && <ErrorMsg>{msgs.name}</ErrorMsg>}
           </FormRow>
 
@@ -786,7 +1158,11 @@ export default function Signup() {
           <FormRow>
             <FormLabel error={errors.phone2}>Phone</FormLabel>
             <PhoneWrap>
-              <PhoneSelect name="phone1" value={form.phone1} onChange={handleChange}>
+              <PhoneSelect
+                name="phone1"
+                value={form.phone1}
+                onChange={handleChange}
+              >
                 <option>010</option>
                 <option>011</option>
                 <option>022</option>
@@ -815,7 +1191,7 @@ export default function Signup() {
                 onChange={handleChange}
               />
             </PhoneWrap>
-            {msgs.phone && <ErrorMsg>{msgs.phone}</ErrorMsg>}
+            {msgs.mobile && <ErrorMsg>{msgs.mobile}</ErrorMsg>}
           </FormRow>
 
           {/* 이메일 */}
@@ -877,24 +1253,42 @@ export default function Signup() {
         <SignupSection ref={agreeRef}>
           <SectionTitle>Whole agreement</SectionTitle>
           <AgreeAllRow>
-            <input type="checkbox" name="all" checked={agreement.all} onChange={handleAllAgree} />
-            이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신 (선택) 에 모두 동의합니다.
+            <input
+              type="checkbox"
+              name="all"
+              checked={agreement.all}
+              onChange={handleAllAgree}
+            />
+            이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신 (선택) 에 모두
+            동의합니다.
           </AgreeAllRow>
 
           <AgreeBox>
             {/* 홈페이지 개인정보 처리 동의 */}
             <div>
-              <AgreeGroupTitle>홈페이지 개인정보 처리 동의</AgreeGroupTitle>
+              <AgreeGroupTitle>
+                홈페이지 개인정보 처리 동의
+                {/* 약관보기 버튼 */}
+                <AgreeViewBtn
+                  type="button"
+                  onClick={() => setModalType("privacy")}
+                >
+                  약관보기
+                </AgreeViewBtn>
+              </AgreeGroupTitle>
               <AgreeItemRow>
-                <AgreeItemLabel error={errors.privacy}>
-                  <input type="checkbox" name="privacy" checked={agreement.privacy} onChange={handleAgreement} />[ 필수
-                  ] 개인정보 이용약관
+                <AgreeItemLabel error={errors.agreePrivacy}>
+                  <input
+                    type="checkbox"
+                    name="agreePrivacy"
+                    checked={agreement.agreePrivacy}
+                    onChange={handleAgreement}
+                  />
+                  [ 필수 ] 개인정보 이용약관
                 </AgreeItemLabel>
-                <AgreeArrow>›</AgreeArrow>
               </AgreeItemRow>
               <AgreeItemDesc>
                 이용자 식별자, 휴대전화번호, 이름, 이메일 주소, 생일 출생연도,
-                <br />
                 암호화된 동일인 식별정보ⓒ
               </AgreeItemDesc>
             </div>
@@ -903,25 +1297,37 @@ export default function Signup() {
 
             {/* 서비스 약관 및 개인정보 동의 */}
             <div>
-              <AgreeGroupTitle>Avie much 서비스 약관 및 개인정보 동의</AgreeGroupTitle>
+              <AgreeGroupTitle>
+                Avie much 서비스 약관 및 개인정보 동의
+                {/* 약관보기 버튼 */}
+                <AgreeViewBtn
+                  type="button"
+                  onClick={() => setModalType("terms")}
+                >
+                  약관보기
+                </AgreeViewBtn>
+              </AgreeGroupTitle>
               <AgreeItemRow>
-                <AgreeItemLabel error={errors.service}>
-                  <input type="checkbox" name="service" checked={agreement.service} onChange={handleAgreement} />[ 필수
-                  ] 쇼핑몰 이용약관
+                <AgreeItemLabel error={errors.agreeTerms}>
+                  <input
+                    type="checkbox"
+                    name="agreeTerms"
+                    checked={agreement.agreeTerms}
+                    onChange={handleAgreement}
+                  />
+                  [ 필수 ] 쇼핑몰 이용약관
                 </AgreeItemLabel>
-                <AgreeArrow>›</AgreeArrow>
               </AgreeItemRow>
               <AgreeItemRow>
-                <AgreeItemLabel error={errors.service}>
+                <AgreeItemLabel error={errors.agreeTerms}>
                   <input
                     type="checkbox"
                     name="servicePolicy"
                     checked={agreement.servicePolicy}
                     onChange={handleAgreement}
                   />
-                  [ 필수 ] 개인정보 수집 및 이용 동의 (필수)
+                  [ 필수 ] 개인정보 수집 및 이용 동의
                 </AgreeItemLabel>
-                <AgreeArrow>›</AgreeArrow>
               </AgreeItemRow>
             </div>
 
@@ -929,25 +1335,43 @@ export default function Signup() {
 
             {/* 선택 수신 동의 sms */}
             <div>
-              <AgreeGroupTitle>[ 선택 ] 쇼핑정보 수신 동의</AgreeGroupTitle>
+              <AgreeGroupTitle>
+                [ 선택 ] 쇼핑정보 수신 동의
+                {/* 약관보기 버튼 */}
+                <AgreeViewBtn
+                  type="button"
+                  onClick={() => setModalType("marketing")}
+                >
+                  약관보기
+                </AgreeViewBtn>
+              </AgreeGroupTitle>
+
               <AgreeItemRow>
                 <span>SMS 수신을 동의하십니까?</span>
                 <AgreeOptWrap>
                   <AgreeOptLabel>
-                    <input type="checkbox" name="sms" checked={agreement.sms} onChange={handleAgreement} />
+                    <input
+                      type="checkbox"
+                      name="sms"
+                      checked={agreement.sms}
+                      onChange={handleAgreement}
+                    />
                     동의함
                   </AgreeOptLabel>
-                  <AgreeArrow>›</AgreeArrow>
                 </AgreeOptWrap>
               </AgreeItemRow>
               <AgreeItemRow>
                 <span>이메일 수신을 동의하십니까?</span>
                 <AgreeOptWrap>
                   <AgreeOptLabel>
-                    <input type="checkbox" name="email" checked={agreement.email} onChange={handleAgreement} />
+                    <input
+                      type="checkbox"
+                      name="email"
+                      checked={agreement.email}
+                      onChange={handleAgreement}
+                    />
                     동의함
                   </AgreeOptLabel>
-                  <AgreeArrow>›</AgreeArrow>
                 </AgreeOptWrap>
               </AgreeItemRow>
             </div>
@@ -967,6 +1391,8 @@ export default function Signup() {
           navigate("/");
         }}
       />
+      {/* 약관 모달 선택하면 나오게  */}
+      <TermsModal type={modalType} onClose={() => setModalType(null)} />
     </SignupPage>
   );
 }
