@@ -55,7 +55,7 @@ const Brand = styled(NavLink)`
     font-size: ${Theme.fontsize.tablet.section};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.section};
+    font-size: ${Theme.fontsize.mobile.section};
   }
 `;
 
@@ -98,7 +98,7 @@ const Font = styled(NavLink)`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -110,7 +110,7 @@ const Products = styled.p`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -122,7 +122,7 @@ const LogOut = styled.button`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 

@@ -91,7 +91,7 @@ const Item = styled.li`
     grid-template-rows: auto auto;
     column-gap: 18px;
     row-gap: 10px;
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
     min-height: auto;
     align-items: start;
   }
@@ -146,7 +146,7 @@ const ItemInfoWrap = styled.div`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
     grid-column: 3;
     grid-row: 1;
   }
@@ -159,7 +159,7 @@ const ItemName = styled.p`
     font-size: ${Theme.fontsize.tablet.section};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -170,7 +170,7 @@ const ItemDelevery = styled.p`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
     display: none;
   }
 `;
@@ -188,7 +188,7 @@ const QuantityWrap = styled.div`
   ${({ theme }) => theme.media.mobile} {
     margin-right: 0;
     margin-top: 100px;
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
     grid-column: 4;
     grid-row: 1;
     gap: 5px;
@@ -235,7 +235,7 @@ const UpButton = styled.button`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -264,10 +264,10 @@ const OrderName = styled.div`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
-const OrderPhone = styled(OrderName)``;
+const Ordermobile = styled(OrderName)``;
 const OrderEmail = styled(OrderName)``;
 const OrderAddress = styled(OrderName)``;
 
@@ -276,7 +276,7 @@ const InputName = styled.input`
   outline: transparent;
   width: 100%;
 `;
-const InputPhone = styled(InputName)``;
+const Inputmobile = styled(InputName)``;
 const InputEmail = styled(InputName)``;
 const InputAddress = styled(InputName)``;
 
@@ -290,7 +290,7 @@ const ThanksMsg = styled.p`
     font-size: ${Theme.fontsize.tablet.section};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.section};
+    font-size: ${Theme.fontsize.mobile.section};
   }
 `;
 
@@ -304,7 +304,7 @@ const ProductPriceWrap = styled.div`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -340,7 +340,7 @@ const TotalPrice = styled.div`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -367,7 +367,7 @@ const DeleteButton = styled.button`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
   @media screen and (max-width: 1024px) {
     flex: 1;
@@ -454,10 +454,10 @@ export default function ShoppingCartPage() {
             <p>Name</p>
             <InputName placeholder="Name" type="text" />
           </OrderName>
-          <OrderPhone>
-            <p>Phone</p>
-            <InputPhone placeholder="Phone" type="text" />
-          </OrderPhone>
+          <Ordermobile>
+            <p>mobile</p>
+            <Inputmobile placeholder="mobile" type="text" />
+          </Ordermobile>
           <OrderEmail>
             <p>Email</p>
             <InputEmail placeholder="Email" type="email" />

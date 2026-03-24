@@ -50,7 +50,7 @@ const LoginInputWrap = styled.div`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -86,7 +86,7 @@ const LoginButton = styled.button`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -98,7 +98,7 @@ const SignupButton = styled(NavLink)`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -110,7 +110,7 @@ const DesignText = styled.p`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -214,13 +214,7 @@ export default function LoginPage() {
         {/* Password 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.password}>
           <InputInfo error={errors.password}>Password</InputInfo>
-          <LoginInput
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={input.password}
-            onChange={handleChange}
-          />
+          <LoginInput name="password" type="password" placeholder="Password" value={input.password} onChange={handleChange} />
         </LoginInputWrap>
 
         <ButtonWrap>

@@ -78,7 +78,7 @@ const Title = styled.h2`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.section};
+    font-size: ${Theme.fontsize.mobile.section};
   }
 `;
 
@@ -115,7 +115,7 @@ const NavLinkList = styled(NavLink)`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -203,7 +203,7 @@ const ItemNum = styled.span`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.section};
+    font-size: ${Theme.fontsize.mobile.section};
   }
 `;
 
@@ -216,7 +216,7 @@ const ItemName = styled.span`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.small};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -312,7 +312,7 @@ const PageNationWrap = styled.div`
 
   ${Theme.media.mobile} {
     gap: 18px;
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
     margin-bottom: 28px;
     flex-wrap: wrap;
   }
@@ -333,7 +333,7 @@ const CurrentPage = styled.button`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -348,7 +348,7 @@ const PageNationButton = styled.button`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.phone.content};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 

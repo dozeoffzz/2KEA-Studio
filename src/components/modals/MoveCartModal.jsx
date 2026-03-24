@@ -24,10 +24,15 @@ const SignUpModalContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  min-width: 400px;
-  min-height: 242px;
+  width: 400px;
+  height: 242px;
   background-color: ${Theme.colors.white};
   box-shadow: 4px 4px 10px;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 250px;
+    height: 180px;
+  }
 `;
 
 const SignUpModalWrap = styled.div`
@@ -37,6 +42,10 @@ const SignUpModalWrap = styled.div`
   justify-content: space-between;
   gap: 59px;
   background-color: ${Theme.colors.white};
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 32px;
+  }
 `;
 
 const LineLignt = styled.img`
@@ -59,17 +68,39 @@ const SignUpModalTitleWrap = styled.div`
 
 const SignUpModalTitle = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const Content = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
   text-align: center;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const DeleteButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 24px;
   height: 24px;
+  padding: 0;
   background-color: transparent;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 16px;
+    height: 16px;
+
+    img {
+      width: 10px;
+      height: 10px;
+    }
+  }
 `;
 
 const ButtonWrap = styled.div`
@@ -77,6 +108,10 @@ const ButtonWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.mobile} {
+    height: 28px;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -84,6 +119,10 @@ const CloseButton = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
   background-color: ${Theme.colors.whitetext};
   color: ${Theme.colors.blacktext};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const Button = styled.button`
@@ -91,6 +130,10 @@ const Button = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
   background-color: ${Theme.colors.black};
   color: ${Theme.colors.whitetext};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 export default function MoveCartModal({ isOpen, onClose }) {
