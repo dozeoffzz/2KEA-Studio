@@ -12,8 +12,8 @@ import MainIntroModalCarousel from "../components/modals/MainIntroModal";
 // 인스타
 import InstagramModal from "../components/modals/InstagramModal";
 
-//API
-import { getMainPage } from "../api/mainPageApi";
+//API 호출
+import { fetchMain } from "../apis/mainApi";
 
 // 컴포넌트 스타일링
 // 계획서에 명시되지 않은 부분은 피그마 참고해서 작업
@@ -842,7 +842,7 @@ export default function MainPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const result = await getMainPage();
+        const result = await fetchMain();
         // 데이터가 배열인지 확인 후 저장하기
         if (result && Array.isArray(result.data.banners)) {
           setList(result.data.banners);
