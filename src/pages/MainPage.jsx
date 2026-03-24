@@ -7,6 +7,8 @@ import TopArea from "../components/main/TopArea";
 import ScrollReveal from "../components/common/ScrollReveal";
 import NewProductList from "../components/main/NewProductList";
 
+//이벤트 광고 3
+import MainIntroModalCarousel from "../components/modals/MainIntroModal";
 // 인스타
 import InstagramModal from "../components/modals/InstagramModal";
 
@@ -825,7 +827,17 @@ export default function MainPage() {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
   // 인스타그램 qr
-  const [isInstaOpen, setIsInstaOpen] = useState(true);
+  const [isInstaOpen, setIsInstaOpen] = useState(false);
+  const [isIntroOpen, setIsIntroOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInstaOpen(true);
+      setIsIntroOpen(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const loadData = async () => {
@@ -1008,8 +1020,12 @@ export default function MainPage() {
           <BottomText>STUDIO</BottomText>
         </BottomTextContainer>
       </ScrollReveal>
-      {/* 인스타 qr */}
-      <InstagramModal isOpen={isInstaOpen} onClose={() => setIsInstaOpen(false)} />
+
+      {isIntroOpen && <MainIntroModalCarousel />}
+      <InstagramModal
+        isOpen={isInstaOpen}
+        onClose={() => setIsInstaOpen(false)}
+      />
     </MainSection>
   );
 }

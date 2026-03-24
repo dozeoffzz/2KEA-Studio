@@ -6,6 +6,19 @@ import menuIcon from "../../assets/icons/menuIcon.svg";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../stores/useAuthStore";
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #0c0c0ca0;
+  opacity: ${(props) => (props.isOpen ? 1 : 0)};
+  pointer-events: none;
+
+  transition: opacity 0.3s ease;
+  z-index: 5;
+`;
 const HeaderContainer = styled.header`
   padding: 0px 30px;
   position: fixed;
@@ -91,10 +104,10 @@ const RightMenu = styled(LeftMenu)`
 `;
 
 const Font = styled(NavLink)`
-  font-size: ${Theme.fontsize.desktop.small};
+  font-size: ${Theme.fontsize.desktop.content};
 
   ${Theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.small};
+    font-size: ${Theme.fontsize.tablet.content};
   }
 
   ${Theme.media.mobile} {
@@ -150,53 +163,56 @@ export default function Header() {
     setIsOpen((prev) => !prev);
   };
   return (
-    // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달
-    <HeaderContainer
-      isScroll={isScroll}
-      isOpen={isOpen}
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
-      <HeaderWrap>
-        <PlusButton onClick={ClickOpenMenu}>
-          <img src={plusIcon} />
-        </PlusButton>
-        <Brand to={"/"}>
-          <h1>
-            2KEA <br /> STUDIO
-          </h1>
-        </Brand>
-        <MenuButton onClick={ClickOpenMenu}>
-          <img src={menuIcon} />
-        </MenuButton>
-      </HeaderWrap>
-      {/* // useState로 값변경하기 위해 프롭스 전달 */}
-      <MenuWrap isOpen={isOpen} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
-        {/* 왼쪽메뉴 */}
-        <LeftMenu>
-          <Products>Products</Products>
-          <Font to={"/products"}>All</Font>
-          <Font to={"/products/seating"}>Seating</Font>
-          <Font to={"/products/tables"}>Tables</Font>
-          <Font to={"/products/lighting"}>Lighting</Font>
-        </LeftMenu>
-        <RightMenu>
-          {isLogin ? null : <Font to={"/signup"}>Sign Up</Font>}
-          {isLogin ? (
-            <LogOut
-              onClick={() => {
-                logout();
-                navigate("/");
-              }}
-            >
-              LogOut
-            </LogOut>
-          ) : (
-            <Font to={"/login"}>Login</Font>
-          )}
-          <Font to={"/cart"}>Cart</Font>
-        </RightMenu>
-      </MenuWrap>
-    </HeaderContainer>
+    <>
+      <Overlay isOpen={isOpen} />
+      {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
+      <HeaderContainer
+        isScroll={isScroll}
+        isOpen={isOpen}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
+        <HeaderWrap>
+          <PlusButton onClick={ClickOpenMenu}>
+            <img src={plusIcon} />
+          </PlusButton>
+          <Brand to={"/"}>
+            <h1>
+              2KEA <br /> STUDIO
+            </h1>
+          </Brand>
+          <MenuButton onClick={ClickOpenMenu}>
+            <img src={menuIcon} />
+          </MenuButton>
+        </HeaderWrap>
+        {/* // useState로 값변경하기 위해 프롭스 전달 */}
+        <MenuWrap isOpen={isOpen} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
+          {/* 왼쪽메뉴 */}
+          <LeftMenu>
+            <Products>Products</Products>
+            <Font to={"/products"}>All</Font>
+            <Font to={"/products/seating"}>Seating</Font>
+            <Font to={"/products/tables"}>Tables</Font>
+            <Font to={"/products/lighting"}>Lighting</Font>
+          </LeftMenu>
+          <RightMenu>
+            {isLogin ? null : <Font to={"/signup"}>Sign Up</Font>}
+            {isLogin ? (
+              <LogOut
+                onClick={() => {
+                  logout();
+                  navigate("/");
+                }}
+              >
+                LogOut
+              </LogOut>
+            ) : (
+              <Font to={"/login"}>Login</Font>
+            )}
+            <Font to={"/cart"}>Cart</Font>
+          </RightMenu>
+        </MenuWrap>
+      </HeaderContainer>
+    </>
   );
 }
