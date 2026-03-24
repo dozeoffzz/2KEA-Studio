@@ -6,10 +6,8 @@ import bgImage from "../../assets/imgs/main/rightchair.webp";
 
 const Overlay = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 40px;
+  bottom: 140px;
   z-index: 999;
   background-color: ${Theme.colors.overlay};
   display: flex;
@@ -19,11 +17,16 @@ const Overlay = styled.div`
 
 const ModalBox = styled.div`
   position: relative;
+<<<<<<< HEAD
+  width: 330px;
+  height: 340px;
+=======
   width: 400px;
 
   ${({ theme }) => theme.media.mobile} {
     width: 270px;
   }
+>>>>>>> dev
 `;
 
 // 오른쪽 상단 x 버튼
@@ -33,7 +36,8 @@ const CloseBtn = styled.button`
   right: 10px;
   background: transparent;
   color: ${Theme.colors.blacktext};
-  font-size: 20px;
+  font-size: 18px;
+  font-family: sans-serif;
   cursor: pointer;
   z-index: 10;
 
@@ -48,8 +52,8 @@ const ModalInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 40px 30px;
+  gap: 14px;
+  padding: 20px 15px;
   background-image: url(${bgImage});
   background-size: cover;
   background-position: center;
@@ -115,8 +119,8 @@ const InstaLabel = styled.p`
 const QrBox = styled.div`
   position: relative;
   z-index: 1;
-  width: 160px;
-  height: 160px;
+  width: 140px;
+  height: 140px;
   background-color: ${Theme.colors.white};
   display: flex;
   justify-content: center;
@@ -135,7 +139,7 @@ const QrImage = styled.img`
   object-fit: cover;
 `;
 
-const BottomText = styled.p`
+const DownText = styled.p`
   position: relative;
   z-index: 1;
   font-size: ${Theme.fontsize.desktop.small};
@@ -150,7 +154,7 @@ const BottomText = styled.p`
 const ScanText = styled.p`
   position: relative;
   z-index: 1;
-  font-size: ${Theme.fontsize.desktop.content};
+  font-size: ${Theme.fontsize.desktop.medium};
   color: ${Theme.colors.blacktext};
 
   ${({ theme }) => theme.media.mobile} {
@@ -188,7 +192,7 @@ export default function InstagramModal({ isOpen, onClose }) {
             <QrImage src={qrCode} alt="인스타그램 QR 코드" />
           </QrBox>
 
-          <BottomText>- 팔로우 시 신제품 소식과 스타일링 팁 제공 -</BottomText>
+          <DownText>- 팔로우 시 신제품 소식과 스타일링 팁 제공 -</DownText>
           <ScanText>[QR] 스캔하여 스토리를 만나보세요</ScanText>
         </ModalInner>
       </ModalBox>
