@@ -154,7 +154,7 @@ const ProductName = styled.p`
 
   ${({ theme }) => theme.media.mobile} {
     margin-top: 40px;
-    font-size: ${Theme.fontsize.mobile?.section || "22px"};
+    font-size: 22px;
   }
 `;
 
@@ -238,7 +238,7 @@ const InfoTitle = styled.p`
   color: ${Theme.colors.blacktext};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -252,7 +252,7 @@ const InfoRow = styled.div`
   ${({ theme }) => theme.media.mobile} {
     gap: 14px;
     margin-bottom: 8px;
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -283,7 +283,7 @@ const QtyBtn = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -292,7 +292,7 @@ const QtyValue = styled.span`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -303,7 +303,7 @@ const Price = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -323,7 +323,7 @@ const CardBtn = styled.button`
   ${({ theme }) => theme.media.mobile} {
     height: 38px;
     margin-top: 10px;
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -345,7 +345,7 @@ const Back = styled.button`
 
   ${({ theme }) => theme.media.mobile} {
     margin-top: 40px;
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -376,7 +376,7 @@ const AccordionBtn = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -386,7 +386,7 @@ const AccordionIcon = styled.span`
   color: ${Theme.colors.textsecondary};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 
@@ -402,7 +402,7 @@ const AccordionContent = styled.div`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile?.small || "12px"};
+    font-size: 12px;
   }
 `;
 

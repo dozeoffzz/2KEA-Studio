@@ -29,7 +29,7 @@ export const Theme = {
       content: "16px",
       small: "14px",
     },
-    phone: {
+    mobile: {
       title: "28px",
       section: "22px",
       content: "16px",
@@ -47,7 +47,7 @@ export const Theme = {
   },
   media: {
     mobile: "@media (max-width: 767px)",
-    tablet: "@media (min-width: 768px) and (max-width: 991px)",
-    desktop: "@media (min-width: 992px)",
+    tablet: "@media (min-width: 768px) and (max-width: 1024px)",
+    desktop: "@media (min-width: 1025px)",
   },
 };
