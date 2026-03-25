@@ -273,6 +273,10 @@ const Ordermobile = styled(OrderName)``;
 const OrderEmail = styled(OrderName)``;
 const OrderAddress = styled(OrderName)``;
 
+const ErrorMsg = styled.p`
+  font-size: ${Theme.fontsize.desktop.mini};
+  text-align: right;
+`;
 const InputName = styled.input`
   text-align: right;
   outline: transparent;
@@ -283,7 +287,6 @@ const InputEmail = styled(InputName)``;
 const InputAddress = styled(InputName)``;
 
 const ThanksMsg = styled.p`
-  padding: 5px;
   display: flex;
   align-self: center;
   font-size: ${Theme.fontsize.desktop.section};
@@ -385,12 +388,89 @@ export default function ShoppingCartPage() {
   // useCaretStore에서 정의한 함수 구조분해로 가져오기
   const { cartItems, handleQuantity, handleCheck, handleDelete } = useCartStore();
 
-  // 체크된 상품의 총 가격
-  const totalPrice = cartItems.filter((item) => item.checked).reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
-  // 폼 새로고침 방지
+  // 필요한 유효성 검사 기본값
+  const [form, setForm] = useState({
+    name: "",
+    mobile: "",
+    email: "",
+    address: "",
+    baseAddress: "",
+  });
+  // 에러 났을때 상황,메세지
+  const [error, setError] = useState({});
+  const [msg, setMsg] = useState({});
+
+  function handleInput(e) {
+    const { name, value } = e.target;
+
+    let okValue = value;
+
+    if (name === "mobile") {
+      okValue = value.replace(/[^0-9]/g, "");
+    }
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: okValue,
+    }));
+
+    if (error[name]) {
+      setError((prev) => ({ ...prev, [name]: false }));
+      setMsg((prev) => ({ ...prev, [name]: "" }));
+    }
+  }
+  // 유효성 검사
+  function validateForm() {
+    let newErrors = {};
+    let newMsgs = {};
+
+    // 이름
+    const nameRegex = /^[가-힣]{2,10}$/;
+    if (!form.name.trim()) {
+      newErrors.name = true;
+      newMsgs.name = "이름을 입력해주세요";
+    } else if (!nameRegex.test(form.name)) {
+      newErrors.name = true;
+      newMsgs.name = "한글 2~10자";
+    }
+
+    // 전화번호
+    if (!form.mobile.trim()) {
+      newErrors.mobile = true;
+      newMsgs.mobile = "전화번호를 입력해주세요";
+    } else if (form.mobile.length < 10) {
+      newErrors.mobile = true;
+      newMsgs.mobile = "전화번호 형식이 올바르지 않습니다";
+    }
+
+    // 이메일
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!form.email.trim()) {
+      newErrors.email = true;
+      newMsgs.email = "이메일을 입력해주세요";
+    } else if (!emailRegex.test(form.email)) {
+      newErrors.email = true;
+      newMsgs.email = "이메일 형식이 올바르지 않습니다";
+    }
+
+    // 주소
+    if (!form.address.trim()) {
+      newErrors.address = true;
+      newMsgs.address = "주소를 입력해주세요";
+    }
+
+    setError(newErrors);
+    setMsg(newMsgs);
+
+    return Object.keys(newErrors).length === 0;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
+  // 체크된 상품의 총 가격
+  const totalPrice = cartItems.filter((item) => item.checked).reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
   // 상품이 없으면 버튼이 안눌리게 하기
   const HaveItems = cartItems.length > 0;
   const HaveCheckedItems = cartItems.some((item) => item.checked);
@@ -398,12 +478,18 @@ export default function ShoppingCartPage() {
   const handleOrder = () => {
     // 상품이 없다면 되돌아 가라!
     if (!HaveItems) return;
+    // 폼 입력이 제대로 되지 않았다면 되돌아가라
+    const isValid = validateForm();
+    if (!isValid) return;
     // 있으면 모달
     setOrderIsOpen(true);
   };
 
   const handleCheckedOrder = () => {
     if (!HaveCheckedItems) return;
+    // 폼 입력이 제대로 되지 않았다면 되돌아가라
+    const isValid = validateForm();
+    if (!isValid) return;
     setOrderIsOpen(true);
   };
 
@@ -454,28 +540,40 @@ export default function ShoppingCartPage() {
         <OrderInfoForm onSubmit={handleSubmit}>
           <OrderName>
             <p>Name</p>
-            <InputName placeholder="Name" type="text" />
+            <InputName name="name" placeholder="Name" type="text" value={form.name} onChange={handleInput} />
           </OrderName>
+          {msg.name && <ErrorMsg style={{ color: "red" }}>{msg.name}</ErrorMsg>}
           <Ordermobile>
             <p>mobile</p>
-            <Inputmobile placeholder="mobile" type="text" />
+            <Inputmobile name="mobile" placeholder="mobile" type="text" value={form.mobile} onChange={handleInput} />
           </Ordermobile>
+          {msg.mobile && <ErrorMsg style={{ color: "red" }}>{msg.mobile}</ErrorMsg>}
           <OrderEmail>
             <p>Email</p>
-            <InputEmail placeholder="Email" type="email" />
+            <InputEmail name="email" placeholder="Email" type="email" value={form.email} onChange={handleInput} />
           </OrderEmail>
+          {msg.email && <ErrorMsg style={{ color: "red" }}>{msg.email}</ErrorMsg>}
           <OrderAddress>
             <p>Address</p>
-            <InputAddress placeholder="Address" type="address" />
+            <InputAddress
+              name="address"
+              placeholder="Address"
+              type="address"
+              value={form.address}
+              onChange={handleInput}
+            />
           </OrderAddress>
           <OrderAddress>
             <p style={{ whiteSpace: "nowrap" }}>Base Address</p>
-            <InputAddress placeholder="Base Address" type="address" />
+            <InputAddress
+              name="baseAddress"
+              placeholder="Base Address"
+              type="address"
+              value={form.baseAddress}
+              onChange={handleInput}
+            />
           </OrderAddress>
-          {/* <OrderAddress>
-            <p style={{ whiteSpace: "nowrap" }}>Street Address</p>
-            <InputAddress placeholder="Street Address" type="address" />
-          </OrderAddress> */}
+          {msg.address && <ErrorMsg style={{ color: "red" }}>{msg.address}</ErrorMsg>}
         </OrderInfoForm>
         <ThanksMsg>Thanks</ThanksMsg>
         <ProductPriceWrap>
@@ -499,10 +597,10 @@ export default function ShoppingCartPage() {
         </TotalPrice>
         <ButtonWrap>
           <DeleteButton onClick={handleDeleteAll}>Delete All</DeleteButton>
-          <OrderButton type="submit" onClick={handleCheckedOrder}>
+          <OrderButton type="button" onClick={handleCheckedOrder}>
             Cheked Buy
           </OrderButton>
-          <OrderButton type="submit" onClick={handleOrder}>
+          <OrderButton type="button" onClick={handleOrder}>
             Buy All
           </OrderButton>
         </ButtonWrap>

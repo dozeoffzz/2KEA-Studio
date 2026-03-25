@@ -132,11 +132,11 @@ const LogOut = styled.button`
   font-size: ${Theme.fontsize.desktop.small};
 
   ${Theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.small};
+    font-size: ${Theme.fontsize.tablet.content};
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
