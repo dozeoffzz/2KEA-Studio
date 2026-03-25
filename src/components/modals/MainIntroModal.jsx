@@ -35,8 +35,8 @@ const slideInContent = keyframes`
 // 화면 전체를 덮는 오버레이
 const Overlay = styled.div`
   position: fixed;
-  top: 70px;
-  left: 100px;
+  top: 60px;
+  left: 80px;
   /* inset: 0; */
   z-index: 999;
   display: flex;
@@ -60,7 +60,7 @@ const Overlay = styled.div`
 // 모달 전체 프레임
 const ModalFrame = styled.div`
   width: 430px;
-  height: 385px;
+  height: 350px;
   display: flex;
   flex-direction: column;
   background-color: ${Theme.colors.white};
@@ -80,7 +80,7 @@ const ModalFrame = styled.div`
 // 텍스트 내용이 들어가는 상단 영역
 const ContentArea = styled.div`
   flex: 1;
-  padding: 20px 24px 0;
+  padding: 20px 20px 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -113,7 +113,7 @@ const TextStack = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 24px;
+  gap: 15px;
 
   ${({ theme }) => theme.media.tablet} {
     gap: 15px;
@@ -258,7 +258,7 @@ const ButtonWrap = styled.div`
 // 버튼 공통 스타일
 const BaseButton = styled.button`
   width: 50%;
-  min-height: 45px;
+  min-height: 40px;
   border: none;
   font-size: 14px;
   text-align: center;

@@ -32,20 +32,16 @@ const ImgGallery = styled.section`
 const SliderWrap = styled.div`
   position: relative;
   width: 100%;
-  height: 45vw;
+  height: 50vw;
   max-height: 760px;
   overflow: hidden;
 
   ${({ theme }) => theme.media.tablet} {
-    height: 58vw;
-    min-height: 360px;
-    max-height: 620px;
+    height: 52vw;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    height: 72vw;
-    min-height: 260px;
-    max-height: 420px;
+    height: 52vw;
   }
 `;
 
@@ -72,6 +68,16 @@ const SlideItem = styled.div`
   max-width: 986px;
   max-height: 843px;
   overflow: hidden;
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 50vw;
+    height: 50vw;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 52vw;
+    height: 52vw;
+  }
 
   // 애니메이션 효과
   transition:
@@ -142,7 +148,7 @@ const RightArrow = styled(ArrowButton)`
 
 // 제품명
 const ProductName = styled.p`
-  margin-top: 100px;
+  margin-top: 80px;
   text-align: center;
   font-size: ${Theme.fontsize.desktop.section};
   color: ${Theme.colors.blacktext};
@@ -160,11 +166,11 @@ const ProductName = styled.p`
 
 const DetailSection = styled.section`
   display: flex;
-  gap: 100px;
+  gap: 120px;
   justify-content: space-around;
-  padding: 0px 50px 200px 50px;
+  padding: 0px 200px 50px 200px;
 
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1440px) {
     flex-direction: column;
   }
 
@@ -187,10 +193,9 @@ const LeftContent = styled.div`
 
 const DetailImg = styled.img`
   width: 100%;
-  min-width: 687px;
-  min-height: 1030px;
-  max-width: 891px;
-  max-height: 1307px;
+  min-width: 630px;
+  max-width: 751px;
+  max-height: 980px;
 
   ${({ theme }) => theme.media.mobile} {
     min-width: 100%;
@@ -203,11 +208,12 @@ const DetailImg = styled.img`
 // 오른쪽 주문 정보 구역
 const RightContent = styled.aside`
   width: 100%;
+  min-width: 270px;
   max-width: 535px;
   display: flex;
   flex-direction: column;
 
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1440px) {
     margin: 0 auto;
   }
 `;
@@ -223,10 +229,10 @@ const StickyBox = styled.div`
 `;
 
 const InfoGroup = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 
   ${({ theme }) => theme.media.mobile} {
-    margin-bottom: 24px;
+    margin-bottom: 23px;
   }
 `;
 
@@ -238,7 +244,7 @@ const InfoTitle = styled.p`
   color: ${Theme.colors.blacktext};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: 12px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -252,7 +258,7 @@ const InfoRow = styled.div`
   ${({ theme }) => theme.media.mobile} {
     gap: 14px;
     margin-bottom: 8px;
-    font-size: 12px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -283,7 +289,7 @@ const QtyBtn = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: 12px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -292,7 +298,7 @@ const QtyValue = styled.span`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: 12px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -303,7 +309,7 @@ const Price = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: 12px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -323,14 +329,14 @@ const CardBtn = styled.button`
   ${({ theme }) => theme.media.mobile} {
     height: 38px;
     margin-top: 10px;
-    font-size: 12px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
 // 다른 상품 보러가기 버튼
 const Back = styled.button`
   width: 100%;
-  margin: 117px 0px 20px 0px;
+  margin: 57px 0px 0px 0px;
   padding-bottom: 12px;
   border: none;
   border-bottom: 2px solid ${Theme.colors.textsecondary};
@@ -340,12 +346,12 @@ const Back = styled.button`
   text-align: left;
 
   ${({ theme }) => theme.media.tablet} {
-    margin-top: 56px;
+    margin-top: 43px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    margin-top: 40px;
-    font-size: 12px;
+    margin-top: 30px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -376,7 +382,7 @@ const AccordionBtn = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: 12px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -386,7 +392,7 @@ const AccordionIcon = styled.span`
   color: ${Theme.colors.textsecondary};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: 12px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -402,7 +408,7 @@ const AccordionContent = styled.div`
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: 12px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
