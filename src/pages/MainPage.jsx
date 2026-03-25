@@ -828,12 +828,13 @@ export default function MainPage() {
   const [loading, setLoading] = useState(false);
   // 인스타그램 qr
   const [isInstaOpen, setIsInstaOpen] = useState(false);
-  const [isIntroOpen, setIsIntroOpen] = useState(false);
+  // 이벤트 모달
+  const [isEventOpen, setIsEventOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsInstaOpen(true);
-      setIsIntroOpen(true);
+      setIsEventOpen(true);
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -873,11 +874,7 @@ export default function MainPage() {
             <SofaImageBox>
               <SofaImage src={firstBanner.src[0]} alt={firstBanner.name || "Sofa Image"} />
               <Link to={`/products/${firstBanner.category}/${firstBanner.productId}`}>
-                <SofaHoverImage
-                  src={firstBanner.src[1]}
-                  alt="Sofa Hover Image"
-                  className="sofa-hover-img"
-                />
+                <SofaHoverImage src={firstBanner.src[1]} alt="Sofa Hover Image" className="sofa-hover-img" />
               </Link>
               <SofaDescBox>
                 <SofaTitle>Classic Leather, Timeless Modern</SofaTitle>
@@ -927,10 +924,7 @@ export default function MainPage() {
                 {thirdBanner && (
                   <LeftImageContainer>
                     <Link to={`/products/${thirdBanner.category}/${thirdBanner.productId}`}>
-                      <LeftChair
-                        src={thirdBanner.src[0]}
-                        alt={thirdBanner.name || "Left Chair Image"}
-                      />
+                      <LeftChair src={thirdBanner.src[0]} alt={thirdBanner.name || "Left Chair Image"} />
                     </Link>
                   </LeftImageContainer>
                 )}
@@ -954,10 +948,7 @@ export default function MainPage() {
             {fourthBanner && (
               <RightImageContainer>
                 <Link to={`/products/${fourthBanner.category}/${fourthBanner.productId}`}>
-                  <RightChair
-                    src={fourthBanner.src[0]}
-                    alt={fourthBanner.name || "Right Chair Image"}
-                  />
+                  <RightChair src={fourthBanner.src[0]} alt={fourthBanner.name || "Right Chair Image"} />
                 </Link>
               </RightImageContainer>
             )}
@@ -969,11 +960,7 @@ export default function MainPage() {
               <BottomChairBox>
                 <ChairImage src={fifthBanner.src[0]} alt={fifthBanner.name || "Desk Image"} />
                 <Link to={`/products/${fifthBanner.category}/${fifthBanner.productId}`}>
-                  <ChairHoverImage
-                    src={fifthBanner.src[1]}
-                    alt="Hover Desk Image"
-                    className="hover-img"
-                  />
+                  <ChairHoverImage src={fifthBanner.src[1]} alt="Hover Desk Image" className="hover-img" />
                 </Link>
                 <ChairTextBox>
                   <ChairTitle>TIMELESS TRACE</ChairTitle>
@@ -985,11 +972,7 @@ export default function MainPage() {
               <BottomDeskBox>
                 <DeskImage src={sixthBanner.src[0]} alt={sixthBanner.name || "Bed Image"} />
                 <Link to={`/products/${sixthBanner.category}/${sixthBanner.productId}`}>
-                  <DeskHoverImage
-                    src={sixthBanner.src[1]}
-                    alt="Hover Bed Image"
-                    className="hover-img"
-                  />
+                  <DeskHoverImage src={sixthBanner.src[1]} alt="Hover Bed Image" className="hover-img" />
                 </Link>
                 <DesktextBox>
                   <DeskTitle>The Whisper of Morning Light</DeskTitle>
@@ -1021,7 +1004,7 @@ export default function MainPage() {
         </BottomTextContainer>
       </ScrollReveal>
 
-      {isIntroOpen && <MainIntroModalCarousel />}
+      <MainIntroModalCarousel isOpen={isEventOpen} onClose={() => setIsEventOpen(false)} />
       <InstagramModal isOpen={isInstaOpen} onClose={() => setIsInstaOpen(false)} />
     </MainSection>
   );

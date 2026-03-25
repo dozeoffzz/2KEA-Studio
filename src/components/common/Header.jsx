@@ -12,7 +12,8 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background: #0c0c0ca0;
+  background: ${Theme.colors.overlay};
+  backdrop-filter: blur(3px);
   opacity: ${(props) => (props.isOpen ? 1 : 0)};
   pointer-events: none;
 
@@ -128,14 +129,14 @@ const Products = styled.p`
 `;
 
 const LogOut = styled.button`
-  font-size: ${Theme.fontsize.desktop.small};
+  font-size: ${Theme.fontsize.desktop.content};
 
   ${Theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.small};
+    font-size: ${Theme.fontsize.tablet.content};
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -166,14 +167,9 @@ export default function Header() {
     <>
       <Overlay isOpen={isOpen} />
       {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
-      <HeaderContainer
-        isScroll={isScroll}
-        isOpen={isOpen}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-      >
+      <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>
-          <PlusButton onClick={ClickOpenMenu}>
+          <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll} onMouseEnter={() => setIsOpen(true)}>
             <img src={plusIcon} />
           </PlusButton>
           <Brand to={"/"}>
@@ -181,7 +177,7 @@ export default function Header() {
               2KEA <br /> STUDIO
             </h1>
           </Brand>
-          <MenuButton onClick={ClickOpenMenu}>
+          <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll} onMouseEnter={() => setIsOpen(true)}>
             <img src={menuIcon} />
           </MenuButton>
         </HeaderWrap>
