@@ -6,7 +6,7 @@ import bgImage from "../../assets/imgs/main/rightchair.webp";
 
 const Overlay = styled.div`
   position: fixed;
-  left: 40px;
+  left: 116px;
   bottom: 140px;
   z-index: 999;
   background-color: ${Theme.colors.overlay};
@@ -157,7 +157,47 @@ const ScanText = styled.p`
   }
 `;
 
-// isOpen - 모달 열고 닫는 상태값
+// 버튼 전체
+const BottomArea = styled.div`
+  width: 100%;
+  flex-shrink: 0;
+`;
+
+// 버튼 위 선
+const ButtonWrap = styled.div`
+  display: flex;
+  width: 100%;
+  border-top: 1px solid ${Theme.colors.black};
+`;
+
+// 닫기버튼
+const BaseButton = styled.button`
+  width: 50%;
+  min-height: 36px;
+  border: none;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+
+  ${({ theme }) => theme.media.mobile} {
+    min-height: 32px;
+    font-size: 11px;
+  }
+`;
+
+// 오늘 하루 열지 않기 버튼
+const TodayCloseButton = styled(BaseButton)`
+  background-color: ${Theme.colors.white};
+  color: ${Theme.colors.black};
+`;
+
+// 닫기 버튼
+const CloseButton = styled(BaseButton)`
+  background-color: ${Theme.colors.black};
+  color: ${Theme.colors.white};
+`;
+
+// isOpen 모달 열고 닫는 상태값
 export default function InstagramModal({ isOpen, onClose }) {
   // modal-root에 모달 렌더링하기
   const targetElement = document.querySelector("#modal-root");
@@ -165,14 +205,18 @@ export default function InstagramModal({ isOpen, onClose }) {
   // isOpen이 false면 아무것도 안보이게
   if (!isOpen) return null;
 
+  // 메인 모달과 동일하게 오늘 하루 열지 않기 로컬스토리지에 오늘 날짜 저장
+  function handleTodayClose() {
+    const today = new Date().toISOString().slice(0, 10);
+    localStorage.setItem("hideInstaModalDate", today);
+    onClose();
+  }
+
   return createPortal(
     // 오버레이 클릭하면 모달 닫히게
     <Overlay onClick={onClose}>
       {/* 모달 박스 클릭시 닫히지 않게 */}
       <ModalBox onClick={(e) => e.stopPropagation()}>
-        {/* x 버튼 누르면 onClose */}
-        <CloseBtn onClick={onClose}>X</CloseBtn>
-
         <ModalInner>
           <Title>2KEA ARCHIVE</Title>
           <SubTitle>
@@ -190,6 +234,16 @@ export default function InstagramModal({ isOpen, onClose }) {
           <DownText>- 팔로우 시 신제품 소식과 스타일링 팁 제공 -</DownText>
           <ScanText>[QR] 스캔하여 스토리를 만나보세요</ScanText>
         </ModalInner>
+
+        {/* 버튼은 메인 모달이랑 동일가게한거 */}
+        <BottomArea>
+          <ButtonWrap>
+            <TodayCloseButton onClick={handleTodayClose}>
+              오늘 하루 열지 않기
+            </TodayCloseButton>
+            <CloseButton onClick={onClose}>닫기</CloseButton>
+          </ButtonWrap>
+        </BottomArea>
       </ModalBox>
     </Overlay>,
     targetElement,

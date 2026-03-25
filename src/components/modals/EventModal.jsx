@@ -36,6 +36,7 @@ const EventModalContainer = styled.div`
     return "translateX(0)";
   }};
   opacity: ${({ animationState }) => (animationState === "exit" ? 0 : 1)};
+  overflow: hidden;
 `;
 
 // 텍스트 내용을 세로로 정리하는 영역
@@ -112,7 +113,8 @@ const Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ active }) => (active ? Theme.colors.black : "#b3b3b3")};
+  background-color: ${({ active }) =>
+    active ? Theme.colors.black : "#b3b3b3"};
 `;
 
 // 버튼 위 선을 포함한 버튼 래퍼
@@ -146,7 +148,12 @@ const CloseButton = styled(TodayCloseButton)`
 // activeIndex: 현재 활성화된 점 번호
 // animationState: 전환 애니메이션 상태
 // onClose, onTodayClose: 버튼 클릭 함수
-export default function EventModal({ activeIndex = 1, animationState = "active", onClose, onTodayClose }) {
+export default function EventModal({
+  activeIndex = 1,
+  animationState = "active",
+  onClose,
+  onTodayClose,
+}) {
   return (
     <Overlay animationState={animationState}>
       <EventModalContainer animationState={animationState}>
@@ -162,10 +169,14 @@ export default function EventModal({ activeIndex = 1, animationState = "active",
               <span>초이스 쿠션 증정 이벤트를 진행중 입니다.</span>
             </Content>
 
-            <SecondContent>더욱더 설레는 마음으로 쇼룸에 찾아와 주세요 :)</SecondContent>
+            <SecondContent>
+              더욱더 설레는 마음으로 쇼룸에 찾아와 주세요 :)
+            </SecondContent>
 
             <InfoStack>
-              <EventInfo>* 초이스쿠션 종류는 재고 상황에 따라 상이합니다.</EventInfo>
+              <EventInfo>
+                * 초이스쿠션 종류는 재고 상황에 따라 상이합니다.
+              </EventInfo>
               <EventInfo>* 3월 27일 ~ 4월 3일 단 7일동안 진행됩니다.</EventInfo>
             </InfoStack>
 
@@ -181,7 +192,9 @@ export default function EventModal({ activeIndex = 1, animationState = "active",
         <BottomArea>
           {/* 하단 버튼 영역 */}
           <ButtonWrap>
-            <TodayCloseButton onClick={onTodayClose}>오늘 하루 열지 않기</TodayCloseButton>
+            <TodayCloseButton onClick={onTodayClose}>
+              오늘 하루 열지 않기
+            </TodayCloseButton>
             <CloseButton onClick={onClose}>닫기</CloseButton>
           </ButtonWrap>
         </BottomArea>
