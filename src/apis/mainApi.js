@@ -1,6 +1,6 @@
 export async function fetchMain() {
   try {
-    const response = await fetch("https://api.mylecture.kr/api/team2/main");
+    const response = await fetch("/api/team2/main");
 
     const data = await response.json();
     console.log(data);
