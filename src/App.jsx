@@ -23,8 +23,7 @@ import ScrollToTop from "./components/common/ScrollToTop";
 
 export default function App() {
   return (
-    <div>
-      {MainPage && <MainIntroModal />}
+    <>
       <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
@@ -41,6 +40,6 @@ export default function App() {
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
       </Routes>
-    </div>
+    </>
   );
 }

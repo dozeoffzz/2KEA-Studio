@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Theme } from "../../styles/theme";
+import { createPortal } from "react-dom";
 
 // localStorage에 오늘 하루 숨김 여부를 저장할 키
 const MODAL_HIDE_KEY = "hideMainModalDate";
@@ -374,6 +375,9 @@ function ContentBlock({ block }) {
 }
 
 export default function MainIntroModalCarousel() {
+  // modal-root에 모달 렌더링하기
+  const targetElement = document.querySelector("#modal-root");
+
   // 오늘 하루 숨김 여부에 따라 모달 표시 여부 결정
   const [isVisible, setIsVisible] = useState(() => {
     return localStorage.getItem(MODAL_HIDE_KEY) !== getTodayKey();
@@ -417,7 +421,7 @@ export default function MainIntroModalCarousel() {
   // 안 보이게 되어 있으면 렌더링하지 않음
   if (!isVisible) return null;
 
-  return (
+  return createPortal(
     <Overlay>
       <ModalFrame>
         <ContentArea>
@@ -448,6 +452,7 @@ export default function MainIntroModalCarousel() {
           </ButtonWrap>
         </BottomArea>
       </ModalFrame>
-    </Overlay>
+    </Overlay>,
+    targetElement,
   );
 }

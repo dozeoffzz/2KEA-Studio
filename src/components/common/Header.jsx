@@ -129,7 +129,7 @@ const Products = styled.p`
 `;
 
 const LogOut = styled.button`
-  font-size: ${Theme.fontsize.desktop.small};
+  font-size: ${Theme.fontsize.desktop.content};
 
   ${Theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
