@@ -28,6 +28,7 @@ const ItemListContainer = styled.div`
 
 // 상단 타이틀 + 카테고리 메뉴 영역
 const TitleWrap = styled.div`
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -320,7 +321,7 @@ const PageNationWrap = styled.div`
   }
 
   ${Theme.media.mobile} {
-    gap: 18px;
+    gap: 50px;
     font-size: ${Theme.fontsize.mobile.content};
     margin-bottom: 28px;
     flex-wrap: wrap;
@@ -332,6 +333,7 @@ const CurrentPage = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
+  color: ${Theme.colors.blacktext};
 
   &.active {
     border-bottom: 2px solid ${Theme.colors.blacktext};
@@ -351,13 +353,14 @@ const PageNationButton = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
+  color: ${Theme.colors.blacktext};
 
   @media (max-width: 1880px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 

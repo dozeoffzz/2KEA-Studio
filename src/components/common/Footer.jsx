@@ -116,7 +116,7 @@ const ColumnItem = styled.p`
     font-size: ${Theme.fontsize.tablet.small};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: 12px;
+    font-size: 9px;
   }
 `;
 
@@ -128,7 +128,7 @@ const ColumnItemLink = styled.a`
     font-size: ${Theme.fontsize.tablet.small};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: 12px;
+    font-size: 9px;
   }
 `;
 

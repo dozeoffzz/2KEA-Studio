@@ -99,6 +99,7 @@ const ButtonWrap = styled.div`
 `;
 
 const LoginButton = styled.button`
+  color: ${Theme.colors.blacktext};
   font-size: ${Theme.fontsize.desktop.content};
   background: none;
   border: none;
@@ -115,7 +116,7 @@ const LoginButton = styled.button`
 const SignupButton = styled(NavLink)`
   font-size: ${Theme.fontsize.desktop.content};
   text-decoration: none;
-  color: inherit;
+  color: ${Theme.colors.blacktext};
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
