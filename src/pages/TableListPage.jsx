@@ -133,7 +133,7 @@ const ItemListMain = styled.div`
   @media (max-width: 1880px) {
     max-width: 1500px;
     padding: 32px 48px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-rows: auto;
     gap: 32px 24px;
   }
@@ -175,26 +175,27 @@ const ItemInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   width: 100%;
   height: 65px;
   border-top: 1px solid ${Theme.colors.blacktext};
   border-bottom: 1px solid ${Theme.colors.blacktext};
 
   @media (max-width: 1880px) {
-    height: auto;
-    min-height: 52px;
+    height: 68px;
     padding: 8px 0;
     margin-bottom: 8px;
   }
 
   ${Theme.media.mobile} {
-    min-height: 44px;
+    height: 58px;
     padding: 8px 0;
     margin-bottom: 8px;
   }
 `;
 
 const ItemNum = styled.span`
+  flex-shrink: 0;
   color: ${Theme.colors.redaccent};
   font-size: ${Theme.fontsize.desktop.section};
 
@@ -208,8 +209,15 @@ const ItemNum = styled.span`
 `;
 
 const ItemName = styled.span`
+  flex: 1;
   font-size: ${Theme.fontsize.desktop.content};
   text-align: right;
+  line-height: 1.2;
+  word-break: keep-all;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 
   @media (max-width: 1880px) {
     font-size: ${Theme.fontsize.tablet.content};
@@ -257,7 +265,6 @@ const ItemContent = styled.p`
   overflow: hidden;
 `;
 
-// 회색 배경 이미지 박스
 const ItemImg = styled.div`
   position: relative;
   background-color: ${Theme.colors.overlay};
@@ -269,17 +276,17 @@ const ItemImg = styled.div`
 
   @media (max-width: 1880px) {
     width: 100%;
-    aspect-ratio: ${(props) => (props.large ? "1.8 / 1" : "0.88 / 1")};
+    aspect-ratio: ${(props) => (props.large ? "2.6 / 1" : "0.88 / 1")};
     padding: 18px;
   }
 
   ${Theme.media.tablet} {
-    aspect-ratio: ${(props) => (props.large ? "2 / 1" : "1 / 1")};
+    aspect-ratio: ${(props) => (props.large ? "2.4 / 1" : "1 / 1")};
   }
 
   ${Theme.media.mobile} {
     width: 100%;
-    aspect-ratio: ${(props) => (props.large ? "1.9 / 1" : "0.82 / 1")};
+    aspect-ratio: ${(props) => (props.large ? "2.2 / 1" : "0.82 / 1")};
     padding: 12px;
   }
 `;
@@ -367,7 +374,11 @@ export default function TableListPage() {
     const getProducts = async () => {
       try {
         // 페이지 api 받은데로 카테고리,현재페이지,보여줄 상품 제안수 보내기
-        const res = await fetchProducts({ category, page: currentPage, limit: 7 });
+        const res = await fetchProducts({
+          category,
+          page: currentPage,
+          limit: 7,
+        });
         setItem(res.data);
         setTotalPage(res.totalPage);
       } catch (err) {
@@ -394,20 +405,33 @@ export default function TableListPage() {
             <NavLinkList to={"/products"} end>
               All
             </NavLinkList>
-            <NavLinkList to={"/products/seating"} onClick={() => setCategory("seating")}>
+            <NavLinkList
+              to={"/products/seating"}
+              onClick={() => setCategory("seating")}
+            >
               Seating
             </NavLinkList>
-            <NavLinkList to={"/products/tables"} onClick={() => setCategory("table")}>
+            <NavLinkList
+              to={"/products/tables"}
+              onClick={() => setCategory("table")}
+            >
               Tables
             </NavLinkList>
-            <NavLinkList to={"/products/lighting"} onClick={() => setCategory("lighting")}>
+            <NavLinkList
+              to={"/products/lighting"}
+              onClick={() => setCategory("lighting")}
+            >
               Lighting
             </NavLinkList>
           </NavLinkWrap>
         </TitleWrap>
         <ItemListMain>
           {item.map((item, index) => (
-            <Item key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
+            <Item
+              key={item.id}
+              large={item.large ? 1 : 0}
+              to={`/products/${item.category}/${item.id}`}
+            >
               <ItemInfo>
                 <ItemNum>{item.num}</ItemNum>
                 <ItemName>
@@ -418,17 +442,33 @@ export default function TableListPage() {
                 <ItemContentWrap>
                   <ItemContent>{item.content}</ItemContent>
                 </ItemContentWrap>
-                <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
-                  <Img src={item.src[0]} alt={item.name} visible={hoverImg !== index} />
-                  <Img src={item.src[1]} alt={item.name} visible={hoverImg === index} />
+                <ItemImg
+                  large={item.large ? 1 : 0}
+                  onMouseEnter={() => setHoverImg(index)}
+                  onMouseLeave={() => setHoverImg(null)}
+                >
+                  <Img
+                    src={item.src[0]}
+                    alt={item.name}
+                    visible={hoverImg !== index}
+                  />
+                  <Img
+                    src={item.src[1]}
+                    alt={item.name}
+                    visible={hoverImg === index}
+                  />
                 </ItemImg>
               </ItemImgWrap>
             </Item>
           ))}
         </ItemListMain>
         <PageNationWrap>
-          <PageNationButton onClick={() => setCurrentPage(1)}>First</PageNationButton>
-          <PageNationButton onClick={() => setCurrentPage(1)}>Prev</PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(1)}>
+            First
+          </PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(1)}>
+            Prev
+          </PageNationButton>
           {totalPages.map((list) => (
             <CurrentPage
               key={list}

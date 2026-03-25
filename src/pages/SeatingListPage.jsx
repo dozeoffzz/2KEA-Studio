@@ -133,7 +133,7 @@ const ItemListMain = styled.div`
   @media (max-width: 1880px) {
     max-width: 1500px;
     padding: 32px 48px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-rows: auto;
     gap: 32px 24px;
   }
@@ -175,26 +175,27 @@ const ItemInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   width: 100%;
   height: 65px;
   border-top: 1px solid ${Theme.colors.blacktext};
   border-bottom: 1px solid ${Theme.colors.blacktext};
 
   @media (max-width: 1880px) {
-    height: auto;
-    min-height: 52px;
+    height: 68px;
     padding: 8px 0;
     margin-bottom: 8px;
   }
 
   ${Theme.media.mobile} {
-    min-height: 44px;
+    height: 58px;
     padding: 8px 0;
     margin-bottom: 8px;
   }
 `;
 
 const ItemNum = styled.span`
+  flex-shrink: 0;
   color: ${Theme.colors.greentext};
   font-size: ${Theme.fontsize.desktop.section};
 
@@ -208,8 +209,15 @@ const ItemNum = styled.span`
 `;
 
 const ItemName = styled.span`
+  flex: 1;
   font-size: ${Theme.fontsize.desktop.content};
   text-align: right;
+  line-height: 1.2;
+  word-break: keep-all;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 
   @media (max-width: 1880px) {
     font-size: ${Theme.fontsize.tablet.content};
@@ -269,17 +277,17 @@ const ItemImg = styled.div`
 
   @media (max-width: 1880px) {
     width: 100%;
-    aspect-ratio: ${(props) => (props.large ? "1.8 / 1" : "0.88 / 1")};
+    aspect-ratio: ${(props) => (props.large ? "2.6 / 1" : "0.88 / 1")};
     padding: 18px;
   }
 
   ${Theme.media.tablet} {
-    aspect-ratio: ${(props) => (props.large ? "2 / 1" : "1 / 1")};
+    aspect-ratio: ${(props) => (props.large ? "2.4 / 1" : "1 / 1")};
   }
 
   ${Theme.media.mobile} {
     width: 100%;
-    aspect-ratio: ${(props) => (props.large ? "1.9 / 1" : "0.82 / 1")};
+    aspect-ratio: ${(props) => (props.large ? "2.2 / 1" : "0.82 / 1")};
     padding: 12px;
   }
 `;
@@ -418,7 +426,11 @@ export default function SeatingListPage() {
                 <ItemContentWrap>
                   <ItemContent>{item.content}</ItemContent>
                 </ItemContentWrap>
-                <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+                <ItemImg
+                  large={item.large ? 1 : 0}
+                  onMouseEnter={() => setHoverImg(index)}
+                  onMouseLeave={() => setHoverImg(null)}
+                >
                   <Img src={item.src[0]} alt={item.name} visible={hoverImg !== index} />
                   <Img src={item.src[1]} alt={item.name} visible={hoverImg === index} />
                 </ItemImg>
