@@ -1,9 +1,6 @@
-import EventModal from "./components/modals/EventModal";
 import OrderModal from "./components/modals/OrderModal";
 import DeleteModal from "./components/modals/DeleteModal";
-import ReservationModal from "./components/modals/ReservationModal";
 import SignUpModal from "./components/modals/SignUpModal";
-import TitleModal from "./components/modals/TitleModal";
 import { Route, Routes } from "react-router-dom";
 import DetailedPage from "./pages/DetailedPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage";
