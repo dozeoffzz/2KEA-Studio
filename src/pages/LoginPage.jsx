@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import lineLight from "../assets/imgs/lineLight.svg";
 import lineChair from "../assets/imgs/lineChair.svg";
@@ -221,7 +221,15 @@ export default function LoginPage() {
       alert("등록된 정보가 없거나 아이디가 일치하지 않습니다.");
       setErrors({ id: true, password: true });
     }
+
+    handleLogin();
+    navigate("/");
   }
+  // 페이지 들어갈 때 바로 포커스 되게 하기
+  const focus = useRef(null);
+  useEffect(() => {
+    focus.current.focus();
+  }, []);
 
   return (
     <LoginContainer>
@@ -230,7 +238,7 @@ export default function LoginPage() {
         {/* ID 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.id}>
           <InputInfo error={errors.id}>ID</InputInfo>
-          <LoginInput name="id" type="text" placeholder="ID" value={input.id} onChange={handleChange} />
+          <LoginInput name="id" type="text" placeholder="ID" value={input.id} onChange={handleChange} ref={focus} />
         </LoginInputWrap>
 
         {/* Password 입력 - 에러 시 스타일 변경 */}
@@ -247,16 +255,7 @@ export default function LoginPage() {
 
         <ButtonWrap>
           {/* 로그인 버튼 handleSubmit을 통해 검사 후 이동하게 수정 */}
-          <LoginButton
-            type="submit"
-            onClick={() => {
-              handleSubmit();
-              handleLogin();
-              navigate("/");
-            }}
-          >
-            Login
-          </LoginButton>
+          <LoginButton type="submit">Login</LoginButton>
           <SignupButton to={"/signup"}>Sign Up</SignupButton>
         </ButtonWrap>
       </LoginForm>
