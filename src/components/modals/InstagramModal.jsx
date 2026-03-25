@@ -24,6 +24,23 @@ const ModalBox = styled.div`
   }
 `;
 
+// 오른쪽 상단 x 버튼
+const CloseBtn = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  color: ${Theme.colors.blacktext};
+  font-size: 18px;
+  font-family: sans-serif;
+  cursor: pointer;
+  z-index: 10;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 15px;
+  }
+`;
+
 // 모달 배경 이미지
 const ModalInner = styled.div`
   position: relative;
