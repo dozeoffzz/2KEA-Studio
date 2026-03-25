@@ -491,7 +491,6 @@ export default function DetailedPage() {
   }
 
   // 상세 이미지
-  // 이 부분부터 안 돼요ㅠㅠㅠ
   const detailImgs = product.detailImg || [];
 
   const lastIdx = img.length - 1;
@@ -613,9 +612,7 @@ export default function DetailedPage() {
       </ImgGallery>
 
       <DetailSection>
-        <LeftContent>
-          {detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}
-        </LeftContent>
+        <LeftContent>{detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}</LeftContent>
         <RightContent>
           <StickyBox>
             <InfoGroup>

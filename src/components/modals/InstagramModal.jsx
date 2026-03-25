@@ -17,16 +17,11 @@ const Overlay = styled.div`
 
 const ModalBox = styled.div`
   position: relative;
-<<<<<<< HEAD
-  width: 330px;
-  height: 340px;
-=======
   width: 400px;
 
   ${({ theme }) => theme.media.mobile} {
     width: 270px;
   }
->>>>>>> dev
 `;
 
 // 오른쪽 상단 x 버튼
