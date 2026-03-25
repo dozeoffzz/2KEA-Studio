@@ -8,21 +8,33 @@ import bgImage from "../../assets/imgs/main/rightchair.webp";
 // 전체 화면 덮는 불투명 배경
 const Overlay = styled.div`
   position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  left: 80px;
+  top: 420px;
   z-index: 999;
   background-color: ${Theme.colors.overlay};
   display: flex;
   justify-content: center;
   align-items: center;
+
+  ${({ theme }) => theme.media.tablet} {
+    left: 50px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    top: 200px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 // 모달 전체 컨테이너
 const ModalContainer = styled.div`
   position: relative;
-  width: 400px;
+  width: 360px;
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 320px;
+  }
 
   ${({ theme }) => theme.media.mobile} {
     width: 270px;
@@ -35,7 +47,7 @@ const ModalInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   padding: 25px 20px 37px;
   background-image: url(${bgImage});
   background-size: cover;
@@ -43,7 +55,8 @@ const ModalInner = styled.div`
   text-align: center;
 
   ${({ theme }) => theme.media.mobile} {
-    padding: 20px 15px 40px;
+    padding: 10px 10px 32px;
+    gap: 8px;
   }
 
   // 이미지 위에 반투명 레이어 올려서 연하게
@@ -80,8 +93,12 @@ const CloseBtn = styled.button`
   font-family: sans-serif;
   opacity: 0.8;
 
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    font-size: 11px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 
   &:hover {
@@ -98,8 +115,12 @@ const Title = styled.p`
   font-weight: 400;
   letter-spacing: 2px;
 
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.section};
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    font-size: 18px;
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -112,8 +133,12 @@ const SubTitle = styled.p`
   color: ${Theme.colors.qrtext};
   line-height: 1.6;
 
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    font-size: 16px;
+    font-size: ${Theme.fontsize.mobile.medium};
   }
 `;
 
@@ -124,8 +149,12 @@ const InstaLabel = styled.p`
   color: ${Theme.colors.blacktext};
   letter-spacing: 2px;
 
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    font-size: 12px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -141,9 +170,14 @@ const QrBox = styled.div`
   align-items: center;
   padding: 10px;
 
+  ${({ theme }) => theme.media.tablet} {
+    width: 120px;
+    height: 120px;
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
   }
 `;
 
@@ -161,7 +195,7 @@ const DownText = styled.p`
   letter-spacing: 1px;
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: 11px;
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -171,8 +205,12 @@ const ScanText = styled.p`
   font-size: ${Theme.fontsize.desktop.medium};
   color: ${Theme.colors.blacktext};
 
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    font-size: 14px;
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
