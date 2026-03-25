@@ -1,4 +1,4 @@
-const BASE_URL = "https://api.mylecture.kr/api/team2";
+const BASE_URL = "/api/team2";
 
 export async function apiClient(endpoint, option = {}) {
   const response = await fetch(`${BASE_URL}${endpoint}`, {
