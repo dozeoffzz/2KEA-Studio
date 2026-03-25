@@ -18,7 +18,7 @@ const Overlay = styled.div`
   pointer-events: ${(props) => (props.isOpen ? "auto" : "none")};
 
   transition: opacity 0.3s ease;
-  z-index: 5;
+  z-index: -1;
 `;
 const HeaderContainer = styled.header`
   padding: 0px 30px;
@@ -164,10 +164,10 @@ export default function Header() {
   };
   return (
     <>
-      {/* 모바일 일때 오버레이 클릭하면 헤더 없어지게 */}
-      <Overlay isOpen={isOpen} onClick={() => setIsOpen(false)} />
       {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
+        {/* 모바일 일때 오버레이 클릭하면 헤더 없어지게 */}
+        <Overlay isOpen={isOpen} onClick={() => setIsOpen(false)} />
         <HeaderWrap>
           <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll} onMouseEnter={() => setIsOpen(true)}>
             <img src={plusIcon} />

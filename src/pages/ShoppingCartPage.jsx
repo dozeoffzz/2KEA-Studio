@@ -93,6 +93,7 @@ const Item = styled.li`
 const CheckBox = styled.input`
   width: 20px;
   height: 20px;
+  accent-color: ${Theme.colors.black};
 
   ${({ theme }) => theme.media.mobile} {
     grid-column: 1;
@@ -230,12 +231,13 @@ const QuantityUpDown = styled.div`
 
 const UpButton = styled.button`
   font-size: ${Theme.fontsize.desktop.section};
+  color: ${Theme.colors.black};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
+    font-size: ${Theme.fontsize.mobile.section};
   }
 `;
 
@@ -327,6 +329,12 @@ const ProductPriceList = styled.ul`
 const ProductPrice = styled.li`
   display: flex;
   justify-content: space-between;
+`;
+
+const ProductNameQuantity = styled.div`
+  white-space: nowrap;
+  display: flex;
+  gap: 20px;
 `;
 
 const ProductPriceQuantity = styled.div`
@@ -587,10 +595,12 @@ export default function ShoppingCartPage() {
               .filter((item) => item.checked)
               .map((item) => (
                 <ProductPrice key={item.id}>
-                  <p>{item.name}</p>
+                  <ProductNameQuantity>
+                    <p>{item.name}</p>
+                    <TotalQuantity>X {item.quantity}</TotalQuantity>
+                  </ProductNameQuantity>
                   <ProductPriceQuantity>
                     <p>{(item.price * item.quantity).toLocaleString()} ₩</p>
-                    <TotalQuantity>{item.quantity}</TotalQuantity>
                   </ProductPriceQuantity>
                 </ProductPrice>
               ))}
@@ -601,12 +611,12 @@ export default function ShoppingCartPage() {
           <p>{totalPrice.toLocaleString()} ₩</p>
         </TotalPrice>
         <ButtonWrap>
-          <DeleteButton onClick={handleDeleteAll}>Delete All</DeleteButton>
+          <DeleteButton onClick={handleDeleteAll}>Clear Cart</DeleteButton>
           <OrderButton type="button" onClick={handleCheckedOrder}>
-            Cheked Buy
+            Buy Selected
           </OrderButton>
           <OrderButton type="button" onClick={handleOrder}>
-            Buy All
+            Checkout All
           </OrderButton>
         </ButtonWrap>
       </OrderInfoWrap>

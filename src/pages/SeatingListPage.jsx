@@ -28,6 +28,7 @@ const ItemListContainer = styled.div`
 
 // 상단 타이틀 + 카테고리 메뉴 영역
 const TitleWrap = styled.div`
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -319,7 +320,7 @@ const PageNationWrap = styled.div`
   }
 
   ${Theme.media.mobile} {
-    gap: 18px;
+    gap: 40px;
     font-size: ${Theme.fontsize.mobile.content};
     margin-bottom: 28px;
     flex-wrap: wrap;
@@ -358,7 +359,7 @@ const PageNationButton = styled.button`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
