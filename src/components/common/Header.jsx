@@ -15,7 +15,7 @@ const Overlay = styled.div`
   background: ${Theme.colors.overlay};
   backdrop-filter: blur(3px);
   opacity: ${(props) => (props.isOpen ? 1 : 0)};
-  pointer-events: none;
+  pointer-events: ${(props) => (props.isOpen ? "auto" : "none")};
 
   transition: opacity 0.3s ease;
   z-index: 5;
@@ -164,7 +164,8 @@ export default function Header() {
   };
   return (
     <>
-      <Overlay isOpen={isOpen} />
+      {/* 모바일 일때 오버레이 클릭하면 헤더 없어지게 */}
+      <Overlay isOpen={isOpen} onClick={() => setIsOpen(false)} />
       {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>

@@ -332,6 +332,7 @@ const CurrentPage = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
+  color: ${Theme.colors.blacktext};
 
   &.active {
     border-bottom: 2px solid ${Theme.colors.blacktext};
@@ -351,6 +352,7 @@ const PageNationButton = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
+  color: ${Theme.colors.blacktext};
 
   @media (max-width: 1880px) {
     font-size: ${Theme.fontsize.tablet.content};

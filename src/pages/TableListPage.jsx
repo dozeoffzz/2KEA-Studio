@@ -330,6 +330,7 @@ const CurrentPage = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
+  color: ${Theme.colors.blacktext};
 
   &.active {
     border-bottom: 2px solid ${Theme.colors.blacktext};
@@ -349,6 +350,7 @@ const PageNationButton = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
+  color: ${Theme.colors.blacktext};
 
   @media (max-width: 1880px) {
     font-size: ${Theme.fontsize.tablet.content};
@@ -405,33 +407,20 @@ export default function TableListPage() {
             <NavLinkList to={"/products"} end>
               All
             </NavLinkList>
-            <NavLinkList
-              to={"/products/seating"}
-              onClick={() => setCategory("seating")}
-            >
+            <NavLinkList to={"/products/seating"} onClick={() => setCategory("seating")}>
               Seating
             </NavLinkList>
-            <NavLinkList
-              to={"/products/tables"}
-              onClick={() => setCategory("table")}
-            >
+            <NavLinkList to={"/products/tables"} onClick={() => setCategory("table")}>
               Tables
             </NavLinkList>
-            <NavLinkList
-              to={"/products/lighting"}
-              onClick={() => setCategory("lighting")}
-            >
+            <NavLinkList to={"/products/lighting"} onClick={() => setCategory("lighting")}>
               Lighting
             </NavLinkList>
           </NavLinkWrap>
         </TitleWrap>
         <ItemListMain>
           {item.map((item, index) => (
-            <Item
-              key={item.id}
-              large={item.large ? 1 : 0}
-              to={`/products/${item.category}/${item.id}`}
-            >
+            <Item key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
               <ItemInfo>
                 <ItemNum>{item.num}</ItemNum>
                 <ItemName>
@@ -447,28 +436,16 @@ export default function TableListPage() {
                   onMouseEnter={() => setHoverImg(index)}
                   onMouseLeave={() => setHoverImg(null)}
                 >
-                  <Img
-                    src={item.src[0]}
-                    alt={item.name}
-                    visible={hoverImg !== index}
-                  />
-                  <Img
-                    src={item.src[1]}
-                    alt={item.name}
-                    visible={hoverImg === index}
-                  />
+                  <Img src={item.src[0]} alt={item.name} visible={hoverImg !== index} />
+                  <Img src={item.src[1]} alt={item.name} visible={hoverImg === index} />
                 </ItemImg>
               </ItemImgWrap>
             </Item>
           ))}
         </ItemListMain>
         <PageNationWrap>
-          <PageNationButton onClick={() => setCurrentPage(1)}>
-            First
-          </PageNationButton>
-          <PageNationButton onClick={() => setCurrentPage(1)}>
-            Prev
-          </PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(1)}>First</PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(1)}>Prev</PageNationButton>
           {totalPages.map((list) => (
             <CurrentPage
               key={list}
