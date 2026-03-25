@@ -16,7 +16,7 @@ const CartContainer = styled.div`
   min-height: calc(100vh - 100px);
 
   ${({ theme }) => theme.media.tablet} {
-    padding: 30px 60px;
+    padding: 30px 40px;
     grid-template-columns: 1fr;
     height: auto;
   }
@@ -24,6 +24,7 @@ const CartContainer = styled.div`
     padding: 20px 20px;
     grid-template-columns: 1fr;
     height: auto;
+    gap: 80px;
   }
 `;
 
@@ -69,24 +70,23 @@ const CartList = styled.ul`
 
 const Item = styled.li`
   display: grid;
-  grid-template-columns: 40px 1fr 2fr 2fr 40px;
-  column-gap: 20px;
+  grid-template-columns: 40px 1fr 2fr 2fr 1fr;
+  column-gap: 30px;
   align-items: center;
   min-height: 230px;
 
   ${({ theme }) => theme.media.tablet} {
-    grid-template-columns: 40px 1fr 1fr 1fr 40px;
+    grid-template-columns: 10px 1fr 1fr 1fr 40px;
     grid-template-rows: auto;
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    grid-template-columns: 20px 120px 1fr 40px;
+    grid-template-columns: 10px 120px 1fr 20px;
     grid-template-rows: auto auto;
-    column-gap: 18px;
-    row-gap: 10px;
     font-size: ${Theme.fontsize.mobile.content};
     min-height: auto;
     align-items: start;
+    column-gap: 20px;
   }
 `;
 
@@ -98,6 +98,7 @@ const CheckBox = styled.input`
     grid-column: 1;
     grid-row: 1;
     align-self: center;
+    width: 15px;
   }
 `;
 
@@ -108,6 +109,8 @@ const ItemImg = styled.div`
   background-color: ${Theme.colors.overlay};
 
   ${({ theme }) => theme.media.tablet} {
+    width: 198px;
+    height: 231px;
   }
   ${({ theme }) => theme.media.mobile} {
     width: 132px;
@@ -139,21 +142,26 @@ const ItemInfoWrap = styled.div`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
+    font-size: ${Theme.fontsize.mobile.mini};
     grid-column: 3;
     grid-row: 1;
   }
 `;
 
 const ItemName = styled.p`
+  white-space: nowrap;
   font-size: ${Theme.fontsize.desktop.section};
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.section};
+    font-size: ${Theme.fontsize.tablet.content};
+    font-size: 18px;
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
+    font-size: ${Theme.fontsize.mobile.small};
   }
+  /* @media screen and (max-width: 390px) {
+    font-size: 12px;
+  } */
 `;
 
 const ItemDelevery = styled.p`
@@ -166,7 +174,7 @@ const ItemDelevery = styled.p`
     display: none;
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 const QuantityWrap = styled.div`
@@ -181,9 +189,8 @@ const QuantityWrap = styled.div`
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
-    margin-right: 0;
     margin-top: 100px;
-    font-size: ${Theme.fontsize.mobile.content};
+    font-size: ${Theme.fontsize.mobile.mini};
     grid-column: 4;
     grid-row: 1;
     gap: 5px;
@@ -191,13 +198,11 @@ const QuantityWrap = styled.div`
 `;
 
 const DeleteProduct = styled.button`
-  margin-right: 20px;
-
   ${({ theme }) => theme.media.mobile} {
     margin-right: 0;
     grid-column: 4;
     grid-row: 1;
-    /* align-self: center; */
+    width: 15px;
   }
   img {
     width: 20px;
@@ -505,12 +510,12 @@ export default function ShoppingCartPage() {
         {cartItems.map((item, index) => (
           <Item key={item.id}>
             <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
-            <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
-              <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+            <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+              <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
                 <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
                 <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
-              </ItemImg>
-            </NavLink>
+              </NavLink>
+            </ItemImg>
             <ItemInfoWrap>
               <ItemName>{item.name}</ItemName>
               <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>

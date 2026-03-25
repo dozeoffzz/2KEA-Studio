@@ -44,12 +44,11 @@ const HeaderWrap = styled.div`
   display: flex;
   flex: 1;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 `;
 
 // 왼쪽 상단 + 버튼
 const PlusButton = styled.button`
-  margin-top: 30px;
   width: 32px;
 
   ${({ theme }) => theme.media.mobile} {
@@ -64,6 +63,7 @@ const Brand = styled(NavLink)`
   align-items: center;
   font-size: ${Theme.fontsize.desktop.section};
   text-align: center;
+  line-height: 1.2em;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};
@@ -75,7 +75,6 @@ const Brand = styled(NavLink)`
 
 // 오른쪽 상단 햄버거 버튼
 const MenuButton = styled.button`
-  margin-top: 30px;
   width: 32px;
 
   ${({ theme }) => theme.media.mobile} {
