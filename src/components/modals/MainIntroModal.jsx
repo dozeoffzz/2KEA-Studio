@@ -42,11 +42,17 @@ const Overlay = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(12, 12, 12, 0.12);
-  padding: 16px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
 
+  ${({ theme }) => theme.media.tablet} {
+    left: 50px;
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    padding: 12px;
+    top: 200px;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 `;
 
@@ -59,9 +65,14 @@ const ModalFrame = styled.div`
   background-color: ${Theme.colors.white};
   overflow: hidden;
 
-  ${({ theme }) => theme.media.mobile} {
+  ${({ theme }) => theme.media.tablet} {
     width: 350px;
-    height: 330px;
+    height: 350px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 270px;
+    height: 300px;
   }
 `;
 
@@ -75,8 +86,14 @@ const ContentArea = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
 
+  ${({ theme }) => theme.media.tablet} {
+    padding: 25px 17px 0;
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    padding: 18px 16px 0;
+    padding: 10px 10px 0;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -97,8 +114,12 @@ const TextStack = styled.div`
   text-align: center;
   gap: 24px;
 
+  ${({ theme }) => theme.media.tablet} {
+    gap: 15px;
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    gap: 18px;
+    gap: 10px;
   }
 `;
 
@@ -106,8 +127,12 @@ const TextStack = styled.div`
 const Title = styled.span`
   font-size: 32px;
 
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 26px;
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    font-size: 24px;
+    font-size: 22px;
   }
 `;
 
@@ -115,6 +140,10 @@ const Title = styled.span`
 const SecondTitle = styled.span`
   font-size: 14px;
   line-height: 1.5;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 13px;
+  }
 
   ${({ theme }) => theme.media.mobile} {
     font-size: 12px;
@@ -128,6 +157,10 @@ const Content = styled.span`
   font-size: 14px;
   line-height: 1.6;
 
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 13px;
+  }
+
   ${({ theme }) => theme.media.mobile} {
     font-size: 12px;
   }
@@ -137,6 +170,10 @@ const Content = styled.span`
 const SingleLineText = styled.span`
   font-size: 14px;
   line-height: 1.6;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 13px;
+  }
 
   ${({ theme }) => theme.media.mobile} {
     font-size: 12px;
@@ -155,6 +192,10 @@ const InfoStack = styled.div`
 const InfoText = styled.span`
   font-size: 14px;
   line-height: 1.4;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 13px;
+  }
 
   ${({ theme }) => theme.media.mobile} {
     font-size: 12px;
@@ -177,6 +218,14 @@ const DotArea = styled.div`
   justify-content: center;
   align-items: center;
   gap: 22px;
+
+  ${({ theme }) => theme.media.tablet} {
+    gap: 18px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 15px;
+  }
 `;
 
 // 각 점 스타일
@@ -184,8 +233,12 @@ const Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ active }) =>
-    active ? Theme.colors.black : "#b3b3b3"};
+  background-color: ${({ active }) => (active ? Theme.colors.black : "#b3b3b3")};
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 8px;
+    height: 8px;
+  }
 `;
 
 // 하단 버튼 전체 영역
@@ -210,8 +263,13 @@ const BaseButton = styled.button`
   text-align: center;
   cursor: pointer;
 
+  ${({ theme }) => theme.media.tablet} {
+    min-height: 38px;
+    font-size: 13px;
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    min-height: 40px;
+    min-height: 32px;
     font-size: 12px;
   }
 `;
@@ -254,10 +312,7 @@ const modalContents = [
     blocks: [
       {
         type: "content",
-        lines: [
-          "성수 쇼룸에서 소파 및 조명 구매 대상으로",
-          "초이스 쿠션 증정 이벤트를 진행중 입니다.",
-        ],
+        lines: ["성수 쇼룸에서 소파 및 조명 구매 대상으로", "초이스 쿠션 증정 이벤트를 진행중 입니다."],
       },
       {
         type: "single",
@@ -265,10 +320,7 @@ const modalContents = [
       },
       {
         type: "info",
-        lines: [
-          "* 초이스쿠션 종류는 재고 상황에 따라 상이합니다.",
-          "* 3월 27일 ~ 4월 3일 단 7일동안 진행됩니다.",
-        ],
+        lines: ["* 초이스쿠션 종류는 재고 상황에 따라 상이합니다.", "* 3월 27일 ~ 4월 3일 단 7일동안 진행됩니다."],
       },
     ],
   },
@@ -278,17 +330,11 @@ const modalContents = [
     blocks: [
       {
         type: "content",
-        lines: [
-          "평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,",
-          "예약자 우선으로 상담이 진행됩니다.",
-        ],
+        lines: ["평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,", "예약자 우선으로 상담이 진행됩니다."],
       },
       {
         type: "content",
-        lines: [
-          "상담 예약은 평일에만 진행되며,",
-          "주말에는 예약 없이 방문 가능합니다",
-        ],
+        lines: ["상담 예약은 평일에만 진행되며,", "주말에는 예약 없이 방문 가능합니다"],
       },
       {
         type: "single",
@@ -366,10 +412,7 @@ export default function MainIntroModalCarousel() {
   };
 
   // 현재 인덱스에 맞는 모달 내용 가져오기
-  const currentContent = useMemo(
-    () => modalContents[currentIndex],
-    [currentIndex],
-  );
+  const currentContent = useMemo(() => modalContents[currentIndex], [currentIndex]);
 
   // 안 보이게 되어 있으면 렌더링하지 않음
   if (!isVisible) return null;
@@ -400,9 +443,7 @@ export default function MainIntroModalCarousel() {
 
         <BottomArea>
           <ButtonWrap>
-            <TodayCloseButton onClick={handleTodayClose}>
-              오늘 하루 열지 않기
-            </TodayCloseButton>
+            <TodayCloseButton onClick={handleTodayClose}>오늘 하루 열지 않기</TodayCloseButton>
             <CloseButton onClick={handleClose}>닫기</CloseButton>
           </ButtonWrap>
         </BottomArea>
