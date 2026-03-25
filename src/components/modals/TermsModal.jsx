@@ -17,7 +17,7 @@ const Overlay = styled.div`
 `;
 
 // 약관 내용 들어가는 모달
-const ModalBox = styled.div`
+const TermsBox = styled.div`
   width: 350px;
   max-height: 380px;
   background: white;
@@ -25,8 +25,11 @@ const ModalBox = styled.div`
   overflow-y: auto;
   position: relative;
   // 스크롤 좀더 얇게
-  scrollbar-width: thin;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
   scrollbar-color: ${Theme.colors.grayline} transparent;
+  /* overflow: hidden; */
 `;
 
 // 타이틀이랑 같이 닫기 버튼 묶는 부분
@@ -162,14 +165,14 @@ export default function TermsModal({ type, onClose }) {
   return createPortal(
     <Overlay onClick={onClose}>
       {/* 모달 박스 클릭해도 안닫히게 */}
-      <ModalBox onClick={(e) => e.stopPropagation()}>
+      <TermsBox onClick={(e) => e.stopPropagation()}>
         <Header>
           <Title>{title}</Title>
           <CloseBtn onClick={onClose}>X</CloseBtn>
         </Header>
         {/* 내용 들어갈 부분 */}
         <Content>{content}</Content>
-      </ModalBox>
+      </TermsBox>
     </Overlay>,
     target,
   );

@@ -34,8 +34,8 @@ const slideInContent = keyframes`
 // 화면 전체를 덮는 오버레이
 const Overlay = styled.div`
   position: fixed;
-  top: 220px;
-  left: 40px;
+  top: 70px;
+  left: 100px;
   /* inset: 0; */
   z-index: 999;
   display: flex;
@@ -52,8 +52,8 @@ const Overlay = styled.div`
 
 // 모달 전체 프레임
 const ModalFrame = styled.div`
-  width: 450px;
-  height: 370px;
+  width: 430px;
+  height: 385px;
   display: flex;
   flex-direction: column;
   background-color: ${Theme.colors.white};
@@ -184,7 +184,8 @@ const Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ active }) => (active ? Theme.colors.black : "#b3b3b3")};
+  background-color: ${({ active }) =>
+    active ? Theme.colors.black : "#b3b3b3"};
 `;
 
 // 하단 버튼 전체 영역
@@ -253,7 +254,10 @@ const modalContents = [
     blocks: [
       {
         type: "content",
-        lines: ["성수 쇼룸에서 소파 및 조명 구매 대상으로", "초이스 쿠션 증정 이벤트를 진행중 입니다."],
+        lines: [
+          "성수 쇼룸에서 소파 및 조명 구매 대상으로",
+          "초이스 쿠션 증정 이벤트를 진행중 입니다.",
+        ],
       },
       {
         type: "single",
@@ -261,7 +265,10 @@ const modalContents = [
       },
       {
         type: "info",
-        lines: ["* 초이스쿠션 종류는 재고 상황에 따라 상이합니다.", "* 3월 27일 ~ 4월 3일 단 7일동안 진행됩니다."],
+        lines: [
+          "* 초이스쿠션 종류는 재고 상황에 따라 상이합니다.",
+          "* 3월 27일 ~ 4월 3일 단 7일동안 진행됩니다.",
+        ],
       },
     ],
   },
@@ -271,11 +278,17 @@ const modalContents = [
     blocks: [
       {
         type: "content",
-        lines: ["평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,", "예약자 우선으로 상담이 진행됩니다."],
+        lines: [
+          "평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,",
+          "예약자 우선으로 상담이 진행됩니다.",
+        ],
       },
       {
         type: "content",
-        lines: ["상담 예약은 평일에만 진행되며,", "주말에는 예약 없이 방문 가능합니다"],
+        lines: [
+          "상담 예약은 평일에만 진행되며,",
+          "주말에는 예약 없이 방문 가능합니다",
+        ],
       },
       {
         type: "single",
@@ -353,7 +366,10 @@ export default function MainIntroModalCarousel() {
   };
 
   // 현재 인덱스에 맞는 모달 내용 가져오기
-  const currentContent = useMemo(() => modalContents[currentIndex], [currentIndex]);
+  const currentContent = useMemo(
+    () => modalContents[currentIndex],
+    [currentIndex],
+  );
 
   // 안 보이게 되어 있으면 렌더링하지 않음
   if (!isVisible) return null;
@@ -384,7 +400,9 @@ export default function MainIntroModalCarousel() {
 
         <BottomArea>
           <ButtonWrap>
-            <TodayCloseButton onClick={handleTodayClose}>오늘 하루 열지 않기</TodayCloseButton>
+            <TodayCloseButton onClick={handleTodayClose}>
+              오늘 하루 열지 않기
+            </TodayCloseButton>
             <CloseButton onClick={handleClose}>닫기</CloseButton>
           </ButtonWrap>
         </BottomArea>
