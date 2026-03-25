@@ -1,13 +1,17 @@
+import { useState } from "react";
 import styled from "@emotion/styled";
 import { createPortal } from "react-dom";
 import { Theme } from "../../styles/theme";
 import qrCode from "../../assets/imgs/Instagram/qr.svg";
 import bgImage from "../../assets/imgs/main/rightchair.webp";
 
+// 전체 화면 덮는 불투명 배경
 const Overlay = styled.div`
   position: fixed;
-  left: 116px;
-  bottom: 140px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   z-index: 999;
   background-color: ${Theme.colors.overlay};
   display: flex;
@@ -15,7 +19,8 @@ const Overlay = styled.div`
   align-items: center;
 `;
 
-const ModalBox = styled.div`
+// 모달 전체 컨테이너
+const ModalContainer = styled.div`
   position: relative;
   width: 400px;
 
@@ -24,38 +29,21 @@ const ModalBox = styled.div`
   }
 `;
 
-// 오른쪽 상단 x 버튼
-const CloseBtn = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  color: ${Theme.colors.blacktext};
-  font-size: 18px;
-  font-family: sans-serif;
-  cursor: pointer;
-  z-index: 10;
-
-  ${({ theme }) => theme.media.mobile} {
-    font-size: 15px;
-  }
-`;
-
-// 모달 배경 이미지
+// 모달 배경 이미지 영역
 const ModalInner = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 20px 15px;
+  gap: 20px;
+  padding: 25px 20px 37px;
   background-image: url(${bgImage});
   background-size: cover;
   background-position: center;
   text-align: center;
 
   ${({ theme }) => theme.media.mobile} {
-    padding: 20px 15px;
+    padding: 20px 15px 40px;
   }
 
   // 이미지 위에 반투명 레이어 올려서 연하게
@@ -70,7 +58,38 @@ const ModalInner = styled.div`
   }
 `;
 
-// 텍스트들이 before 레이어 위에 보이게
+// 이미지 안쪽 맨 밑에 버튼들을 배치하기
+const ButtonWrapper = styled.div`
+  position: absolute;
+  bottom: 7px;
+  left: 0;
+  padding: 0 15px;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+// 버튼 스타일
+const CloseBtn = styled.button`
+  background: none;
+  border: none;
+  font-size: ${Theme.fontsize.desktop.small};
+  color: ${Theme.colors.blacktext};
+  cursor: pointer;
+  font-family: sans-serif;
+  opacity: 0.8;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 11px;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+// 텍스트들이 레이어 위에 보이게
 const Title = styled.p`
   position: relative;
   z-index: 1;
@@ -157,66 +176,36 @@ const ScanText = styled.p`
   }
 `;
 
-// 버튼 전체
-const BottomArea = styled.div`
-  width: 100%;
-  flex-shrink: 0;
-`;
+const MODAL_HIDE_KEY = "2KEA_MODAL_HIDE";
+const getTodayKey = () => new Date().toLocaleDateString();
 
-// 버튼 위 선
-const ButtonWrap = styled.div`
-  display: flex;
-  width: 100%;
-  border-top: 1px solid ${Theme.colors.black};
-`;
-
-// 닫기버튼
-const BaseButton = styled.button`
-  width: 50%;
-  min-height: 36px;
-  border: none;
-  font-size: 12px;
-  text-align: center;
-  cursor: pointer;
-
-  ${({ theme }) => theme.media.mobile} {
-    min-height: 32px;
-    font-size: 11px;
-  }
-`;
-
-// 오늘 하루 열지 않기 버튼
-const TodayCloseButton = styled(BaseButton)`
-  background-color: ${Theme.colors.white};
-  color: ${Theme.colors.black};
-`;
-
-// 닫기 버튼
-const CloseButton = styled(BaseButton)`
-  background-color: ${Theme.colors.black};
-  color: ${Theme.colors.white};
-`;
-
-// isOpen 모달 열고 닫는 상태값
 export default function InstagramModal({ isOpen, onClose }) {
-  // modal-root에 모달 렌더링하기
+  // 오늘 하루 숨김 여부 상태 관리
+  const [isVisible, setIsVisible] = useState(() => {
+    return localStorage.getItem(MODAL_HIDE_KEY) !== getTodayKey();
+  });
+
   const targetElement = document.querySelector("#modal-root");
 
-  // isOpen이 false면 아무것도 안보이게
-  if (!isOpen) return null;
-
-  // 메인 모달과 동일하게 오늘 하루 열지 않기 로컬스토리지에 오늘 날짜 저장
-  function handleTodayClose() {
-    const today = new Date().toISOString().slice(0, 10);
-    localStorage.setItem("hideInstaModalDate", today);
+  // 오늘 하루 열지 않기 클릭
+  const handleTodayClose = () => {
+    localStorage.setItem(MODAL_HIDE_KEY, getTodayKey());
+    setIsVisible(false);
     onClose();
-  }
+  };
+
+  // 일반 닫기 핸들러
+  const handleClose = () => {
+    setIsVisible(false);
+    onClose();
+  };
+
+  // 조건부 렌더링
+  if (!isOpen || !isVisible || !targetElement) return null;
 
   return createPortal(
-    // 오버레이 클릭하면 모달 닫히게
-    <Overlay onClick={onClose}>
-      {/* 모달 박스 클릭시 닫히지 않게 */}
-      <ModalBox onClick={(e) => e.stopPropagation()}>
+    <Overlay>
+      <ModalContainer onClick={(e) => e.stopPropagation()}>
         <ModalInner>
           <Title>2KEA ARCHIVE</Title>
           <SubTitle>
@@ -226,25 +215,19 @@ export default function InstagramModal({ isOpen, onClose }) {
           </SubTitle>
           <InstaLabel>- 공식 INSTAGRAM -</InstaLabel>
 
-          {/* import한 qrCode 이미지 */}
           <QrBox>
             <QrImage src={qrCode} alt="인스타그램 QR 코드" />
           </QrBox>
 
           <DownText>- 팔로우 시 신제품 소식과 스타일링 팁 제공 -</DownText>
           <ScanText>[QR] 스캔하여 스토리를 만나보세요</ScanText>
-        </ModalInner>
 
-        {/* 버튼은 메인 모달이랑 동일가게한거 */}
-        <BottomArea>
-          <ButtonWrap>
-            <TodayCloseButton onClick={handleTodayClose}>
-              오늘 하루 열지 않기
-            </TodayCloseButton>
-            <CloseButton onClick={onClose}>닫기</CloseButton>
-          </ButtonWrap>
-        </BottomArea>
-      </ModalBox>
+          <ButtonWrapper>
+            <CloseBtn onClick={handleTodayClose}>오늘 하루 열지 않기</CloseBtn>
+            <CloseBtn onClick={handleClose}>닫기</CloseBtn>
+          </ButtonWrapper>
+        </ModalInner>
+      </ModalContainer>
     </Overlay>,
     targetElement,
   );
