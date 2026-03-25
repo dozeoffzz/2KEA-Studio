@@ -16,6 +16,7 @@ const Overlay = styled.div`
   background-color: rgba(12, 12, 12, 0.12);
   transition: opacity 0.42s ease;
   opacity: ${({ animationState }) => (animationState === "exit" ? 0 : 1)};
+  overflow: hidden;
 `;
 
 // 예약 모달 전체 박스
@@ -100,7 +101,8 @@ const Dot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ active }) => (active ? Theme.colors.black : "#b3b3b3")};
+  background-color: ${({ active }) =>
+    active ? Theme.colors.black : "#b3b3b3"};
 `;
 
 // 버튼 위 선을 포함한 버튼 래퍼
@@ -132,7 +134,12 @@ const CloseButton = styled(TodayCloseButton)`
 // activeIndex: 현재 활성화된 점 번호
 // animationState: 전환 애니메이션 상태
 // onClose, onTodayClose: 버튼 클릭 함수
-export default function ReservationModal({ activeIndex = 2, animationState = "active", onClose, onTodayClose }) {
+export default function ReservationModal({
+  activeIndex = 2,
+  animationState = "active",
+  onClose,
+  onTodayClose,
+}) {
   return (
     <Overlay animationState={animationState}>
       <ReservationModalContainer animationState={animationState}>
@@ -144,7 +151,9 @@ export default function ReservationModal({ activeIndex = 2, animationState = "ac
             <SecondTitle>- 성수 쇼룸 예약자 안내 -</SecondTitle>
 
             <Content>
-              <span>평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,</span>
+              <span>
+                평일 2KEA 성수 쇼룸은 예약 또는 자유롭게 쇼룸 방문이 가능하며,
+              </span>
               <span>예약자 우선으로 상담이 진행됩니다.</span>
             </Content>
 
@@ -167,7 +176,9 @@ export default function ReservationModal({ activeIndex = 2, animationState = "ac
         <BottomArea>
           {/* 하단 버튼 영역 */}
           <ButtonWrap>
-            <TodayCloseButton onClick={onTodayClose}>오늘 하루 열지 않기</TodayCloseButton>
+            <TodayCloseButton onClick={onTodayClose}>
+              오늘 하루 열지 않기
+            </TodayCloseButton>
             <CloseButton onClick={onClose}>닫기</CloseButton>
           </ButtonWrap>
         </BottomArea>
