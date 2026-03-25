@@ -167,14 +167,9 @@ export default function Header() {
     <>
       <Overlay isOpen={isOpen} />
       {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
-      <HeaderContainer
-        isScroll={isScroll}
-        isOpen={isOpen}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-      >
+      <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>
-          <PlusButton onClick={ClickOpenMenu}>
+          <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll} onMouseEnter={() => setIsOpen(true)}>
             <img src={plusIcon} />
           </PlusButton>
           <Brand to={"/"}>
@@ -182,7 +177,7 @@ export default function Header() {
               2KEA <br /> STUDIO
             </h1>
           </Brand>
-          <MenuButton onClick={ClickOpenMenu}>
+          <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll} onMouseEnter={() => setIsOpen(true)}>
             <img src={menuIcon} />
           </MenuButton>
         </HeaderWrap>
