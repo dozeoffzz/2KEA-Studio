@@ -5,6 +5,7 @@ import plusIcon from "../../assets/icons/plusIcon.svg";
 import menuIcon from "../../assets/icons/menuIcon.svg";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../stores/useAuthStore";
+import { useLocation } from "react-router-dom";
 
 const Overlay = styled.div`
   position: fixed;
@@ -18,7 +19,7 @@ const Overlay = styled.div`
   pointer-events: ${(props) => (props.isOpen ? "auto" : "none")};
 
   transition: opacity 0.3s ease;
-  z-index: -1;
+  z-index: 999;
 `;
 const HeaderContainer = styled.header`
   padding: 0px 30px;
@@ -28,7 +29,7 @@ const HeaderContainer = styled.header`
   height: ${(props) => (props.isOpen ? "330px" : "100px")};
   flex-shrink: 0;
   background-color: transparent;
-  z-index: 10;
+  z-index: 1000;
 
   background: linear-gradient(
     to bottom,
@@ -162,12 +163,19 @@ export default function Header() {
   const ClickOpenMenu = () => {
     setIsOpen((prev) => !prev);
   };
+
+  // 페이지 바뀌면 헤더 닫기
+  const location = useLocation();
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
   return (
     <>
+      {/* 모바일 일때 오버레이 클릭하면 헤더 없어지게 */}
+      <Overlay isOpen={isOpen} onClick={() => setIsOpen(false)} />
       {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
-        {/* 모바일 일때 오버레이 클릭하면 헤더 없어지게 */}
-        <Overlay isOpen={isOpen} onClick={() => setIsOpen(false)} />
         <HeaderWrap>
           <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll} onMouseEnter={() => setIsOpen(true)}>
             <img src={plusIcon} />
