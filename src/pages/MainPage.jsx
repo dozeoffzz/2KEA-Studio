@@ -32,7 +32,7 @@ const Contents = styled.div`
   flex-direction: column;
   gap: 130px;
   width: 100%;
-  padding: 265px 60px 0;
+  padding: 265px 130px 0;
 
   ${({ theme }) => theme.media.tablet} {
     padding: 140px 15px 0;
@@ -185,19 +185,23 @@ const LightImageBox = styled.div`
   }
 `;
 
-//오버플로우 방지용 컨테이너
 const LightImageContainer = styled.div`
+  position: relative;
   width: 100%;
   max-width: 838px;
   height: 863px;
-  overflow: hidden;
+
+  :hover .light-hover-img {
+    opacity: 1;
+  }
+
   ${({ theme }) => theme.media.tablet} {
-    width: 350px;
+    max-width: 350px;
     height: 522px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    width: 241px;
+    max-width: 241px;
     height: 315px;
   }
 `;
@@ -206,20 +210,36 @@ const LightImage = styled.img`
   width: 100%;
   max-width: 838px;
   height: 863px;
-  cursor: pointer;
-  transition: transform 0.6s ease-in-out;
-
-  :hover {
-    transform: translateX(128px) translateY(-64px) scale(1.8);
-  }
 
   ${({ theme }) => theme.media.tablet} {
-    width: 350px;
+    max-width: 350px;
     height: 522px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    width: 241px;
+    max-width: 241px;
+    height: 315px;
+  }
+`;
+
+const LightHoverImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 838px;
+  height: 863px;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  cursor: pointer;
+
+  ${({ theme }) => theme.media.tablet} {
+    max-width: 350px;
+    height: 522px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    max-width: 241px;
     height: 315px;
   }
 `;
@@ -237,9 +257,9 @@ const LightTextContainer = styled.div`
 
   ${({ theme }) => theme.media.mobile} {
     position: absolute;
+    bottom: 8px;
+    right: 8px;
     gap: 10px;
-    top: 142px;
-    left: 110px;
     flex-direction: column;
   }
 `;
@@ -330,6 +350,7 @@ const LightDesc = styled.p`
 const ChairImageContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 140px;
   width: 100%;
   height: 1156px;
@@ -343,7 +364,7 @@ const ChairImageContainer = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    justify-content: space-between;
+    position: relative;
     gap: 5px;
     height: 378px;
     padding: 0 18px;
@@ -358,7 +379,8 @@ const LeftChairContainer = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    gap: 0;
+    height: 100%;
+    gap: 2px;
   }
 `;
 
@@ -371,17 +393,64 @@ const LeftChairImageBox = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
+    justify-content: flex-start;
     gap: 0;
+    padding-top: 16px;
   }
 `;
 
-//의자 영역 텍스트
+const LeftImageContainer = styled.div`
+  width: 100%;
+  max-width: 672px;
+  height: 661px;
+
+  :hover .left-chair-hover-img {
+    opacity: 1;
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    max-width: 337px;
+    height: 376px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    max-width: 159px;
+    height: 216px;
+  }
+`;
+
+const LeftChair = styled.img`
+  width: 100%;
+  max-width: 672px;
+  height: 661px;
+
+  ${({ theme }) => theme.media.tablet} {
+    max-width: 337px;
+    height: 376px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    max-width: 159px;
+    height: 216px;
+  }
+`;
+
+const LeftChairHover = styled(LeftChair)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+`;
+
 const ChairCommentContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 52px;
   padding-left: 16px;
   transform: translateY(-45px);
+  z-index: 10;
 
   ${({ theme }) => theme.media.tablet} {
     gap: 42px;
@@ -399,24 +468,38 @@ const ChairCommentContainer = styled.div`
 const TopChairDescBox = styled.div`
   display: flex;
   flex-direction: column;
+
+  ${({ theme }) => theme.media.mobile} {
+    position: absolute;
+    width: 210px;
+    top: 45px;
+  }
 `;
 
 const TopChairDesc = styled.p`
-  font-size: ${Theme.fontsize.desktop.section};
+  font-size: clamp(12px, 2vw, ${Theme.fontsize.desktop.section});
+  line-height: 1.4;
   font-weight: 400;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
-    line-height: 20px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
 const BottomChairDescBox = styled(TopChairDescBox)`
   margin-left: auto;
+  ${({ theme }) => theme.media.mobile} {
+    position: absolute;
+    width: 200px;
+    height: 100px;
+    top: 104px;
+    right: 0;
+    transform: translateX(70%);
+  }
 `;
 
 const BottomChairDesc = styled(TopChairDesc)``;
@@ -425,9 +508,9 @@ const BottomChairDesc = styled(TopChairDesc)``;
 const ChairVerticalTextBox = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
   gap: 20px;
-  margin-bottom: auto;
   transform: rotate(180deg);
 
   ${({ theme }) => theme.media.tablet} {
@@ -466,60 +549,25 @@ const ChairVerticalLine = styled.div`
   ${({ theme }) => theme.media.tablet} {
     width: 2px;
     height: 96px;
+    transform: translate(11px, -9px);
   }
 
   ${({ theme }) => theme.media.mobile} {
     width: 2px;
     height: 56px;
+    transform: translate(6px, -5px);
   }
 `;
 
-//오버플로우 방지용 컨테이너
-const LeftImageContainer = styled.div`
-  width: 100%;
-  max-width: 672px;
-  height: 661px;
-  overflow: hidden;
-
-  ${({ theme }) => theme.media.tablet} {
-    max-width: 337px;
-    height: 376px;
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    max-width: 159px;
-    height: 216px;
-  }
-`;
-
-const LeftChair = styled.img`
-  width: 100%;
-  max-width: 672px;
-  height: 661px;
-  transition: transform 0.6s ease-in-out;
-  overflow: hidden;
-  cursor: pointer;
-
-  :hover {
-    transform: translateX(100px) translateY(-100px) scale(1.5);
-  }
-
-  ${({ theme }) => theme.media.tablet} {
-    max-width: 337px;
-    height: 376px;
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    max-width: 159px;
-    height: 216px;
-  }
-`;
-//오버플로우 방지용 컨테이너
 const RightImageContainer = styled.div`
+  position: relative;
   width: 100%;
   max-width: 770px;
   height: 1156px;
-  overflow: hidden;
+
+  :hover .right-chair-hover-img {
+    opacity: 1;
+  }
 
   ${({ theme }) => theme.media.tablet} {
     max-width: 386px;
@@ -536,13 +584,6 @@ const RightChair = styled.img`
   width: 100%;
   max-width: 770px;
   height: 1156px;
-  transition: transform 0.6s ease-in-out;
-  overflow: hidden;
-  cursor: pointer;
-
-  :hover {
-    transform: translateX(472px) translateY(-84px) scale(2.3);
-  }
 
   ${({ theme }) => theme.media.tablet} {
     max-width: 386px;
@@ -553,6 +594,14 @@ const RightChair = styled.img`
     max-width: 182px;
     height: 378px;
   }
+`;
+
+const RightChairHover = styled(RightChair)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
 `;
 
 //하단 이미지 영역
@@ -604,7 +653,7 @@ const BottomChairBox = styled.div`
 const ChairTextBox = styled.div`
   position: absolute;
   top: calc(100% - 216px);
-  left: -380px;
+  left: -330px;
   pointer-events: none;
 
   ${({ theme }) => theme.media.tablet} {
@@ -686,7 +735,7 @@ const DesktextBox = styled.div`
 
   ${({ theme }) => theme.media.tablet} {
     bottom: -84px;
-    left: 180px;
+    left: 100px;
     gap: 32px;
     min-width: 571px;
     height: 264px;
@@ -695,8 +744,8 @@ const DesktextBox = styled.div`
 
   ${({ theme }) => theme.media.mobile} {
     bottom: -50px;
-    left: 80px;
-    gap: 16px;
+    left: 0;
+    gap: 12px;
     min-width: 300px;
     height: 160px;
     padding: 6px;
@@ -747,8 +796,8 @@ const FirstDeskMessage = styled.p`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
-    margin-left: 0;
+    font-size: ${Theme.fontsize.mobile.mini};
+    margin-left: 90px;
   }
 `;
 
@@ -760,7 +809,7 @@ const SecondDeskMessage = styled(FirstDeskMessage)`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    margin-left: 0;
+    margin-left: auto;
   }
 `;
 
@@ -857,6 +906,21 @@ export default function MainPage() {
     loadData();
   }, []);
 
+  //이미지를 미리 로딩 및 디코딩하여 최초 호버시 딜레이 방지
+  useEffect(() => {
+    list.forEach((banner) => {
+      if (banner.src[1]) {
+        const img = new Image();
+        img.src = banner.src[1];
+
+        //decode 는 Promise를 반환하므로 catch 메서드로 불필요한 에러 방지
+        img.decode().catch((err) => {
+          console.warn(`${banner.name}`, err);
+        });
+      }
+    });
+  }, [list]);
+
   //받아온 배너 데이터 목록
   const firstBanner = list[0]; //소파
   const secondBanner = list[1]; //전등
@@ -874,7 +938,11 @@ export default function MainPage() {
             <SofaImageBox>
               <SofaImage src={firstBanner.src[0]} alt={firstBanner.name || "Sofa Image"} />
               <Link to={`/products/${firstBanner.category}/${firstBanner.productId}`}>
-                <SofaHoverImage src={firstBanner.src[1]} alt="Sofa Hover Image" className="sofa-hover-img" />
+                <SofaHoverImage
+                  src={firstBanner.src[1]}
+                  alt="Sofa Hover Image"
+                  className="sofa-hover-img"
+                />
               </Link>
               <SofaDescBox>
                 <SofaTitle>Classic Leather, Timeless Modern</SofaTitle>
@@ -888,8 +956,13 @@ export default function MainPage() {
           {secondBanner && (
             <LightImageBox>
               <LightImageContainer>
+                <LightImage src={secondBanner.src[0]} alt={secondBanner.name || "Light Image"} />
                 <Link to={`/products/${secondBanner.category}/${secondBanner.productId}`}>
-                  <LightImage src={secondBanner.src[0]} alt={secondBanner.name || "Light Image"} />
+                  <LightHoverImage
+                    src={secondBanner.src[1]}
+                    alt={secondBanner.name || "Light Hover Image"}
+                    className="light-hover-img"
+                  />
                 </Link>
               </LightImageContainer>
               <LightTextContainer>
@@ -923,8 +996,16 @@ export default function MainPage() {
               <LeftChairImageBox>
                 {thirdBanner && (
                   <LeftImageContainer>
+                    <LeftChair
+                      src={thirdBanner.src[0]}
+                      alt={thirdBanner.name || "Left Chair Image"}
+                    />
                     <Link to={`/products/${thirdBanner.category}/${thirdBanner.productId}`}>
-                      <LeftChair src={thirdBanner.src[0]} alt={thirdBanner.name || "Left Chair Image"} />
+                      <LeftChairHover
+                        src={thirdBanner.src[1]}
+                        alt={thirdBanner.name || "Left Chair Hover Image"}
+                        className="left-chair-hover-img"
+                      />
                     </Link>
                   </LeftImageContainer>
                 )}
@@ -947,8 +1028,16 @@ export default function MainPage() {
             </LeftChairContainer>
             {fourthBanner && (
               <RightImageContainer>
+                <RightChair
+                  src={fourthBanner.src[0]}
+                  alt={fourthBanner.name || "Right Chair Image"}
+                />
                 <Link to={`/products/${fourthBanner.category}/${fourthBanner.productId}`}>
-                  <RightChair src={fourthBanner.src[0]} alt={fourthBanner.name || "Right Chair Image"} />
+                  <RightChairHover
+                    src={fourthBanner.src[1]}
+                    alt={fourthBanner.name || "Right Chair Hover Image"}
+                    className="right-chair-hover-img"
+                  />
                 </Link>
               </RightImageContainer>
             )}
@@ -960,7 +1049,11 @@ export default function MainPage() {
               <BottomChairBox>
                 <ChairImage src={fifthBanner.src[0]} alt={fifthBanner.name || "Desk Image"} />
                 <Link to={`/products/${fifthBanner.category}/${fifthBanner.productId}`}>
-                  <ChairHoverImage src={fifthBanner.src[1]} alt="Hover Desk Image" className="hover-img" />
+                  <ChairHoverImage
+                    src={fifthBanner.src[1]}
+                    alt="Hover Desk Image"
+                    className="hover-img"
+                  />
                 </Link>
                 <ChairTextBox>
                   <ChairTitle>TIMELESS TRACE</ChairTitle>
@@ -972,7 +1065,11 @@ export default function MainPage() {
               <BottomDeskBox>
                 <DeskImage src={sixthBanner.src[0]} alt={sixthBanner.name || "Bed Image"} />
                 <Link to={`/products/${sixthBanner.category}/${sixthBanner.productId}`}>
-                  <DeskHoverImage src={sixthBanner.src[1]} alt="Hover Bed Image" className="hover-img" />
+                  <DeskHoverImage
+                    src={sixthBanner.src[1]}
+                    alt="Hover Bed Image"
+                    className="hover-img"
+                  />
                 </Link>
                 <DesktextBox>
                   <DeskTitle>The Whisper of Morning Light</DeskTitle>
