@@ -159,7 +159,7 @@ const SignupForm = styled.form`
   // 모바일
   ${Theme.media.mobile} {
     max-width: 350px;
-    gap: 18px;
+    gap: 25px;
   }
 `;
 
@@ -179,13 +179,13 @@ const FormRow = styled.div`
 const FormLabel = styled.label`
   width: 100px;
   text-align: left;
-  font-size: ${Theme.fontsize.desktop.content};
+  font-size: ${Theme.fontsize.desktop.medium};
   color: ${({ error }) =>
     error ? Theme.colors.redaccent : Theme.colors.blacktext};
 
   // 태블릿
   ${Theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.content};
+    font-size: ${Theme.fontsize.tablet.medium};
     width: 80px;
   }
 
@@ -284,7 +284,7 @@ const CheckBtn = styled.button`
   // 모바일
   ${Theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
-    padding: 4px 8px;
+    padding: 3px 6px;
   }
 `;
 
@@ -455,13 +455,13 @@ const AgreeItemLabel = styled.label`
   align-items: center;
   gap: 8px;
   flex: 1;
-  font-size: ${Theme.fontsize.desktop.content};
+  font-size: ${Theme.fontsize.desktop.medium};
   color: ${({ error }) =>
     error ? Theme.colors.redaccent : Theme.colors.blacktext};
 
   // 태블릿
   ${Theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.content};
+    font-size: ${Theme.fontsize.tablet.medium};
   }
 
   // 모바일
