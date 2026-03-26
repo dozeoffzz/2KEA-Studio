@@ -21,6 +21,7 @@ import ScrollToTop from "./components/common/ScrollToTop";
 export default function App() {
   return (
     <>
+      {/* 페이지 이동시 스크롤 맨위로 이동 */}
       <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>

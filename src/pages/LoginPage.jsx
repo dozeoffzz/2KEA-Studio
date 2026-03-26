@@ -5,6 +5,7 @@ import lineLight from "../assets/imgs/lineLight.svg";
 import lineChair from "../assets/imgs/lineChair.svg";
 import { Theme } from "../styles/theme";
 import { useAuthStore } from "../stores/useAuthStore";
+import { authLoginApi } from "../apis/authLoginApi";
 
 const LoginContainer = styled.div`
   margin-top: 100px;
@@ -167,11 +168,8 @@ const ChairImg = styled.img`
 export default function LoginPage() {
   const [input, setInput] = useState({ id: "", password: "" });
   const navigate = useNavigate();
+  // useAuthStore 에서 구조분해로 가져오기
   const { login } = useAuthStore();
-
-  const handleLogin = () => {
-    login();
-  };
 
   // 로그인 버튼 눌렀을 때 빈칸이면 빨갛게 표시
   const [errors, setErrors] = useState({
@@ -211,6 +209,27 @@ export default function LoginPage() {
       return;
     }
 
+    // 로그인 api 사용
+    const LoginApi = async () => {
+      try {
+        const res = await authLoginApi({
+          id: input.id,
+          password: input.password,
+        });
+        console.log({ res });
+
+        if (res.success) {
+          // 로그인 성공시 api에서 받아오는 토큰 유저정보를 useAuthStore에 넘겨줌
+          login(res.token, res.userInfo);
+          alert(`${res.userInfo.name}님 환영합니다!`);
+          navigate("/");
+          console.log("토큰:", res.token);
+        }
+      } catch (error) {
+        console.error("false", error);
+      }
+    };
+
     // 로컬스토리지에 저장된 유저 정보 가져오기
     const storedUser = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -223,7 +242,7 @@ export default function LoginPage() {
       setErrors({ id: true, password: true });
     }
 
-    handleLogin();
+    LoginApi();
     navigate("/");
   }
   // 페이지 들어갈 때 바로 포커스 되게 하기
