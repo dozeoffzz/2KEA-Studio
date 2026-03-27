@@ -8,18 +8,21 @@ import { useCartStore } from "../stores/useCartStore";
 import { NavLink } from "react-router-dom";
 
 const CartContainer = styled.div`
-  margin-top: 100px;
+  margin-top: 180px;
   padding: 40px 80px;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 120px;
   min-height: calc(100vh - 100px);
+  align-items: start;
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
+    gap: 80px;
     padding: 30px 40px;
     grid-template-columns: 1fr;
     height: auto;
   }
+
   ${({ theme }) => theme.media.mobile} {
     padding: 20px 20px;
     grid-template-columns: 1fr;
@@ -28,41 +31,54 @@ const CartContainer = styled.div`
   }
 `;
 
+const CartListWrap = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 24px;
+
+  &::-webkit-scrollbar {
+    height: 16px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 20px;
+    box-shadow: inset 0 0 0 0.3px ${Theme.colors.black};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${Theme.colors.black};
+    border-radius: 20px;
+    border: 5px solid transparent;
+    background-clip: content-box;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    overflow-x: visible;
+    overflow-y: visible;
+    padding-bottom: 0;
+  }
+`;
+
 const CartList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 100%;
+  min-width: 950px;
   /* height: calc(100vh - 100px); */
-  height: 100vh;
+  height: auto;
   min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
 
-  &::-webkit-scrollbar {
-    padding: 2px;
-    width: 10px;
-    border: 1px solid ${Theme.colors.black};
-    border-radius: 20px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-    margin: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: ${Theme.colors.black};
-    border-radius: 10px;
-    border: 3px solid transparent;
-    background-clip: content-box;
-  }
-
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     height: auto;
+    min-width: 818px;
     overflow: visible;
   }
+
   ${({ theme }) => theme.media.mobile} {
+    min-width: 100%;
     height: auto;
     overflow: visible;
   }
@@ -75,13 +91,20 @@ const Item = styled.li`
   align-items: center;
   min-height: 230px;
 
-  ${({ theme }) => theme.media.tablet} {
-    grid-template-columns: 10px 1fr 1fr 1fr 40px;
+  @media screen and (max-width: 1282px) {
+    grid-template-columns: 30px 1fr 1.4fr 0.9fr 150px;
     grid-template-rows: auto;
     font-size: ${Theme.fontsize.tablet.content};
   }
+
+  @media screen and (max-width: 1060px) {
+    grid-template-columns: 30px 1fr 1.2fr 0.8fr 100px;
+    grid-template-rows: auto;
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+
   ${({ theme }) => theme.media.mobile} {
-    grid-template-columns: 10px 120px 1fr 20px;
+    grid-template-columns: 5px 120px 1fr 5px;
     grid-template-rows: auto auto;
     font-size: ${Theme.fontsize.mobile.content};
     min-height: auto;
@@ -109,7 +132,7 @@ const ItemImg = styled.div`
   height: 231px;
   background-color: ${Theme.colors.overlay};
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     width: 198px;
     height: 231px;
   }
@@ -139,7 +162,7 @@ const ItemInfoWrap = styled.div`
   gap: 5px;
   font-size: ${Theme.fontsize.desktop.content};
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -152,8 +175,9 @@ const ItemInfoWrap = styled.div`
 const ItemName = styled.p`
   white-space: nowrap;
   font-size: ${Theme.fontsize.desktop.section};
+  margin-bottom: 40px;
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
     font-size: 18px;
   }
@@ -168,7 +192,7 @@ const ItemName = styled.p`
 const ItemDelevery = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   @media screen and (max-width: 400px) {
@@ -186,7 +210,7 @@ const QuantityWrap = styled.div`
   font-size: ${Theme.fontsize.desktop.content};
   gap: 20px;
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -204,6 +228,8 @@ const DeleteProduct = styled.button`
     grid-column: 4;
     grid-row: 1;
     width: 15px;
+    justify-self: end;
+    align-self: start;
   }
   img {
     width: 20px;
@@ -213,9 +239,9 @@ const DeleteProduct = styled.button`
 
 const Quantity = styled.div`
   display: flex;
-  gap: 80px;
+  gap: 60px;
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     gap: 40px;
   }
   ${({ theme }) => theme.media.mobile} {
@@ -226,14 +252,19 @@ const Quantity = styled.div`
 const QuantityUpDown = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 70px;
   gap: 20px;
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-top: 0;
+  }
 `;
 
 const UpButton = styled.button`
   font-size: ${Theme.fontsize.desktop.section};
   color: ${Theme.colors.black};
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -246,6 +277,23 @@ const OrderInfoWrap = styled.div`
   flex-direction: column;
   gap: 40px;
   width: 100%;
+  min-width: 400px;
+  max-width: 605px;
+  position: sticky;
+  top: 100px;
+
+  @media screen and (max-width: 1282px) {
+    position: static;
+    top: auto;
+    max-width: 100%;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    position: static;
+    top: auto;
+    max-width: 100%;
+    min-width: 250px;
+  }
 `;
 
 const OrderInfoForm = styled.form`
@@ -253,7 +301,7 @@ const OrderInfoForm = styled.form`
   flex-direction: column;
   gap: 20px;
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     padding: 0 30px;
   }
   ${({ theme }) => theme.media.mobile} {
@@ -269,7 +317,7 @@ const OrderName = styled.div`
   font-size: ${Theme.fontsize.desktop.content};
   border-bottom: 1px solid ${Theme.colors.black};
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -298,9 +346,10 @@ const ThanksMsg = styled.p`
   align-self: center;
   font-size: ${Theme.fontsize.desktop.section};
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.section};
   }
+
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.section};
   }
@@ -312,9 +361,10 @@ const ProductPriceWrap = styled.div`
   border-bottom: 1px solid ${Theme.colors.black};
   font-size: ${Theme.fontsize.desktop.content};
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
+
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
   }
@@ -334,7 +384,7 @@ const ProductPrice = styled.li`
 const ProductNameQuantity = styled.div`
   white-space: nowrap;
   display: flex;
-  gap: 20px;
+  gap: 30px;
 `;
 
 const ProductPriceQuantity = styled.div`
@@ -354,7 +404,7 @@ const TotalPrice = styled.div`
   justify-content: space-between;
   font-size: ${Theme.fontsize.desktop.content};
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -375,13 +425,14 @@ const ButtonWrap = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  min-width: 180px;
+  min-width: 120px;
+  width: 100%;
   min-height: 50px;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.whitetext};
   background-color: ${Theme.colors.black};
 
-  ${({ theme }) => theme.media.tablet} {
+  @media screen and (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -392,7 +443,14 @@ const DeleteButton = styled.button`
   }
 `;
 
-const OrderButton = styled(DeleteButton)``;
+const OrderButton = styled(DeleteButton)`
+  min-width: 120px;
+  width: 100%;
+  min-height: 50px;
+  font-size: ${Theme.fontsize.desktop.content};
+  color: ${Theme.colors.whitetext};
+  background-color: ${Theme.colors.black};
+`;
 
 export default function ShoppingCartPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -513,41 +571,43 @@ export default function ShoppingCartPage() {
 
   return (
     <CartContainer>
-      <CartList>
-        {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
-        {cartItems.map((item, index) => (
-          <Item key={item.id}>
-            <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
-            <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
-              <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
-                <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
-                <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
-              </NavLink>
-            </ItemImg>
-            <ItemInfoWrap>
-              <ItemName>{item.name}</ItemName>
-              <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>
-              <ItemDelevery>적립금: -</ItemDelevery>
-              <ItemDelevery>배송비: 무료</ItemDelevery>
-            </ItemInfoWrap>
-            <QuantityWrap>
-              <Quantity>
-                <p>Quantity:</p>
-                <p>{item.quantity}</p>
-              </Quantity>
-              <QuantityUpDown>
-                {/* 아이템 아이디, 프롭스를 useCartStore에 넘김 */}
-                <UpButton onClick={() => handleQuantity(item.id, "dec")}>-</UpButton>
-                <p>{item.quantity}</p>
-                <UpButton onClick={() => handleQuantity(item.id, "inc")}>+</UpButton>
-              </QuantityUpDown>
-            </QuantityWrap>
-            <DeleteProduct onClick={() => handleDelete(item.id)}>
-              <img src={DeleteProductBtn} />
-            </DeleteProduct>
-          </Item>
-        ))}
-      </CartList>
+      <CartListWrap>
+        <CartList>
+          {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
+          {cartItems.map((item, index) => (
+            <Item key={item.id}>
+              <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
+              <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+                <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
+                  <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
+                  <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
+                </NavLink>
+              </ItemImg>
+              <ItemInfoWrap>
+                <ItemName>{item.name}</ItemName>
+                <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>
+                <ItemDelevery>적립: {Math.floor(item.price * 0.01).toLocaleString()}P</ItemDelevery>
+                <ItemDelevery>배송비: 무료</ItemDelevery>
+              </ItemInfoWrap>
+              <QuantityWrap>
+                <Quantity>
+                  <p>Quantity:</p>
+                  <p>{item.quantity}</p>
+                </Quantity>
+                <QuantityUpDown>
+                  {/* 아이템 아이디, 프롭스를 useCartStore에 넘김 */}
+                  <UpButton onClick={() => handleQuantity(item.id, "dec")}>-</UpButton>
+                  <p>{item.quantity}</p>
+                  <UpButton onClick={() => handleQuantity(item.id, "inc")}>+</UpButton>
+                </QuantityUpDown>
+              </QuantityWrap>
+              <DeleteProduct onClick={() => handleDelete(item.id)}>
+                <img src={DeleteProductBtn} />
+              </DeleteProduct>
+            </Item>
+          ))}
+        </CartList>
+      </CartListWrap>
       <OrderInfoWrap>
         {/* 주문 폼 */}
         <OrderInfoForm onSubmit={handleSubmit}>
@@ -568,13 +628,7 @@ export default function ShoppingCartPage() {
           {msg.email && <ErrorMsg style={{ color: "red" }}>{msg.email}</ErrorMsg>}
           <OrderAddress>
             <p>Address</p>
-            <InputAddress
-              name="address"
-              placeholder="Address"
-              type="address"
-              value={form.address}
-              onChange={handleInput}
-            />
+            <InputAddress name="address" placeholder="Address" type="address" value={form.address} onChange={handleInput} />
           </OrderAddress>
           <OrderAddress>
             <p style={{ whiteSpace: "nowrap" }}>Base Address</p>

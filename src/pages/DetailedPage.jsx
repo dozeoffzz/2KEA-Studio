@@ -8,7 +8,7 @@ import MoveCartModal from "../components/modals/MoveCartModal";
 import { detailApi } from "../apis/detailApi";
 
 const MainWrap = styled.div`
-  margin-top: 100px;
+  margin-top: 180px;
   width: 100%;
   background-color: ${Theme.colors.white};
 `;
@@ -32,7 +32,7 @@ const ImgGallery = styled.section`
 const SliderWrap = styled.div`
   position: relative;
   width: 100%;
-  height: 50vw;
+  height: 44vw;
   max-height: 760px;
   overflow: hidden;
 
@@ -86,7 +86,6 @@ const SlideItem = styled.div`
     opacity 0.55s ease;
 
   // 중앙 이미지 강조
-  z-index: ${(props) => (props.$position === "center" ? 3 : 2)};
   opacity: ${(props) => (props.$position === "center" ? 1 : 0.6)};
 
   transform: ${(props) =>
@@ -118,6 +117,12 @@ const ArrowButton = styled.button`
     height: 40px;
     font-size: 26px;
   }
+
+  @media screen and (max-width: 440px) {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
 `;
 
 const LeftArrow = styled(ArrowButton)`
@@ -128,8 +133,16 @@ const LeftArrow = styled(ArrowButton)`
     left: 18%;
   }
 
+  @media screen and (max-width: 600px) {
+    left: 16%;
+  }
+
   @media screen and (max-width: 500px) {
     left: 15%;
+  }
+
+  @media screen and (max-width: 440px) {
+    left: 16%;
   }
 `;
 
@@ -141,8 +154,16 @@ const RightArrow = styled(ArrowButton)`
     right: 18%;
   }
 
+  @media screen and (max-width: 600px) {
+    right: 16%;
+  }
+
   @media screen and (max-width: 500px) {
     right: 15%;
+  }
+
+  @media screen and (max-width: 440px) {
+    right: 16%;
   }
 `;
 
@@ -168,7 +189,7 @@ const DetailSection = styled.section`
   display: flex;
   gap: 120px;
   justify-content: space-around;
-  padding: 0px 200px 50px 200px;
+  padding: 0px 150px 50px 150px;
 
   @media screen and (max-width: 1440px) {
     flex-direction: column;
@@ -192,10 +213,9 @@ const LeftContent = styled.div`
 `;
 
 const DetailImg = styled.img`
-  width: 100%;
-  min-width: 630px;
+  min-width: 670px;
   max-width: 751px;
-  max-height: 980px;
+  max-height: 1200px;
 
   ${({ theme }) => theme.media.mobile} {
     min-width: 100%;
@@ -209,7 +229,7 @@ const DetailImg = styled.img`
 const RightContent = styled.aside`
   width: 100%;
   min-width: 270px;
-  max-width: 535px;
+  max-width: 475px;
   display: flex;
   flex-direction: column;
 
@@ -229,17 +249,13 @@ const StickyBox = styled.div`
 `;
 
 const InfoGroup = styled.div`
-  margin-bottom: 30px;
-
-  ${({ theme }) => theme.media.mobile} {
-    margin-bottom: 23px;
-  }
+  margin-bottom: 23px;
 `;
 
 const InfoTitle = styled.p`
   padding-bottom: 5px;
   margin-bottom: 10px;
-  border-bottom: 3px solid ${Theme.colors.black};
+  border-bottom: 2px solid ${Theme.colors.black};
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
 
@@ -250,13 +266,13 @@ const InfoTitle = styled.p`
 
 const InfoRow = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 30px;
   margin-bottom: 10px;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
 
   ${({ theme }) => theme.media.mobile} {
-    gap: 14px;
+    gap: 15px;
     margin-bottom: 8px;
     font-size: ${Theme.fontsize.mobile.mini};
   }
@@ -315,7 +331,7 @@ const Price = styled.p`
 
 // shopping cart, buy 버튼
 const BtnGroup = styled.div`
-  margin-top: 22px;
+  margin-top: 5px;
 `;
 
 const CardBtn = styled.button`
@@ -336,7 +352,7 @@ const CardBtn = styled.button`
 // 다른 상품 보러가기 버튼
 const Back = styled.button`
   width: 100%;
-  margin: 57px 0px 0px 0px;
+  margin-top: 37px;
   padding-bottom: 12px;
   border: none;
   border-bottom: 2px solid ${Theme.colors.textsecondary};
