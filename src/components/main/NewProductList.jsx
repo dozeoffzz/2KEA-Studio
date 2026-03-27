@@ -5,6 +5,7 @@ import { Theme } from "../../styles/theme";
 
 //API 호출
 import { fetchMain } from "../../apis/mainApi";
+import { Link } from "react-router-dom";
 
 //스타일 컴포넌트
 const ItemList = styled.div`
@@ -22,18 +23,17 @@ const ItemList = styled.div`
 `;
 
 const ListTitle = styled.p`
-  font-size: ${Theme.fontsize.desktop.title};
-  line-height: ${Theme.fontsize.desktop.title};
+  font-size: ${Theme.fontsize.desktop.main.title};
+  line-height: ${Theme.fontsize.desktop.main.title};
   text-align: center;
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.title};
-    line-height: ${Theme.fontsize.tablet.title};
+    font-size: ${Theme.fontsize.tablet.main.title};
+    line-height: ${Theme.fontsize.tablet.main.title};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.section};
-    line-height: ${Theme.fontsize.mobile.section};
-    padding-right: 28px;
+    font-size: ${Theme.fontsize.mobile.main.title};
+    line-height: ${Theme.fontsize.mobile.main.title};
   }
 `;
 
@@ -45,10 +45,12 @@ const ButtonContainer = styled.div`
   gap: 10px;
 
   ${({ theme }) => theme.media.tablet} {
-    top: 14px;
+    top: 12px;
+    gap: 7px;
   }
   ${({ theme }) => theme.media.mobile} {
-    top: 5px;
+    top: 0;
+    gap: 5px;
   }
 `;
 
@@ -102,17 +104,28 @@ const ListImageBox = styled.div`
 //슬라이드용 컴포넌트
 const ListSlide = styled.div`
   display: flex;
+  /* 보이는 리스트 부분 양옆 패딩 제거 */
+  margin: 0 -10px;
+  /* 인덱스 위치에 따라 슬라이드 위치 결정 */
   transform: translateX(${({ index, visibleCount }) => `-${(100 / visibleCount) * index}%`});
-  /* 구조분해 할당: 무한 슬라이드 애니메이션*/
+  /* 슬라이드 애니메이션 */
   transition: ${({ isTranslation }) => (isTranslation ? "transform 0.6s ease-in-out" : "none")};
+
+  ${({ theme }) => theme.media.tablet} {
+    margin: 0 -7.5px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    margin: 0 -2.5px;
+  }
 `;
 
 const ListImageWrapper = styled.div`
   position: relative;
+  //계산 복잡도를 낮추기 위해 padding으로 간격 설정
   padding: 0 10px;
+  //슬라이드 너비 설정
   flex: 0 0 ${({ visibleCount }) => `calc(100% / ${visibleCount})`};
   height: 550px;
-  flex-shrink: 0;
 
   ${({ theme }) => theme.media.tablet} {
     padding: 0 7.5px;
@@ -154,12 +167,14 @@ const HoverImage = styled.img`
 export default function NewProductList() {
   const [loading, setLoading] = useState(true); // API 데이터 로딩 완료 여부
   const [list, setList] = useState([]); //API로 받아올 리스트 데이터
-  const [isTranslation, setIsTranslation] = useState(false); //애니메이션 상태 적용 여부(무한 슬라이드 방지용)
   const [index, setIndex] = useState(0); //현재 슬라이드 기준 위치
-  const [slideCount, setSlideCount] = useState(2); // 버튼 클릭마다 슬라이드 이동 갯수
+  const [isTranslation, setIsTranslation] = useState(false); //애니메이션 활설화 여부
+  const [slideCount, setSlideCount] = useState(2); //버튼 클릭시 슬라이드할 아이템 갯수
   const isSliding = useRef(false); // 슬라이드 애니메이션 진행 여부(버튼 연타 방지용)
+
   const visibleCount = 4; // 한 화면에 보이는 슬라이드 갯수
-  let extendedList = [...list.slice(-slideCount), ...list, ...list.slice(0, slideCount)]; //무한 슬라이드 구현용 복사 리스트
+  const extendedList =
+    list.length > 0 ? [...list.slice(-visibleCount), ...list, ...list.slice(0, visibleCount)] : []; //무한 슬라이드 구현용 복사 리스트
 
   //api 데이터 받아오기
   useEffect(() => {
@@ -169,7 +184,7 @@ export default function NewProductList() {
         // 데이터가 배열인지 확인 후 저장하기
         if (result && Array.isArray(result.data.recommendations)) {
           setList(result.data.recommendations);
-          setIsTranslation(false);
+          setIndex(visibleCount);
         }
       } catch (error) {
         console.error("데이터 로드 실패.", error);
@@ -180,10 +195,10 @@ export default function NewProductList() {
     loadData();
   }, []);
 
-  //모바일일 경우 이미지 1개, 태블릿, PC일 경우 이미지 2개 슬라이드
+  //화면 리사이즈 시 슬라이드 버튼 클릭시 이동 갯수 업데이트
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 576) {
+      if (window.innerWidth <= 768) {
         setSlideCount(1);
       } else {
         setSlideCount(2);
@@ -191,56 +206,51 @@ export default function NewProductList() {
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
 
+    window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  //slideCount 또는 list 가 바뀔때마다 인덱스 다시 세팅
+  //api 데이터 로딩 이후 슬라이드 초기 위치 설정
   useEffect(() => {
-    if (list.length) {
-      setIndex(slideCount);
+    if (list.length > 0) {
+      //초기 배치시 애니메이션 방지(바로 배치되는것처럼 보이기)
+      setIsTranslation(false);
+      //앞에 붙은 복제본을 건너뛰고 실제 첫 상품 위치로 인덱스 설정
+      setIndex(visibleCount);
     }
-  }, [list, slideCount]);
+  }, [list]); //리스트 데이터 변경시마다 실행
 
-  //슬라이드 애니메이션이 꺼져있으면 다시 활성화(무한 슬라이드 방지)
-  useEffect(() => {
-    if (!isTranslation) {
-      setIsTranslation(true);
-    }
-  }, [isTranslation]);
-
+  //오른쪽 목록으로 슬라이드
   const nextSlide = () => {
-    if (isSliding.current) return; //애니메이션 진행중 클릭 방지
-    isSliding.current = true;
-    setIndex((prev) => prev + slideCount);
+    if (isSliding.current) return; //애니메이션 진행 중 반복클릭 방지
+    isSliding.current = true; //애니메이션 시작 상태로 변경
+    setIsTranslation(true); //애니메이션 활성화
+    setIndex((prev) => prev + slideCount); //오른쪽으로 슬라이드
   };
 
+  //왼쪽 방향으로 슬라이드
   const previousSlide = () => {
     if (isSliding.current) return;
     isSliding.current = true;
-    setIndex((prev) => prev - slideCount);
+    setIsTranslation(true);
+    setIndex((prev) => prev - slideCount); //왼쪽으로 슬라이드
   };
 
   const handleTransitionEnd = () => {
-    //오른쪽 끝 복제 영역에 도달했을 경우
-    if (index >= list.length + slideCount) {
-      //슬라이드 애니메이션 제거
-      setIsTranslation(false);
-      //시작 위치로 순간이동
-      setIndex(slideCount);
+    isSliding.current = false; //애니메이션 중단 상태로 변경
+
+    //오른쪽 끝 도달 시
+    if (index >= list.length + visibleCount) {
+      setIsTranslation(false); //애니메이션 끄기
+      setIndex(visibleCount); //실제 리스트 첫 위치로 점프
     }
 
-    //왼쪽 끝 복제 영역에 도달했을 경우
+    //왼쪽 끝 도달 시
     if (index <= 0) {
-      //슬라이드 애니메이션 제거
-      setIsTranslation(false);
-      //실제 마지막 슬라이드 위치로 순간이동
-      setIndex(list.length);
+      setIsTranslation(false); //애니메이션 끄기
+      setIndex(list.length); //실제 리스트 마지막 위치로 점프
     }
-
-    //슬라이드 애니메이션 진행 중단
-    isSliding.current = false;
   };
 
   if (loading) return <div>데이터 로딩중...</div>;
@@ -290,11 +300,13 @@ export default function NewProductList() {
             onTransitionEnd={handleTransitionEnd}
           >
             {/* 이미지 데이터 배열 받아오기 */}
-            {extendedList.map((item, i) => (
+            {extendedList.map((item, idx) => (
               // 복제된 아이템의 key값 충돌 방지를 위해 id 와 index 조합
-              <ListImageWrapper key={`${item.id}-${i}`} visibleCount={visibleCount}>
+              <ListImageWrapper key={`${item.id}-${idx}`} visibleCount={visibleCount}>
                 <DefaultImage src={item.src[0]} alt={item.name} />
-                <HoverImage src={item.src[1]} alt={item.name} className="list-hover-img" />
+                <Link to={`/products/${item.category}/${item.productId}`}>
+                  <HoverImage src={item.src[1]} alt={item.name} className="list-hover-img" />
+                </Link>
               </ListImageWrapper>
             ))}
           </ListSlide>
