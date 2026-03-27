@@ -177,7 +177,7 @@ export default function Header() {
       {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>
-          <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll} onMouseEnter={() => setIsOpen(true)}>
+          <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
             <img src={plusIcon} />
           </PlusButton>
           <Brand to={"/"}>
@@ -185,12 +185,12 @@ export default function Header() {
               2KEA <br /> STUDIO
             </h1>
           </Brand>
-          <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll} onMouseEnter={() => setIsOpen(true)}>
+          <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
             <img src={menuIcon} />
           </MenuButton>
         </HeaderWrap>
         {/* // useState로 값변경하기 위해 프롭스 전달 */}
-        <MenuWrap isOpen={isOpen} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
+        <MenuWrap isOpen={isOpen}>
           {/* 왼쪽메뉴 */}
           <LeftMenu>
             <Products>Products</Products>

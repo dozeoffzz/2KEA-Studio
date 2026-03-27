@@ -129,6 +129,7 @@ const MemberTypeBox = styled.div`
   justify-content: center;
   gap: 60px;
   font-size: ${Theme.fontsize.desktop.content};
+  accent-color: ${Theme.colors.black};
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -211,7 +212,8 @@ const FormInput = styled.input`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.content};
+    width: 100%;
   }
 `;
 
@@ -392,6 +394,7 @@ const AgreeAllRow = styled.div`
   gap: 8px;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
+  accent-color: ${Theme.colors.black};
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -453,6 +456,7 @@ const AgreeItemLabel = styled.label`
   flex: 1;
   font-size: ${Theme.fontsize.desktop.medium};
   color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  accent-color: ${Theme.colors.black};
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -500,6 +504,7 @@ const AgreeOptLabel = styled.label`
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.blacktext};
   white-space: nowrap;
+  accent-color: ${Theme.colors.black};
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -1237,8 +1242,13 @@ export default function Signup() {
               </AgreeGroupTitle>
               <AgreeItemRow>
                 <AgreeItemLabel error={errors.agreePrivacy}>
-                  <input type="checkbox" name="agreePrivacy" checked={agreement.agreePrivacy} onChange={handleAgreement} />[ 필수
-                  ] 개인정보 이용약관
+                  <input
+                    type="checkbox"
+                    name="agreePrivacy"
+                    checked={agreement.agreePrivacy}
+                    onChange={handleAgreement}
+                  />
+                  [ 필수 ] 개인정보 이용약관
                 </AgreeItemLabel>
               </AgreeItemRow>
               <AgreeItemDesc>
@@ -1259,14 +1269,19 @@ export default function Signup() {
               </AgreeGroupTitle>
               <AgreeItemRow>
                 <AgreeItemLabel error={errors.agreeTerms}>
-                  <input type="checkbox" name="agreeTerms" checked={agreement.agreeTerms} onChange={handleAgreement} />[ 필수 ]
-                  쇼핑몰 이용약관
+                  <input type="checkbox" name="agreeTerms" checked={agreement.agreeTerms} onChange={handleAgreement} />[
+                  필수 ] 쇼핑몰 이용약관
                 </AgreeItemLabel>
               </AgreeItemRow>
               <AgreeItemRow>
                 <AgreeItemLabel error={errors.agreeTerms}>
-                  <input type="checkbox" name="servicePolicy" checked={agreement.servicePolicy} onChange={handleAgreement} />[
-                  필수 ] 개인정보 수집 및 이용 동의
+                  <input
+                    type="checkbox"
+                    name="servicePolicy"
+                    checked={agreement.servicePolicy}
+                    onChange={handleAgreement}
+                  />
+                  [ 필수 ] 개인정보 수집 및 이용 동의
                 </AgreeItemLabel>
               </AgreeItemRow>
             </div>
