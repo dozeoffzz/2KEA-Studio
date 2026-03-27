@@ -30,6 +30,12 @@ const TermsBox = styled.div`
   }
   scrollbar-color: ${Theme.colors.grayline} transparent;
   /* overflow: hidden; */
+
+  ${({ theme }) => theme.media.mobile} {
+    min-width: 300px;
+    padding: 16px;
+    margin: 20px;
+  }
 `;
 
 // 타이틀이랑 같이 닫기 버튼 묶는 부분
