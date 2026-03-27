@@ -86,10 +86,33 @@ const SlideItem = styled.div`
     opacity 0.55s ease;
 
   // 중앙 이미지 강조
-  opacity: ${(props) => (props.$position === "center" ? 1 : 0.6)};
+  opacity: ${(props) => {
+    if (props.$position === "center") return 1;
+    // 양 옆이미지 60%만 보이게 설정
+    if (props.$position === "left" || props.$position === "right") return 0.4;
+    // 뒤쪽 이미지 12%만 보이게 설정
+    return 0.12;
+  }};
 
-  transform: ${(props) =>
-    props.$position === "center" ? "translate(-50%, -50%) scale(1)" : "translate(-50%, -50%) scale(0.65)"};
+  z-index: ${(props) => {
+    // 제일 앞
+    if (props.$position === "center") return 3;
+    if (props.$position === "left" || props.$position === "right") return 2;
+    // 제일 뒤
+    return 1;
+  }};
+
+  // 슬라이드 이미지 크기
+  transform: ${(props) => {
+    if (props.$position === "center") {
+      return "translate(-50%, -50%) scale(1)";
+    } else if (props.$position === "left" || props.$position === "right") {
+      return "translate(-50%, -50%) scale(0.65)";
+    } else {
+      // 3장 이상
+      return "translate(-50%, -50%) scale(0.5)";
+    }
+  }};
 `;
 
 const SlideImg = styled.img`
