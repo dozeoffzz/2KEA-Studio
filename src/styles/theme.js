@@ -24,6 +24,11 @@ export const Theme = {
       medium: "16px",
       small: "14px",
       mini: "12px",
+      main: {
+        animationTitle: "80px",
+        title: "40px",
+        section: "28px",
+      },
     },
     tablet: {
       title: "36px",
@@ -32,6 +37,11 @@ export const Theme = {
       medium: "15px",
       small: "14px",
       mini: "12px",
+      main: {
+        animationTitle: "56px",
+        title: "26px",
+        section: "18px",
+      },
     },
     mobile: {
       title: "28px",
@@ -40,6 +50,11 @@ export const Theme = {
       medium: "15px",
       small: "14px",
       mini: "12px",
+      main: {
+        animationTitle: "24px",
+        title: "16px",
+        section: "12px",
+      },
     },
   },
   // New
