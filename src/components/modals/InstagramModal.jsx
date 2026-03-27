@@ -9,7 +9,7 @@ import bgImage from "../../assets/imgs/main/rightchair.webp";
 const Overlay = styled.div`
   position: fixed;
   left: 80px;
-  top: 420px;
+  top: 425px;
   z-index: 999;
   background-color: ${Theme.colors.overlay};
   display: flex;
@@ -18,6 +18,7 @@ const Overlay = styled.div`
 
   ${({ theme }) => theme.media.tablet} {
     left: 50px;
+    top: 410px;
   }
 
   ${({ theme }) => theme.media.mobile} {
@@ -47,12 +48,16 @@ const ModalInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 25px 20px 37px;
   background-image: url(${bgImage});
   background-size: cover;
   background-position: center;
   text-align: center;
+
+  ${({ theme }) => theme.media.tablet} {
+    gap: 5px;
+  }
 
   ${({ theme }) => theme.media.mobile} {
     padding: 10px 10px 32px;
@@ -171,8 +176,8 @@ const QrBox = styled.div`
   padding: 10px;
 
   ${({ theme }) => theme.media.tablet} {
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
   }
 
   ${({ theme }) => theme.media.mobile} {

@@ -35,7 +35,7 @@ const slideInContent = keyframes`
 // 화면 전체를 덮는 오버레이
 const Overlay = styled.div`
   position: fixed;
-  top: 60px;
+  top: 70px;
   left: 80px;
   /* inset: 0; */
   z-index: 999;
@@ -48,6 +48,7 @@ const Overlay = styled.div`
 
   ${({ theme }) => theme.media.tablet} {
     left: 50px;
+    top: 50px;
   }
 
   ${({ theme }) => theme.media.mobile} {
