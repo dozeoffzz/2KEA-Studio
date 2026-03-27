@@ -131,14 +131,6 @@ const ItemListMain = styled.div`
   grid-auto-rows: 483px;
   gap: 40px;
 
-  @media (max-width: 1880px) {
-    max-width: 1500px;
-    padding: 32px 48px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: auto;
-    gap: 32px 24px;
-  }
-
   ${Theme.media.tablet} {
     max-width: 100%;
     padding: 30px 32px;
@@ -182,7 +174,7 @@ const ItemInfo = styled.div`
   border-top: 1px solid ${Theme.colors.blacktext};
   border-bottom: 1px solid ${Theme.colors.blacktext};
 
-  @media (max-width: 1880px) {
+  ${Theme.media.tablet} {
     height: 68px;
     padding: 8px 0;
     margin-bottom: 8px;
@@ -200,7 +192,7 @@ const ItemNum = styled.span`
   color: ${Theme.colors.redaccent};
   font-size: ${Theme.fontsize.desktop.section};
 
-  @media (max-width: 1880px) {
+  ${Theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};
   }
 
@@ -211,16 +203,16 @@ const ItemNum = styled.span`
 
 const ItemName = styled.span`
   flex: 1;
+  min-width: 0;
   font-size: ${Theme.fontsize.desktop.content};
   text-align: right;
   line-height: 1.2;
+  white-space: nowrap;
   word-break: keep-all;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 
-  @media (max-width: 1880px) {
+  ${Theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
@@ -235,7 +227,7 @@ const ItemImgWrap = styled.div`
   gap: 10px;
   flex: 1;
 
-  @media (max-width: 1880px) {
+  ${Theme.media.tablet} {
     gap: 0;
     display: block;
   }
@@ -253,7 +245,7 @@ const ItemContentWrap = styled.div`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 1880px) {
+  ${Theme.media.tablet} {
     display: none;
   }
 `;
@@ -275,19 +267,15 @@ const ItemImg = styled.div`
   justify-content: center;
   overflow: hidden;
 
-  @media (max-width: 1880px) {
-    width: 100%;
-    aspect-ratio: ${(props) => (props.large ? "2.6 / 1" : "0.88 / 1")};
-    padding: 18px;
-  }
-
   ${Theme.media.tablet} {
-    aspect-ratio: ${(props) => (props.large ? "2.4 / 1" : "1 / 1")};
+    width: 100%;
+    aspect-ratio: ${(props) => (props.large ? "2.4 / 1" : "1.18 / 1")};
+    padding: 18px;
   }
 
   ${Theme.media.mobile} {
     width: 100%;
-    aspect-ratio: ${(props) => (props.large ? "2.2 / 1" : "0.82 / 1")};
+    aspect-ratio: ${(props) => (props.large ? "2.2 / 1" : "1.08 / 1")};
     padding: 12px;
   }
 `;
@@ -311,7 +299,7 @@ const PageNationWrap = styled.div`
   font-size: ${Theme.fontsize.desktop.content};
   margin-bottom: 40px;
 
-  @media (max-width: 1880px) {
+  ${Theme.media.tablet} {
     gap: 32px;
     font-size: ${Theme.fontsize.tablet.content};
     margin-bottom: 36px;
@@ -337,7 +325,7 @@ const CurrentPage = styled.button`
     border-bottom: 2px solid ${Theme.colors.blacktext};
   }
 
-  @media (max-width: 1880px) {
+  ${Theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
@@ -353,7 +341,7 @@ const PageNationButton = styled.button`
   cursor: pointer;
   color: ${Theme.colors.blacktext};
 
-  @media (max-width: 1880px) {
+  ${Theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
@@ -369,6 +357,31 @@ export default function TableListPage() {
   const [totalPage, setTotalPage] = useState(1);
   const [category, setCategory] = useState("table");
   const [hoverImg, setHoverImg] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    const handleMobile = (event) => {
+      setIsMobile(event.matches);
+    };
+
+    setIsMobile(mediaQuery.matches);
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleMobile);
+    } else {
+      mediaQuery.addListener(handleMobile);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener("change", handleMobile);
+      } else {
+        mediaQuery.removeListener(handleMobile);
+      }
+    };
+  }, []);
 
   // products api 받아오기
   const [item, setItem] = useState([]);
@@ -429,9 +442,11 @@ export default function TableListPage() {
                 </ItemName>
               </ItemInfo>
               <ItemImgWrap>
-                <ItemContentWrap>
-                  <ItemContent>{item.content}</ItemContent>
-                </ItemContentWrap>
+                {!isMobile && (
+                  <ItemContentWrap>
+                    <ItemContent>{item.content}</ItemContent>
+                  </ItemContentWrap>
+                )}
                 <ItemImg
                   large={item.large ? 1 : 0}
                   onMouseEnter={() => setHoverImg(index)}
