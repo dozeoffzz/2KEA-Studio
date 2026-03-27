@@ -12,6 +12,9 @@ export async function authLoginApi({ id, password }) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error, "false");
+    if (error.message.includes("401")) {
+      throw new Error("아이디 또는 비밀번호가 올바르지 않습니다");
+    }
+    throw error;
   }
 }

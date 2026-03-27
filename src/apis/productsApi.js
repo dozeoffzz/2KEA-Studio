@@ -10,6 +10,7 @@ export async function fetchProducts({ category = "all", page = 1, limit = 7 }) {
 
     query.append("page", page);
     query.append("limit", limit);
+
     const response = await apiClient(`/products?${query.toString()}`);
 
     const data = await response.json();

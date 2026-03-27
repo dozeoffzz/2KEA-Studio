@@ -64,6 +64,12 @@ const LoginInputWrap = styled.div`
   }
 `;
 
+const ErrorMsg = styled.p`
+  color: red;
+  font-size: ${Theme.fontsize.desktop.mini};
+  text-align: right;
+`;
+
 // error 나면 빨간색으로
 const InputInfo = styled.p`
   width: 100px;
@@ -178,6 +184,8 @@ const ChairImg = styled.img`
 
 export default function LoginPage() {
   const [input, setInput] = useState({ id: "", password: "" });
+  // 로그인 아이디 비번 틀렸을때 메세지 보내기 상태값
+  const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
   // useAuthStore 에서 구조분해로 가져오기
   const { login } = useAuthStore();
@@ -203,9 +211,12 @@ export default function LoginPage() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: false }));
     }
+    if (loginError) {
+      setLoginError("");
+    }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     // 빈칸이거나 조건 안맞으면 true로 바꿔서 빨갛게 표시
@@ -220,27 +231,23 @@ export default function LoginPage() {
       return;
     }
     // 로그인 api 사용
-    const LoginApi = async () => {
-      try {
-        const res = await authLoginApi({
-          id: input.id,
-          password: input.password,
-        });
-        console.log({ res });
+    try {
+      const res = await authLoginApi({
+        id: input.id,
+        password: input.password,
+      });
+      console.log({ res });
 
-        if (res.success) {
-          // 로그인 성공시 api에서 받아오는 토큰 유저정보를 useAuthStore에 넘겨줌
-          login(res.token, res.userInfo);
-          alert(`${res.userInfo.name}님 환영합니다!`);
-          navigate("/");
-          console.log("토큰:", res.token);
-        }
-      } catch (error) {
-        console.error("false", error);
-      }
-    };
-    LoginApi();
+      // 로그인 성공시 api에서 받아오는 토큰 유저정보를 useAuthStore에 넘겨줌
+      login(res.token, res.userInfo);
+      alert(`${res.userInfo.name}님 환영합니다!`);
+      navigate("/");
+    } catch (error) {
+      setLoginError(error.message);
+    }
   }
+  // LoginApi();
+  // }
   // 페이지 들어갈 때 바로 포커스 되게 하기
   const focus = useRef(null);
   useEffect(() => {
@@ -262,6 +269,7 @@ export default function LoginPage() {
           <InputInfo error={errors.password}>Password</InputInfo>
           <LoginInput name="password" type="password" value={input.password} onChange={handleChange} />
         </LoginInputWrap>
+        {loginError && <ErrorMsg>{loginError}</ErrorMsg>}
 
         <ButtonWrap>
           {/* 로그인 버튼 handleSubmit을 통해 검사 후 이동하게 수정 */}

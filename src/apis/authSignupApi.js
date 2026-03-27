@@ -5,6 +5,6 @@ export async function authSignupApi(signupData) {
     method: "POST",
     body: JSON.stringify(signupData),
   });
-  const data = response.json();
+  const data = await response.json();
   return data;
 }

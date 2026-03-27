@@ -205,7 +205,8 @@ export default function Header() {
               <LogOut
                 onClick={() => {
                   logout();
-                  navigate("/");
+                  navigate("/", { replace: true });
+                  window.scrollTo(0, 0);
                 }}
               >
                 LogOut
