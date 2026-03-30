@@ -210,22 +210,26 @@ const ProductName = styled.p`
 
 const DetailSection = styled.section`
   display: flex;
-  gap: 120px;
+  gap: 180px;
   justify-content: space-around;
   padding: 0px 150px 50px 150px;
+  margin-bottom: 341px;
 
   @media screen and (max-width: 1440px) {
     flex-direction: column;
+    margin-bottom: 90px;
   }
 
   ${({ theme }) => theme.media.tablet} {
     gap: 90px;
     padding: 0px 120px 108px 120px;
+    margin-bottom: 80px;
   }
 
   ${({ theme }) => theme.media.mobile} {
     gap: 47px;
     padding: 0px 24px 40px 24px;
+    margin-bottom: 40px;
   }
 `;
 
@@ -237,8 +241,8 @@ const LeftContent = styled.div`
 
 const DetailImg = styled.img`
   min-width: 670px;
-  max-width: 751px;
-  max-height: 1200px;
+  /* max-width: 751px; */
+  max-height: 1400px;
 
   ${({ theme }) => theme.media.mobile} {
     min-width: 100%;
