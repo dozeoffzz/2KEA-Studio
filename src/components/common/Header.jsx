@@ -195,35 +195,21 @@ export default function Header() {
     <>
       {/* 모바일 일때 오버레이 클릭하면 헤더 없어지게 */}
       <Overlay isOpen={isOpen} onClick={() => setIsOpen(false)} />
-      {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
+      {/* // useState로 스크롤 값변경하기 위해 프롭스 전달 */}
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>
-          <PlusButton
-            onClick={ClickOpenMenu}
-            isOpen={isOpen}
-            isScroll={isScroll}
-            onMouseEnter={() => setIsOpen(true)}
-          >
+          <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
             <img src={plusIcon} />
           </PlusButton>
           <Brand to={"/"} animated={animated}>
             <Logo>2KEA</Logo>
           </Brand>
-          <MenuButton
-            onClick={ClickOpenMenu}
-            isOpen={isOpen}
-            isScroll={isScroll}
-            onMouseEnter={() => setIsOpen(true)}
-          >
+          <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
             <img src={menuIcon} />
           </MenuButton>
         </HeaderWrap>
         {/* // useState로 값변경하기 위해 프롭스 전달 */}
-        <MenuWrap
-          isOpen={isOpen}
-          onMouseEnter={() => setIsOpen(true)}
-          onMouseLeave={() => setIsOpen(false)}
-        >
+        <MenuWrap isOpen={isOpen}>
           {/* 왼쪽메뉴 */}
           <LeftMenu>
             <Products>Products</Products>
