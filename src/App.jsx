@@ -17,6 +17,7 @@ import InstagramModal from "./components/modals/InstagramModal";
 import NotFoundPage from "./pages/NotFoundPage";
 import CompletedPage from "./pages/CompletedPage";
 import ScrollToTop from "./components/common/ScrollToTop";
+import MyPage from "./pages/MyPage";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/completed" element={<CompletedPage />} />
+          <Route path="/auth/me" element={<MyPage />} />
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
       </Routes>

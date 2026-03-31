@@ -233,6 +233,7 @@ export default function Header() {
             <Font to={"/products/lighting"}>Lighting</Font>
           </LeftMenu>
           <RightMenu>
+            {isLogin ? <Font to={"/auth/me"}>MyPage</Font> : null}
             {isLogin ? null : <Font to={"/signup"}>Sign Up</Font>}
             {isLogin ? (
               <LogOut

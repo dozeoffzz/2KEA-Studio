@@ -620,8 +620,8 @@ export default function ShoppingCartPage() {
           </OrderName>
           {msg.name && <ErrorMsg style={{ color: "red" }}>{msg.name}</ErrorMsg>}
           <Ordermobile>
-            <p>mobile</p>
-            <Inputmobile name="mobile" placeholder="mobile" type="text" value={form.mobile} onChange={handleInput} />
+            <p>Phone</p>
+            <Inputmobile name="mobile" placeholder="Phone" type="text" value={form.mobile} onChange={handleInput} />
           </Ordermobile>
           {msg.mobile && <ErrorMsg style={{ color: "red" }}>{msg.mobile}</ErrorMsg>}
           <OrderEmail>
