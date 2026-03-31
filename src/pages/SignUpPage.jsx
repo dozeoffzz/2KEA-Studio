@@ -5,6 +5,9 @@ import { Theme } from "../styles/theme";
 import SignUpModal from "../components/modals/SignUpModal";
 import TermsModal from "../components/modals/TermsModal";
 import bgchair from "../assets/imgs/signup/chair.png";
+import { authSignupApi } from "../apis/authSignupApi";
+import { authLoginApi } from "../apis/authLoginApi";
+import { useAuthStore } from "../stores/useAuthStore";
 
 const SignupPage = styled.div`
   margin-top: 100px;
@@ -129,6 +132,7 @@ const MemberTypeBox = styled.div`
   justify-content: center;
   gap: 60px;
   font-size: ${Theme.fontsize.desktop.content};
+  accent-color: ${Theme.colors.black};
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -211,7 +215,8 @@ const FormInput = styled.input`
 
   // 모바일
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.content};
+    width: 100%;
   }
 `;
 
@@ -392,6 +397,7 @@ const AgreeAllRow = styled.div`
   gap: 8px;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
+  accent-color: ${Theme.colors.black};
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -453,6 +459,7 @@ const AgreeItemLabel = styled.label`
   flex: 1;
   font-size: ${Theme.fontsize.desktop.medium};
   color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  accent-color: ${Theme.colors.black};
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -500,6 +507,7 @@ const AgreeOptLabel = styled.label`
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.blacktext};
   white-space: nowrap;
+  accent-color: ${Theme.colors.black};
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -577,6 +585,8 @@ const SignupBtn = styled.button`
 
 export default function Signup() {
   const navigate = useNavigate();
+  // 로그인 구조분해로 가져오기
+  const { login } = useAuthStore();
 
   const [form, setForm] = useState({
     id: "",
@@ -724,6 +734,40 @@ export default function Signup() {
     }
   }
 
+  // api로 보내야하는 값 보내고 회원가입하기
+  const signupData = {
+    userType: memberType,
+    id: form.id,
+    password: form.password,
+    name: form.name,
+    phone: `${form.phone1}-${form.phone2}-${form.phone3}`,
+    email: form.email,
+    birthdate: `${form.birthYear}-${form.birthMonth.padStart(2, "0")}-${form.birthDay.padStart(2, "0")}`,
+    agreeTerms: agreement.agreeTerms,
+    agreePrivacy: agreement.agreePrivacy,
+    agreeMarketing: agreement.sms || agreement.email,
+  };
+  async function handleSignup() {
+    try {
+      // 회원가입
+      await authSignupApi(signupData);
+
+      // 회원가입 완료 후 로그인 되게 하기
+      const res = await authLoginApi({
+        id: form.id,
+        password: form.password,
+      });
+
+      // 로그인 정보들
+      if (res.success) {
+        login(res.token, res.userInfo);
+        setIsModalOpen(true);
+      }
+    } catch (error) {
+      console.log("false", error);
+    }
+  }
+
   function handleChange(e) {
     const name = e.target.name;
     let value = e.target.value;
@@ -863,7 +907,7 @@ export default function Signup() {
     }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     let hasError = false;
@@ -1006,21 +1050,7 @@ export default function Signup() {
       return;
     }
 
-    // 로컬스토리지에 저장
-    const userInfo = {
-      userType: memberType,
-      id: form.id,
-      name: form.name,
-      mobile: `${form.phone1}-${form.phone2}-${form.phone3}`,
-      email: form.email,
-      birthdate: `${form.birthYear}-${form.birthMonth}-${form.birthDay}`,
-      agreeTerms: agreement.agreeTerms,
-      agreePrivacy: agreement.agreePrivacy,
-      agreeMarketing: agreement.sms || agreement.email,
-    };
-    localStorage.setItem("userInfo", JSON.stringify(userInfo));
-
-    setIsModalOpen(true);
+    await handleSignup();
   }
 
   return (
@@ -1175,139 +1205,154 @@ export default function Signup() {
             />
             {msgs.email && <ErrorMsg>{msgs.email}</ErrorMsg>}
           </FormRow>
+
+          {/* 생년월일 - ref 달아서 에러시 스크롤 이동 */}
+          <SignupSection ref={birthRef}>
+            <SectionTitle>Date of Birth</SectionTitle>
+            <BirthInput
+              error={errors.birthYear}
+              type="text"
+              name="birthYear"
+              placeholder="YYYY"
+              value={form.birthYear}
+              maxLength="4"
+              inputMode="numeric"
+              onChange={handleChange}
+            />
+            {msgs.birthYear && <BirthMsg>{msgs.birthYear}</BirthMsg>}
+            <BirthInput
+              error={errors.birthMonth}
+              type="text"
+              name="birthMonth"
+              placeholder="MM"
+              value={form.birthMonth}
+              maxLength="2"
+              inputMode="numeric"
+              ref={birthMonthRef}
+              onChange={handleChange}
+            />
+            {msgs.birthMonth && <BirthMsg>{msgs.birthMonth}</BirthMsg>}
+            <BirthInput
+              error={errors.birthDay}
+              type="text"
+              name="birthDay"
+              placeholder="DD"
+              value={form.birthDay}
+              maxLength="2"
+              inputMode="numeric"
+              ref={birthDayRef}
+              onChange={handleChange}
+            />
+            {msgs.birthDay && <BirthMsg>{msgs.birthDay}</BirthMsg>}
+          </SignupSection>
+
+          {/* 이용 동의 - ref 달아서 에러시 스크롤 이동 */}
+          <SignupSection ref={agreeRef}>
+            <SectionTitle>Whole agreement</SectionTitle>
+            <AgreeAllRow>
+              <input type="checkbox" name="all" checked={agreement.all} onChange={handleAllAgree} />
+              이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신 (선택) 에 모두 동의합니다.
+            </AgreeAllRow>
+
+            <AgreeBox>
+              {/* 홈페이지 개인정보 처리 동의 */}
+              <div>
+                <AgreeGroupTitle>
+                  홈페이지 개인정보 처리 동의
+                  {/* 약관보기 버튼 */}
+                  <AgreeViewBtn type="button" onClick={() => setModalType("privacy")}>
+                    약관보기
+                  </AgreeViewBtn>
+                </AgreeGroupTitle>
+                <AgreeItemRow>
+                  <AgreeItemLabel error={errors.agreePrivacy}>
+                    <input
+                      type="checkbox"
+                      name="agreePrivacy"
+                      checked={agreement.agreePrivacy}
+                      onChange={handleAgreement}
+                    />
+                    [ 필수 ] 개인정보 이용약관
+                  </AgreeItemLabel>
+                </AgreeItemRow>
+                <AgreeItemDesc>
+                  이용자 식별자, 휴대전화번호, 이름, 이메일 주소, 생일 출생연도, 암호화된 동일인 식별정보ⓒ
+                </AgreeItemDesc>
+              </div>
+
+              <AgreeDivider />
+
+              {/* 서비스 약관 및 개인정보 동의 */}
+              <div>
+                <AgreeGroupTitle>
+                  Avie much 서비스 약관 및 개인정보 동의
+                  {/* 약관보기 버튼 */}
+                  <AgreeViewBtn type="button" onClick={() => setModalType("terms")}>
+                    약관보기
+                  </AgreeViewBtn>
+                </AgreeGroupTitle>
+                <AgreeItemRow>
+                  <AgreeItemLabel error={errors.agreeTerms}>
+                    <input
+                      type="checkbox"
+                      name="agreeTerms"
+                      checked={agreement.agreeTerms}
+                      onChange={handleAgreement}
+                    />
+                    [ 필수 ] 쇼핑몰 이용약관
+                  </AgreeItemLabel>
+                </AgreeItemRow>
+                <AgreeItemRow>
+                  <AgreeItemLabel error={errors.agreeTerms}>
+                    <input
+                      type="checkbox"
+                      name="servicePolicy"
+                      checked={agreement.servicePolicy}
+                      onChange={handleAgreement}
+                    />
+                    [ 필수 ] 개인정보 수집 및 이용 동의
+                  </AgreeItemLabel>
+                </AgreeItemRow>
+              </div>
+
+              <AgreeDivider />
+
+              {/* 선택 수신 동의 sms */}
+              <div>
+                <AgreeGroupTitle>
+                  [ 선택 ] 쇼핑정보 수신 동의
+                  {/* 약관보기 버튼 */}
+                  <AgreeViewBtn type="button" onClick={() => setModalType("marketing")}>
+                    약관보기
+                  </AgreeViewBtn>
+                </AgreeGroupTitle>
+
+                <AgreeItemRow>
+                  <span>SMS 수신을 동의하십니까?</span>
+                  <AgreeOptWrap>
+                    <AgreeOptLabel>
+                      <input type="checkbox" name="sms" checked={agreement.sms} onChange={handleAgreement} />
+                      동의함
+                    </AgreeOptLabel>
+                  </AgreeOptWrap>
+                </AgreeItemRow>
+                <AgreeItemRow>
+                  <span>이메일 수신을 동의하십니까?</span>
+                  <AgreeOptWrap>
+                    <AgreeOptLabel>
+                      <input type="checkbox" name="email" checked={agreement.email} onChange={handleAgreement} />
+                      동의함
+                    </AgreeOptLabel>
+                  </AgreeOptWrap>
+                </AgreeItemRow>
+              </div>
+            </AgreeBox>
+
+            {msgs.agree && <AgreeMsg>{msgs.agree}</AgreeMsg>}
+          </SignupSection>
+
+          <SignupBtn type="submit">Sign Up</SignupBtn>
         </SignupForm>
-
-        {/* 생년월일 - ref 달아서 에러시 스크롤 이동 */}
-        <SignupSection ref={birthRef}>
-          <SectionTitle>Date of Birth</SectionTitle>
-          <BirthInput
-            error={errors.birthYear}
-            type="text"
-            name="birthYear"
-            placeholder="YYYY"
-            value={form.birthYear}
-            maxLength="4"
-            inputMode="numeric"
-            onChange={handleChange}
-          />
-          {msgs.birthYear && <BirthMsg>{msgs.birthYear}</BirthMsg>}
-          <BirthInput
-            error={errors.birthMonth}
-            type="text"
-            name="birthMonth"
-            placeholder="MM"
-            value={form.birthMonth}
-            maxLength="2"
-            inputMode="numeric"
-            ref={birthMonthRef}
-            onChange={handleChange}
-          />
-          {msgs.birthMonth && <BirthMsg>{msgs.birthMonth}</BirthMsg>}
-          <BirthInput
-            error={errors.birthDay}
-            type="text"
-            name="birthDay"
-            placeholder="DD"
-            value={form.birthDay}
-            maxLength="2"
-            inputMode="numeric"
-            ref={birthDayRef}
-            onChange={handleChange}
-          />
-          {msgs.birthDay && <BirthMsg>{msgs.birthDay}</BirthMsg>}
-        </SignupSection>
-
-        {/* 이용 동의 - ref 달아서 에러시 스크롤 이동 */}
-        <SignupSection ref={agreeRef}>
-          <SectionTitle>Whole agreement</SectionTitle>
-          <AgreeAllRow>
-            <input type="checkbox" name="all" checked={agreement.all} onChange={handleAllAgree} />
-            이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신 (선택) 에 모두 동의합니다.
-          </AgreeAllRow>
-
-          <AgreeBox>
-            {/* 홈페이지 개인정보 처리 동의 */}
-            <div>
-              <AgreeGroupTitle>
-                홈페이지 개인정보 처리 동의
-                {/* 약관보기 버튼 */}
-                <AgreeViewBtn type="button" onClick={() => setModalType("privacy")}>
-                  약관보기
-                </AgreeViewBtn>
-              </AgreeGroupTitle>
-              <AgreeItemRow>
-                <AgreeItemLabel error={errors.agreePrivacy}>
-                  <input type="checkbox" name="agreePrivacy" checked={agreement.agreePrivacy} onChange={handleAgreement} />[ 필수
-                  ] 개인정보 이용약관
-                </AgreeItemLabel>
-              </AgreeItemRow>
-              <AgreeItemDesc>
-                이용자 식별자, 휴대전화번호, 이름, 이메일 주소, 생일 출생연도, 암호화된 동일인 식별정보ⓒ
-              </AgreeItemDesc>
-            </div>
-
-            <AgreeDivider />
-
-            {/* 서비스 약관 및 개인정보 동의 */}
-            <div>
-              <AgreeGroupTitle>
-                Avie much 서비스 약관 및 개인정보 동의
-                {/* 약관보기 버튼 */}
-                <AgreeViewBtn type="button" onClick={() => setModalType("terms")}>
-                  약관보기
-                </AgreeViewBtn>
-              </AgreeGroupTitle>
-              <AgreeItemRow>
-                <AgreeItemLabel error={errors.agreeTerms}>
-                  <input type="checkbox" name="agreeTerms" checked={agreement.agreeTerms} onChange={handleAgreement} />[ 필수 ]
-                  쇼핑몰 이용약관
-                </AgreeItemLabel>
-              </AgreeItemRow>
-              <AgreeItemRow>
-                <AgreeItemLabel error={errors.agreeTerms}>
-                  <input type="checkbox" name="servicePolicy" checked={agreement.servicePolicy} onChange={handleAgreement} />[
-                  필수 ] 개인정보 수집 및 이용 동의
-                </AgreeItemLabel>
-              </AgreeItemRow>
-            </div>
-
-            <AgreeDivider />
-
-            {/* 선택 수신 동의 sms */}
-            <div>
-              <AgreeGroupTitle>
-                [ 선택 ] 쇼핑정보 수신 동의
-                {/* 약관보기 버튼 */}
-                <AgreeViewBtn type="button" onClick={() => setModalType("marketing")}>
-                  약관보기
-                </AgreeViewBtn>
-              </AgreeGroupTitle>
-
-              <AgreeItemRow>
-                <span>SMS 수신을 동의하십니까?</span>
-                <AgreeOptWrap>
-                  <AgreeOptLabel>
-                    <input type="checkbox" name="sms" checked={agreement.sms} onChange={handleAgreement} />
-                    동의함
-                  </AgreeOptLabel>
-                </AgreeOptWrap>
-              </AgreeItemRow>
-              <AgreeItemRow>
-                <span>이메일 수신을 동의하십니까?</span>
-                <AgreeOptWrap>
-                  <AgreeOptLabel>
-                    <input type="checkbox" name="email" checked={agreement.email} onChange={handleAgreement} />
-                    동의함
-                  </AgreeOptLabel>
-                </AgreeOptWrap>
-              </AgreeItemRow>
-            </div>
-          </AgreeBox>
-
-          {msgs.agree && <AgreeMsg>{msgs.agree}</AgreeMsg>}
-        </SignupSection>
-
-        <SignupBtn onClick={handleSubmit}>Sign Up</SignupBtn>
       </SignupWrap>
 
       {/* 회원가입 완료 모달 */}

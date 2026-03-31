@@ -453,8 +453,10 @@ const OrderButton = styled(DeleteButton)`
 `;
 
 export default function ShoppingCartPage() {
+  // 모달 상태값 저장하기
   const [isOpen, setIsOpen] = useState(false);
   const [OrderIsOpen, setOrderIsOpen] = useState(false);
+  // 이미지 호버시 변경을 위해 상태값 저장
   const [hoverImg, setHoverImg] = useState(null);
   // useCaretStore에서 정의한 함수 구조분해로 가져오기
   const { cartItems, handleQuantity, handleCheck, handleDelete } = useCartStore();
@@ -542,8 +544,9 @@ export default function ShoppingCartPage() {
 
   // 체크된 상품의 총 가격
   const totalPrice = cartItems.filter((item) => item.checked).reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
-  // 상품이 없으면 버튼이 안눌리게 하기
+  // 상품이 없을때 구매 버튼을 막기 위해 갯수 체크
   const HaveItems = cartItems.length > 0;
+  // 체크된 상품이 없을때 구매 버튼을 막기 위해 갯수 체크
   const HaveCheckedItems = cartItems.some((item) => item.checked);
 
   const handleOrder = () => {
@@ -628,7 +631,13 @@ export default function ShoppingCartPage() {
           {msg.email && <ErrorMsg style={{ color: "red" }}>{msg.email}</ErrorMsg>}
           <OrderAddress>
             <p>Address</p>
-            <InputAddress name="address" placeholder="Address" type="address" value={form.address} onChange={handleInput} />
+            <InputAddress
+              name="address"
+              placeholder="Address"
+              type="address"
+              value={form.address}
+              onChange={handleInput}
+            />
           </OrderAddress>
           <OrderAddress>
             <p style={{ whiteSpace: "nowrap" }}>Base Address</p>

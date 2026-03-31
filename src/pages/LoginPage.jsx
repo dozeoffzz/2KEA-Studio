@@ -5,9 +5,10 @@ import lineLight from "../assets/imgs/lineLight.svg";
 import lineChair from "../assets/imgs/lineChair.svg";
 import { Theme } from "../styles/theme";
 import { useAuthStore } from "../stores/useAuthStore";
+import { authLoginApi } from "../apis/authLoginApi";
 
 const LoginContainer = styled.div`
-  margin-top: 100px;
+  margin-top: 180px;
   position: relative;
   width: 100%;
   height: 100vh;
@@ -37,7 +38,7 @@ const LoginForm = styled.form`
   justify-content: center;
   min-width: 495px;
   min-height: 42px;
-  gap: 10px;
+  gap: 25px;
   position: relative;
   z-index: 10;
 
@@ -52,8 +53,7 @@ const LoginForm = styled.form`
 // error 나면 빨간색으로
 const LoginInputWrap = styled.div`
   display: flex;
-  gap: 40px;
-  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  /* gap: 40px; */
   font-size: ${Theme.fontsize.desktop.content};
 
   ${({ theme }) => theme.media.tablet} {
@@ -64,10 +64,26 @@ const LoginInputWrap = styled.div`
   }
 `;
 
+const ErrorMsg = styled.p`
+  color: red;
+  font-size: ${Theme.fontsize.desktop.mini};
+  text-align: right;
+`;
+
 // error 나면 빨간색으로
 const InputInfo = styled.p`
+  width: 100px;
+  text-align: left;
   margin-bottom: 10px;
   color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  font-size: ${Theme.fontsize.tablet.content};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
 `;
 
 const LoginInput = styled.input`
@@ -77,6 +93,7 @@ const LoginInput = styled.input`
   font-size: ${Theme.fontsize.desktop.content};
   margin-bottom: 10px;
   flex: 1;
+  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
@@ -88,8 +105,9 @@ const LoginInput = styled.input`
 
 const ButtonWrap = styled.div`
   display: flex;
+  justify-content: flex-end;
   gap: 30px;
-  margin: 40px 0 250px 0;
+  margin: 40px 0 200px 0;
   ${({ theme }) => theme.media.tablet} {
     margin: 40px 0 80px 0;
   }
@@ -166,12 +184,11 @@ const ChairImg = styled.img`
 
 export default function LoginPage() {
   const [input, setInput] = useState({ id: "", password: "" });
+  // 로그인 아이디 비번 틀렸을때 메세지 보내기 상태값
+  const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
+  // useAuthStore 에서 구조분해로 가져오기
   const { login } = useAuthStore();
-
-  const handleLogin = () => {
-    login();
-  };
 
   // 로그인 버튼 눌렀을 때 빈칸이면 빨갛게 표시
   const [errors, setErrors] = useState({
@@ -194,9 +211,12 @@ export default function LoginPage() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: false }));
     }
+    if (loginError) {
+      setLoginError("");
+    }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     // 빈칸이거나 조건 안맞으면 true로 바꿔서 빨갛게 표시
@@ -210,22 +230,24 @@ export default function LoginPage() {
     if (Object.values(newErrors).some((v) => v === true)) {
       return;
     }
+    // 로그인 api 사용
+    try {
+      const res = await authLoginApi({
+        id: input.id,
+        password: input.password,
+      });
+      console.log({ res });
 
-    // 로컬스토리지에 저장된 유저 정보 가져오기
-    const storedUser = JSON.parse(localStorage.getItem("userInfo"));
-
-    // 아이디가 일치할 때만 로그인 성공
-    if (storedUser && storedUser.id === input.id) {
-      alert(`${storedUser.name}님 환영합니다!`);
+      // 로그인 성공시 api에서 받아오는 토큰 유저정보를 useAuthStore에 넘겨줌
+      login(res.token, res.userInfo);
+      alert(`${res.userInfo.name}님 환영합니다!`);
       navigate("/");
-    } else {
-      alert("등록된 정보가 없거나 아이디가 일치하지 않습니다.");
-      setErrors({ id: true, password: true });
+    } catch (error) {
+      setLoginError(error.message);
     }
-
-    handleLogin();
-    navigate("/");
   }
+  // LoginApi();
+  // }
   // 페이지 들어갈 때 바로 포커스 되게 하기
   const focus = useRef(null);
   useEffect(() => {
@@ -239,20 +261,15 @@ export default function LoginPage() {
         {/* ID 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.id}>
           <InputInfo error={errors.id}>ID</InputInfo>
-          <LoginInput name="id" type="text" placeholder="ID" value={input.id} onChange={handleChange} ref={focus} />
+          <LoginInput name="id" type="text" value={input.id} onChange={handleChange} ref={focus} />
         </LoginInputWrap>
 
         {/* Password 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.password}>
           <InputInfo error={errors.password}>Password</InputInfo>
-          <LoginInput
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={input.password}
-            onChange={handleChange}
-          />
+          <LoginInput name="password" type="password" value={input.password} onChange={handleChange} />
         </LoginInputWrap>
+        {loginError && <ErrorMsg>{loginError}</ErrorMsg>}
 
         <ButtonWrap>
           {/* 로그인 버튼 handleSubmit을 통해 검사 후 이동하게 수정 */}
