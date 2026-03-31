@@ -22,13 +22,6 @@ const MyPageContainer = styled.div`
     height: auto;
   }
 `;
-
-const BackIcon = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
-
 const ProfileImg = styled.div`
   margin-bottom: 65px;
   position: relative;
@@ -150,8 +143,17 @@ const UserType = styled.p`
   }
 `;
 const UserTypeText = styled.p`
+  margin-top: 10px;
+  text-align: right;
+  width: 450px;
   font-size: ${Theme.fontsize.desktop.mini};
   color: red;
+  ${({ theme }) => theme.media.tablet} {
+    width: 300px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    width: 300px;
+  }
 `;
 const MyInfo = styled.div`
   margin-top: 100px;
@@ -191,14 +193,14 @@ const NameWrap = styled.div`
 const MobileWrap = styled(NameWrap)``;
 const EmailWrap = styled(NameWrap)``;
 const AddressWrap = styled(NameWrap)``;
-
+const IdWrap = styled(NameWrap)``;
 const Button = styled.button`
   margin: 50px 0;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 150px;
-  height: 30px;
+  height: 40px;
   font-size: ${Theme.fontsize.desktop.medium};
   background-color: ${Theme.colors.black};
   color: ${Theme.colors.whitetext};
@@ -324,11 +326,13 @@ export default function MyPage() {
           <DeliveringNum>0</DeliveringNum>
         </DeleveringWrap>
       </StatusWrap>
-      <UserType>
-        *{userInfo?.userType}
-        <UserTypeText>*개인/사업자 변경이 필요할 시 문의 바랍니다.</UserTypeText>
-      </UserType>
+      <UserType>*{userInfo?.userType}</UserType>
+      <UserTypeText>*개인/사업자 변경은 문의 후 변경가능합니다.</UserTypeText>
       <MyInfo>
+        <IdWrap>
+          <p>Id</p>
+          <p>{userInfo?.loginId}</p>
+        </IdWrap>
         {isEdit ? (
           <NameWrap>
             <p>Name</p>

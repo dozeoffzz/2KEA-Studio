@@ -234,7 +234,7 @@ export default function Header() {
           </LeftMenu>
           <RightMenu>
             {isLogin ? <Font to={"/auth/me"}>MyPage</Font> : null}
-            {isLogin ? null : <Font to={"/signup"}>Sign Up</Font>}
+            {isLogin ? null : <Font to={"/auth/signup"}>Sign Up</Font>}
             {isLogin ? (
               <LogOut
                 onClick={() => {
@@ -246,7 +246,7 @@ export default function Header() {
                 LogOut
               </LogOut>
             ) : (
-              <Font to={"/login"}>Login</Font>
+              <Font to={"/auth/login"}>Login</Font>
             )}
             <Font to={"/cart"}>Cart</Font>
           </RightMenu>

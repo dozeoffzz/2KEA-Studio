@@ -27,16 +27,16 @@ export default function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
-          <Route path="/products/:category/:id" element={<DetailedPage />} />
-          <Route path="/cart" element={<ShoppingCartPage />} />
           <Route path="/products" element={<AllListPage />} />
           <Route path="/products/seating" element={<SeatingListPage />} />
           <Route path="/products/tables" element={<TableListPage />} />
           <Route path="/products/lighting" element={<LightingListPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/completed" element={<CompletedPage />} />
+          <Route path="/products/:category/:id" element={<DetailedPage />} />
+          <Route path="/cart" element={<ShoppingCartPage />} />
+          <Route path="/auth/signup" element={<SignupPage />} />
+          <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/me" element={<MyPage />} />
+          <Route path="/completed" element={<CompletedPage />} />
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
       </Routes>

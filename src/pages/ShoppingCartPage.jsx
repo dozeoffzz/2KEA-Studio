@@ -640,10 +640,10 @@ export default function ShoppingCartPage() {
             />
           </OrderAddress>
           <OrderAddress>
-            <p style={{ whiteSpace: "nowrap" }}>Base Address</p>
+            <p style={{ whiteSpace: "nowrap" }}>Address Detail</p>
             <InputAddress
               name="baseAddress"
-              placeholder="Base Address"
+              placeholder="Address Detail"
               type="address"
               value={form.baseAddress}
               onChange={handleInput}
