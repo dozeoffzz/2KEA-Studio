@@ -324,33 +324,29 @@ const ChairImageContainer = styled.div`
   justify-content: center;
   gap: 20px;
   width: 100%;
-  height: 1156px;
 
   ${({ theme }) => theme.media.tablet} {
     gap: 10px;
-    height: 658px;
   }
 
   ${({ theme }) => theme.media.mobile} {
     position: relative;
     gap: 5px;
-    height: 378px;
-
-    @media (max-width: 390px) {
-      height: 354px;
-    }
   }
 `;
 
 const LeftChairContainer = styled.div`
   display: flex;
+  flex: 672;
   gap: 20px;
   ${({ theme }) => theme.media.tablet} {
+    flex: 337;
     gap: 10px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    height: 100%;
+    flex: 159;
+    padding-bottom: 80px;
     gap: 2px;
   }
 `;
@@ -373,7 +369,6 @@ const LeftChairImageBox = styled.div`
 const LeftImageContainer = styled.div`
   position: relative;
   width: 100%;
-  max-width: 672px;
   aspect-ratio: 672 / 661;
 
   :hover .left-chair-hover-img {
@@ -381,28 +376,27 @@ const LeftImageContainer = styled.div`
   }
 
   ${({ theme }) => theme.media.tablet} {
-    max-width: 337px;
     aspect-ratio: 337 / 376;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    max-width: 159px;
+    min-width: 139px;
+    min-height: 196px;
     aspect-ratio: 159 / 216;
   }
 `;
 
 const LeftChair = styled.img`
   width: 100%;
-  max-width: 672px;
   aspect-ratio: 672 / 661;
 
   ${({ theme }) => theme.media.tablet} {
-    max-width: 337px;
     aspect-ratio: 337 / 376;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    max-width: 159px;
+    min-width: 139px;
+    min-height: 196px;
     aspect-ratio: 159 / 216;
   }
 `;
@@ -424,6 +418,10 @@ const ChairCommentContainer = styled.div`
   transform: translateY(-40px);
   z-index: 10;
 
+  @media (max-width: 1294px) and (min-width: 1025px) {
+    transform: translateY(-30px);
+  }
+
   ${({ theme }) => theme.media.tablet} {
     gap: 42px;
     padding-left: 12px;
@@ -431,7 +429,7 @@ const ChairCommentContainer = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    gap: 14px;
+    gap: 0;
     padding-left: 0;
     transform: translateY(0);
   }
@@ -444,11 +442,7 @@ const TopChairDescBox = styled.div`
   ${({ theme }) => theme.media.mobile} {
     position: absolute;
     width: 210px;
-    top: 45px;
-
-    @media (max-width: 390px) {
-      top: 30px;
-    }
+    top: 55px;
   }
 `;
 
@@ -456,6 +450,10 @@ const TopChairDesc = styled.p`
   font-size: ${Theme.fontsize.desktop.main.section};
   line-height: 1.4;
   font-weight: 400;
+
+  @media (max-width: 1294px) and (min-width: 1025px) {
+    font-size: ${Theme.fontsize.desktop.content};
+  }
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.main.section};
@@ -473,12 +471,8 @@ const BottomChairDescBox = styled(TopChairDescBox)`
     position: absolute;
     width: 200px;
     height: 100px;
-    top: 104px;
+    top: 110px;
     left: 78px;
-
-    @media (max-width: 390px) {
-      top: 84px;
-    }
   }
 `;
 
@@ -541,8 +535,8 @@ const ChairVerticalLine = styled.div`
 
 const RightImageContainer = styled.div`
   position: relative;
+  flex: 770;
   width: 100%;
-  max-width: 770px;
   aspect-ratio: 770 / 1156;
 
   :hover .right-chair-hover-img {
@@ -550,28 +544,30 @@ const RightImageContainer = styled.div`
   }
 
   ${({ theme }) => theme.media.tablet} {
-    max-width: 386px;
+    flex: 386;
+    min-width: 386px;
     aspect-ratio: 386 / 658;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    max-width: 182px;
+    flex: 182;
+    min-width: 162px;
+    min-height: 358px;
     aspect-ratio: 182 / 378;
   }
 `;
 
 const RightChair = styled.img`
   width: 100%;
-  max-width: 770px;
   aspect-ratio: 770 / 1156;
 
   ${({ theme }) => theme.media.tablet} {
-    max-width: 386px;
     aspect-ratio: 386 / 658;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    max-width: 182px;
+    min-width: 162px;
+    min-height: 358px;
     aspect-ratio: 182 / 378;
   }
 `;
