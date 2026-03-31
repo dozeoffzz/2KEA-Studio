@@ -15,12 +15,12 @@ const ItemListContainer = styled.div`
   align-items: center;
   padding: 10px 0;
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     margin-top: 80px;
     padding: 0 0 20px;
   }
 
-  ${Theme.media.mobile} {
+  @media (max-width: 600px) {
     margin-top: 70px;
     padding: 0 0 20px;
   }
@@ -34,11 +34,11 @@ const TitleWrap = styled.div`
   gap: 40px;
   width: 100%;
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     gap: 28px;
   }
 
-  ${Theme.media.mobile} {
+  @media (max-width: 600px) {
     gap: 20px;
   }
 `;
@@ -49,12 +49,12 @@ const BackBtnTitle = styled.div`
   align-items: center;
   gap: 20px;
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     padding: 0 32px;
     gap: 14px;
   }
 
-  ${Theme.media.mobile} {
+  @media (max-width: 600px) {
     padding: 0 20px;
     gap: 10px;
   }
@@ -74,11 +74,11 @@ const BackButton = styled(NavLink)`
 const Title = styled.h2`
   font-size: ${Theme.fontsize.desktop.section};
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     font-size: ${Theme.fontsize.tablet.section};
   }
 
-  ${Theme.media.mobile} {
+  @media (max-width: 600px) {
     font-size: ${Theme.fontsize.mobile.section};
   }
 `;
@@ -91,12 +91,12 @@ const NavLinkWrap = styled.div`
   border-bottom: 1px solid ${Theme.colors.textsecondary};
   width: 100%;
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     padding: 0 32px 16px;
     gap: 28px;
   }
 
-  ${Theme.media.mobile} {
+  @media (max-width: 600px) {
     padding: 0 20px 14px;
     gap: 18px;
   }
@@ -111,11 +111,11 @@ const NavLinkList = styled(NavLink)`
     color: ${Theme.colors.blacktext};
   }
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
-  ${Theme.media.mobile} {
+  @media (max-width: 600px) {
     font-size: ${Theme.fontsize.mobile.content};
   }
 `;
@@ -128,10 +128,19 @@ const ItemListMain = styled.div`
   padding: 40px 40px;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-rows: 483px;
+  grid-auto-rows: auto;
   gap: 40px;
 
-  ${Theme.media.tablet} {
+  // 1650px 이하에서는 4열 리스트를 2열 구조로 바꿔서 카드가 갑자기 찌그러지지 않게 조정
+  @media (max-width: 1650px) {
+    max-width: 1080px;
+    padding: 40px 54px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    gap: 40px 36px;
+  }
+
+  @media (max-width: 900px) {
     max-width: 100%;
     padding: 30px 32px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -139,7 +148,7 @@ const ItemListMain = styled.div`
     gap: 30px 24px;
   }
 
-  ${Theme.media.mobile} {
+  @media (max-width: 600px) {
     padding: 24px 20px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-rows: auto;
@@ -156,7 +165,7 @@ const Item = styled(NavLink)`
 
   ${(props) => props.large && `grid-column: span 2;`}
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     ${(props) => props.large && `grid-column: span 2;`}
   }
 `;
@@ -164,24 +173,24 @@ const Item = styled(NavLink)`
 // 상품 번호 + 이름 정보 바
 const ItemInfo = styled.div`
   margin-bottom: 10px;
-  padding: 5px 0;
+  padding: 8px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
   width: 100%;
-  height: 65px;
+  min-height: 65px;
   border-top: 1px solid ${Theme.colors.blacktext};
   border-bottom: 1px solid ${Theme.colors.blacktext};
 
-  ${Theme.media.tablet} {
-    height: 68px;
+  @media (max-width: 900px) {
+    min-height: 68px;
     padding: 8px 0;
     margin-bottom: 8px;
   }
 
-  ${Theme.media.mobile} {
-    height: 58px;
+  @media (max-width: 600px) {
+    min-height: 58px;
     padding: 8px 0;
     margin-bottom: 8px;
   }
@@ -192,32 +201,61 @@ const ItemNum = styled.span`
   color: ${Theme.colors.redaccent};
   font-size: ${Theme.fontsize.desktop.section};
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     font-size: ${Theme.fontsize.tablet.section};
   }
 
-  ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
+  @media (max-width: 600px) {
+    font-size: ${Theme.fontsize.mobile.section};
   }
 `;
 
-const ItemName = styled.span`
+const ItemTextWrap = styled.div`
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+`;
+
+const ItemName = styled.span`
+  width: 100%;
   font-size: ${Theme.fontsize.desktop.content};
   text-align: right;
   line-height: 1.2;
-  white-space: nowrap;
   word-break: keep-all;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
-  ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.mini};
+  @media (max-width: 600px) {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
+`;
+
+const ItemMaterial = styled.span`
+  width: 100%;
+  font-size: ${Theme.fontsize.desktop.small};
+  text-align: right;
+  line-height: 1.2;
+  color: ${Theme.colors.textsecondary};
+  word-break: keep-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (max-width: 900px) {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+
+  @media (max-width: 600px) {
+    font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
@@ -226,8 +264,11 @@ const ItemImgWrap = styled.div`
   display: flex;
   gap: 10px;
   flex: 1;
+  min-width: 0;
+  align-items: stretch;
 
-  ${Theme.media.tablet} {
+  // 태블릿 이하에서는 세로 텍스트 칸을 빼고 이미지만 자연스럽게 내려오도록 변경
+  @media (max-width: 900px) {
     gap: 0;
     display: block;
   }
@@ -235,22 +276,24 @@ const ItemImgWrap = styled.div`
 
 // PC에서만 보이는 세로 설명 영역
 const ItemContentWrap = styled.div`
-  margin-bottom: 10px;
-  padding: 5px 0;
+  flex: 0 0 65px;
   width: 65px;
-  height: 100%;
+  align-self: stretch;
   border-left: 1px solid ${Theme.colors.blacktext};
   border-right: 1px solid ${Theme.colors.blacktext};
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 
-  ${Theme.media.tablet} {
+  // 태블릿 이하에서는 세로 설명을 숨겨서 이미지 영역을 더 넓게 사용
+  @media (max-width: 900px) {
     display: none;
   }
 `;
 
 const ItemContent = styled.p`
+  padding: 18px 0;
   font-size: ${Theme.fontsize.desktop.small};
   word-break: keep-all;
   writing-mode: vertical-lr;
@@ -262,18 +305,22 @@ const ItemImg = styled.div`
   position: relative;
   background-color: ${Theme.colors.overlay};
   flex: 1;
+  min-width: 0;
+  aspect-ratio: ${(props) => (props.large ? "2.06 / 1" : "1 / 1")};
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 
-  ${Theme.media.tablet} {
+  // 태블릿에서는 이미지 비율과 여백을 다시 잡아 카드가 가로로만 눌리지 않게 조정
+  @media (max-width: 900px) {
     width: 100%;
     aspect-ratio: ${(props) => (props.large ? "2.4 / 1" : "1.18 / 1")};
     padding: 18px;
   }
 
-  ${Theme.media.mobile} {
+  // 모바일에서는 여백과 비율을 한 번 더 줄여 작은 화면에서도 균형 유지
+  @media (max-width: 600px) {
     width: 100%;
     aspect-ratio: ${(props) => (props.large ? "2.2 / 1" : "1.08 / 1")};
     padding: 12px;
@@ -299,14 +346,14 @@ const PageNationWrap = styled.div`
   font-size: ${Theme.fontsize.desktop.content};
   margin-bottom: 40px;
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     gap: 32px;
     font-size: ${Theme.fontsize.tablet.content};
     margin-bottom: 36px;
     flex-wrap: wrap;
   }
 
-  ${Theme.media.mobile} {
+  @media (max-width: 600px) {
     gap: 50px;
     font-size: ${Theme.fontsize.mobile.content};
     margin-bottom: 28px;
@@ -325,11 +372,11 @@ const CurrentPage = styled.button`
     border-bottom: 2px solid ${Theme.colors.blacktext};
   }
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
-  ${Theme.media.mobile} {
+  @media (max-width: 600px) {
     font-size: ${Theme.fontsize.mobile.content};
   }
 `;
@@ -341,11 +388,11 @@ const PageNationButton = styled.button`
   cursor: pointer;
   color: ${Theme.colors.blacktext};
 
-  ${Theme.media.tablet} {
+  @media (max-width: 900px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
-  ${Theme.media.mobile} {
+  @media (max-width: 600px) {
     font-size: ${Theme.fontsize.mobile.small};
   }
 `;
@@ -360,7 +407,8 @@ export default function TableListPage() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    // 모바일 여부를 감지해서 hover 대신 터치 환경에 맞는 동작을 분기
+    const mediaQuery = window.matchMedia("(max-width: 600px)");
 
     const handleMobile = (event) => {
       setIsMobile(event.matches);
