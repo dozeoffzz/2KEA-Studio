@@ -32,7 +32,7 @@ const Contents = styled.div`
   flex-direction: column;
   gap: 130px;
   width: 100%;
-  padding: 265px 130px 0;
+  padding: 265px 110px 0;
 
   ${({ theme }) => theme.media.tablet} {
     padding: 140px 15px 0;
@@ -49,18 +49,18 @@ const SofaImageBox = styled.div`
   position: relative;
   width: 100%;
   max-width: 1592px;
-  height: 1111px;
-  margin: 0 80px 0 auto;
+  aspect-ratio: 1592 / 1111;
+  margin: 0 50px 0 auto;
 
   ${({ theme }) => theme.media.tablet} {
     max-width: 696px;
-    height: 785px;
+    aspect-ratio: 696 / 785;
     margin: 0 15px 0 auto;
   }
 
   ${({ theme }) => theme.media.mobile} {
     max-width: 337px;
-    height: 380px;
+    aspect-ratio: 337 / 380;
     margin: 0 0 0 auto;
   }
 
@@ -71,48 +71,24 @@ const SofaImageBox = styled.div`
 
 const SofaImage = styled.img`
   width: 100%;
-  max-width: 1592px;
   height: 100%;
-
-  ${({ theme }) => theme.media.tablet} {
-    max-width: 696px;
-    height: 785px;
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    max-width: 337px;
-    height: 380px;
-  }
 `;
 
-const SofaHoverImage = styled.img`
+const SofaHoverImage = styled(SofaImage)`
   position: absolute;
   top: 0;
   right: 0;
-  width: 100%;
-  max-width: 1592px;
-  height: 1111px;
   margin-left: auto;
   object-fit: cover;
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
   cursor: pointer;
-
-  ${({ theme }) => theme.media.tablet} {
-    max-width: 696px;
-    height: 785px;
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    max-width: 337px;
-    height: 380px;
-  }
 `;
 
 const SofaDescBox = styled.div`
   position: absolute;
-  bottom: -40px;
-  left: -100px;
+  bottom: -32px;
+  left: -72px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -120,46 +96,47 @@ const SofaDescBox = styled.div`
 
   ${({ theme }) => theme.media.tablet} {
     bottom: 6px;
-    left: -60px;
+    left: -24px;
   }
   ${({ theme }) => theme.media.mobile} {
-    bottom: 0px;
-    left: -16px;
+    gap: 4px;
+    bottom: 4px;
+    left: -8px;
   }
 `;
 
 const SofaTitle = styled.h3`
-  font-size: ${Theme.fontsize.desktop.title};
-  line-height: ${Theme.fontsize.desktop.title};
+  font-size: ${Theme.fontsize.desktop.main.title};
+  line-height: ${Theme.fontsize.desktop.main.title};
   font-weight: 400;
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.title};
-    line-height: ${Theme.fontsize.tablet.title};
+    font-size: ${Theme.fontsize.tablet.main.title};
+    line-height: ${Theme.fontsize.tablet.main.title};
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.section};
-    line-height: ${Theme.fontsize.mobile.section};
+    font-size: ${Theme.fontsize.mobile.main.title};
+    line-height: ${Theme.fontsize.mobile.main.title};
   }
 `;
 
-const SofaDesc = styled.span`
-  font-size: ${Theme.fontsize.desktop.section};
-  line-height: ${Theme.fontsize.desktop.section};
+const SofaDesc = styled.p`
+  font-size: ${Theme.fontsize.desktop.main.section};
+  line-height: ${Theme.fontsize.desktop.main.section};
   font-weight: 400;
   margin-left: 96px;
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.section};
-    line-height: ${Theme.fontsize.tablet.section};
+    font-size: ${Theme.fontsize.tablet.main.section};
+    line-height: ${Theme.fontsize.tablet.main.section};
     margin-left: 40px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
-    line-height: ${Theme.fontsize.mobile.content};
-    margin-left: 28px;
+    font-size: ${Theme.fontsize.mobile.main.section};
+    line-height: ${Theme.fontsize.mobile.main.section};
+    margin-left: 16px;
   }
 `;
 
@@ -167,15 +144,15 @@ const SofaDesc = styled.span`
 const LightImageBox = styled.div`
   position: relative;
   display: flex;
-  gap: 32px;
+  gap: 24px;
   width: 100%;
-  height: 985px;
+  height: auto;
   padding: 32px;
   background-color: ${Theme.colors.redaccent};
 
   ${({ theme }) => theme.media.tablet} {
     height: 594px;
-    gap: 16px;
+    gap: 12px;
     padding: 16px;
   }
 
@@ -189,7 +166,8 @@ const LightImageContainer = styled.div`
   position: relative;
   width: 100%;
   max-width: 838px;
-  height: 863px;
+  aspect-ratio: 838 / 863;
+  overflow: hidden;
 
   :hover .light-hover-img {
     opacity: 1;
@@ -197,69 +175,59 @@ const LightImageContainer = styled.div`
 
   ${({ theme }) => theme.media.tablet} {
     max-width: 350px;
-    height: 522px;
+    aspect-ratio: 350 / 522;
   }
 
   ${({ theme }) => theme.media.mobile} {
     max-width: 241px;
-    height: 315px;
+    aspect-ratio: 241 / 315;
   }
 `;
 
 const LightImage = styled.img`
   width: 100%;
   max-width: 838px;
-  height: 863px;
+  aspect-ratio: 838 / 863;
+  padding-bottom: 16px;
 
   ${({ theme }) => theme.media.tablet} {
     max-width: 350px;
-    height: 522px;
+    aspect-ratio: 350 / 522;
+    padding-bottom: 8px;
   }
 
   ${({ theme }) => theme.media.mobile} {
     max-width: 241px;
-    height: 315px;
+    aspect-ratio: 241 / 315;
+    padding-bottom: 4px;
   }
 `;
 
-const LightHoverImage = styled.img`
+const LightHoverImage = styled(LightImage)`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  max-width: 838px;
-  height: 863px;
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
   cursor: pointer;
-
-  ${({ theme }) => theme.media.tablet} {
-    max-width: 350px;
-    height: 522px;
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    max-width: 241px;
-    height: 315px;
-  }
 `;
 
-//수직 텍스트
 const LightTextContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
   margin-top: auto;
 
   ${({ theme }) => theme.media.tablet} {
-    gap: 16px;
+    gap: 12px;
   }
 
   ${({ theme }) => theme.media.mobile} {
     position: absolute;
     bottom: 8px;
     right: 8px;
-    gap: 10px;
+    gap: 12px;
+    width: 200px;
     flex-direction: column;
   }
 `;
@@ -278,19 +246,20 @@ const LightVerticalContainer = styled.div`
 
 const LightVerticalText = styled.p`
   writing-mode: vertical-lr;
-  font-size: ${Theme.fontsize.desktop.title};
+  font-size: ${Theme.fontsize.desktop.main.title};
   font-weight: 400;
   color: ${Theme.colors.white};
   transform: rotate(180deg);
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.title};
+    font-size: ${Theme.fontsize.tablet.main.title};
   }
 
   ${({ theme }) => theme.media.mobile} {
     writing-mode: horizontal-tb;
     transform: none;
-    font-size: ${Theme.fontsize.mobile.section};
+    width: 200px;
+    font-size: ${Theme.fontsize.mobile.main.title};
   }
 `;
 
@@ -322,7 +291,9 @@ const LightDescContainer = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    gap: 10px;
+    width: 200px;
+    gap: 12px;
+    padding-bottom: 16px;
   }
 `;
 
@@ -332,17 +303,17 @@ const LightDescBox = styled.div`
 `;
 
 const LightDesc = styled.p`
-  font-size: ${Theme.fontsize.desktop.section};
+  font-size: ${Theme.fontsize.desktop.main.section};
   line-height: 1.4;
   font-weight: 400;
   color: ${Theme.colors.white};
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.content};
+    font-size: ${Theme.fontsize.tablet.main.section};
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.main.section};
   }
 `;
 
@@ -351,31 +322,31 @@ const ChairImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 140px;
+  gap: 20px;
   width: 100%;
   height: 1156px;
-  padding: 0 38px;
 
   ${({ theme }) => theme.media.tablet} {
-    justify-content: space-between;
-    gap: 20px;
+    gap: 10px;
     height: 658px;
-    padding: 0 15px;
   }
 
   ${({ theme }) => theme.media.mobile} {
     position: relative;
     gap: 5px;
     height: 378px;
-    padding: 0 18px;
+
+    @media (max-width: 390px) {
+      height: 354px;
+    }
   }
 `;
 
 const LeftChairContainer = styled.div`
   display: flex;
-  gap: 110px;
+  gap: 20px;
   ${({ theme }) => theme.media.tablet} {
-    gap: 0;
+    gap: 10px;
   }
 
   ${({ theme }) => theme.media.mobile} {
@@ -400,9 +371,10 @@ const LeftChairImageBox = styled.div`
 `;
 
 const LeftImageContainer = styled.div`
+  position: relative;
   width: 100%;
   max-width: 672px;
-  height: 661px;
+  aspect-ratio: 672 / 661;
 
   :hover .left-chair-hover-img {
     opacity: 1;
@@ -410,28 +382,28 @@ const LeftImageContainer = styled.div`
 
   ${({ theme }) => theme.media.tablet} {
     max-width: 337px;
-    height: 376px;
+    aspect-ratio: 337 / 376;
   }
 
   ${({ theme }) => theme.media.mobile} {
     max-width: 159px;
-    height: 216px;
+    aspect-ratio: 159 / 216;
   }
 `;
 
 const LeftChair = styled.img`
   width: 100%;
   max-width: 672px;
-  height: 661px;
+  aspect-ratio: 672 / 661;
 
   ${({ theme }) => theme.media.tablet} {
     max-width: 337px;
-    height: 376px;
+    aspect-ratio: 337 / 376;
   }
 
   ${({ theme }) => theme.media.mobile} {
     max-width: 159px;
-    height: 216px;
+    aspect-ratio: 159 / 216;
   }
 `;
 
@@ -449,7 +421,7 @@ const ChairCommentContainer = styled.div`
   flex-direction: column;
   gap: 52px;
   padding-left: 16px;
-  transform: translateY(-45px);
+  transform: translateY(-40px);
   z-index: 10;
 
   ${({ theme }) => theme.media.tablet} {
@@ -473,16 +445,20 @@ const TopChairDescBox = styled.div`
     position: absolute;
     width: 210px;
     top: 45px;
+
+    @media (max-width: 390px) {
+      top: 30px;
+    }
   }
 `;
 
 const TopChairDesc = styled.p`
-  font-size: clamp(12px, 2vw, ${Theme.fontsize.desktop.section});
+  font-size: ${Theme.fontsize.desktop.main.section};
   line-height: 1.4;
   font-weight: 400;
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.content};
+    font-size: ${Theme.fontsize.tablet.main.section};
   }
 
   ${({ theme }) => theme.media.mobile} {
@@ -492,13 +468,17 @@ const TopChairDesc = styled.p`
 
 const BottomChairDescBox = styled(TopChairDescBox)`
   margin-left: auto;
+
   ${({ theme }) => theme.media.mobile} {
     position: absolute;
     width: 200px;
     height: 100px;
     top: 104px;
-    right: 0;
-    transform: translateX(70%);
+    left: 78px;
+
+    @media (max-width: 390px) {
+      top: 84px;
+    }
   }
 `;
 
@@ -524,15 +504,15 @@ const ChairVerticalTextBox = styled.div`
 
 const ChairVerticalText = styled.p`
   writing-mode: vertical-lr;
-  font-size: ${Theme.fontsize.desktop.title};
-  line-height: ${Theme.fontsize.desktop.title};
+  font-size: ${Theme.fontsize.desktop.main.title};
+  line-height: ${Theme.fontsize.desktop.main.title};
   font-weight: 400;
   color: ${Theme.colors.blacktext};
   transform: rotate(180deg);
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.title};
-    line-height: ${Theme.fontsize.tablet.title};
+    font-size: ${Theme.fontsize.tablet.main.title};
+    line-height: ${Theme.fontsize.tablet.main.title};
   }
 
   ${({ theme }) => theme.media.mobile} {
@@ -549,13 +529,13 @@ const ChairVerticalLine = styled.div`
   ${({ theme }) => theme.media.tablet} {
     width: 2px;
     height: 96px;
-    transform: translate(11px, -9px);
+    transform: translate(8.3px, -7.5px);
   }
 
   ${({ theme }) => theme.media.mobile} {
     width: 2px;
     height: 56px;
-    transform: translate(6px, -5px);
+    transform: translate(7px, -6px);
   }
 `;
 
@@ -563,7 +543,7 @@ const RightImageContainer = styled.div`
   position: relative;
   width: 100%;
   max-width: 770px;
-  height: 1156px;
+  aspect-ratio: 770 / 1156;
 
   :hover .right-chair-hover-img {
     opacity: 1;
@@ -571,28 +551,28 @@ const RightImageContainer = styled.div`
 
   ${({ theme }) => theme.media.tablet} {
     max-width: 386px;
-    height: 658px;
+    aspect-ratio: 386 / 658;
   }
 
   ${({ theme }) => theme.media.mobile} {
     max-width: 182px;
-    height: 378px;
+    aspect-ratio: 182 / 378;
   }
 `;
 
 const RightChair = styled.img`
   width: 100%;
   max-width: 770px;
-  height: 1156px;
+  aspect-ratio: 770 / 1156;
 
   ${({ theme }) => theme.media.tablet} {
     max-width: 386px;
-    height: 658px;
+    aspect-ratio: 386 / 658;
   }
 
   ${({ theme }) => theme.media.mobile} {
     max-width: 182px;
-    height: 378px;
+    aspect-ratio: 182 / 378;
   }
 `;
 
@@ -610,8 +590,8 @@ const BottomImageBox = styled.div`
   flex-direction: column;
   gap: 128px;
   width: 100%;
-  height: 2588px;
-  padding: 50px;
+  aspect-ratio: 1920 / 2588;
+  padding: 50px 50px 216px;
   background-color: #898861;
 
   ${({ theme }) => theme.media.tablet} {
@@ -631,7 +611,7 @@ const BottomChairBox = styled.div`
   position: relative;
   width: 100%;
   max-width: 1210px;
-  height: 957px;
+  aspect-ratio: 1210 / 957;
   margin-left: auto;
   cursor: pointer;
 
@@ -652,47 +632,51 @@ const BottomChairBox = styled.div`
 
 const ChairTextBox = styled.div`
   position: absolute;
-  top: calc(100% - 216px);
-  left: -330px;
+  bottom: 136px;
+  left: -220px;
   pointer-events: none;
 
+  @media (max-width: 1720px) and (min-width: 1025px) {
+    left: -24px;
+  }
+
   ${({ theme }) => theme.media.tablet} {
-    top: calc(100% - 108px);
+    bottom: 36px;
     left: -180px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    top: calc(100% - 72px);
-    left: -120px;
+    bottom: 24px;
+    left: -72px;
   }
 `;
 
 const ChairTitle = styled.h3`
-  font-size: ${Theme.fontsize.desktop.title};
+  font-size: ${Theme.fontsize.desktop.main.title};
   font-weight: 400;
   color: ${Theme.colors.whitetext};
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.title};
+    font-size: ${Theme.fontsize.tablet.main.title};
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.section};
+    font-size: ${Theme.fontsize.mobile.main.title};
   }
 `;
 
 const ChairDesc = styled.p`
-  font-size: ${Theme.fontsize.desktop.section};
+  font-size: ${Theme.fontsize.desktop.main.section};
   font-weight: 400;
   color: ${Theme.colors.whitetext};
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.content};
+    font-size: ${Theme.fontsize.tablet.main.section};
     margin-left: 24px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.main.section};
   }
 `;
 
@@ -700,7 +684,7 @@ const BottomDeskBox = styled.div`
   position: relative;
   width: 100%;
   max-width: 1329px;
-  height: 1265px;
+  aspect-ratio: 1329 / 1265;
   cursor: pointer;
 
   &:hover .hover-img {
@@ -721,58 +705,67 @@ const BottomDeskBox = styled.div`
 const DesktextBox = styled.div`
   position: absolute;
   bottom: -165px;
-  left: 200px;
+  right: -100px;
   display: flex;
   flex-direction: column;
-  gap: 44px;
-  width: 100%;
-  min-width: 1256px;
-  height: 445px;
+  gap: 52px;
+  max-width: 956px;
+  aspect-ratio: 956 / 445;
   padding: 30px 60px;
   background-color: #0c0c0c4d;
   z-index: 2; // 이미지 뒤에 가져려서 z-index로 레이어 순서 조정
   pointer-events: none;
 
+  @media (max-width: 1720px) and (min-width: 1025px) {
+    gap: 42px;
+    padding: 24px 40px;
+    right: -20px;
+  }
+
   ${({ theme }) => theme.media.tablet} {
     bottom: -84px;
-    left: 100px;
+    right: -130px;
     gap: 32px;
-    min-width: 571px;
-    height: 264px;
+    width: 571px;
+    aspect-ratio: 571 / 264;
     padding: 16px 20px;
   }
 
   ${({ theme }) => theme.media.mobile} {
     bottom: -50px;
-    left: 0;
-    gap: 12px;
-    min-width: 300px;
-    height: 160px;
-    padding: 6px;
+    right: -25px;
+    gap: 14px;
+    width: 260px;
+    aspect-ratio: 260 / 165;
+    padding: 8px;
   }
 `;
 
 const DeskTitle = styled.h3`
   color: ${Theme.colors.whitetext};
-  font-size: ${Theme.fontsize.desktop.title};
-  line-height: ${Theme.fontsize.desktop.title};
+  font-size: ${Theme.fontsize.desktop.main.title};
+  line-height: ${Theme.fontsize.desktop.main.title};
   font-weight: 400;
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.title};
-    line-height: ${Theme.fontsize.tablet.title};
+    font-size: ${Theme.fontsize.tablet.main.title};
+    line-height: ${Theme.fontsize.tablet.main.title};
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.section};
-    line-height: ${Theme.fontsize.mobile.section};
+    font-size: ${Theme.fontsize.mobile.main.title};
+    line-height: ${Theme.fontsize.mobile.main.title};
   }
 `;
 
-const DeskMessage = styled.div`
+const DeskMessageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 52px;
+
+  @media (max-width: 1720px) and (min-width: 1025px) {
+    gap: 38px;
+  }
 
   ${({ theme }) => theme.media.tablet} {
     gap: 21px;
@@ -783,26 +776,45 @@ const DeskMessage = styled.div`
   }
 `;
 
-const FirstDeskMessage = styled.p`
-  color: ${Theme.colors.whitetext};
-  font-size: ${Theme.fontsize.desktop.section};
-  line-height: 1.4;
-  font-weight: 400;
-  margin-left: 450px;
+const FirstDeskMessageBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 300px;
+
+  @media (max-width: 1720px) and (min-width: 1025px) {
+    margin-left: 170px;
+  }
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.content};
     margin-left: 152px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.mini};
-    margin-left: 90px;
+    margin-left: 40px;
   }
 `;
 
-const SecondDeskMessage = styled(FirstDeskMessage)`
-  margin-left: 600px;
+const FirstDeskMessage = styled.p`
+  color: ${Theme.colors.whitetext};
+  font-size: ${Theme.fontsize.desktop.main.section};
+  line-height: 1.4;
+  font-weight: 400;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.main.section};
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.main.section};
+  }
+`;
+
+const SecondDeskMessageBox = styled(FirstDeskMessageBox)`
+  margin-left: 400px;
+
+  @media (max-width: 1720px) and (min-width: 1025px) {
+    margin-left: 240px;
+  }
 
   ${({ theme }) => theme.media.tablet} {
     margin-left: 232px;
@@ -812,6 +824,8 @@ const SecondDeskMessage = styled(FirstDeskMessage)`
     margin-left: auto;
   }
 `;
+
+const SecondDeskMessage = styled(FirstDeskMessage)``;
 
 const ChairImage = styled.img`
   width: 100%;
@@ -860,21 +874,24 @@ const BottomTextContainer = styled.div`
 `;
 
 const BottomText = styled.p`
-  font-size: 100px;
-  font-weight: 400;
+  font-size: ${Theme.fontsize.desktop.main.animationTitle};
+  font-weight: 500;
+  letter-spacing: 0.15rem;
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: 70px;
+    font-size: ${Theme.fontsize.tablet.main.animationTitle};
+    letter-spacing: 0.1rem;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: 28px;
+    font-size: ${Theme.fontsize.mobile.main.animationTitle};
+    letter-spacing: 0.05rem;
   }
 `;
 
 export default function MainPage() {
   const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   // 인스타그램 qr
   const [isInstaOpen, setIsInstaOpen] = useState(false);
   // 이벤트 모달
@@ -906,21 +923,6 @@ export default function MainPage() {
     loadData();
   }, []);
 
-  //이미지를 미리 로딩 및 디코딩하여 최초 호버시 딜레이 방지
-  useEffect(() => {
-    list.forEach((banner) => {
-      if (banner.src[1]) {
-        const img = new Image();
-        img.src = banner.src[1];
-
-        //decode 는 Promise를 반환하므로 catch 메서드로 불필요한 에러 방지
-        img.decode().catch((err) => {
-          console.warn(`${banner.name}`, err);
-        });
-      }
-    });
-  }, [list]);
-
   //받아온 배너 데이터 목록
   const firstBanner = list[0]; //소파
   const secondBanner = list[1]; //전등
@@ -928,6 +930,22 @@ export default function MainPage() {
   const fourthBanner = list[3]; //중단 오른쪽 의자
   const fifthBanner = list[4]; //하단 의자
   const sixthBanner = list[5]; //하단 책상
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          fontSize: "32px",
+        }}
+      >
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <MainSection>
@@ -1073,22 +1091,18 @@ export default function MainPage() {
                 </Link>
                 <DesktextBox>
                   <DeskTitle>The Whisper of Morning Light</DeskTitle>
-                  <DeskMessage>
-                    <FirstDeskMessage>
-                      The softest embrace of sun and
-                      <br />
-                      linen, creating a peaceful moment
-                      <br />
-                      for your deepest rest.
-                    </FirstDeskMessage>
-                    <SecondDeskMessage>
-                      Where the day begins with a
-                      <br />
-                      gentle glow, we curate spaces
-                      <br />
-                      for your own sanctuary.
-                    </SecondDeskMessage>
-                  </DeskMessage>
+                  <DeskMessageContainer>
+                    <FirstDeskMessageBox>
+                      <FirstDeskMessage>The softest embrace of sun and</FirstDeskMessage>
+                      <FirstDeskMessage>linen, creating a peaceful moment</FirstDeskMessage>
+                      <FirstDeskMessage>for your deepest rest.</FirstDeskMessage>
+                    </FirstDeskMessageBox>
+                    <SecondDeskMessageBox>
+                      <SecondDeskMessage>Where the day begins with a</SecondDeskMessage>
+                      <SecondDeskMessage>gentle glow, we curate spaces</SecondDeskMessage>
+                      <SecondDeskMessage>for your own sanctuary.</SecondDeskMessage>
+                    </SecondDeskMessageBox>
+                  </DeskMessageContainer>
                 </DesktextBox>
               </BottomDeskBox>
             )}
