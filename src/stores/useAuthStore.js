@@ -22,6 +22,7 @@ export const useAuthStore = create(
           userInfo: null,
         }),
     }),
+    // 스토리지 이름
     { name: "auth-storage" },
   ),
 );

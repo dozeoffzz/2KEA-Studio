@@ -135,8 +135,10 @@ const Button = styled.button`
 `;
 
 export default function DeleteModal({ isOpen, onClose }) {
+  // index.html에서 modal-root를 찾아온다(자식으로 모달jsx를 보내기위해)
   const targetElement = document.querySelector("#modal-root");
   const { clearCart } = useCartStore();
+  // 포탈을 사용해 targetElement에 보낸다.
   if (!isOpen) return null;
   return createPortal(
     <Overlay>

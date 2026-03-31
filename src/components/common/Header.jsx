@@ -164,7 +164,7 @@ export default function Header() {
     setIsOpen((prev) => !prev);
   };
 
-  // 페이지 바뀌면 헤더 닫기
+  // 페이지 바뀌면 열려있던 헤더 닫기
   const location = useLocation();
   useEffect(() => {
     setIsOpen(false);

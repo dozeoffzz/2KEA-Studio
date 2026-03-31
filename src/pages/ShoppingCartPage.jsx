@@ -631,7 +631,13 @@ export default function ShoppingCartPage() {
           {msg.email && <ErrorMsg style={{ color: "red" }}>{msg.email}</ErrorMsg>}
           <OrderAddress>
             <p>Address</p>
-            <InputAddress name="address" placeholder="Address" type="address" value={form.address} onChange={handleInput} />
+            <InputAddress
+              name="address"
+              placeholder="Address"
+              type="address"
+              value={form.address}
+              onChange={handleInput}
+            />
           </OrderAddress>
           <OrderAddress>
             <p style={{ whiteSpace: "nowrap" }}>Base Address</p>

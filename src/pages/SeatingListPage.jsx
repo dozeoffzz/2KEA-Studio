@@ -197,7 +197,7 @@ const ItemNum = styled.span`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.section};
+    font-size: ${Theme.fontsize.mobile.content};
   }
 `;
 
@@ -217,7 +217,7 @@ const ItemName = styled.span`
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
