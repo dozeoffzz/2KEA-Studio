@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 import { useEffect, useRef, useState } from "react";
 
 const FadeContainer = styled.div`
-  padding: 0 15px;
   //구조분해 할당(isVisible 상태에 따라 투명도 전환)
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   //구조분해 할당(isVisible 상태에 따라 위치 전환)
@@ -12,13 +11,6 @@ const FadeContainer = styled.div`
   transition:
     opacity 0.6s ease-in-out,
     transform 0.6s ease-in-out;
-
-  ${({ theme }) => theme.media.tablet} {
-    padding: 0 12px;
-  }
-  ${({ theme }) => theme.media.mobile} {
-    padding: 0 2px;
-  }
 `;
 
 export default function ScrollReveal({ children }) {

@@ -120,20 +120,15 @@ const ListSlide = styled.div`
 `;
 
 const ListImageWrapper = styled.div`
-  position: relative;
   //계산 복잡도를 낮추기 위해 padding으로 간격 설정
   padding: 0 10px;
-  //슬라이드 너비 설정
+  //슬라이드 너비 설정(크기 고정 및 찌그러짐 방지)
   flex: 0 0 ${({ visibleCount }) => `calc(100% / ${visibleCount})`};
-  height: 550px;
-
   ${({ theme }) => theme.media.tablet} {
     padding: 0 7.5px;
-    height: 250px;
   }
   ${({ theme }) => theme.media.mobile} {
     padding: 0 2.5px;
-    height: 130px;
   }
 
   &:hover .list-hover-img {
@@ -141,27 +136,25 @@ const ListImageWrapper = styled.div`
   }
 `;
 
+const InnerImageBox = styled.div`
+  position: relative;
+  width: 100%;
+  aspect-ratio: 436 / 550;
+  overflow: hidden;
+`;
+
 const DefaultImage = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
 `;
 
-const HoverImage = styled.img`
+const HoverImage = styled(DefaultImage)`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 0 10px;
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
-
-  ${({ theme }) => theme.media.tablet} {
-    padding: 0 7.5px;
-  }
-  ${({ theme }) => theme.media.mobile} {
-    padding: 0 2.5px;
-  }
 `;
 
 export default function NewProductList() {
@@ -253,8 +246,6 @@ export default function NewProductList() {
     }
   };
 
-  if (loading) return <div>데이터 로딩중...</div>;
-
   return (
     <ScrollReveal>
       <ItemList>
@@ -303,10 +294,12 @@ export default function NewProductList() {
             {extendedList.map((item, idx) => (
               // 복제된 아이템의 key값 충돌 방지를 위해 id 와 index 조합
               <ListImageWrapper key={`${item.id}-${idx}`} visibleCount={visibleCount}>
-                <DefaultImage src={item.src[0]} alt={item.name} />
-                <Link to={`/products/${item.category}/${item.productId}`}>
-                  <HoverImage src={item.src[1]} alt={item.name} className="list-hover-img" />
-                </Link>
+                <InnerImageBox>
+                  <DefaultImage src={item.src[0]} alt={item.name} />
+                  <Link to={`/products/${item.category}/${item.productId}`}>
+                    <HoverImage src={item.src[1]} alt={item.name} className="list-hover-img" />
+                  </Link>
+                </InnerImageBox>
               </ListImageWrapper>
             ))}
           </ListSlide>
