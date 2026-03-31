@@ -340,11 +340,13 @@ const LeftChairContainer = styled.div`
   flex: 672;
   gap: 20px;
   ${({ theme }) => theme.media.tablet} {
+    flex: 337;
     gap: 10px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    height: 100%;
+    flex: 159;
+    padding-bottom: 80px;
     gap: 2px;
   }
 `;
@@ -378,6 +380,8 @@ const LeftImageContainer = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
+    min-width: 139px;
+    min-height: 196px;
     aspect-ratio: 159 / 216;
   }
 `;
@@ -391,6 +395,8 @@ const LeftChair = styled.img`
   }
 
   ${({ theme }) => theme.media.mobile} {
+    min-width: 139px;
+    min-height: 196px;
     aspect-ratio: 159 / 216;
   }
 `;
@@ -423,7 +429,7 @@ const ChairCommentContainer = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    gap: 14px;
+    gap: 0;
     padding-left: 0;
     transform: translateY(0);
   }
@@ -436,11 +442,7 @@ const TopChairDescBox = styled.div`
   ${({ theme }) => theme.media.mobile} {
     position: absolute;
     width: 210px;
-    top: 45px;
-
-    @media (max-width: 390px) {
-      top: 30px;
-    }
+    top: 55px;
   }
 `;
 
@@ -469,12 +471,8 @@ const BottomChairDescBox = styled(TopChairDescBox)`
     position: absolute;
     width: 200px;
     height: 100px;
-    top: 104px;
+    top: 110px;
     left: 78px;
-
-    @media (max-width: 390px) {
-      top: 84px;
-    }
   }
 `;
 
@@ -539,7 +537,6 @@ const RightImageContainer = styled.div`
   position: relative;
   flex: 770;
   width: 100%;
-  max-width: 770px;
   aspect-ratio: 770 / 1156;
 
   :hover .right-chair-hover-img {
@@ -547,19 +544,21 @@ const RightImageContainer = styled.div`
   }
 
   ${({ theme }) => theme.media.tablet} {
-    max-width: 386px;
+    flex: 386;
+    min-width: 386px;
     aspect-ratio: 386 / 658;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    max-width: 182px;
+    flex: 182;
+    min-width: 162px;
+    min-height: 358px;
     aspect-ratio: 182 / 378;
   }
 `;
 
 const RightChair = styled.img`
   width: 100%;
-  max-width: 770px;
   aspect-ratio: 770 / 1156;
 
   ${({ theme }) => theme.media.tablet} {
@@ -567,6 +566,8 @@ const RightChair = styled.img`
   }
 
   ${({ theme }) => theme.media.mobile} {
+    min-width: 162px;
+    min-height: 358px;
     aspect-ratio: 182 / 378;
   }
 `;
