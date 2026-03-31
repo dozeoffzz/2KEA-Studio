@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import topImage from "../../assets/imgs/main/top-image.webp";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Theme } from "../../styles/theme";
+import { LogoAnimationContext } from "../contexts/LogoAnimationContext";
 
 const TopContainer = styled.div`
   position: relative;
@@ -28,22 +30,25 @@ const FirstTitle = styled.p`
   position: absolute;
   top: 45%;
   left: 50%;
-  font-size: 100px;
-  font-weight: 400;
-  letter-spacing: 0.5%;
-  /* pointer-events: none; */
-  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-290px" : 0)});
+  font-size: ${Theme.fontsize.desktop.main.animationTitle};
+  font-weight: 500;
+  letter-spacing: 0.15rem;
+  display: ${({ isAnimated }) => (isAnimated ? "none" : "inline-block")};
+  pointer-events: none;
+  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-392px" : 0)});
   transition: transform 1s ease-in-out;
   z-index: 10;
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: 70px;
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-260px" : 0)});
+    font-size: ${Theme.fontsize.tablet.main.animationTitle};
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-322px" : 0)});
+    letter-spacing: 0.1rem;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: 28px;
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-70px" : 0)});
+    font-size: ${Theme.fontsize.mobile.main.animationTitle};
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-118px" : 0)});
+    letter-spacing: 0.05rem;
   }
 `;
 
@@ -53,27 +58,46 @@ const SecondTitle = styled(FirstTitle)`
   pointer-events: none;
   opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
   visibility: ${({ isLoaded }) => (isLoaded ? "hidden" : "visible")};
-  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "600px" : 0)});
+  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "800px" : 0)});
   transition:
-    opacity 0.8s ease-in-out,
-    visibility 0.8s ease-in-out,
+    opacity 1s ease-in-out,
+    visibility 1s ease-in-out,
     transform 1.8s ease-in-out;
+
+  ${({ theme }) => theme.media.tablet} {
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "600px" : 0)});
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "180px" : 0)});
+  }
 `;
 
 export default function TopArea() {
   const [isLoaded, setIsLoaded] = useState(false);
+  //제공받은 Context 사용
+  const { isAnimated, setIsAnimated } = useContext(LogoAnimationContext);
 
   //이미지 로딩시 상태 변경하기
   const loadCompleted = () => {
     setIsLoaded(true);
+    //설정해둔 애니메이션 시간(1초)이 끝나면 애니메이션 완료 상태 전달
+    //애니메이션을 시작하는데 딜레이를 주는게 아닌, 애니메이션이 완료되었다는 상태를 전달하는 것에 딜레이를 주는 로직
+    setTimeout(() => {
+      setIsAnimated(true);
+    }, 1000);
   };
 
-  //onLoad 이벤트로 이미지 로딩시 실행됨
+  //onLoad 이벤트로 이미지 로딩시 실행 및 애니메이션 진행됨
   return (
     <TopContainer>
-      <TopImage src={topImage} onLoad={loadCompleted} $isLoaded={isLoaded} alt="Top Image" />
-      <FirstTitle isLoaded={isLoaded}>2KEA</FirstTitle>
-      <SecondTitle isLoaded={isLoaded}>STUDIO</SecondTitle>
+      <TopImage src={topImage} onLoad={loadCompleted} isLoaded={isLoaded} alt="Top Image" />
+      <FirstTitle isLoaded={isLoaded} isAnimated={isAnimated}>
+        2KEA
+      </FirstTitle>
+      <SecondTitle isLoaded={isLoaded} isAnimated={isAnimated}>
+        STUDIO
+      </SecondTitle>
     </TopContainer>
   );
 }

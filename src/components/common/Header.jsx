@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Theme } from "../../styles/theme";
 import plusIcon from "../../assets/icons/plusIcon.svg";
 import menuIcon from "../../assets/icons/menuIcon.svg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAuthStore } from "../../stores/useAuthStore";
 import { useLocation } from "react-router-dom";
+import { LogoAnimationContext } from "../contexts/LogoAnimationContext";
 
 const Overlay = styled.div`
   position: fixed;
@@ -58,19 +59,33 @@ const PlusButton = styled.button`
 `;
 
 // 가운데 브랜드 로고 텍스트
-const Brand = styled(NavLink)`
+// 커스텀 프롭스 DOM 전달 방지를 위해 shouldForwardProp 키워드 사용
+const Brand = styled(Link, { shouldForwardProp: (prop) => prop !== "animated" })`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: ${Theme.fontsize.desktop.section};
+  font-size: ${Theme.fontsize.desktop.main.animationTitle};
   text-align: center;
-  line-height: 1.2em;
+  display: ${({ animated }) => (animated ? "block" : "none")};
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.section};
+    font-size: ${Theme.fontsize.tablet.main.animationTitle};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.section};
+    font-size: ${Theme.fontsize.mobile.main.animationTitle};
+  }
+`;
+
+const Logo = styled.h1`
+  font-weight: 500;
+  letter-spacing: 0.15rem;
+
+  ${({ theme }) => theme.media.tablet} {
+    letter-spacing: 0.1rem;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    letter-spacing: 0.05rem;
   }
 `;
 
@@ -140,10 +155,17 @@ const LogOut = styled.button`
   }
 `;
 
+//isAnimated: 메인레이아웃에서 선언한 애니메이션 상태 전달받기
 export default function Header() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isScroll, setIsScroll] = useState(false);
   const { isLogin, logout } = useAuthStore();
+  //제공받은 Context 사용
+  const { isAnimated } = useContext(LogoAnimationContext);
+  //메인페이지는 애니메이션 완료 여부에 따라 로고가 보이고, 다른 페이지는 즉시 로고 보이기
+  const animated = location.pathname === "/" ? isAnimated : true;
 
   // 스크롤할때 헤더 불투명하게 하기위해 y축 스크롤이 0보다 크면 트루
   useEffect(() => {
@@ -158,17 +180,15 @@ export default function Header() {
     // 유즈이펙트 클린업 함수
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  const navigate = useNavigate();
+
+  // 페이지 바뀌면 헤더 닫기
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const ClickOpenMenu = () => {
     setIsOpen((prev) => !prev);
   };
-
-  // 페이지 바뀌면 열려있던 헤더 닫기
-  const location = useLocation();
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location.pathname]);
 
   return (
     <>
@@ -177,20 +197,32 @@ export default function Header() {
       {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>
-          <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
+          <PlusButton
+            onClick={ClickOpenMenu}
+            isOpen={isOpen}
+            isScroll={isScroll}
+            onMouseEnter={() => setIsOpen(true)}
+          >
             <img src={plusIcon} />
           </PlusButton>
-          <Brand to={"/"}>
-            <h1>
-              2KEA <br /> STUDIO
-            </h1>
+          <Brand to={"/"} animated={animated}>
+            <Logo>2KEA</Logo>
           </Brand>
-          <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
+          <MenuButton
+            onClick={ClickOpenMenu}
+            isOpen={isOpen}
+            isScroll={isScroll}
+            onMouseEnter={() => setIsOpen(true)}
+          >
             <img src={menuIcon} />
           </MenuButton>
         </HeaderWrap>
         {/* // useState로 값변경하기 위해 프롭스 전달 */}
-        <MenuWrap isOpen={isOpen}>
+        <MenuWrap
+          isOpen={isOpen}
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
+        >
           {/* 왼쪽메뉴 */}
           <LeftMenu>
             <Products>Products</Products>
