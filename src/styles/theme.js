@@ -51,7 +51,7 @@ export const Theme = {
       small: "14px",
       mini: "12px",
       main: {
-        animationTitle: "24px",
+        animationTitle: "32px",
         title: "16px",
         section: "12px",
       },
@@ -70,5 +70,16 @@ export const Theme = {
     mobile: "@media (max-width: 767px)",
     tablet: "@media (min-width: 768px) and (max-width: 1024px)",
     desktop: "@media (min-width: 1025px)",
+  },
+};
+
+export const animation = {
+  duration: {
+    mainTitle: 1000,
+  },
+  easing: {
+    ease: "ease",
+    easeInOut: "ease-in-out",
+    none: "none",
   },
 };
