@@ -275,7 +275,7 @@ const SideMenu = styled.div`
 `;
 
 const SideMenuTap = styled.div`
-  padding: 10px;
+  padding: 5px;
   display: flex;
   flex: 1;
   justify-content: space-between;
@@ -286,6 +286,12 @@ const SideMenuReview = styled(SideMenuTap)``;
 const SideMenuInsta = styled(SideMenuTap)``;
 const SideMenuOut = styled(SideMenuTap)`
   border: none;
+`;
+const NavLinkTo = styled(NavLink)`
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export default function MyPage() {
@@ -398,19 +404,26 @@ export default function MyPage() {
     }
     setIsEdit(!isEdit);
   }
-  const moveStep = 1;
-  const itemWidth = 230;
-
   return (
     <MyPageContainer>
       <SideMenu>
         <SideMenuTap>
-          <p>주문내역</p>
-          <p>&gt;</p>
+          <NavLinkTo to={"/auth/me"}>
+            <p>마이페이지</p>
+            <p>&gt;</p>
+          </NavLinkTo>
         </SideMenuTap>
         <SideMenuTap>
-          <p>리뷰</p>
-          <p>&gt;</p>
+          <NavLinkTo to={"/auth/me/order"}>
+            <p>주문내역</p>
+            <p>&gt;</p>
+          </NavLinkTo>
+        </SideMenuTap>
+        <SideMenuTap>
+          <NavLinkTo to={"/auth/me/review"}>
+            <p>리뷰</p>
+            <p>&gt;</p>
+          </NavLinkTo>
         </SideMenuTap>
         <SideMenuTap>
           <p>인스타그램</p>
