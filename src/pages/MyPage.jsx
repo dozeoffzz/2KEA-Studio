@@ -22,10 +22,59 @@ const MyPageContainer = styled.div`
     height: auto;
   }
 `;
+
+const ProfileWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 600px;
+`;
+
+const ProfileInfoWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  font-size: ${Theme.fontsize.desktop.medium};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
+`;
+
+const ProfileInfo = styled.div`
+  display: flex;
+`;
+
+const ProfileBuy = styled.div`
+  padding: 10px 0 20px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid ${Theme.colors.black};
+`;
+
+const ProfileStatus = styled.div`
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ProfileCart = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const ProfileDelivery = styled(ProfileCart)``;
+const ProfileDeliveryDone = styled(ProfileCart)``;
+
 const ProfileImg = styled.div`
   margin-bottom: 65px;
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 150px;
@@ -51,7 +100,7 @@ const ProfileImg = styled.div`
 const ImgEdit = styled.button`
   position: absolute;
   right: 0;
-  bottom: 0;
+  top: 0;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
 
@@ -62,94 +111,28 @@ const ImgEdit = styled.button`
     font-size: ${Theme.fontsize.mobile.medium};
   }
 `;
-const StatusWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 450px;
-  height: 90px;
-  gap: 30px;
-
-  ${({ theme }) => theme.media.tablet} {
-    width: 300px;
-    gap: 15px;
-  }
-  ${({ theme }) => theme.media.mobile} {
-    width: 300px;
-    gap: 15px;
-  }
-`;
-
-const CouponsWrap = styled.div`
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid ${Theme.colors.black};
-  width: 130px;
-  height: 100%;
-`;
-const CartWrap = styled(CouponsWrap)``;
-const CartWrapNav = styled(NavLink)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const DeleveringWrap = styled(CouponsWrap)`
-  background-color: ${Theme.colors.black};
-  color: ${Theme.colors.whitetext};
-`;
-const CouponsText = styled.p`
-  font-size: ${Theme.fontsize.desktop.medium};
-
-  ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.medium};
-  }
-  ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
-  }
-`;
-const CouponsNum = styled.p`
-  font-size: ${Theme.fontsize.desktop.section};
-
-  ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.section};
-  }
-  ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.section};
-  }
-`;
-const CartText = styled(CouponsText)``;
-const CartNum = styled(CouponsNum)``;
-const DeliveringText = styled(CouponsText)``;
-const DeliveringNum = styled(CouponsNum)``;
-
 const UserType = styled.p`
-  margin-top: 50px;
-  width: 450px;
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
   text-align: right;
   font-size: ${Theme.fontsize.desktop.medium};
 
   ${({ theme }) => theme.media.tablet} {
-    width: 300px;
     font-size: ${Theme.fontsize.tablet.medium};
   }
   ${({ theme }) => theme.media.mobile} {
-    width: 300px;
     font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 const UserTypeText = styled.p`
   margin-top: 10px;
   text-align: right;
-  width: 450px;
+  width: 600px;
   font-size: ${Theme.fontsize.desktop.mini};
   color: red;
   ${({ theme }) => theme.media.tablet} {
-    width: 300px;
+    width: 550px;
   }
   ${({ theme }) => theme.media.mobile} {
     width: 300px;
@@ -160,13 +143,16 @@ const MyInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 50px;
+  min-width: 600px;
   font-size: ${Theme.fontsize.desktop.medium};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
+    min-width: 550px;
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
+    min-width: 300px;
   }
 `;
 
@@ -177,23 +163,29 @@ const Input = styled.input`
 `;
 
 const NameWrap = styled.div`
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: ${Theme.fontsize.desktop.content};
+  text-align: left;
+`;
+const MobileWrap = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid ${Theme.colors.black};
-  width: 450px;
+  width: 100%;
   padding-bottom: 10px;
 
   ${({ theme }) => theme.media.tablet} {
-    width: 300px;
+    width: 100%;
   }
   ${({ theme }) => theme.media.mobile} {
-    width: 300px;
+    width: 100%;
   }
 `;
-const MobileWrap = styled(NameWrap)``;
-const EmailWrap = styled(NameWrap)``;
-const AddressWrap = styled(NameWrap)``;
-const IdWrap = styled(NameWrap)``;
+const EmailWrap = styled(MobileWrap)``;
+const AddressWrap = styled(MobileWrap)``;
+const IdWrap = styled(MobileWrap)``;
 const Button = styled.button`
   margin: 50px 0;
   display: flex;
@@ -213,6 +205,31 @@ const Button = styled.button`
   }
 `;
 
+const RecentItemContainer = styled.div`
+  display: flex;
+  gap: 30px;
+`;
+const RecentItemWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const RecentItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: right;
+  width: 200px;
+  height: 294px;
+`;
+
+const RecentItemImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
 export default function MyPage() {
   const [isEdit, setIsEdit] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
@@ -227,6 +244,8 @@ export default function MyPage() {
     email: "",
     address: "",
   });
+  // 최근 본 상품 리스트를 가져오기 위한 상태값
+  const [recentProducts, setRecentProducts] = useState([]);
   const fileInputRef = useRef(null);
   // api 연결하기
   useEffect(() => {
@@ -297,53 +316,65 @@ export default function MyPage() {
     }
     setIsEdit(!isEdit);
   }
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("recentProducts")) || [];
+    setRecentProducts(stored);
+  }, []);
   return (
     <MyPageContainer>
-      <ProfileImg>
-        <img src={profileImg} alt="프로필 이미지" />
-        {isEdit ? <ImgEdit onClick={handleEditClick}>Edit</ImgEdit> : null}
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleImageChange}
-        />
-      </ProfileImg>
-      <StatusWrap>
-        <CouponsWrap>
-          <CouponsText>Coupons</CouponsText>
-          <CouponsNum>0</CouponsNum>
-        </CouponsWrap>
-        <CartWrap>
-          <CartWrapNav to={"/cart"}>
-            <CartText>Cart</CartText>
-            <CartNum>{cartItem.length || 0}</CartNum>
-          </CartWrapNav>
-        </CartWrap>
-        <DeleveringWrap>
-          <DeliveringText>delivery</DeliveringText>
-          <DeliveringNum>0</DeliveringNum>
-        </DeleveringWrap>
-      </StatusWrap>
-      <UserType>*{userInfo?.userType}</UserType>
+      <ProfileWrap>
+        <ProfileImg>
+          {isEdit ? (
+            <NameWrap>
+              <Input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
+            </NameWrap>
+          ) : (
+            <NameWrap>
+              <p>{userInfo?.name || "USER NAME"}</p>
+            </NameWrap>
+          )}
+          <img src={profileImg} alt="프로필 이미지" />
+          {isEdit ? <ImgEdit onClick={handleEditClick}>Edit</ImgEdit> : null}
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleImageChange}
+          />
+          <UserType>*{userInfo?.userType}</UserType>
+        </ProfileImg>
+        <ProfileInfoWrap>
+          <ProfileInfo>
+            <p>최근 3개월</p>
+          </ProfileInfo>
+          <ProfileBuy>
+            <p>구매 금액:0</p>
+            <p>구매 건수:0</p>
+            <p>보유 P:1,220p</p>
+          </ProfileBuy>
+          <ProfileStatus>
+            <ProfileCart>
+              <p>쇼핑카트</p>
+              <p>{cartItem.length}</p>
+            </ProfileCart>
+            <ProfileDelivery>
+              <p>배송 중</p>
+              <p>0</p>
+            </ProfileDelivery>
+            <ProfileDeliveryDone>
+              <p>배송 완료</p>
+              <p>0</p>
+            </ProfileDeliveryDone>
+          </ProfileStatus>
+        </ProfileInfoWrap>
+      </ProfileWrap>
       <UserTypeText>*개인/사업자 변경은 문의 후 변경가능합니다.</UserTypeText>
       <MyInfo>
         <IdWrap>
           <p>Id</p>
           <p>{userInfo?.loginId}</p>
         </IdWrap>
-        {isEdit ? (
-          <NameWrap>
-            <p>Name</p>
-            <Input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
-          </NameWrap>
-        ) : (
-          <NameWrap>
-            <p>Name</p>
-            <p>{userInfo?.name}</p>
-          </NameWrap>
-        )}
         {isEdit ? (
           <MobileWrap>
             <p>Phone</p>
@@ -383,6 +414,25 @@ export default function MyPage() {
         )}
       </MyInfo>
       {isEdit ? <Button onClick={handleSave}>완료</Button> : <Button onClick={handleEditToggle}>수정</Button>}
+      <RecentItemWrap>
+        <p>최근 본 상품</p>
+        <div>
+          {recentProducts.length === 0 ? (
+            <p>최근 본 상품이 없습니다.</p>
+          ) : (
+            <RecentItemContainer>
+              {recentProducts.map((item) => (
+                <NavLink to={`/products/${item.category}/${item.id}`}>
+                  <RecentItem key={item.id}>
+                    <RecentItemImg src={item.img} alt={item.name} />
+                    <p>{item.name}</p>
+                  </RecentItem>
+                </NavLink>
+              ))}
+            </RecentItemContainer>
+          )}
+        </div>
+      </RecentItemWrap>
     </MyPageContainer>
   );
 }

@@ -83,6 +83,7 @@ const InputInfo = styled.p`
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
+    width: 80px;
   }
 `;
 
@@ -146,6 +147,7 @@ const SignupButton = styled(NavLink)`
 const DesignText = styled.p`
   font-size: ${Theme.fontsize.desktop.section};
   text-align: center;
+  letter-spacing: 0.1rem;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};

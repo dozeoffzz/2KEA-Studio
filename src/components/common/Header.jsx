@@ -23,11 +23,11 @@ const Overlay = styled.div`
   z-index: 999;
 `;
 const HeaderContainer = styled.header`
-  padding: 0px 30px;
+  padding: 25px 60px;
   position: fixed;
   top: 0;
   width: 100%;
-  height: ${(props) => (props.isOpen ? "330px" : "100px")};
+  height: ${(props) => (props.isOpen ? "350px" : "120px")};
   flex-shrink: 0;
   background-color: transparent;
   z-index: 1000;
@@ -199,13 +199,13 @@ export default function Header() {
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>
           <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
-            <img src={plusIcon} />
+            <img src={menuIcon} />
           </PlusButton>
           <Brand to={"/"} animated={animated}>
             <Logo>2KEA</Logo>
           </Brand>
           <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
-            <img src={menuIcon} />
+            <img src={plusIcon} />
           </MenuButton>
         </HeaderWrap>
         {/* // useState로 값변경하기 위해 프롭스 전달 */}
