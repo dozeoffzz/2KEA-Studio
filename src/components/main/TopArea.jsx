@@ -32,23 +32,23 @@ const FirstTitle = styled.p`
   left: 50%;
   font-size: ${Theme.fontsize.desktop.main.animationTitle};
   font-weight: 500;
-  letter-spacing: 0.15rem;
+  letter-spacing: 0.3rem;
   display: ${({ isAnimated }) => (isAnimated ? "none" : "inline-block")};
   pointer-events: none;
-  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-392px" : 0)});
+  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-396px" : 0)});
   transition: transform 1s ease-in-out;
   z-index: 10;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.main.animationTitle};
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-322px" : 0)});
-    letter-spacing: 0.1rem;
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-328px" : 0)});
+    letter-spacing: 0.2rem;
   }
 
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.main.animationTitle};
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-118px" : 0)});
-    letter-spacing: 0.05rem;
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-122px" : 0)});
+    letter-spacing: 0.1rem;
   }
 `;
 
