@@ -38,6 +38,13 @@ const HeaderContainer = styled.header`
     rgba(250, 250, 250, 0) 100%
   );
   transition: all 0.4s ease;
+
+  ${({ theme }) => theme.media.tablet} {
+    padding: 25px 60px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0 30px;
+  }
 `;
 // 상단 헤더 영역
 const HeaderWrap = styled.div`
