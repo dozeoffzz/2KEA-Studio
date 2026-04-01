@@ -251,6 +251,10 @@ const LightVerticalText = styled.p`
   color: ${Theme.colors.white};
   transform: rotate(180deg);
 
+  @media (max-width: 1294px) and (min-width: 1025px) {
+    font-size: ${Theme.fontsize.desktop.section};
+  }
+
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.main.title};
   }
@@ -308,6 +312,10 @@ const LightDesc = styled.p`
   font-weight: 400;
   color: ${Theme.colors.white};
 
+  @media (max-width: 1294px) and (min-width: 1025px) {
+    font-size: ${Theme.fontsize.desktop.content};
+  }
+
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.main.section};
   }
@@ -325,6 +333,10 @@ const ChairImageContainer = styled.div`
   gap: 20px;
   width: 100%;
 
+  @media (max-width: 1294px) and (min-width: 1025px) {
+    gap: 12px;
+  }
+
   ${({ theme }) => theme.media.tablet} {
     gap: 10px;
   }
@@ -339,6 +351,11 @@ const LeftChairContainer = styled.div`
   display: flex;
   flex: 672;
   gap: 20px;
+
+  @media (max-width: 1294px) and (min-width: 1025px) {
+    gap: 12px;
+  }
+
   ${({ theme }) => theme.media.tablet} {
     flex: 337;
     gap: 10px;
@@ -442,7 +459,7 @@ const TopChairDescBox = styled.div`
   ${({ theme }) => theme.media.mobile} {
     position: absolute;
     width: 210px;
-    top: 55px;
+    top: 25px;
   }
 `;
 
@@ -471,7 +488,7 @@ const BottomChairDescBox = styled(TopChairDescBox)`
     position: absolute;
     width: 200px;
     height: 100px;
-    top: 110px;
+    top: 90px;
     left: 78px;
   }
 `;
@@ -504,14 +521,18 @@ const ChairVerticalText = styled.p`
   color: ${Theme.colors.blacktext};
   transform: rotate(180deg);
 
+  @media (max-width: 1294px) and (min-width: 1025px) {
+    font-size: ${Theme.fontsize.desktop.section};
+  }
+
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.main.title};
     line-height: ${Theme.fontsize.tablet.main.title};
   }
 
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.section};
-    line-height: ${Theme.fontsize.mobile.section};
+    font-size: ${Theme.fontsize.mobile.main.title};
+    line-height: ${Theme.fontsize.mobile.main.title};
   }
 `;
 
@@ -527,9 +548,9 @@ const ChairVerticalLine = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    width: 2px;
+    width: 1px;
     height: 56px;
-    transform: translate(7px, -6px);
+    transform: translate(5.15px, -4.9px);
   }
 `;
 
@@ -872,16 +893,16 @@ const BottomTextContainer = styled.div`
 const BottomText = styled.p`
   font-size: ${Theme.fontsize.desktop.main.animationTitle};
   font-weight: 500;
-  letter-spacing: 0.15rem;
+  letter-spacing: 0.3rem;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.main.animationTitle};
-    letter-spacing: 0.1rem;
+    letter-spacing: 0.2rem;
   }
 
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.main.animationTitle};
-    letter-spacing: 0.05rem;
+    letter-spacing: 0.1rem;
   }
 `;
 

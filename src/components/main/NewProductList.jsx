@@ -23,8 +23,8 @@ const ItemList = styled.div`
 `;
 
 const ListTitle = styled.p`
-  font-size: ${Theme.fontsize.desktop.main.title};
-  line-height: ${Theme.fontsize.desktop.main.title};
+  font-size: clamp(24px, 2vw, ${Theme.fontsize.desktop.main.title});
+  line-height: clamp(24px, 2vw, ${Theme.fontsize.desktop.main.title});
   text-align: center;
 
   ${({ theme }) => theme.media.tablet} {
@@ -39,17 +39,17 @@ const ListTitle = styled.p`
 
 const ButtonContainer = styled.div`
   position: absolute;
-  top: 28px;
+  top: 16px;
   right: 0;
   display: flex;
   gap: 10px;
 
   ${({ theme }) => theme.media.tablet} {
-    top: 12px;
+    top: 8px;
     gap: 7px;
   }
   ${({ theme }) => theme.media.mobile} {
-    top: 0;
+    top: -1px;
     gap: 5px;
   }
 `;
@@ -161,7 +161,7 @@ export default function NewProductList() {
   const [loading, setLoading] = useState(true); // API 데이터 로딩 완료 여부
   const [list, setList] = useState([]); //API로 받아올 리스트 데이터
   const [index, setIndex] = useState(0); //현재 슬라이드 기준 위치
-  const [isTranslation, setIsTranslation] = useState(false); //애니메이션 활설화 여부
+  const [isTranslation, setIsTranslation] = useState(false); //애니메이션 활성화 여부
   const [slideCount, setSlideCount] = useState(2); //버튼 클릭시 슬라이드할 아이템 갯수
   const isSliding = useRef(false); // 슬라이드 애니메이션 진행 여부(버튼 연타 방지용)
 
@@ -245,6 +245,8 @@ export default function NewProductList() {
       setIndex(list.length); //실제 리스트 마지막 위치로 점프
     }
   };
+
+  if (loading) return null;
 
   return (
     <ScrollReveal>

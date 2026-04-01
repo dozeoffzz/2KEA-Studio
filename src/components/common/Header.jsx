@@ -23,11 +23,11 @@ const Overlay = styled.div`
   z-index: 999;
 `;
 const HeaderContainer = styled.header`
-  padding: 0px 30px;
+  padding: 25px 60px;
   position: fixed;
   top: 0;
   width: 100%;
-  height: ${(props) => (props.isOpen ? "330px" : "100px")};
+  height: ${(props) => (props.isOpen ? "350px" : "120px")};
   flex-shrink: 0;
   background-color: transparent;
   z-index: 1000;
@@ -59,14 +59,15 @@ const PlusButton = styled.button`
 `;
 
 // 가운데 브랜드 로고 텍스트
-// 커스텀 프롭스 DOM 전달 방지를 위해 shouldForwardProp 키워드 사용
+// Link 태그는 to 는 본인이 사용하고 커스텀 프롭스를 그냥 전달하면 a 태그로 넘김
+// 하지만 a 태그는 커스텀 프롭스를 이해하지 못하기 때문에 오류가 발생함
+// 스타일 계산만 하고 실제 DOM 요소까지 전달 방지를 위해 shouldForwardProp 키워드 사용
 const Brand = styled(Link, { shouldForwardProp: (prop) => prop !== "animated" })`
-  display: flex;
+  display: ${({ animated }) => (animated ? "flex" : "none")};
   justify-content: center;
   align-items: center;
   font-size: ${Theme.fontsize.desktop.main.animationTitle};
   text-align: center;
-  display: ${({ animated }) => (animated ? "block" : "none")};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.main.animationTitle};
@@ -78,14 +79,14 @@ const Brand = styled(Link, { shouldForwardProp: (prop) => prop !== "animated" })
 
 const Logo = styled.h1`
   font-weight: 500;
-  letter-spacing: 0.15rem;
+  letter-spacing: 0.3rem;
 
   ${({ theme }) => theme.media.tablet} {
-    letter-spacing: 0.1rem;
+    letter-spacing: 0.2rem;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    letter-spacing: 0.05rem;
+    letter-spacing: 0.1rem;
   }
 `;
 
@@ -194,35 +195,21 @@ export default function Header() {
     <>
       {/* 모바일 일때 오버레이 클릭하면 헤더 없어지게 */}
       <Overlay isOpen={isOpen} onClick={() => setIsOpen(false)} />
-      {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
+      {/* // useState로 스크롤 값변경하기 위해 프롭스 전달 */}
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>
-          <PlusButton
-            onClick={ClickOpenMenu}
-            isOpen={isOpen}
-            isScroll={isScroll}
-            onMouseEnter={() => setIsOpen(true)}
-          >
-            <img src={plusIcon} />
+          <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
+            <img src={menuIcon} />
           </PlusButton>
           <Brand to={"/"} animated={animated}>
             <Logo>2KEA</Logo>
           </Brand>
-          <MenuButton
-            onClick={ClickOpenMenu}
-            isOpen={isOpen}
-            isScroll={isScroll}
-            onMouseEnter={() => setIsOpen(true)}
-          >
-            <img src={menuIcon} />
+          <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
+            <img src={plusIcon} />
           </MenuButton>
         </HeaderWrap>
         {/* // useState로 값변경하기 위해 프롭스 전달 */}
-        <MenuWrap
-          isOpen={isOpen}
-          onMouseEnter={() => setIsOpen(true)}
-          onMouseLeave={() => setIsOpen(false)}
-        >
+        <MenuWrap isOpen={isOpen}>
           {/* 왼쪽메뉴 */}
           <LeftMenu>
             <Products>Products</Products>
@@ -232,7 +219,8 @@ export default function Header() {
             <Font to={"/products/lighting"}>Lighting</Font>
           </LeftMenu>
           <RightMenu>
-            {isLogin ? null : <Font to={"/signup"}>Sign Up</Font>}
+            {isLogin ? <Font to={"/auth/me"}>MyPage</Font> : null}
+            {isLogin ? null : <Font to={"/auth/signup"}>Sign Up</Font>}
             {isLogin ? (
               <LogOut
                 onClick={() => {
@@ -244,7 +232,7 @@ export default function Header() {
                 LogOut
               </LogOut>
             ) : (
-              <Font to={"/login"}>Login</Font>
+              <Font to={"/auth/login"}>Login</Font>
             )}
             <Font to={"/cart"}>Cart</Font>
           </RightMenu>
