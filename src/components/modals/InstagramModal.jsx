@@ -8,8 +8,8 @@ import bgImage from "../../assets/imgs/main/rightchair.webp";
 // 전체 화면 덮는 불투명 배경
 const Overlay = styled.div`
   position: fixed;
-  left: 80px;
-  top: 425px;
+  left: 115px;
+  top: 465px;
   z-index: 999;
   background-color: ${Theme.colors.overlay};
   display: flex;
@@ -17,13 +17,13 @@ const Overlay = styled.div`
   align-items: center;
 
   ${({ theme }) => theme.media.tablet} {
-    left: 50px;
+    left: 66px;
     top: 410px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    top: 200px;
-    left: 50%;
+    top: 260px;
+    left: 47%;
     transform: translate(-50%, -50%);
   }
 `;
