@@ -69,6 +69,17 @@ const ProfileCart = styled.div`
 `;
 const ProfileDelivery = styled(ProfileCart)``;
 const ProfileDeliveryDone = styled(ProfileCart)``;
+const RightArrow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.medium};
+  }
+`;
 
 const ProfileImg = styled.div`
   margin-bottom: 65px;
@@ -143,12 +154,12 @@ const MyInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 50px;
-  min-width: 600px;
+  min-width: 500px;
   font-size: ${Theme.fontsize.desktop.medium};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
-    min-width: 550px;
+    min-width: 400px;
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
@@ -161,10 +172,15 @@ const Input = styled.input`
   text-align: right;
   outline: 1px solid ${Theme.colors.black};
 `;
+const NameInput = styled.input`
+  width: 50%;
+  text-align: right;
+  outline: 1px solid ${Theme.colors.black};
+`;
 
 const NameWrap = styled.div`
   position: absolute;
-  top: -20px;
+  top: -35px;
   left: 0;
   font-size: ${Theme.fontsize.desktop.content};
   text-align: left;
@@ -209,10 +225,25 @@ const RecentItemContainer = styled.div`
   display: flex;
   gap: 30px;
 `;
+
+const ButtonIcon = styled.button`
+  font-size: ${Theme.fontsize.desktop.section};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.section};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+`;
 const RecentItemWrap = styled.div`
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+`;
+const RecentText = styled.p`
+  margin-left: 46px;
 `;
 
 const RecentItem = styled.div`
@@ -233,28 +264,34 @@ const RecentItemImg = styled.img`
 const SideMenu = styled.div`
   position: fixed;
   top: 200px;
-  right: 100px;
+  right: 150px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-width: 300px;
   min-height: 250px;
-  border-top: 1px solid ${Theme.colors.black};
-  border-bottom: 1px solid ${Theme.colors.black};
+  border-top: 1px solid ${Theme.colors.grayline};
+  border-bottom: 1px solid ${Theme.colors.grayline};
 `;
 
 const SideMenuTap = styled.div`
-  padding: 10px;
+  padding: 5px;
   display: flex;
   flex: 1;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${Theme.colors.black};
+  border-bottom: 1px solid ${Theme.colors.grayline};
 `;
 const SideMenuReview = styled(SideMenuTap)``;
 const SideMenuInsta = styled(SideMenuTap)``;
 const SideMenuOut = styled(SideMenuTap)`
   border: none;
+`;
+const NavLinkTo = styled(NavLink)`
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export default function MyPage() {
@@ -272,11 +309,31 @@ export default function MyPage() {
     address: "",
   });
   // 최근 본 상품 리스트를 가져오기 위한 상태값
-  const [recentProducts, setRecentProducts] = useState([]);
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("recentProducts")) || [];
-    setRecentProducts(stored);
-  }, []);
+  const [recentProducts, setRecentProducts] = useState(() => {
+    try {
+      const stored = localStorage.getItem("recentProducts");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+  // 최근 본 상품 4개 보여주게 하기
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const visibleCount = 4;
+
+  const visibleItem = recentProducts.slice(currentIndex, currentIndex + visibleCount);
+
+  function handleNext() {
+    if (currentIndex + visibleCount < recentProducts.length) {
+      setCurrentIndex(currentIndex + visibleCount);
+    }
+  }
+
+  function handlePrev() {
+    if (currentIndex - visibleCount >= 0) {
+      setCurrentIndex(currentIndex - visibleCount);
+    }
+  }
   const fileInputRef = useRef(null);
   // api 연결하기
   useEffect(() => {
@@ -347,17 +404,26 @@ export default function MyPage() {
     }
     setIsEdit(!isEdit);
   }
-
   return (
     <MyPageContainer>
       <SideMenu>
         <SideMenuTap>
-          <p>주문내역</p>
-          <p>&gt;</p>
+          <NavLinkTo to={"/auth/me"}>
+            <p>마이페이지</p>
+            <p>&gt;</p>
+          </NavLinkTo>
         </SideMenuTap>
         <SideMenuTap>
-          <p>리뷰</p>
-          <p>&gt;</p>
+          <NavLinkTo to={"/auth/me/order"}>
+            <p>주문내역</p>
+            <p>&gt;</p>
+          </NavLinkTo>
+        </SideMenuTap>
+        <SideMenuTap>
+          <NavLinkTo to={"/auth/me/review"}>
+            <p>리뷰</p>
+            <p>&gt;</p>
+          </NavLinkTo>
         </SideMenuTap>
         <SideMenuTap>
           <p>인스타그램</p>
@@ -372,7 +438,7 @@ export default function MyPage() {
         <ProfileImg>
           {isEdit ? (
             <NameWrap>
-              <Input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
+              <NameInput value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
             </NameWrap>
           ) : (
             <NameWrap>
@@ -404,10 +470,16 @@ export default function MyPage() {
               <p>쇼핑카트</p>
               <p>{cartItem.length}</p>
             </ProfileCart>
+            <RightArrow>
+              <p>&gt;</p>
+            </RightArrow>
             <ProfileDelivery>
               <p>배송 중</p>
               <p>0</p>
             </ProfileDelivery>
+            <RightArrow>
+              <p>&gt;</p>
+            </RightArrow>
             <ProfileDeliveryDone>
               <p>배송 완료</p>
               <p>0</p>
@@ -461,23 +533,25 @@ export default function MyPage() {
       </MyInfo>
       {isEdit ? <Button onClick={handleSave}>완료</Button> : <Button onClick={handleEditToggle}>수정</Button>}
       <RecentItemWrap>
-        <p>최근 본 상품</p>
-        <div>
-          {recentProducts.length === 0 ? (
-            <p>최근 본 상품이 없습니다.</p>
-          ) : (
+        <RecentText>최근 본 상품</RecentText>
+        {visibleItem.length === 0 ? (
+          <p>최근 본 상품이 없습니다.</p>
+        ) : (
+          <div>
             <RecentItemContainer>
-              {recentProducts.map((item) => (
-                <NavLink to={`/products/${item.category}/${item.id}`}>
-                  <RecentItem key={item.id}>
+              <ButtonIcon onClick={handlePrev}>&lt;</ButtonIcon>
+              {visibleItem.map((item) => (
+                <NavLink to={`/products/${item.category}/${item.id}`} key={item.id}>
+                  <RecentItem>
                     <RecentItemImg src={item.img} alt={item.name} />
                     <p>{item.name}</p>
                   </RecentItem>
                 </NavLink>
               ))}
+              <ButtonIcon onClick={handleNext}>&gt;</ButtonIcon>
             </RecentItemContainer>
-          )}
-        </div>
+          </div>
+        )}
       </RecentItemWrap>
     </MyPageContainer>
   );
