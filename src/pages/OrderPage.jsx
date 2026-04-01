@@ -7,6 +7,112 @@ import { NavLink } from "react-router-dom";
 import MyProfile from "../components/common/MyProfile";
 import { authMeApi } from "../apis/authMeApi";
 
+const OrderPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 160px;
+  width: 100%;
+`;
+
+const OrderContainer = styled.section`
+  width: 915px;
+  height: auto;
+`;
+
+const OrderInfoWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+`;
+
+const OrderDetail = styled.p`
+  text-align: center;
+`;
+
+const DateFilterWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const DateFilter = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  width: 256px;
+
+  li {
+    font-size: ${Theme.fontsize.desktop.medium};
+  }
+`;
+
+const DateInfo = styled.p`
+  font-size: ${Theme.fontsize.desktop.mini};
+`;
+
+const OrderInfo = styled.ul`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 12px 10px 12px;
+  border-bottom: 1px solid ${Theme.colors.black};
+
+  li {
+    font-size: ${Theme.fontsize.desktop.medium};
+  }
+`;
+
+const OrderedList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 12px;
+
+  li {
+    height: 200px;
+    padding: 25px 0;
+    border-bottom: 1px solid ${Theme.colors.grayline};
+  }
+`;
+
+const OrderutilityWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  padding-top: 80px;
+`;
+
+const OrderSearchBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+`;
+
+const SearchOrder = styled.input`
+  outline: none;
+  width: 300px;
+  height: 30px;
+  padding: 0 6px;
+  border: 1px solid ${Theme.colors.black};
+`;
+
+const SearchButton = styled.button`
+  width: 120px;
+  height: 30px;
+  background-color: ${Theme.colors.black};
+  color: ${Theme.colors.whitetext};
+`;
+
+const OrderPagination = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  width: 747px;
+  margin: 0 auto;
+`;
+
 export default function OrderPage() {
   const [userInfo, setUserInfo] = useState(null);
   // 프로필 이미지 변경을 위한 상태값
@@ -56,5 +162,72 @@ export default function OrderPage() {
     });
   }, []);
 
-  return <MyProfile userInfo={userInfo} orderData={orderData} cartItem={cartItem} profileImg={profileImg} />;
+  const handleSearch = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <OrderPageContainer>
+      <MyProfile
+        userInfo={userInfo}
+        orderData={orderData}
+        cartItem={cartItem}
+        profileImg={profileImg}
+      />
+      <OrderContainer>
+        <OrderInfoWrap>
+          <OrderDetail>주문내역</OrderDetail>
+          <DateFilterWrap>
+            <DateFilter>
+              <li>오늘</li>
+              <li>1주일</li>
+              <li>1개월</li>
+              <li>3개월</li>
+              <li>6개월</li>
+            </DateFilter>
+            <DateInfo>
+              기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.
+            </DateInfo>
+          </DateFilterWrap>
+          <OrderInfo>
+            <li>주문일자:</li>
+            <li>상품:</li>
+            <li>상품정보:</li>
+            <li>수량:</li>
+            <li>금액:</li>
+            <li>상태:</li>
+          </OrderInfo>
+        </OrderInfoWrap>
+        <OrderedList>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </OrderedList>
+        <OrderutilityWrap>
+          <OrderSearchBox as="form" onSubmit={handleSearch}>
+            <SearchOrder type="text" />
+            <SearchButton type="button">찾기</SearchButton>
+          </OrderSearchBox>
+          <OrderPagination>
+            <li>
+              <button>First</button>
+            </li>
+            <li>
+              <button>Prev</button>
+            </li>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>
+              <button>Next</button>
+            </li>
+            <li>
+              <button>Last</button>
+            </li>
+          </OrderPagination>
+        </OrderutilityWrap>
+      </OrderContainer>
+    </OrderPageContainer>
+  );
 }
