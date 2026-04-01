@@ -5,10 +5,11 @@ import { authMeApi } from "../apis/authMeApi";
 import { useCartStore } from "../stores/useCartStore";
 import defaultProfile from "../assets/icons/defaultProfile.svg";
 import { NavLink } from "react-router-dom";
+import MyProfile from "../components/common/MyProfile";
 
 const MyPageContainer = styled.div`
   position: relative;
-  margin-top: 180px;
+  /* margin-top: 180px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,108 +24,6 @@ const MyPageContainer = styled.div`
   }
 `;
 
-const ProfileWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 600px;
-`;
-
-const ProfileInfoWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 350px;
-  font-size: ${Theme.fontsize.desktop.medium};
-
-  ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.medium};
-  }
-  ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
-  }
-`;
-
-const ProfileInfo = styled.div`
-  display: flex;
-`;
-
-const ProfileBuy = styled.div`
-  padding: 10px 0 20px 0;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  border-bottom: 1px solid ${Theme.colors.black};
-`;
-
-const ProfileStatus = styled.div`
-  padding-top: 20px;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ProfileCart = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-const ProfileDelivery = styled(ProfileCart)``;
-const ProfileDeliveryDone = styled(ProfileCart)``;
-
-const ProfileImg = styled.div`
-  margin-bottom: 65px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-
-  ${({ theme }) => theme.media.tablet} {
-    width: 100px;
-    height: 100px;
-  }
-  ${({ theme }) => theme.media.mobile} {
-    width: 100px;
-    height: 100px;
-  }
-`;
-const ImgEdit = styled.button`
-  position: absolute;
-  right: 0;
-  top: 0;
-  font-size: ${Theme.fontsize.desktop.content};
-  color: ${Theme.colors.blacktext};
-
-  ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.medium};
-  }
-  ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.medium};
-  }
-`;
-const UserType = styled.p`
-  position: absolute;
-  right: -20px;
-  bottom: -20px;
-  text-align: right;
-  font-size: ${Theme.fontsize.desktop.medium};
-
-  ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.medium};
-  }
-  ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
-  }
-`;
 const UserTypeText = styled.p`
   margin-top: 10px;
   text-align: right;
@@ -143,12 +42,12 @@ const MyInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 50px;
-  min-width: 600px;
+  min-width: 500px;
   font-size: ${Theme.fontsize.desktop.medium};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
-    min-width: 550px;
+    min-width: 400px;
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
@@ -160,14 +59,6 @@ const Input = styled.input`
   width: 80%;
   text-align: right;
   outline: 1px solid ${Theme.colors.black};
-`;
-
-const NameWrap = styled.div`
-  position: absolute;
-  top: -20px;
-  left: 0;
-  font-size: ${Theme.fontsize.desktop.content};
-  text-align: left;
 `;
 const MobileWrap = styled.div`
   display: flex;
@@ -204,17 +95,33 @@ const Button = styled.button`
     font-size: ${Theme.fontsize.tablet.small};
   }
 `;
-
-const RecentItemContainer = styled.div`
+const HeartItem = styled.div`
+  margin-top: 80px;
   display: flex;
-  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
+`;
+const ButtonWrap = styled.div`
+  margin-bottom: 10px;
+  display: flex;
+  gap: 20px;
+`;
+const ButtonIcon = styled.button`
+  font-size: ${Theme.fontsize.desktop.section};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.section};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
 `;
 const RecentItemWrap = styled.div`
+  margin-bottom: 80px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
-
 const RecentItem = styled.div`
   display: flex;
   flex-direction: column;
@@ -229,32 +136,14 @@ const RecentItemImg = styled.img`
   height: 100%;
   object-fit: cover;
 `;
-
-const SideMenu = styled.div`
-  position: fixed;
-  top: 200px;
-  right: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-width: 300px;
-  min-height: 250px;
-  border-top: 1px solid ${Theme.colors.black};
-  border-bottom: 1px solid ${Theme.colors.black};
+const SliderWrapper = styled.div`
+  overflow: hidden;
+  width: 890px;
 `;
-
-const SideMenuTap = styled.div`
-  padding: 10px;
+const SliderTrack = styled.div`
   display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid ${Theme.colors.black};
-`;
-const SideMenuReview = styled(SideMenuTap)``;
-const SideMenuInsta = styled(SideMenuTap)``;
-const SideMenuOut = styled(SideMenuTap)`
-  border: none;
+  gap: 30px;
+  transition: transform 0.5s ease;
 `;
 
 export default function MyPage() {
@@ -264,6 +153,7 @@ export default function MyPage() {
   const cartItem = useCartStore((state) => state.cartItems);
   // 프로필 이미지 변경을 위한 상태값
   const [profileImg, setProfileImg] = useState(defaultProfile);
+
   // 수정사항을 저장하기 위한 상태값
   const [editData, setEditData] = useState({
     name: "",
@@ -272,71 +162,95 @@ export default function MyPage() {
     address: "",
   });
   // 최근 본 상품 리스트를 가져오기 위한 상태값
-  const [recentProducts, setRecentProducts] = useState([]);
+  const [recentProducts, setRecentProducts] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("recentProducts")) || [];
+    } catch {
+      return [];
+    }
+  });
+  const [orderData, setOrderData] = useState({
+    totalQuantity: 0,
+    totalPrice: 0,
+    point: 0,
+    delivery: { inDelivery: 0, done: 0 },
+  });
+
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("recentProducts")) || [];
-    setRecentProducts(stored);
+    // 상품 주문한 아이템
+    const order = JSON.parse(localStorage.getItem("orderData")) || {};
+    // 주문하고 얻은 포인트
+    const point = Number(localStorage.getItem("point") || 0);
+    // 배송중,배송완료 상태
+    const delivery = JSON.parse(localStorage.getItem("delivery")) || {
+      inDelivery: 0,
+      done: 0,
+    };
+
+    setOrderData({
+      // 주문한 총 갯수
+      totalQuantity: order.totalQuantity || 0,
+      // 주문한 총 갯수
+      totalPrice: order.totalPrice || 0,
+      // 포인트
+      point,
+      // 배송 상태
+      delivery,
+    });
   }, []);
-  const fileInputRef = useRef(null);
   // api 연결하기
   useEffect(() => {
     async function fetchUser() {
       try {
         const token = localStorage.getItem("token");
         const data = await authMeApi(token);
-
         if (data.success) {
           // 로컬스토리지에서 주소 가져오기
           const savedAddress = localStorage.getItem("address");
-          // 로컬스토리지에서 이미지 저장갑 가져오기
+          // 로컬스토리지에서 주소 가져오기
           const savedImg = localStorage.getItem("profileImg");
           // 입력한 주소 또는 기본주소
-          setUserInfo({ ...data.userInfo, address: savedAddress || "서울특별시 강남구 테헤란로 123" });
+          setUserInfo({
+            ...data.userInfo,
+            address: savedAddress || "서울특별시 강남구 테헤란로 123",
+          });
           // 저장한 이미지가 있다면 불러오기
-          if (savedImg) {
-            setProfileImg(savedImg);
-          }
+          if (savedImg) setProfileImg(savedImg);
         }
-      } catch (error) {
-        console.error("false", error);
+      } catch (e) {
+        console.error(e);
       }
     }
     fetchUser();
   }, []);
+  const fileInputRef = useRef(null);
   // 이미지 변경 로직
-  function handleImageChange(e) {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    // edit눌렀을때 이미지 변경할 수 있는 로직
+    // edit버튼 클릭 시 input 열기
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfileImg(reader.result);
-    };
+    reader.onloadend = () => setProfileImg(reader.result);
     reader.readAsDataURL(file);
-  }
-  // edit버튼 클릭 시 input 열기
-  function handleEditClick() {
+  };
+  // 이미지 변경값 저장
+  const handleEditClick = () => {
     fileInputRef.current.click();
-  }
+  };
   // 수정 값 저장하기
-  function handleSave() {
+  const handleSave = () => {
     // api로 주소는 안 받아오니까 로컬스토리지에 저장
     localStorage.setItem("address", editData.address);
     // 이미지 변경값 저장
     localStorage.setItem("profileImg", profileImg);
     // 유저 정보,수정 정보 저장
-    setUserInfo({
-      ...userInfo,
-      ...editData,
-    });
+    setUserInfo((prev) => ({ ...prev, ...editData }));
     setIsEdit(false);
-    alert("정보가 수정되었습니다.");
-    // 수정 완료후 스크롤 위로 올라가게
+    // 수정 누를 때 값 입력하기
     window.scrollTo(0, 0);
-  }
-
+  };
   // 수정 누를 때 값 입력하기
-  function handleEditToggle() {
+  const handleEditToggle = () => {
     if (!isEdit) {
       setEditData({
         name: userInfo?.name || "",
@@ -346,138 +260,95 @@ export default function MyPage() {
       });
     }
     setIsEdit(!isEdit);
-  }
+  };
+  // 최근 본 상품 4개 보여주게 하기
+  const [currentIndex, setCurrentIndex] = useState(0);
+  // 제품이미지 크기 + gap
+  const itemWidth = 230;
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 4 >= recentProducts.length ? prev : prev + 2));
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 2 < 0 ? 0 : prev - 2));
+  };
+
+  const translateX = -(currentIndex * itemWidth);
 
   return (
     <MyPageContainer>
-      <SideMenu>
-        <SideMenuTap>
-          <p>주문내역</p>
-          <p>&gt;</p>
-        </SideMenuTap>
-        <SideMenuTap>
-          <p>리뷰</p>
-          <p>&gt;</p>
-        </SideMenuTap>
-        <SideMenuTap>
-          <p>인스타그램</p>
-          <p>&gt;</p>
-        </SideMenuTap>
-        <SideMenuOut>
-          <p>회원탈퇴</p>
-          <p>&gt;</p>
-        </SideMenuOut>
-      </SideMenu>
-      <ProfileWrap>
-        <ProfileImg>
-          {isEdit ? (
-            <NameWrap>
-              <Input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
-            </NameWrap>
-          ) : (
-            <NameWrap>
-              <p>{userInfo?.name || "USER NAME"}</p>
-            </NameWrap>
-          )}
-          <img src={profileImg} alt="프로필 이미지" />
-          {isEdit ? <ImgEdit onClick={handleEditClick}>Edit</ImgEdit> : null}
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-          />
-          <UserType>*{userInfo?.userType}</UserType>
-        </ProfileImg>
-        <ProfileInfoWrap>
-          <ProfileInfo>
-            <p>최근 3개월</p>
-          </ProfileInfo>
-          <ProfileBuy>
-            <p>구매 금액:0</p>
-            <p>구매 건수:0</p>
-            <p>보유 P:1,220p</p>
-          </ProfileBuy>
-          <ProfileStatus>
-            <ProfileCart>
-              <p>쇼핑카트</p>
-              <p>{cartItem.length}</p>
-            </ProfileCart>
-            <ProfileDelivery>
-              <p>배송 중</p>
-              <p>0</p>
-            </ProfileDelivery>
-            <ProfileDeliveryDone>
-              <p>배송 완료</p>
-              <p>0</p>
-            </ProfileDeliveryDone>
-          </ProfileStatus>
-        </ProfileInfoWrap>
-      </ProfileWrap>
+      <MyProfile
+        userInfo={userInfo}
+        orderData={orderData}
+        cartItem={cartItem}
+        isEdit={isEdit}
+        editData={editData}
+        setEditData={setEditData}
+        profileImg={profileImg}
+        handleEditClick={handleEditClick}
+        handleImageChange={handleImageChange}
+        fileInputRef={fileInputRef}
+      />
       <UserTypeText>*개인/사업자 변경은 문의 후 변경가능합니다.</UserTypeText>
       <MyInfo>
         <IdWrap>
           <p>Id</p>
           <p>{userInfo?.loginId}</p>
         </IdWrap>
-        {isEdit ? (
-          <MobileWrap>
-            <p>Phone</p>
+        <MobileWrap>
+          <p>Phone</p>
+          {isEdit ? (
             <Input value={editData.phone} onChange={(e) => setEditData({ ...editData, phone: e.target.value })} />
-          </MobileWrap>
-        ) : (
-          <MobileWrap>
-            <p>Phone</p>
-            <p></p>
-          </MobileWrap>
-        )}
-        {isEdit ? (
-          <EmailWrap>
-            <p>Email</p>
-            <Input value={editData.email} onChange={(e) => setEditData({ ...editData, email: e.target.value })} />
-          </EmailWrap>
-        ) : (
-          <EmailWrap>
-            <p>Email</p>
-            <p></p>
-          </EmailWrap>
-        )}
-        {isEdit ? (
-          <div>
-            <AddressWrap>
-              <p>Address</p>
-              <Input value={editData.address} onChange={(e) => setEditData({ ...editData, address: e.target.value })} />
-            </AddressWrap>
-          </div>
-        ) : (
-          <div>
-            <AddressWrap>
-              <p>Address</p>
-              <p>{userInfo?.address}</p>
-            </AddressWrap>
-          </div>
-        )}
-      </MyInfo>
-      {isEdit ? <Button onClick={handleSave}>완료</Button> : <Button onClick={handleEditToggle}>수정</Button>}
-      <RecentItemWrap>
-        <p>최근 본 상품</p>
-        <div>
-          {recentProducts.length === 0 ? (
-            <p>최근 본 상품이 없습니다.</p>
           ) : (
-            <RecentItemContainer>
-              {recentProducts.map((item) => (
-                <NavLink to={`/products/${item.category}/${item.id}`}>
-                  <RecentItem key={item.id}>
-                    <RecentItemImg src={item.img} alt={item.name} />
-                    <p>{item.name}</p>
-                  </RecentItem>
-                </NavLink>
-              ))}
-            </RecentItemContainer>
+            <p>{userInfo?.mobile}</p>
           )}
-        </div>
+        </MobileWrap>
+        <EmailWrap>
+          <p>Email</p>
+          {isEdit ? (
+            <Input value={editData.email} onChange={(e) => setEditData({ ...editData, email: e.target.value })} />
+          ) : (
+            <p>{userInfo?.email}</p>
+          )}
+        </EmailWrap>
+        <AddressWrap>
+          <p>Address</p>
+          {isEdit ? (
+            <Input value={editData.address} onChange={(e) => setEditData({ ...editData, address: e.target.value })} />
+          ) : (
+            <p>{userInfo?.address}</p>
+          )}
+        </AddressWrap>
+      </MyInfo>
+      <Button onClick={isEdit ? handleSave : handleEditToggle}>{isEdit ? "완료" : "수정"}</Button>
+      <RecentItemWrap>
+        {recentProducts.length === 0 ? (
+          <p>최근 본 상품이 없습니다.</p>
+        ) : (
+          <div>
+            <HeartItem>
+              <p>관심 상품</p>
+              <ButtonWrap>
+                <ButtonIcon onClick={handlePrev}>&lt;</ButtonIcon>
+                <ButtonIcon onClick={handleNext}>&gt;</ButtonIcon>
+              </ButtonWrap>
+            </HeartItem>
+
+            <SliderWrapper>
+              <SliderTrack style={{ transform: `translateX(${translateX}px)` }}>
+                {recentProducts.map((item) => (
+                  <NavLink to={`/products/${item.category}/${item.id}`} key={item.id}>
+                    <RecentItem>
+                      <RecentItemImg src={item.img} />
+                      <p>{item.name}</p>
+                    </RecentItem>
+                  </NavLink>
+                ))}
+              </SliderTrack>
+            </SliderWrapper>
+          </div>
+        )}
       </RecentItemWrap>
     </MyPageContainer>
   );
