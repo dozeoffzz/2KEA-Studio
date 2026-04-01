@@ -230,6 +230,33 @@ const RecentItemImg = styled.img`
   object-fit: cover;
 `;
 
+const SideMenu = styled.div`
+  position: fixed;
+  top: 200px;
+  right: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 300px;
+  min-height: 250px;
+  border-top: 1px solid ${Theme.colors.black};
+  border-bottom: 1px solid ${Theme.colors.black};
+`;
+
+const SideMenuTap = styled.div`
+  padding: 10px;
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid ${Theme.colors.black};
+`;
+const SideMenuReview = styled(SideMenuTap)``;
+const SideMenuInsta = styled(SideMenuTap)``;
+const SideMenuOut = styled(SideMenuTap)`
+  border: none;
+`;
+
 export default function MyPage() {
   const [isEdit, setIsEdit] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
@@ -246,6 +273,10 @@ export default function MyPage() {
   });
   // 최근 본 상품 리스트를 가져오기 위한 상태값
   const [recentProducts, setRecentProducts] = useState([]);
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("recentProducts")) || [];
+    setRecentProducts(stored);
+  }, []);
   const fileInputRef = useRef(null);
   // api 연결하기
   useEffect(() => {
@@ -316,12 +347,27 @@ export default function MyPage() {
     }
     setIsEdit(!isEdit);
   }
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("recentProducts")) || [];
-    setRecentProducts(stored);
-  }, []);
+
   return (
     <MyPageContainer>
+      <SideMenu>
+        <SideMenuTap>
+          <p>주문내역</p>
+          <p>&gt;</p>
+        </SideMenuTap>
+        <SideMenuTap>
+          <p>리뷰</p>
+          <p>&gt;</p>
+        </SideMenuTap>
+        <SideMenuTap>
+          <p>인스타그램</p>
+          <p>&gt;</p>
+        </SideMenuTap>
+        <SideMenuOut>
+          <p>회원탈퇴</p>
+          <p>&gt;</p>
+        </SideMenuOut>
+      </SideMenu>
       <ProfileWrap>
         <ProfileImg>
           {isEdit ? (
