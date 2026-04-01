@@ -23,11 +23,11 @@ const Overlay = styled.div`
   z-index: 999;
 `;
 const HeaderContainer = styled.header`
-  padding: 0px 30px;
+  padding: 25px 60px;
   position: fixed;
   top: 0;
   width: 100%;
-  height: ${(props) => (props.isOpen ? "330px" : "100px")};
+  height: ${(props) => (props.isOpen ? "350px" : "120px")};
   flex-shrink: 0;
   background-color: transparent;
   z-index: 1000;
@@ -195,35 +195,21 @@ export default function Header() {
     <>
       {/* 모바일 일때 오버레이 클릭하면 헤더 없어지게 */}
       <Overlay isOpen={isOpen} onClick={() => setIsOpen(false)} />
-      {/* // useState로 호버, 스크롤 값변경하기 위해 프롭스 전달 */}
+      {/* // useState로 스크롤 값변경하기 위해 프롭스 전달 */}
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>
-          <PlusButton
-            onClick={ClickOpenMenu}
-            isOpen={isOpen}
-            isScroll={isScroll}
-            onMouseEnter={() => setIsOpen(true)}
-          >
-            <img src={plusIcon} />
+          <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
+            <img src={menuIcon} />
           </PlusButton>
           <Brand to={"/"} animated={animated}>
             <Logo>2KEA</Logo>
           </Brand>
-          <MenuButton
-            onClick={ClickOpenMenu}
-            isOpen={isOpen}
-            isScroll={isScroll}
-            onMouseEnter={() => setIsOpen(true)}
-          >
-            <img src={menuIcon} />
+          <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
+            <img src={plusIcon} />
           </MenuButton>
         </HeaderWrap>
         {/* // useState로 값변경하기 위해 프롭스 전달 */}
-        <MenuWrap
-          isOpen={isOpen}
-          onMouseEnter={() => setIsOpen(true)}
-          onMouseLeave={() => setIsOpen(false)}
-        >
+        <MenuWrap isOpen={isOpen}>
           {/* 왼쪽메뉴 */}
           <LeftMenu>
             <Products>Products</Products>
@@ -233,7 +219,8 @@ export default function Header() {
             <Font to={"/products/lighting"}>Lighting</Font>
           </LeftMenu>
           <RightMenu>
-            {isLogin ? null : <Font to={"/signup"}>Sign Up</Font>}
+            {isLogin ? <Font to={"/auth/me"}>MyPage</Font> : null}
+            {isLogin ? null : <Font to={"/auth/signup"}>Sign Up</Font>}
             {isLogin ? (
               <LogOut
                 onClick={() => {
@@ -245,7 +232,7 @@ export default function Header() {
                 LogOut
               </LogOut>
             ) : (
-              <Font to={"/login"}>Login</Font>
+              <Font to={"/auth/login"}>Login</Font>
             )}
             <Font to={"/cart"}>Cart</Font>
           </RightMenu>

@@ -83,6 +83,7 @@ const InputInfo = styled.p`
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
+    width: 80px;
   }
 `;
 
@@ -146,6 +147,7 @@ const SignupButton = styled(NavLink)`
 const DesignText = styled.p`
   font-size: ${Theme.fontsize.desktop.section};
   text-align: center;
+  letter-spacing: 0.1rem;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};
@@ -274,7 +276,7 @@ export default function LoginPage() {
         <ButtonWrap>
           {/* 로그인 버튼 handleSubmit을 통해 검사 후 이동하게 수정 */}
           <LoginButton type="submit">Login</LoginButton>
-          <SignupButton to={"/signup"}>Sign Up</SignupButton>
+          <SignupButton to={"/auth/signup"}>Sign Up</SignupButton>
         </ButtonWrap>
       </LoginForm>
 

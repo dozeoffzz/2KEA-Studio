@@ -492,6 +492,28 @@ export default function DetailedPage() {
 
     getProducts();
   }, [id]);
+  // 마이페이지에서 최근 본 상품 보여주기 위해 로컬스토리지에 클릭된 상품 저장
+  function SaveMyPageProducts(product) {
+    const storeItem = JSON.parse(localStorage.getItem("recentProducts")) || [];
+
+    // 중복 제거 (같은 상품 다시 보면 맨 앞으로)
+    const filterItem = storeItem.filter((item) => item.id !== product.id);
+
+    // 최신순으로 맨 앞에 추가
+    const updated = [product, ...filterItem];
+
+    // 최대 10개만 유지
+    localStorage.setItem("recentProducts", JSON.stringify(updated.slice(0, 10)));
+  }
+  useEffect(() => {
+    if (product) {
+      SaveMyPageProducts({
+        id: product.id,
+        name: product.name,
+        img: product.slideImgs?.[0],
+      });
+    }
+  }, [product]);
 
   if (isLoading) {
     return (
@@ -636,7 +658,6 @@ export default function DetailedPage() {
         "사이즈 및 마감 방식에 따라 주문 제작이 가능한 상품입니다. 맞춤 제작 특성상 상담 후 제작이 진행되며, 제작 완료 후 교환 및 반품은 어려울 수 있습니다. 원하시는 사양이 있는 경우 문의를 통해 상세 안내를 받아보실 수 있습니다.",
     },
   ];
-
   return (
     <MainWrap>
       <ImgGallery>
@@ -661,7 +682,9 @@ export default function DetailedPage() {
       </ImgGallery>
 
       <DetailSection>
-        <LeftContent>{detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}</LeftContent>
+        <LeftContent>
+          {detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}
+        </LeftContent>
         <RightContent>
           <StickyBox>
             <InfoGroup>

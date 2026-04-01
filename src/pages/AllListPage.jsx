@@ -521,9 +521,7 @@ export default function AllListPage() {
               {list}
             </CurrentPage>
           ))}
-          <PageNationButton
-            onClick={() => setCurrentPage(currentPage < totalPage.length ? currentPage + 1 : totalPage.length)}
-          >
+          <PageNationButton onClick={() => setCurrentPage(currentPage <= totalPage ? currentPage + 1 : totalPage)}>
             Next
           </PageNationButton>
           <PageNationButton onClick={() => setCurrentPage(4)}>Last</PageNationButton>
