@@ -59,14 +59,15 @@ const PlusButton = styled.button`
 `;
 
 // 가운데 브랜드 로고 텍스트
-// 커스텀 프롭스 DOM 전달 방지를 위해 shouldForwardProp 키워드 사용
+// Link 태그는 to 는 본인이 사용하고 커스텀 프롭스를 그냥 전달하면 a 태그로 넘김
+// 하지만 a 태그는 커스텀 프롭스를 이해하지 못하기 때문에 오류가 발생함
+// 스타일 계산만 하고 실제 DOM 요소까지 전달 방지를 위해 shouldForwardProp 키워드 사용
 const Brand = styled(Link, { shouldForwardProp: (prop) => prop !== "animated" })`
-  display: flex;
+  display: ${({ animated }) => (animated ? "flex" : "none")};
   justify-content: center;
   align-items: center;
   font-size: ${Theme.fontsize.desktop.main.animationTitle};
   text-align: center;
-  display: ${({ animated }) => (animated ? "block" : "none")};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.main.animationTitle};
@@ -78,14 +79,14 @@ const Brand = styled(Link, { shouldForwardProp: (prop) => prop !== "animated" })
 
 const Logo = styled.h1`
   font-weight: 500;
-  letter-spacing: 0.15rem;
+  letter-spacing: 0.3rem;
 
   ${({ theme }) => theme.media.tablet} {
-    letter-spacing: 0.1rem;
+    letter-spacing: 0.2rem;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    letter-spacing: 0.05rem;
+    letter-spacing: 0.1rem;
   }
 `;
 
