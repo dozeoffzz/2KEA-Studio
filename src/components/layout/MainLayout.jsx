@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import Header from "../common/Header";
 import Footer from "../common/Footer";
 import { LogoAnimationContext } from "../contexts/LogoAnimationContext";
+import GoTopButton from "../common/goTopButton";
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
@@ -52,6 +53,7 @@ export default function MainLayout() {
           <Outlet />
         </MainContainer>
         <Footer />
+        <GoTopButton />
       </LayoutContainer>
     </LogoAnimationContext.Provider>
   );
