@@ -272,11 +272,14 @@ export default function MyPage() {
     address: "",
   });
   // 최근 본 상품 리스트를 가져오기 위한 상태값
-  const [recentProducts, setRecentProducts] = useState([]);
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("recentProducts")) || [];
-    setRecentProducts(stored);
-  }, []);
+  const [recentProducts, setRecentProducts] = useState(() => {
+    try {
+      const stored = localStorage.getItem("recentProducts");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
   const fileInputRef = useRef(null);
   // api 연결하기
   useEffect(() => {
@@ -468,8 +471,8 @@ export default function MyPage() {
           ) : (
             <RecentItemContainer>
               {recentProducts.map((item) => (
-                <NavLink to={`/products/${item.category}/${item.id}`}>
-                  <RecentItem key={item.id}>
+                <NavLink to={`/products/${item.category}/${item.id}`} key={item.id}>
+                  <RecentItem>
                     <RecentItemImg src={item.img} alt={item.name} />
                     <p>{item.name}</p>
                   </RecentItem>
