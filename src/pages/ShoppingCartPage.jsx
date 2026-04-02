@@ -555,8 +555,43 @@ export default function ShoppingCartPage() {
     // 폼 입력이 제대로 되지 않았다면 되돌아가라
     const isValid = validateForm();
     if (!isValid) return;
+
+    // 구매 데이터 계산
+    const purchasedItems = cartItems;
+    const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
+    const totalPrice = purchasedItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+
+    // 포인트
+    const earnedPoint = Math.floor(totalPrice * 0.01);
+
+    // 기존 포인트 가져오기
+    const currentPoint = Number(localStorage.getItem("point") || 0);
+
+    // 저장
+    localStorage.setItem(
+      "orderData",
+      JSON.stringify({
+        totalQuantity,
+        totalPrice,
+        earnedPoint,
+      }),
+    );
+
+    localStorage.setItem("point", currentPoint + earnedPoint);
+
+    // 배송 상태 저장
+    localStorage.setItem(
+      "delivery",
+      JSON.stringify({
+        inDelivery: totalQuantity,
+        done: 0,
+      }),
+    );
+
     // 있으면 모달
     setOrderIsOpen(true);
+    // 장바구니 비우기
+    useCartStore.getState().clearCart();
   };
 
   const handleCheckedOrder = () => {
@@ -564,7 +599,42 @@ export default function ShoppingCartPage() {
     // 폼 입력이 제대로 되지 않았다면 되돌아가라
     const isValid = validateForm();
     if (!isValid) return;
+
+    // 구매 데이터 계산
+    const purchasedItems = cartItems;
+    const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
+    const totalPrice = purchasedItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+
+    // 포인트
+    const earnedPoint = Math.floor(totalPrice * 0.01);
+
+    // 기존 포인트 가져오기
+    const currentPoint = Number(localStorage.getItem("point") || 0);
+
+    // 저장
+    localStorage.setItem(
+      "orderData",
+      JSON.stringify({
+        totalQuantity,
+        totalPrice,
+        earnedPoint,
+      }),
+    );
+
+    localStorage.setItem("point", currentPoint + earnedPoint);
+
+    // 배송 상태 저장
+    localStorage.setItem(
+      "delivery",
+      JSON.stringify({
+        inDelivery: totalQuantity,
+        done: 0,
+      }),
+    );
+
     setOrderIsOpen(true);
+    // 장바구니 비우기
+    useCartStore.getState().clearCart();
   };
 
   const handleDeleteAll = () => {
@@ -620,8 +690,8 @@ export default function ShoppingCartPage() {
           </OrderName>
           {msg.name && <ErrorMsg style={{ color: "red" }}>{msg.name}</ErrorMsg>}
           <Ordermobile>
-            <p>mobile</p>
-            <Inputmobile name="mobile" placeholder="mobile" type="text" value={form.mobile} onChange={handleInput} />
+            <p>Phone</p>
+            <Inputmobile name="mobile" placeholder="Phone" type="text" value={form.mobile} onChange={handleInput} />
           </Ordermobile>
           {msg.mobile && <ErrorMsg style={{ color: "red" }}>{msg.mobile}</ErrorMsg>}
           <OrderEmail>
@@ -640,10 +710,10 @@ export default function ShoppingCartPage() {
             />
           </OrderAddress>
           <OrderAddress>
-            <p style={{ whiteSpace: "nowrap" }}>Base Address</p>
+            <p style={{ whiteSpace: "nowrap" }}>Address Detail</p>
             <InputAddress
               name="baseAddress"
-              placeholder="Base Address"
+              placeholder="Address Detail"
               type="address"
               value={form.baseAddress}
               onChange={handleInput}

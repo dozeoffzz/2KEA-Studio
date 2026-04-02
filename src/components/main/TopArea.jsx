@@ -33,21 +33,21 @@ const FirstTitle = styled.p`
   font-size: ${Theme.fontsize.desktop.main.animationTitle};
   font-weight: 500;
   letter-spacing: 0.3rem;
-  display: ${({ isAnimated }) => (isAnimated ? "none" : "inline-block")};
+  display: ${({ isAnimated }) => (isAnimated ? "inline-block" : "inline-block")};
   pointer-events: none;
-  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-396px" : 0)});
+  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-362px" : 0)});
   transition: transform 1s ease-in-out;
   z-index: 10;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.main.animationTitle};
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-328px" : 0)});
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-297px" : 0)});
     letter-spacing: 0.2rem;
   }
 
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.main.animationTitle};
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-122px" : 0)});
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-115px" : 0)});
     letter-spacing: 0.1rem;
   }
 `;

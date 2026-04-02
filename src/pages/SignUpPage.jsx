@@ -8,6 +8,7 @@ import bgchair from "../assets/imgs/signup/chair.png";
 import { authSignupApi } from "../apis/authSignupApi";
 import { authLoginApi } from "../apis/authLoginApi";
 import { useAuthStore } from "../stores/useAuthStore";
+import { saveUserName } from "../apis/reviewService";
 
 const SignupPage = styled.div`
   margin-top: 100px;
@@ -51,7 +52,7 @@ const SignupWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 70px;
+  gap: 30px;
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -70,6 +71,7 @@ const SignupTitle = styled.h2`
   text-align: center;
   font-size: ${Theme.fontsize.desktop.section};
   color: ${Theme.colors.blacktext};
+  margin-top: 50px;
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -82,14 +84,14 @@ const SignupTitle = styled.h2`
   }
 `;
 
-// membership form birth agreement 섹션 다 이걸로
+// membership  birth agreement 섹션 다 이걸로
 const SignupSection = styled.section`
   width: 100%;
   max-width: 600px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 25px;
+  gap: 30px;
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -110,6 +112,7 @@ const SectionTitle = styled.p`
   text-align: center;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
+  margin-top: 30px;
   margin-bottom: 20px;
 
   // 태블릿
@@ -184,7 +187,8 @@ const FormLabel = styled.label`
   width: 100px;
   text-align: left;
   font-size: ${Theme.fontsize.desktop.medium};
-  color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  color: ${({ error }) =>
+    error ? Theme.colors.redaccent : Theme.colors.blacktext};
 
   // 태블릿
   ${Theme.media.tablet} {
@@ -202,7 +206,8 @@ const FormLabel = styled.label`
 const FormInput = styled.input`
   flex: 1;
   border: none;
-  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid
+    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   outline: none;
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.blacktext};
@@ -335,7 +340,8 @@ const PhoneInput = styled.input`
   flex: 1;
   min-width: 0;
   border: none;
-  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid
+    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   outline: none;
   padding: 8px 0 8px 5px;
   text-align: center;
@@ -355,7 +361,8 @@ const PhoneInput = styled.input`
 const BirthInput = styled.input`
   width: 100%;
   border: none;
-  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid
+    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   outline: none;
   text-align: center;
   font-size: ${Theme.fontsize.desktop.content};
@@ -458,7 +465,8 @@ const AgreeItemLabel = styled.label`
   gap: 8px;
   flex: 1;
   font-size: ${Theme.fontsize.desktop.medium};
-  color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  color: ${({ error }) =>
+    error ? Theme.colors.redaccent : Theme.colors.blacktext};
   accent-color: ${Theme.colors.black};
 
   // 태블릿
@@ -706,11 +714,14 @@ export default function Signup() {
 
     // api로 중복확인 요청
     try {
-      const res = await fetch("https://api.mylecture.kr/api/team2/auth/check-id", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: form.id }),
-      });
+      const res = await fetch(
+        "https://api.mylecture.kr/api/team2/auth/check-id",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: form.id }),
+        },
+      );
       // 콘솔로 중복결과 확인
       const data = await res.json();
 
@@ -761,6 +772,7 @@ export default function Signup() {
       // 로그인 정보들
       if (res.success) {
         login(res.token, res.userInfo);
+        saveUserName(res.userInfo);
         setIsModalOpen(true);
       }
     } catch (error) {
@@ -794,7 +806,12 @@ export default function Signup() {
     }
 
     // 아이디 비밀번호 이메일 한글 못쓰게
-    if (name === "id" || name === "password" || name === "passwordCheck" || name === "email") {
+    if (
+      name === "id" ||
+      name === "password" ||
+      name === "passwordCheck" ||
+      name === "email"
+    ) {
       value = value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
     }
 
@@ -868,7 +885,12 @@ export default function Signup() {
   function handleComposition(e) {
     if (e.type === "compositionend") {
       const name = e.target.name;
-      if (name === "id" || name === "password" || name === "passwordCheck" || name === "email") {
+      if (
+        name === "id" ||
+        name === "password" ||
+        name === "passwordCheck" ||
+        name === "email"
+      ) {
         const value = e.target.value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
         setForm({ ...form, [name]: value });
       }
@@ -947,7 +969,8 @@ export default function Signup() {
       hasError = true;
     } else if (!pwRegex.test(form.password)) {
       newErrors.password = true;
-      newMsgs.password = "영문, 숫자, 특수문자(!@#$%^&*()_+)를 각 1개 이상씩 포함해주세요";
+      newMsgs.password =
+        "영문, 숫자, 특수문자(!@#$%^&*()_+)를 각 1개 이상씩 포함해주세요";
       hasError = true;
     }
 
@@ -1036,7 +1059,11 @@ export default function Signup() {
         newErrors.email
       ) {
         formRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-      } else if (newErrors.birthYear || newErrors.birthMonth || newErrors.birthDay) {
+      } else if (
+        newErrors.birthYear ||
+        newErrors.birthMonth ||
+        newErrors.birthDay
+      ) {
         birthRef.current.scrollIntoView({
           behavior: "smooth",
           block: "center",
@@ -1104,7 +1131,12 @@ export default function Signup() {
                 중복확인
               </CheckBtn>
             </IdInputWrap>
-            {msgs.id && (idCheckPassed ? <SuccessMsg>{msgs.id}</SuccessMsg> : <ErrorMsg>{msgs.id}</ErrorMsg>)}
+            {msgs.id &&
+              (idCheckPassed ? (
+                <SuccessMsg>{msgs.id}</SuccessMsg>
+              ) : (
+                <ErrorMsg>{msgs.id}</ErrorMsg>
+              ))}
           </FormRow>
 
           {/* 비밀번호 */}
@@ -1160,7 +1192,11 @@ export default function Signup() {
           <FormRow>
             <FormLabel error={errors.phone2}>Phone</FormLabel>
             <PhoneWrap>
-              <PhoneSelect name="phone1" value={form.phone1} onChange={handleChange}>
+              <PhoneSelect
+                name="phone1"
+                value={form.phone1}
+                onChange={handleChange}
+              >
                 <option>010</option>
                 <option>011</option>
                 <option>022</option>
@@ -1250,8 +1286,14 @@ export default function Signup() {
           <SignupSection ref={agreeRef}>
             <SectionTitle>Whole agreement</SectionTitle>
             <AgreeAllRow>
-              <input type="checkbox" name="all" checked={agreement.all} onChange={handleAllAgree} />
-              이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신 (선택) 에 모두 동의합니다.
+              <input
+                type="checkbox"
+                name="all"
+                checked={agreement.all}
+                onChange={handleAllAgree}
+              />
+              이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신 (선택) 에 모두
+              동의합니다.
             </AgreeAllRow>
 
             <AgreeBox>
@@ -1260,7 +1302,10 @@ export default function Signup() {
                 <AgreeGroupTitle>
                   홈페이지 개인정보 처리 동의
                   {/* 약관보기 버튼 */}
-                  <AgreeViewBtn type="button" onClick={() => setModalType("privacy")}>
+                  <AgreeViewBtn
+                    type="button"
+                    onClick={() => setModalType("privacy")}
+                  >
                     약관보기
                   </AgreeViewBtn>
                 </AgreeGroupTitle>
@@ -1276,7 +1321,8 @@ export default function Signup() {
                   </AgreeItemLabel>
                 </AgreeItemRow>
                 <AgreeItemDesc>
-                  이용자 식별자, 휴대전화번호, 이름, 이메일 주소, 생일 출생연도, 암호화된 동일인 식별정보ⓒ
+                  이용자 식별자, 휴대전화번호, 이름, 이메일 주소, 생일 출생연도,
+                  암호화된 동일인 식별정보ⓒ
                 </AgreeItemDesc>
               </div>
 
@@ -1287,7 +1333,10 @@ export default function Signup() {
                 <AgreeGroupTitle>
                   Avie much 서비스 약관 및 개인정보 동의
                   {/* 약관보기 버튼 */}
-                  <AgreeViewBtn type="button" onClick={() => setModalType("terms")}>
+                  <AgreeViewBtn
+                    type="button"
+                    onClick={() => setModalType("terms")}
+                  >
                     약관보기
                   </AgreeViewBtn>
                 </AgreeGroupTitle>
@@ -1322,7 +1371,10 @@ export default function Signup() {
                 <AgreeGroupTitle>
                   [ 선택 ] 쇼핑정보 수신 동의
                   {/* 약관보기 버튼 */}
-                  <AgreeViewBtn type="button" onClick={() => setModalType("marketing")}>
+                  <AgreeViewBtn
+                    type="button"
+                    onClick={() => setModalType("marketing")}
+                  >
                     약관보기
                   </AgreeViewBtn>
                 </AgreeGroupTitle>
@@ -1331,7 +1383,12 @@ export default function Signup() {
                   <span>SMS 수신을 동의하십니까?</span>
                   <AgreeOptWrap>
                     <AgreeOptLabel>
-                      <input type="checkbox" name="sms" checked={agreement.sms} onChange={handleAgreement} />
+                      <input
+                        type="checkbox"
+                        name="sms"
+                        checked={agreement.sms}
+                        onChange={handleAgreement}
+                      />
                       동의함
                     </AgreeOptLabel>
                   </AgreeOptWrap>
@@ -1340,7 +1397,12 @@ export default function Signup() {
                   <span>이메일 수신을 동의하십니까?</span>
                   <AgreeOptWrap>
                     <AgreeOptLabel>
-                      <input type="checkbox" name="email" checked={agreement.email} onChange={handleAgreement} />
+                      <input
+                        type="checkbox"
+                        name="email"
+                        checked={agreement.email}
+                        onChange={handleAgreement}
+                      />
                       동의함
                     </AgreeOptLabel>
                   </AgreeOptWrap>

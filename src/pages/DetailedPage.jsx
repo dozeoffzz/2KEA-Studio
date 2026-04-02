@@ -1058,6 +1058,28 @@ export default function DetailedPage() {
 
     getProducts();
   }, [id]);
+  // 마이페이지에서 최근 본 상품 보여주기 위해 로컬스토리지에 클릭된 상품 저장
+  function SaveMyPageProducts(product) {
+    const storeItem = JSON.parse(localStorage.getItem("recentProducts")) || [];
+
+    // 중복 제거 (같은 상품 다시 보면 맨 앞으로)
+    const filterItem = storeItem.filter((item) => item.id !== product.id);
+
+    // 최신순으로 맨 앞에 추가
+    const updated = [product, ...filterItem];
+
+    // 최대 10개만 유지
+    localStorage.setItem("recentProducts", JSON.stringify(updated.slice(0, 10)));
+  }
+  useEffect(() => {
+    if (product) {
+      SaveMyPageProducts({
+        id: product.id,
+        name: product.name,
+        img: product.slideImgs?.[0],
+      });
+    }
+  }, [product]);
 
   // 로딩 중일 때
   if (isLoading) {

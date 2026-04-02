@@ -17,6 +17,9 @@ import InstagramModal from "./components/modals/InstagramModal";
 import NotFoundPage from "./pages/NotFoundPage";
 import CompletedPage from "./pages/CompletedPage";
 import ScrollToTop from "./components/common/ScrollToTop";
+import MyPage from "./pages/MyPage";
+import OrderPage from "./pages/OrderPage";
+import ReviewPage from "./pages/ReviewPage";
 
 export default function App() {
   return (
@@ -26,14 +29,17 @@ export default function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
-          <Route path="/products/:category/:id" element={<DetailedPage />} />
-          <Route path="/cart" element={<ShoppingCartPage />} />
           <Route path="/products" element={<AllListPage />} />
           <Route path="/products/seating" element={<SeatingListPage />} />
           <Route path="/products/tables" element={<TableListPage />} />
           <Route path="/products/lighting" element={<LightingListPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/products/:category/:id" element={<DetailedPage />} />
+          <Route path="/cart" element={<ShoppingCartPage />} />
+          <Route path="/auth/signup" element={<SignupPage />} />
+          <Route path="/auth/login" element={<LoginPage />} />
+          <Route path="/auth/me" element={<MyPage />} />
+          <Route path="/auth/me/order" element={<OrderPage />} />
+          <Route path="/auth/me/review" element={<ReviewPage />} />
           <Route path="/completed" element={<CompletedPage />} />
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
