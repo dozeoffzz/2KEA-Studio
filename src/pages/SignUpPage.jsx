@@ -8,6 +8,7 @@ import bgchair from "../assets/imgs/signup/chair.png";
 import { authSignupApi } from "../apis/authSignupApi";
 import { authLoginApi } from "../apis/authLoginApi";
 import { useAuthStore } from "../stores/useAuthStore";
+import { saveUserName } from "../apis/reviewService";
 
 const SignupPage = styled.div`
   margin-top: 100px;
@@ -771,6 +772,7 @@ export default function Signup() {
       // 로그인 정보들
       if (res.success) {
         login(res.token, res.userInfo);
+        saveUserName(res.userInfo);
         setIsModalOpen(true);
       }
     } catch (error) {

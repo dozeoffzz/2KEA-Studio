@@ -6,6 +6,7 @@ import lineChair from "../assets/imgs/lineChair.svg";
 import { Theme } from "../styles/theme";
 import { useAuthStore } from "../stores/useAuthStore";
 import { authLoginApi } from "../apis/authLoginApi";
+import { saveUserName } from "../apis/reviewService";
 
 const LoginContainer = styled.div`
   margin-top: 180px;
@@ -75,7 +76,8 @@ const InputInfo = styled.p`
   width: 100px;
   text-align: left;
   margin-bottom: 10px;
-  color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  color: ${({ error }) =>
+    error ? Theme.colors.redaccent : Theme.colors.blacktext};
   font-size: ${Theme.fontsize.tablet.content};
 
   ${({ theme }) => theme.media.tablet} {
@@ -94,7 +96,8 @@ const LoginInput = styled.input`
   font-size: ${Theme.fontsize.desktop.content};
   margin-bottom: 10px;
   flex: 1;
-  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid
+    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
@@ -242,6 +245,7 @@ export default function LoginPage() {
 
       // 로그인 성공시 api에서 받아오는 토큰 유저정보를 useAuthStore에 넘겨줌
       login(res.token, res.userInfo);
+      saveUserName(res.userInfo);
       alert(`${res.userInfo.name}님 환영합니다!`);
       navigate("/");
     } catch (error) {
@@ -263,13 +267,24 @@ export default function LoginPage() {
         {/* ID 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.id}>
           <InputInfo error={errors.id}>ID</InputInfo>
-          <LoginInput name="id" type="text" value={input.id} onChange={handleChange} ref={focus} />
+          <LoginInput
+            name="id"
+            type="text"
+            value={input.id}
+            onChange={handleChange}
+            ref={focus}
+          />
         </LoginInputWrap>
 
         {/* Password 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.password}>
           <InputInfo error={errors.password}>Password</InputInfo>
-          <LoginInput name="password" type="password" value={input.password} onChange={handleChange} />
+          <LoginInput
+            name="password"
+            type="password"
+            value={input.password}
+            onChange={handleChange}
+          />
         </LoginInputWrap>
         {loginError && <ErrorMsg>{loginError}</ErrorMsg>}
 

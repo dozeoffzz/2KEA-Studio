@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CompletedIcon from "../assets/icons/completedIcon.svg";
 import styled from "@emotion/styled";
 import { Theme } from "../styles/theme";
@@ -66,6 +66,18 @@ const GotoMain = styled(NavLink)`
   }
 `;
 export default function CompletedPage() {
+  // 주문 완료랑 같이 구매일 저장
+  useEffect(() => {
+    const existing = JSON.parse(localStorage.getItem("orderData")) || {};
+    localStorage.setItem(
+      "orderData",
+      JSON.stringify({
+        ...existing,
+        purchasedAt: new Date().toISOString(),
+      }),
+    );
+  }, []);
+
   // 현재 날짜 보여주기
   const Today = new Date();
   const TodaySort = `${Today.getFullYear()}년 ${Today.getMonth() + 1}월 ${Today.getDate()}일`;
