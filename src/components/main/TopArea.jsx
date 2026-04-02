@@ -47,7 +47,7 @@ const FirstTitle = styled.p`
 
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.main.animationTitle};
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-90px" : 0)});
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-115px" : 0)});
     letter-spacing: 0.1rem;
   }
 `;
