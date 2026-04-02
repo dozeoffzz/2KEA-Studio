@@ -153,13 +153,16 @@ const Products = styled.p`
 
 const LogOut = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
+  color: ${Theme.colors.black};
 
   ${Theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
+    color: ${Theme.colors.black};
   }
 
   ${Theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.content};
+    font-size: ${Theme.fontsize.mobile.small};
+    color: ${Theme.colors.black};
   }
 `;
 

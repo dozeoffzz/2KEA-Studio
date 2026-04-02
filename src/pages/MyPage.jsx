@@ -6,6 +6,7 @@ import { useCartStore } from "../stores/useCartStore";
 import defaultProfile from "../assets/icons/defaultProfile.svg";
 import { NavLink } from "react-router-dom";
 import MyProfile from "../components/common/MyProfile";
+import SideMenuBar from "../components/common/SideMenuBar";
 
 const MyPageContainer = styled.div`
   position: relative;
@@ -47,7 +48,7 @@ const MyInfo = styled.div`
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
-    min-width: 400px;
+    min-width: 500px;
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
@@ -244,7 +245,10 @@ export default function MyPage() {
     if (!file) return;
     // edit버튼 클릭 시 input 열기
     const reader = new FileReader();
-    reader.onloadend = () => setProfileImg(reader.result);
+    reader.onloadend = () => {
+      setProfileImg(reader.result);
+      localStorage.setItem("profileImg", reader.result);
+    };
     reader.readAsDataURL(file);
   };
   // 이미지 변경값 저장
@@ -275,17 +279,31 @@ export default function MyPage() {
     }
     setIsEdit(!isEdit);
   };
-  // 최근 본 상품 4개 보여주게 하기
+  // 최근 본 상품 슬라이드
+
+  // 현재 페이지
   const [currentIndex, setCurrentIndex] = useState(0);
   // 제품이미지 크기 + gap
+  // 데스크탑,테블릿,모바일 크기에 따라 얼마나 움직일지
   const itemWidth = window.innerWidth <= 767 ? 186 : window.innerWidth <= 1024 ? 230 : 230;
 
+  const visibleCount =
+    window.innerWidth <= 767
+      ? 2 // 모바일 2개 보이게 하기
+      : window.innerWidth <= 1024
+        ? 3 // 태블릿 3개 보이게
+        : 4; // 데스크탑 4개 보이게
+
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 4 >= recentProducts.length ? prev : prev + 2));
+    setCurrentIndex((prev) => {
+      const maxIndex = recentProducts.length - visibleCount;
+      if (prev >= maxIndex) return prev;
+      return Math.min(prev + 2, maxIndex);
+    });
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 2 < 0 ? 0 : prev - 2));
+    setCurrentIndex((prev) => Math.max(prev - 2, 0));
   };
 
   const translateX = -(currentIndex * itemWidth);
@@ -364,6 +382,7 @@ export default function MyPage() {
           </div>
         )}
       </RecentItemWrap>
+      <SideMenuBar />
     </MyPageContainer>
   );
 }

@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Theme } from "../../styles/theme";
 import styled from "@emotion/styled";
+import defaultProfile from "../../assets/icons/defaultProfile.svg";
+import changeImg from "../../assets/icons/changeImg.svg";
 
 const MyPageContainer = styled.div`
   position: relative;
@@ -23,12 +25,12 @@ const MyPageContainer = styled.div`
 const ProfileWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  min-width: 100%;
-  gap: 100px;
+  width: 600px;
 
   ${({ theme }) => theme.media.tablet} {
   }
   ${({ theme }) => theme.media.mobile} {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -184,7 +186,7 @@ const UserType = styled.p`
   }
 `;
 const SideMenu = styled.div`
-  position: fixed;
+  position: sticky;
   top: 200px;
   right: 150px;
   display: flex;
@@ -196,6 +198,7 @@ const SideMenu = styled.div`
   border-bottom: 1px solid ${Theme.colors.grayline};
 
   ${({ theme }) => theme.media.tablet} {
+    position: fixed;
     margin-bottom: 80px;
     font-size: ${Theme.fontsize.tablet.medium};
     flex-direction: row;
@@ -208,6 +211,7 @@ const SideMenu = styled.div`
     border-bottom: 1px solid ${Theme.colors.grayline};
   }
   ${({ theme }) => theme.media.mobile} {
+    position: fixed;
     font-size: ${Theme.fontsize.mobile.mini};
     margin-bottom: 80px;
     font-size: ${Theme.fontsize.tablet.medium};
@@ -340,9 +344,9 @@ export default function MyProfile({
               <p>{userInfo?.name}</p>
             )}
           </NameWrap>
-          <img src={profileImg} alt="프로필 이미지" onClick={handleEditClick} />
+          <img src={profileImg || defaultProfile} alt="프로필 이미지" />
           <Overlay className="overlay" onClick={handleEditClick}>
-            이미지 수정
+            <img src={changeImg} style={{ width: "34px", height: "34px" }} />
           </Overlay>
           <input type="file" ref={fileInputRef} style={{ display: "none" }} onChange={handleImageChange} />
           <UserType>*{userInfo?.userType}</UserType>
@@ -389,34 +393,6 @@ export default function MyProfile({
           </ProfileStatus>
         </ProfileInfoWrap>
       </ProfileWrap>
-      <SideMenu>
-        <SideMenuTap>
-          <NavLinkTo to={"/auth/me"}>
-            <p>마이페이지</p>
-            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
-          </NavLinkTo>
-        </SideMenuTap>
-        <SideMenuTap>
-          <NavLinkTo to={"/auth/me/order"}>
-            <p>주문내역</p>
-            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
-          </NavLinkTo>
-        </SideMenuTap>
-        <SideMenuTap>
-          <NavLinkTo to={"/auth/me/review"}>
-            <p>리뷰</p>
-            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
-          </NavLinkTo>
-        </SideMenuTap>
-        <SideMenuInsta href="https://www.instagram.com/2kea_studio/" target="_blank" rel="noopener noreferrer">
-          <p>인스타그램</p>
-          <SideMenuRightIcon>&gt;</SideMenuRightIcon>
-        </SideMenuInsta>
-        <SideMenuOut>
-          <p>회원탈퇴</p>
-          <SideMenuRightIcon>&gt;</SideMenuRightIcon>
-        </SideMenuOut>
-      </SideMenu>
     </MyPageContainer>
   );
 }
