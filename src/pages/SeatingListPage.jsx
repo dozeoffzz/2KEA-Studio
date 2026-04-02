@@ -5,6 +5,8 @@ import backIcon from "../assets/icons/backIcon.svg";
 import { Theme } from "../styles/theme";
 import { fetchProducts } from "../apis/productsApi";
 
+const MOBILE_MEDIA_QUERY = "(max-width: 767px)"; // 767px 이하를 모바일 기준으로 잡아서 이미지 옆 텍스트 노출 여부를 분기
+
 // 페이지 전체 바깥 영역
 
 const ItemListContainer = styled.div`
@@ -15,12 +17,14 @@ const ItemListContainer = styled.div`
   align-items: center;
   padding: 10px 0;
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 상단 여백을 줄여 화면 높이에 맞게 정리
+  ${({ theme }) => theme.media.tablet} {
     margin-top: 80px;
     padding: 0 0 20px;
   }
 
-  @media (max-width: 600px) {
+  // 모바일에서는 상단 여백을 한 번 더 줄여 답답하지 않게 정리
+  ${({ theme }) => theme.media.mobile} {
     margin-top: 70px;
     padding: 0 0 20px;
   }
@@ -34,11 +38,13 @@ const TitleWrap = styled.div`
   gap: 40px;
   width: 100%;
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 제목 영역 간격을 줄여 비율을 맞춤
+  ${({ theme }) => theme.media.tablet} {
     gap: 28px;
   }
 
-  @media (max-width: 600px) {
+  // 모바일에서는 제목 영역 간격을 더 줄여 세로 공간을 확보
+  ${({ theme }) => theme.media.mobile} {
     gap: 20px;
   }
 `;
@@ -49,12 +55,14 @@ const BackBtnTitle = styled.div`
   align-items: center;
   gap: 20px;
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 좌우 여백과 요소 간격을 줄여 폭에 맞춤
+  ${({ theme }) => theme.media.tablet} {
     padding: 0 32px;
     gap: 14px;
   }
 
-  @media (max-width: 600px) {
+  // 모바일에서는 좌우 여백을 더 줄여 작은 화면에서도 내용이 잘 보이게 함
+  ${({ theme }) => theme.media.mobile} {
     padding: 0 20px;
     gap: 10px;
   }
@@ -74,11 +82,13 @@ const BackButton = styled(NavLink)`
 const Title = styled.h2`
   font-size: ${Theme.fontsize.desktop.section};
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 제목 크기를 줄여 화면 비율을 맞춤
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};
   }
 
-  @media (max-width: 600px) {
+  // 모바일에서는 제목 크기를 더 줄여 줄바꿈과 겹침을 방지
+  ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.section};
   }
 `;
@@ -91,12 +101,12 @@ const NavLinkWrap = styled.div`
   border-bottom: 1px solid ${Theme.colors.textsecondary};
   width: 100%;
 
-  @media (max-width: 900px) {
+  ${({ theme }) => theme.media.tablet} {
     padding: 0 32px 16px;
     gap: 28px;
   }
 
-  @media (max-width: 600px) {
+  ${({ theme }) => theme.media.mobile} {
     padding: 0 20px 14px;
     gap: 18px;
   }
@@ -111,11 +121,12 @@ const NavLinkList = styled(NavLink)`
     color: ${Theme.colors.blacktext};
   }
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 본문 글자 크기를 한 단계 줄여 균형을 맞춤
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
-  @media (max-width: 600px) {
+  ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.content};
   }
 `;
@@ -132,7 +143,8 @@ const ItemListMain = styled.div`
   gap: 40px;
 
   // 1650px 이하에서는 4열 리스트를 2열 구조로 바꿔서 카드가 갑자기 찌그러지지 않게 조정
-  @media (max-width: 1650px) {
+  // 1650px 이하에서는 4열을 2열로 바꿔 카드가 가로로 과하게 눌리지 않게 함
+  @media screen and (max-width: 1650px) {
     max-width: 1080px;
     padding: 40px 54px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -140,7 +152,8 @@ const ItemListMain = styled.div`
     gap: 40px 36px;
   }
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 2열 구조를 유지하면서 전체 여백과 간격을 줄임
+  ${({ theme }) => theme.media.tablet} {
     max-width: 100%;
     padding: 30px 32px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -148,7 +161,8 @@ const ItemListMain = styled.div`
     gap: 30px 24px;
   }
 
-  @media (max-width: 600px) {
+  // 모바일에서는 카드 간격과 좌우 여백을 더 줄여 작은 화면에 맞춤
+  ${({ theme }) => theme.media.mobile} {
     padding: 24px 20px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-rows: auto;
@@ -165,7 +179,8 @@ const Item = styled(NavLink)`
 
   ${(props) => props.large && `grid-column: span 2;`}
 
-  @media (max-width: 900px) {
+  // 태블릿에서도 큰 카드는 2칸을 유지해서 레이아웃 흐름이 깨지지 않게 함
+  ${({ theme }) => theme.media.tablet} {
     ${(props) => props.large && `grid-column: span 2;`}
   }
 `;
@@ -183,13 +198,15 @@ const ItemInfo = styled.div`
   border-top: 1px solid ${Theme.colors.blacktext};
   border-bottom: 1px solid ${Theme.colors.blacktext};
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 정보 바 높이를 유지하며 간격만 미세 조정
+  ${({ theme }) => theme.media.tablet} {
     min-height: 68px;
     padding: 8px 0;
     margin-bottom: 8px;
   }
 
-  @media (max-width: 600px) {
+  // 모바일에서는 정보 바 높이를 줄여 카드 전체 비율을 맞춤
+  ${({ theme }) => theme.media.mobile} {
     min-height: 58px;
     padding: 8px 0;
     margin-bottom: 8px;
@@ -201,11 +218,13 @@ const ItemNum = styled.span`
   color: ${Theme.colors.greentext};
   font-size: ${Theme.fontsize.desktop.section};
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 제목 크기를 줄여 화면 비율을 맞춤
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};
   }
 
-  @media (max-width: 600px) {
+  // 모바일에서는 제목 크기를 더 줄여 줄바꿈과 겹침을 방지
+  ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.section};
   }
 `;
@@ -214,14 +233,22 @@ const ItemTextWrap = styled.div`
   flex: 1;
   min-width: 0;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 2px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+
+  // 모바일에서는 상품명과 재질을 세로로 쌓아 좁은 폭에서도 잘 보이게 함
+  ${({ theme }) => theme.media.mobile} {
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 2px;
+  }
 `;
 
 const ItemName = styled.span`
-  width: 100%;
+  flex: 0 1 auto;
+  min-width: 0;
   font-size: ${Theme.fontsize.desktop.content};
   text-align: right;
   line-height: 1.2;
@@ -230,17 +257,36 @@ const ItemName = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 본문 글자 크기를 한 단계 줄여 균형을 맞춤
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
-  @media (max-width: 600px) {
+  // 모바일에서는 텍스트를 전체 폭으로 사용하고 글자 크기를 줄여 줄바꿈에 대응
+  ${({ theme }) => theme.media.mobile} {
+    width: 100%;
     font-size: ${Theme.fontsize.mobile.small};
   }
 `;
 
+const ItemSeparator = styled.span`
+  flex-shrink: 0;
+  font-size: ${Theme.fontsize.desktop.content};
+  line-height: 1.2;
+
+  // 태블릿에서는 본문 글자 크기를 한 단계 줄여 균형을 맞춤
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+
+  // 모바일에서는 구분선을 숨겨 세로 배치가 자연스럽게 보이게 함
+  ${({ theme }) => theme.media.mobile} {
+    display: none;
+  }
+`;
+
 const ItemMaterial = styled.span`
-  width: 100%;
+  flex-shrink: 0;
   font-size: ${Theme.fontsize.desktop.small};
   text-align: right;
   line-height: 1.2;
@@ -250,11 +296,13 @@ const ItemMaterial = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  @media (max-width: 900px) {
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.small};
   }
 
-  @media (max-width: 600px) {
+  // 모바일에서는 텍스트를 전체 폭으로 사용하고 글자 크기를 줄여 줄바꿈에 대응
+  ${({ theme }) => theme.media.mobile} {
+    width: 100%;
     font-size: ${Theme.fontsize.mobile.small};
   }
 `;
@@ -267,8 +315,8 @@ const ItemImgWrap = styled.div`
   min-width: 0;
   align-items: stretch;
 
-  // 태블릿 이하에서는 세로 텍스트 칸을 빼고 이미지만 자연스럽게 내려오도록 변경
-  @media (max-width: 900px) {
+  // 태블릿 이하에서는 세로 텍스트 영역을 빼고 이미지만 보이게 해서 답답함을 줄임
+  ${({ theme }) => theme.media.tablet} {
     gap: 0;
     display: block;
   }
@@ -286,8 +334,8 @@ const ItemContentWrap = styled.div`
   align-items: center;
   box-sizing: border-box;
 
-  // 태블릿 이하에서는 세로 설명을 숨겨서 이미지 영역을 더 넓게 사용
-  @media (max-width: 900px) {
+  // 태블릿 이하에서는 이미지 옆 세로 설명을 숨겨 이미지 영역을 더 넓게 사용
+  ${({ theme }) => theme.media.tablet} {
     display: none;
   }
 `;
@@ -313,15 +361,15 @@ const ItemImg = styled.div`
   justify-content: center;
   overflow: hidden;
 
-  // 태블릿에서는 이미지 비율과 여백을 다시 잡아 카드가 가로로만 눌리지 않게 조정
-  @media (max-width: 900px) {
+  // 태블릿에서는 이미지 비율과 내부 여백을 조정해 카드가 한쪽으로만 찌그러지지 않게 함
+  ${({ theme }) => theme.media.tablet} {
     width: 100%;
     aspect-ratio: ${(props) => (props.large ? "2.4 / 1" : "1.18 / 1")};
     padding: 18px;
   }
 
-  // 모바일에서는 여백과 비율을 한 번 더 줄여 작은 화면에서도 균형 유지
-  @media (max-width: 600px) {
+  // 모바일에서는 이미지 비율과 여백을 한 번 더 줄여 작은 화면에서도 균형을 유지
+  ${({ theme }) => theme.media.mobile} {
     width: 100%;
     aspect-ratio: ${(props) => (props.large ? "2.2 / 1" : "1.08 / 1")};
     padding: 12px;
@@ -347,14 +395,15 @@ const PageNationWrap = styled.div`
   font-size: ${Theme.fontsize.desktop.content};
   margin-bottom: 40px;
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 페이지네이션 간격을 줄이고 줄바꿈을 허용해 공간을 확보
+  ${({ theme }) => theme.media.tablet} {
     gap: 32px;
     font-size: ${Theme.fontsize.tablet.content};
     margin-bottom: 36px;
     flex-wrap: wrap;
   }
 
-  @media (max-width: 600px) {
+  ${({ theme }) => theme.media.mobile} {
     gap: 40px;
     font-size: ${Theme.fontsize.mobile.content};
     margin-bottom: 28px;
@@ -373,11 +422,12 @@ const CurrentPage = styled.button`
     border-bottom: 2px solid ${Theme.colors.blacktext};
   }
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 본문 글자 크기를 한 단계 줄여 균형을 맞춤
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
-  @media (max-width: 600px) {
+  ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.content};
   }
 `;
@@ -389,11 +439,12 @@ const PageNationButton = styled.button`
   cursor: pointer;
   color: ${Theme.colors.blacktext};
 
-  @media (max-width: 900px) {
+  // 태블릿에서는 본문 글자 크기를 한 단계 줄여 균형을 맞춤
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
-  @media (max-width: 600px) {
+  ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
   }
 `;
@@ -408,26 +459,26 @@ export default function SeatingListPage() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // 모바일 여부를 감지해서 hover 대신 터치 환경에 맞는 동작을 분기
-    const mediaQuery = window.matchMedia("(max-width: 600px)");
+    // 화면 폭이 767px 이하인지 감지해서 모바일 구간에서는 세로 설명 텍스트를 숨기도록 분기
+    const mobileMediaQuery = window.matchMedia(MOBILE_MEDIA_QUERY);
 
-    const handleMobile = (event) => {
+    const handleMobileChange = (event) => {
       setIsMobile(event.matches);
     };
 
-    setIsMobile(mediaQuery.matches);
+    setIsMobile(mobileMediaQuery.matches);
 
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener("change", handleMobile);
+    if (mobileMediaQuery.addEventListener) {
+      mobileMediaQuery.addEventListener("change", handleMobileChange);
     } else {
-      mediaQuery.addListener(handleMobile);
+      mobileMediaQuery.addListener(handleMobileChange);
     }
 
     return () => {
-      if (mediaQuery.removeEventListener) {
-        mediaQuery.removeEventListener("change", handleMobile);
+      if (mobileMediaQuery.removeEventListener) {
+        mobileMediaQuery.removeEventListener("change", handleMobileChange);
       } else {
-        mediaQuery.removeListener(handleMobile);
+        mobileMediaQuery.removeListener(handleMobileChange);
       }
     };
   }, []);
@@ -482,9 +533,11 @@ export default function SeatingListPage() {
             <Item key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
               <ItemInfo>
                 <ItemNum>{item.num}</ItemNum>
-                <ItemName>
-                  {item.name} | {item.material}
-                </ItemName>
+                <ItemTextWrap>
+                  <ItemName>{item.name}</ItemName>
+                  <ItemSeparator>|</ItemSeparator>
+                  <ItemMaterial>{item.material}</ItemMaterial>
+                </ItemTextWrap>
               </ItemInfo>
               <ItemImgWrap>
                 {!isMobile && (
