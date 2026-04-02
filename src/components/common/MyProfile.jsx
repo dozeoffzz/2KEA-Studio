@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 
 const MyPageContainer = styled.div`
   position: relative;
-  margin-top: 200px;
+  margin-top: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,20 +23,32 @@ const MyPageContainer = styled.div`
 const ProfileWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 600px;
+  min-width: 100%;
+  gap: 100px;
+
+  ${({ theme }) => theme.media.tablet} {
+  }
+  ${({ theme }) => theme.media.mobile} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+  }
 `;
 
 const ProfileInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 350px;
+  min-width: 350px;
   font-size: ${Theme.fontsize.desktop.medium};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.mini};
+    min-width: 250px;
   }
 `;
 
@@ -69,6 +81,14 @@ const ProfileCart = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+    padding: 10px 0;
+  }
 `;
 const ProfileDelivery = styled(ProfileCart)``;
 const ProfileDeliveryDone = styled(ProfileCart)``;
@@ -174,6 +194,32 @@ const SideMenu = styled.div`
   min-height: 250px;
   border-top: 1px solid ${Theme.colors.grayline};
   border-bottom: 1px solid ${Theme.colors.grayline};
+
+  ${({ theme }) => theme.media.tablet} {
+    margin-bottom: 80px;
+    font-size: ${Theme.fontsize.tablet.medium};
+    flex-direction: row;
+    top: 120px;
+    right: 0;
+    left: 0;
+    width: 100%;
+    min-height: 40px;
+    border: none;
+    border-bottom: 1px solid ${Theme.colors.grayline};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+    margin-bottom: 80px;
+    font-size: ${Theme.fontsize.tablet.medium};
+    flex-direction: row;
+    top: 120px;
+    right: 0;
+    left: 0;
+    width: 100%;
+    min-height: 40px;
+    border: none;
+    border-bottom: 1px solid ${Theme.colors.grayline};
+  }
 `;
 
 const SideMenuTap = styled.div`
@@ -183,6 +229,30 @@ const SideMenuTap = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${Theme.colors.grayline};
+
+  ${({ theme }) => theme.media.tablet} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0;
+    font-size: ${Theme.fontsize.mobile.mini};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+`;
+
+const SideMenuRightIcon = styled.p`
+  ${({ theme }) => theme.media.tablet} {
+    display: none;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    display: none;
+  }
 `;
 const SideMenuReview = styled(SideMenuTap)``;
 const SideMenuInsta = styled.a`
@@ -192,6 +262,17 @@ const SideMenuInsta = styled.a`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${Theme.colors.grayline};
+
+  ${({ theme }) => theme.media.tablet} {
+    border: none;
+    justify-content: center;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0;
+    font-size: ${Theme.fontsize.mobile.mini};
+    border: none;
+    justify-content: center;
+  }
 `;
 const SideMenuOut = styled.button`
   padding: 10px;
@@ -199,12 +280,41 @@ const SideMenuOut = styled.button`
   flex: 1;
   justify-content: space-between;
   align-items: center;
+
+  ${({ theme }) => theme.media.tablet} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0;
+    font-size: ${Theme.fontsize.mobile.mini};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
 `;
 const NavLinkTo = styled(NavLink)`
   display: flex;
   flex: 1;
   justify-content: space-between;
   align-items: center;
+
+  ${({ theme }) => theme.media.tablet} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
 `;
 
 export default function MyProfile({
@@ -283,28 +393,28 @@ export default function MyProfile({
         <SideMenuTap>
           <NavLinkTo to={"/auth/me"}>
             <p>마이페이지</p>
-            <p>&gt;</p>
+            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
           </NavLinkTo>
         </SideMenuTap>
         <SideMenuTap>
           <NavLinkTo to={"/auth/me/order"}>
             <p>주문내역</p>
-            <p>&gt;</p>
+            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
           </NavLinkTo>
         </SideMenuTap>
         <SideMenuTap>
           <NavLinkTo to={"/auth/me/review"}>
             <p>리뷰</p>
-            <p>&gt;</p>
+            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
           </NavLinkTo>
         </SideMenuTap>
         <SideMenuInsta href="https://www.instagram.com/2kea_studio/" target="_blank" rel="noopener noreferrer">
           <p>인스타그램</p>
-          <p>&gt;</p>
+          <SideMenuRightIcon>&gt;</SideMenuRightIcon>
         </SideMenuInsta>
         <SideMenuOut>
           <p>회원탈퇴</p>
-          <p>&gt;</p>
+          <SideMenuRightIcon>&gt;</SideMenuRightIcon>
         </SideMenuOut>
       </SideMenu>
     </MyPageContainer>

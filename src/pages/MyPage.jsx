@@ -34,7 +34,7 @@ const UserTypeText = styled.p`
     width: 550px;
   }
   ${({ theme }) => theme.media.mobile} {
-    width: 300px;
+    display: none;
   }
 `;
 const MyInfo = styled.div`
@@ -129,6 +129,13 @@ const RecentItem = styled.div`
   text-align: right;
   width: 200px;
   height: 294px;
+
+  ${({ theme }) => theme.media.tablet} {
+  }
+  ${({ theme }) => theme.media.mobile} {
+    width: 156px;
+    height: 239px;
+  }
 `;
 
 const RecentItemImg = styled.img`
@@ -139,6 +146,13 @@ const RecentItemImg = styled.img`
 const SliderWrapper = styled.div`
   overflow: hidden;
   width: 890px;
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 660px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    width: 342px;
+  }
 `;
 const SliderTrack = styled.div`
   display: flex;
@@ -264,7 +278,7 @@ export default function MyPage() {
   // 최근 본 상품 4개 보여주게 하기
   const [currentIndex, setCurrentIndex] = useState(0);
   // 제품이미지 크기 + gap
-  const itemWidth = 230;
+  const itemWidth = window.innerWidth <= 767 ? 186 : window.innerWidth <= 1024 ? 230 : 230;
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 4 >= recentProducts.length ? prev : prev + 2));
