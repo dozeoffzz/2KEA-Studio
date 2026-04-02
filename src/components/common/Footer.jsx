@@ -4,6 +4,7 @@ import { Theme } from "../../styles/theme";
 
 // 하단 푸터 전체 영역
 const FooterWrap = styled.footer`
+  margin-top: 80px;
   width: 100%;
   height: 359px;
   flex-shrink: 0;
