@@ -2,10 +2,12 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Theme } from "../../styles/theme";
 import styled from "@emotion/styled";
+import defaultProfile from "../../assets/icons/defaultProfile.svg";
+import changeImg from "../../assets/icons/changeImg.svg";
 
 const MyPageContainer = styled.div`
   position: relative;
-  margin-top: 200px;
+  margin-top: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -24,19 +26,31 @@ const ProfileWrap = styled.div`
   display: flex;
   justify-content: space-between;
   width: 600px;
+
+  ${({ theme }) => theme.media.tablet} {
+  }
+  ${({ theme }) => theme.media.mobile} {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+  }
 `;
 
 const ProfileInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 350px;
+  min-width: 350px;
   font-size: ${Theme.fontsize.desktop.medium};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.mini};
+    min-width: 250px;
   }
 `;
 
@@ -69,6 +83,14 @@ const ProfileCart = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+    padding: 10px 0;
+  }
 `;
 const ProfileDelivery = styled(ProfileCart)``;
 const ProfileDeliveryDone = styled(ProfileCart)``;
@@ -164,7 +186,7 @@ const UserType = styled.p`
   }
 `;
 const SideMenu = styled.div`
-  position: fixed;
+  position: sticky;
   top: 200px;
   right: 150px;
   display: flex;
@@ -174,6 +196,34 @@ const SideMenu = styled.div`
   min-height: 250px;
   border-top: 1px solid ${Theme.colors.grayline};
   border-bottom: 1px solid ${Theme.colors.grayline};
+
+  ${({ theme }) => theme.media.tablet} {
+    position: fixed;
+    margin-bottom: 80px;
+    font-size: ${Theme.fontsize.tablet.medium};
+    flex-direction: row;
+    top: 120px;
+    right: 0;
+    left: 0;
+    width: 100%;
+    min-height: 40px;
+    border: none;
+    border-bottom: 1px solid ${Theme.colors.grayline};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    position: fixed;
+    font-size: ${Theme.fontsize.mobile.mini};
+    margin-bottom: 80px;
+    font-size: ${Theme.fontsize.tablet.medium};
+    flex-direction: row;
+    top: 120px;
+    right: 0;
+    left: 0;
+    width: 100%;
+    min-height: 40px;
+    border: none;
+    border-bottom: 1px solid ${Theme.colors.grayline};
+  }
 `;
 
 const SideMenuTap = styled.div`
@@ -183,6 +233,30 @@ const SideMenuTap = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${Theme.colors.grayline};
+
+  ${({ theme }) => theme.media.tablet} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0;
+    font-size: ${Theme.fontsize.mobile.mini};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+`;
+
+const SideMenuRightIcon = styled.p`
+  ${({ theme }) => theme.media.tablet} {
+    display: none;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    display: none;
+  }
 `;
 const SideMenuReview = styled(SideMenuTap)``;
 const SideMenuInsta = styled.a`
@@ -192,6 +266,17 @@ const SideMenuInsta = styled.a`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${Theme.colors.grayline};
+
+  ${({ theme }) => theme.media.tablet} {
+    border: none;
+    justify-content: center;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0;
+    font-size: ${Theme.fontsize.mobile.mini};
+    border: none;
+    justify-content: center;
+  }
 `;
 const SideMenuOut = styled.button`
   padding: 10px;
@@ -199,12 +284,41 @@ const SideMenuOut = styled.button`
   flex: 1;
   justify-content: space-between;
   align-items: center;
+
+  ${({ theme }) => theme.media.tablet} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0;
+    font-size: ${Theme.fontsize.mobile.mini};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
 `;
 const NavLinkTo = styled(NavLink)`
   display: flex;
   flex: 1;
   justify-content: space-between;
   align-items: center;
+
+  ${({ theme }) => theme.media.tablet} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
 `;
 
 export default function MyProfile({
@@ -230,9 +344,9 @@ export default function MyProfile({
               <p>{userInfo?.name}</p>
             )}
           </NameWrap>
-          <img src={profileImg} alt="프로필 이미지" onClick={handleEditClick} />
+          <img src={profileImg || defaultProfile} alt="프로필 이미지" />
           <Overlay className="overlay" onClick={handleEditClick}>
-            이미지 수정
+            <img src={changeImg} style={{ width: "34px", height: "34px" }} />
           </Overlay>
           <input type="file" ref={fileInputRef} style={{ display: "none" }} onChange={handleImageChange} />
           <UserType>*{userInfo?.userType}</UserType>
@@ -279,34 +393,6 @@ export default function MyProfile({
           </ProfileStatus>
         </ProfileInfoWrap>
       </ProfileWrap>
-      <SideMenu>
-        <SideMenuTap>
-          <NavLinkTo to={"/auth/me"}>
-            <p>마이페이지</p>
-            <p>&gt;</p>
-          </NavLinkTo>
-        </SideMenuTap>
-        <SideMenuTap>
-          <NavLinkTo to={"/auth/me/order"}>
-            <p>주문내역</p>
-            <p>&gt;</p>
-          </NavLinkTo>
-        </SideMenuTap>
-        <SideMenuTap>
-          <NavLinkTo to={"/auth/me/review"}>
-            <p>리뷰</p>
-            <p>&gt;</p>
-          </NavLinkTo>
-        </SideMenuTap>
-        <SideMenuInsta href="https://www.instagram.com/2kea_studio/" target="_blank" rel="noopener noreferrer">
-          <p>인스타그램</p>
-          <p>&gt;</p>
-        </SideMenuInsta>
-        <SideMenuOut>
-          <p>회원탈퇴</p>
-          <p>&gt;</p>
-        </SideMenuOut>
-      </SideMenu>
     </MyPageContainer>
   );
 }

@@ -6,6 +6,7 @@ import defaultProfile from "../assets/icons/defaultProfile.svg";
 import { NavLink } from "react-router-dom";
 import MyProfile from "../components/common/MyProfile";
 import { authMeApi } from "../apis/authMeApi";
+import SideMenuBar from "../components/common/SideMenuBar";
 
 const OrderPageContainer = styled.div`
   display: flex;
@@ -168,12 +169,7 @@ export default function OrderPage() {
 
   return (
     <OrderPageContainer>
-      <MyProfile
-        userInfo={userInfo}
-        orderData={orderData}
-        cartItem={cartItem}
-        profileImg={profileImg}
-      />
+      <MyProfile userInfo={userInfo} orderData={orderData} cartItem={cartItem} profileImg={profileImg} />
       <OrderContainer>
         <OrderInfoWrap>
           <OrderDetail>주문내역</OrderDetail>
@@ -185,9 +181,7 @@ export default function OrderPage() {
               <li>3개월</li>
               <li>6개월</li>
             </DateFilter>
-            <DateInfo>
-              기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.
-            </DateInfo>
+            <DateInfo>기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.</DateInfo>
           </DateFilterWrap>
           <OrderInfo>
             <li>주문일자:</li>
@@ -228,6 +222,7 @@ export default function OrderPage() {
           </OrderPagination>
         </OrderutilityWrap>
       </OrderContainer>
+      <SideMenuBar />
     </OrderPageContainer>
   );
 }
