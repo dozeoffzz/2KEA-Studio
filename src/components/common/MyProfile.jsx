@@ -83,6 +83,7 @@ const ProfileCart = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 80px;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
@@ -99,6 +100,7 @@ const RightArrow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 80px;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
@@ -186,14 +188,7 @@ const UserType = styled.p`
   }
 `;
 
-export default function MyProfile({
-  userInfo,
-  orderData,
-  cartItem,
-  isEdit,
-  editData,
-  setEditData,
-}) {
+export default function MyProfile({ userInfo, orderData, cartItem }) {
   // 프로필 이미지 변경을 위한 상태값
   const [profileImg, setProfileImg] = useState(() => {
     return localStorage.getItem("profileImg") || defaultProfile;
@@ -220,27 +215,13 @@ export default function MyProfile({
       <ProfileWrap>
         <ProfileImg>
           <NameWrap>
-            {isEdit ? (
-              <NameInput
-                value={editData.name}
-                onChange={(e) =>
-                  setEditData({ ...editData, name: e.target.value })
-                }
-              />
-            ) : (
-              <p>{userInfo?.name}</p>
-            )}
+            <p>{userInfo?.name}</p>
           </NameWrap>
           <img src={profileImg || defaultProfile} alt="프로필 이미지" />
           <Overlay className="overlay" onClick={handleEditClick}>
             <img src={changeImg} style={{ width: "34px", height: "34px" }} />
           </Overlay>
-          <input
-            type="file"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-          />
+          <input type="file" ref={fileInputRef} style={{ display: "none" }} onChange={handleImageChange} />
           <UserType>*{userInfo?.userType}</UserType>
         </ProfileImg>
         <ProfileInfoWrap>

@@ -2,6 +2,7 @@ import { useAuthStore } from "../stores/useAuthStore";
 
 // const BASE_URL = "/api/team2";
 const BASE_URL = "https://api.mylecture.kr/api/team2";
+let isHandling401 = false;
 
 export async function apiClient(endpoint, option = {}) {
   const token = useAuthStore.getState().token;
@@ -16,6 +17,9 @@ export async function apiClient(endpoint, option = {}) {
     },
   });
   if (response.status === 401 && !isAuthFree) {
+    if (isHandling401) return;
+
+    isHandling401 = true;
     localStorage.removeItem("token");
     useAuthStore.getState().logout();
 

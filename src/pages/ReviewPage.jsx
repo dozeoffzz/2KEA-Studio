@@ -76,12 +76,23 @@ const ReviewPageContainer = styled.div`
   align-items: center;
   gap: 160px;
   width: 100%;
+  ${({ theme }) => theme.media.mobile} {
+    gap: 80px;
+  }
 `;
 
 // 리뷰 목록 섹션
 const ReviewContainer = styled.section`
   width: 915px;
   height: auto;
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 715px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    width: 325px;
+    gap: 100px;
+  }
 `;
 
 // 제목, 드롭다운, 헤더
@@ -95,6 +106,13 @@ const ReviewInfoWrap = styled.div`
 const ReviewTitle = styled.p`
   text-align: center;
   font-size: ${Theme.fontsize.desktop.content};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.medium};
+  }
 `;
 
 // 분류랑 검색기준 드롭다운 가로로 묶는부분
@@ -108,18 +126,25 @@ const FilterWrap = styled.div`
 // 분류
 const FilterLabel = styled.span`
   font-size: ${Theme.fontsize.desktop.medium};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
 `;
 
 // 드롭다운 전체 감싸는 박스
 const DropdownWrap = styled.div`
   position: relative;
-  min-width: 120px;
+  /* min-width: 120px; */
 `;
 
 // 드롭다운 버튼
 const DropdownBtn = styled.button`
-  width: 100%;
-  height: 30px;
+  width: 120px;
+  height: 25px;
   padding: 0 30px 0 10px;
   border: 1px solid ${Theme.colors.black};
   font-size: ${Theme.fontsize.desktop.medium};
@@ -146,6 +171,14 @@ const DropdownBtn = styled.button`
   &.open::after {
     border-top: none;
     border-bottom: 5px solid ${Theme.colors.blacktext};
+  }
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+    width: 80px;
+    height: 20px;
   }
 `;
 
@@ -200,17 +233,31 @@ const ReviewList = styled.ul`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 12px;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+  }
 `;
 
 // 리뷰 한 줄
 const ReviewItem = styled.li`
   position: relative;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   padding: 30px 0 50px 0;
   border-top: 1px solid ${Theme.colors.grayline};
   border-bottom: 1px solid ${Theme.colors.grayline};
+  height: 200px;
+
+  ${({ theme }) => theme.media.tablet} {
+  }
+  ${({ theme }) => theme.media.mobile} {
+    padding: 20px 0;
+  }
 
   /* 리뷰 없을 때 */
   &.empty {
@@ -220,32 +267,63 @@ const ReviewItem = styled.li`
   }
 `;
 
+const ReviewInfo = styled.div`
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 30px;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    position: static;
+    display: flex;
+    justify-content: space-between;
+    gap: 0;
+    width: 100%;
+  }
+`;
+
 // 리뷰 각 데이터 칸
 const ReviewCell = styled.span`
-  font-size: ${Theme.fontsize.desktop.medium};
+  font-size: ${Theme.fontsize.desktop.small};
   width: ${({ width }) => width || "auto"};
   flex: ${({ flex }) => flex || "none"};
   text-align: ${({ align }) => align || "center"};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+    font-size: 10px;
+  }
 
   /* 제목 칸 내용이 길면 말줄임표로 보이게 */
   &.title {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-align: left;
+    font-size: ${Theme.fontsize.desktop.small};
   }
 `;
 
 // 삭제 버튼
 const DeleteBtn = styled.button`
-  position: absolute;
-  bottom: 6px;
-  right: 0;
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.textsecondary};
   background: transparent;
   border: 1px solid ${Theme.colors.grayline};
-  padding: 2px 8px;
+  width: 40px;
   cursor: pointer;
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+    font-size: 10px;
+    width: 30px;
+  }
 
   /* 마우스 호버시 빨간색으로 */
   &:hover {
@@ -271,6 +349,15 @@ const SearchInput = styled.input`
   padding: 0 6px;
   border: 1px solid ${Theme.colors.black};
   font-size: ${Theme.fontsize.desktop.medium};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+    width: 150px;
+    height: 25px;
+  }
 `;
 
 // 찾기 버튼
@@ -281,6 +368,15 @@ const SearchButton = styled.button`
   color: ${Theme.colors.whitetext};
   font-size: ${Theme.fontsize.desktop.medium};
   cursor: pointer;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+    width: 100px;
+    height: 25px;
+  }
 `;
 
 // 페이지
@@ -299,6 +395,15 @@ const Pagination = styled.ul`
     border: none;
     cursor: pointer;
     font-size: ${Theme.fontsize.desktop.medium};
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+    width: 100%;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+    width: 100%;
   }
 `;
 
@@ -330,10 +435,7 @@ function CustomDropdown({ options, value, onChange }) {
   return (
     <DropdownWrap ref={dropdownRef}>
       {/* 클릭하면 열리고 닫히는 토글 */}
-      <DropdownBtn
-        className={isOpen ? "open" : ""}
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
+      <DropdownBtn className={isOpen ? "open" : ""} onClick={() => setIsOpen((prev) => !prev)}>
         {selectedLabel}
       </DropdownBtn>
 
@@ -430,12 +532,7 @@ export default function ReviewPage() {
     setTimeout(() => {
       // 로컬에서 전체 리뷰 꺼내서 필터에 넣기
       const allReviews = getReviews();
-      const filtered = applyFilter(
-        allReviews,
-        category,
-        searchField,
-        appliedKeyword,
-      );
+      const filtered = applyFilter(allReviews, category, searchField, appliedKeyword);
       setReviews(filtered);
     }, 0);
   }, [category, searchField, appliedKeyword]);
@@ -449,12 +546,7 @@ export default function ReviewPage() {
 
     // 삭제하고 리뷰바로 조정하기
     const allReviews = getReviews();
-    const filtered = applyFilter(
-      allReviews,
-      category,
-      searchField,
-      appliedKeyword,
-    );
+    const filtered = applyFilter(allReviews, category, searchField, appliedKeyword);
     setReviews(filtered);
   }
 
@@ -479,11 +571,7 @@ export default function ReviewPage() {
   return (
     <ReviewPageContainer>
       <SideMenuBar />
-      <MyProfile
-        userInfo={userInfo}
-        orderData={orderData}
-        cartItem={cartItem}
-      />
+      <MyProfile userInfo={userInfo} orderData={orderData} cartItem={cartItem} />
 
       <ReviewContainer>
         <ReviewInfoWrap>
@@ -541,40 +629,28 @@ export default function ReviewPage() {
             reviews.map((review) => (
               <ReviewItem key={review.id}>
                 {/* 제목 너무 길면 말줄임표... */}
-                <ReviewCell
-                  className="title"
-                  flex="1"
-                  align="left"
-                  style={{ maxWidth: "320px" }}
-                >
+                <ReviewCell className="title" flex="1" align="left" style={{ maxWidth: "320px" }}>
                   {review.title}
                 </ReviewCell>
+                <ReviewInfo>
+                  {/* 작성자 */}
+                  <ReviewCell>작성자: {review.author}</ReviewCell>
 
-                {/* 작성자 */}
-                <ReviewCell width="100px">{review.author}</ReviewCell>
+                  {/* 작성일  */}
+                  <ReviewCell>작성일: {formatShortDate(review.date)}</ReviewCell>
 
-                {/* 작성일  */}
-                <ReviewCell width="130px">
-                  {formatShortDate(review.createdAt)}
-                </ReviewCell>
+                  {/* 구매일 */}
+                  <ReviewCell>구매일: {formatShortDate(review.orderDate)}</ReviewCell>
 
-                {/* 구매일 */}
-                <ReviewCell width="100px">
-                  {formatShortDate(review.purchasedAt)}
-                </ReviewCell>
+                  {/* 조회수 */}
+                  <ReviewCell>조회: {formatViews(review.views)}</ReviewCell>
 
-                {/* 조회수 */}
-                <ReviewCell width="90px">
-                  {formatViews(review.views)}
-                </ReviewCell>
+                  {/* 헤더랑 열 맞추기용 */}
+                  <ReviewCell></ReviewCell>
 
-                {/* 헤더랑 열 맞추기용 */}
-                <ReviewCell width="30px"></ReviewCell>
-
-                {/* 삭제 버튼 */}
-                <DeleteBtn onClick={() => handleDelete(review.id)}>
-                  삭제
-                </DeleteBtn>
+                  {/* 삭제 버튼 */}
+                  <DeleteBtn onClick={() => handleDelete(review.id)}>삭제</DeleteBtn>
+                </ReviewInfo>
               </ReviewItem>
             ))
           )}

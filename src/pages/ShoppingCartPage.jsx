@@ -684,9 +684,7 @@ export default function ShoppingCartPage() {
   };
 
   // 체크된 상품의 총 가격
-  const totalPrice = cartItems
-    .filter((item) => item.checked)
-    .reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+  const totalPrice = cartItems.filter((item) => item.checked).reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
   // 상품이 없을때 구매 버튼을 막기 위해 갯수 체크
   const HaveItems = cartItems.length > 0;
   // 체크된 상품이 없을때 구매 버튼을 막기 위해 갯수 체크
@@ -738,7 +736,7 @@ export default function ShoppingCartPage() {
         totalQuantity,
         totalPrice,
         earnedPoint,
-      })
+      }),
     );
 
     // 주문 내역 저장
@@ -752,7 +750,7 @@ export default function ShoppingCartPage() {
       JSON.stringify({
         inDelivery: totalQuantity,
         done: 0,
-      })
+      }),
     );
 
     // 있으면 모달
@@ -808,7 +806,7 @@ export default function ShoppingCartPage() {
         totalPrice,
         earnedPoint,
         orderDate,
-      })
+      }),
     );
 
     // 주문 내역 저장(누적해야 하기 때문에 배열에 계속 추가하는 식으로 저장)
@@ -822,7 +820,7 @@ export default function ShoppingCartPage() {
       JSON.stringify({
         inDelivery: totalQuantity,
         done: 0,
-      })
+      }),
     );
 
     setOrderIsOpen(true);
@@ -879,20 +877,9 @@ export default function ShoppingCartPage() {
           {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
           {cartItems.map((item, index) => (
             <Item key={item.id}>
-              <CheckBox
-                type="checkbox"
-                onChange={() => handleCheck(item.id)}
-                checked={item.checked}
-              />
-              <ItemImg
-                onMouseEnter={() => setHoverImg(index)}
-                onMouseLeave={() => setHoverImg(null)}
-              >
-                <NavLink
-                  key={item.id}
-                  large={item.large ? 1 : 0}
-                  to={`/products/${item.category}/${item.id}`}
-                >
+              <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
+              <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+                <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
                   <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
                   <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
                 </NavLink>
@@ -930,13 +917,7 @@ export default function ShoppingCartPage() {
           <OrderName>
             <p>Name</p>
             {isEdit ? (
-              <InputNameEdit
-                name="name"
-                placeholder="Name"
-                type="text"
-                value={form.name}
-                onChange={handleInput}
-              />
+              <InputNameEdit name="name" placeholder="Name" type="text" value={form.name} onChange={handleInput} />
             ) : (
               <InputName
                 name="name"
@@ -1013,13 +994,7 @@ export default function ShoppingCartPage() {
           <OrderEmail>
             <p>Email</p>
             {isEdit ? (
-              <InputEmailEdit
-                name="email"
-                placeholder="Email"
-                type="email"
-                value={form.email}
-                onChange={handleInput}
-              />
+              <InputEmailEdit name="email" placeholder="Email" type="email" value={form.email} onChange={handleInput} />
             ) : (
               <InputEmail
                 name="email"
@@ -1072,7 +1047,6 @@ export default function ShoppingCartPage() {
           </EditInfo>
           {msg.address && <ErrorMsg>{msg.address}</ErrorMsg>}
         </OrderInfoForm>
-
         <ThanksMsg>Thanks</ThanksMsg>
 
         <ProductPriceWrap>
@@ -1110,7 +1084,11 @@ export default function ShoppingCartPage() {
       </OrderInfoWrap>
 
       <DeleteModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <OrderModal OrderIsOpen={OrderIsOpen} OrderOnClose={() => setOrderIsOpen(false)} />
+      <OrderModal
+        OrderIsOpen={OrderIsOpen}
+        OrderOnClose={() => setOrderIsOpen(false)}
+        onConfirm={() => useCartStore.getState().clearCart()}
+      />
     </CartContainer>
   );
 }
