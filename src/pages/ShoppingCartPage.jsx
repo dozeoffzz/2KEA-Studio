@@ -794,7 +794,10 @@ export default function ShoppingCartPage() {
       totalPrice: totalPrice,
       earnedPoint: earnedPoint,
       orderDate: orderDate,
-      purchasedItems: purchasedItems,
+      purchasedItems: purchasedItems.map((item) => ({
+        ...item,
+        status: "배송중", // 처음 주문하면 배송중 상태로 시작
+      })),
     };
 
     // 저장

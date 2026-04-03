@@ -19,7 +19,8 @@ const OrderPageContainer = styled.div`
 `;
 
 const OrderContainer = styled.section`
-  width: 915px;
+  width: 100%;
+  max-width: 930px;
   height: auto;
 `;
 
@@ -76,9 +77,10 @@ const OrderedList = styled.ul`
 
 const OrderListItem = styled.li`
   position: relative;
-  height: 200px;
-  padding: 25px 0;
+  min-height: 200px;
+  padding: 25px 0 0 0;
   border-bottom: 1px solid ${Theme.colors.grayline};
+  overflow: hidden;
 `;
 
 const OrderItemWrap = styled.ul`
@@ -87,6 +89,7 @@ const OrderItemWrap = styled.ul`
   grid-template-columns: 1fr 1.8fr 1.8fr 1fr 1fr 1fr;
   align-items: center;
   text-align: center;
+  padding-bottom: 25px;
 
   img {
     width: 120px;
@@ -98,7 +101,7 @@ const OrderItemWrap = styled.ul`
 
 const ReviewButton = styled.button`
   position: absolute;
-  bottom: 0;
+  bottom: 25px;
   right: 0;
   width: 60px;
   height: 20px;
@@ -108,17 +111,13 @@ const ReviewButton = styled.button`
   font-weight: 400;
 `;
 
-const ConfirmDeliverButton = styled(ReviewButton)`
-  display: none;
-`;
+const ConfirmDeliverButton = styled(ReviewButton)``;
 
 const OrderReviewWrap = styled.div`
-  position: absolute;
-  width: 930px;
-  height: 400px;
-  padding: 21px 18px;
-  background-color: ${Theme.colors.grayline};
-  border: 1px solid ${Theme.colors.black};
+  max-height: ${({ openAccordion }) => (openAccordion ? "450px" : "0")};
+  background-color: ${Theme.colors.white};
+  overflow: hidden;
+  transition: max-height 0.6s ease-in-out;
 `;
 
 const OrderutilityWrap = styled.div`
@@ -190,6 +189,7 @@ export default function OrderPage() {
   //전체 주문 내역 상태
   const [orderHistory, setOrderHistory] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [openAccordion, setOpenAccordion] = useState(null);
 
   const [orderData, setOrderData] = useState({
     totalQuantity: 0,
@@ -197,6 +197,10 @@ export default function OrderPage() {
     point: 0,
     delivery: { inDelivery: 0, done: 0 },
   });
+
+  const handleAccordionToggle = (idx) => {
+    setOpenAccordion((prev) => (prev === idx ? null : idx));
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -236,6 +240,26 @@ export default function OrderPage() {
       delivery,
     });
   }, []);
+
+  const handleConfirmDelivery = (orderId, productId) => {
+    //기존 데이터 상태를 복사해서 바로 수정
+    const updated = orderHistory.map((order) =>
+      order.id === orderId
+        ? {
+            ...order,
+            purchasedItems: order.purchasedItems.map((item) =>
+              item.id === productId ? { ...item, status: "배송완료" } : item
+            ),
+          }
+        : order
+    );
+    // 상태 업데이트
+    setOrderHistory(updated);
+    // 새로고침 해도 상태 유지를 위해 로컬스토리지에 저장
+    // 다시 순서를 뒤집어서 원상복구 후 저장
+    // 다시 안뒤집으면 useEffect에서만 reverse가 돌아서 데이터 순서가 꼬임
+    localStorage.setItem("orderHistory", JSON.stringify([...updated].reverse()));
+  };
 
   // 같은 날짜에 여러 상품 주문시 칸마다 상품별로 따로 배치하기
   // 저장된 데이터는 한번의 주문에 모든 상품이 묶여있고, 나열헤야하는건 개별 상품 단위
@@ -309,8 +333,22 @@ export default function OrderPage() {
         <OrderedList>
           {itemDisplay.map((item, idx) => {
             // 주문정보가 있다면 그 데이터를 집어넣고, 없으면 빈칸 집어넣기
+            const itemLKey = item ? `${item.orderId}-${item.id}` : `empty-${idx}`;
+            const ReviewAccordionOpen = openAccordion === itemLKey;
+
+            const AccordionOpen = () => {
+              handleAccordionToggle(itemLKey);
+            };
+
+            const ConfirmDelivery = () => {
+              handleConfirmDelivery(item.orderId, item.id);
+            };
+
+            const CloseAccordion = () => {
+              handleAccordionToggle(null);
+            };
             return (
-              <OrderListItem key={item ? `${item.orderId}-${item.id}` : `empty-${idx}`}>
+              <OrderListItem key={itemLKey}>
                 {item ? (
                   <>
                     <OrderItemWrap>
@@ -321,11 +359,18 @@ export default function OrderPage() {
                       <li>{item.name}</li>
                       <li>{item.quantity}</li>
                       <li>{(item.price * item.quantity).toLocaleString()}₩</li>
-                      <li>배송완료</li>
-                      <ReviewButton type="button">리뷰작성</ReviewButton>
-                      <ConfirmDeliverButton type="button">배송확정</ConfirmDeliverButton>
+                      <li>{item.status === "배송완료" ? "배송완료" : "배송중"}</li>
+                      {item.status === "배송완료" ? (
+                        <ReviewButton onClick={AccordionOpen}>리뷰작성</ReviewButton>
+                      ) : (
+                        <ConfirmDeliverButton onClick={ConfirmDelivery}>
+                          배송확정
+                        </ConfirmDeliverButton>
+                      )}
                     </OrderItemWrap>
-                    <OrderReview item={item}></OrderReview>
+                    <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
+                      <OrderReview item={item} onComplete={CloseAccordion}></OrderReview>
+                    </OrderReviewWrap>
                   </>
                 ) : (
                   <EmptyOrderList></EmptyOrderList>
