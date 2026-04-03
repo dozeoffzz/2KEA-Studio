@@ -282,7 +282,6 @@ export default function MyPage() {
     point: 0,
     delivery: { inDelivery: 0, done: 0 },
   });
-
   useEffect(() => {
     // 상품 주문한 아이템
     const order = JSON.parse(localStorage.getItem("orderData")) || {};
@@ -640,7 +639,6 @@ export default function MyPage() {
                 <ButtonIcon onClick={handleNext}>&gt;</ButtonIcon>
               </ButtonWrap>
             </HeartItem>
-
             <SliderWrapper>
               <SliderTrack style={{ transform: `translateX(${translateX}px)` }}>
                 {recentProducts.map((item) => (
