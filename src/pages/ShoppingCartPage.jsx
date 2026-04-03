@@ -370,7 +370,6 @@ const InputNameEdit = styled.input`
 const InputPhoneEdit = styled(InputNameEdit)``;
 const InputEmailEdit = styled(InputNameEdit)``;
 const InputAddressEdit = styled(InputNameEdit)``;
-
 // 폰 010 고정 + 중간 + 끝 가로로 묶는 박스
 const PhoneInputWrap = styled.div`
   display: flex;
