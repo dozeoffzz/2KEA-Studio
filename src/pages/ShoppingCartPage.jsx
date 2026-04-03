@@ -327,8 +327,6 @@ const OrderName = styled.div`
   }
 `;
 
-const InputNameEdit = styled.input``;
-
 const Ordermobile = styled(OrderName)``;
 const OrderEmail = styled(OrderName)``;
 const OrderAddress = styled(OrderName)``;
@@ -338,6 +336,11 @@ const EditInfo = styled.div`
   justify-content: flex-end;
 `;
 const EditInfoBtn = styled.button`
+  font-size: ${Theme.fontsize.desktop.small};
+  color: ${Theme.colors.blacktext};
+`;
+const EditCancel = styled.button`
+  margin-right: 20px;
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.blacktext};
 `;
@@ -351,13 +354,22 @@ const ErrorMsg = styled.p`
 const InputName = styled.input`
   text-align: right;
   outline: transparent;
-  width: 100%;
+  width: 80%;
 `;
 
 const Inputmobile = styled(InputName)``;
 const InputEmail = styled(InputName)``;
 const InputAddress = styled(InputName)``;
 
+const InputNameEdit = styled.input`
+  padding: 5px 0;
+  outline: 1px solid ${Theme.colors.black};
+  text-align: right;
+  width: 80%;
+`;
+const InputPhoneEdit = styled(InputNameEdit)``;
+const InputEmailEdit = styled(InputNameEdit)``;
+const InputAddressEdit = styled(InputNameEdit)``;
 // 폰 010 고정 + 중간 + 끝 가로로 묶는 박스
 const PhoneInputWrap = styled.div`
   display: flex;
@@ -807,7 +819,8 @@ export default function ShoppingCartPage() {
 
   const handleEditToggle = () => {
     if (!isEdit) {
-      const phone = userInfo?.phone || "";
+      const rawPhone = userInfo?.phone || "";
+      const phone = rawPhone.replace(/[^0-9]/g, "");
       setForm({
         name: userInfo?.name || "",
         phoneMid: phone.slice(3, 7),
@@ -917,7 +930,7 @@ export default function ShoppingCartPage() {
             {isEdit ? (
               <PhoneInputWrap>
                 <PhoneFixed>010</PhoneFixed>
-                <PhoneFixed style={{ marginTop: "8px" }}>-</PhoneFixed>
+                <PhoneFixed>-</PhoneFixed>
 
                 {/* 중간 4자리 입력하면 끝번호로 자동 이동 */}
                 <PhonePartInput
@@ -1026,6 +1039,11 @@ export default function ShoppingCartPage() {
           </OrderAddress>
           <EditInfo>
             <EditInfoBtn onClick={isEdit ? handleSave : handleEditToggle}>
+              {isEdit && (
+                <EditCancel onClick={() => setIsEdit(!isEdit)}>
+                  수정취소
+                </EditCancel>
+              )}
               {isEdit ? "수정완료" : "정보수정"}
             </EditInfoBtn>
           </EditInfo>

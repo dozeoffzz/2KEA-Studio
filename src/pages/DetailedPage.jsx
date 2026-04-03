@@ -65,7 +65,8 @@ const mockReviews = [
     memberType: "개인회원 구매자",
     rating: 4,
     images: [],
-    content: "직선적인 형태와 단단한 소재감이 인상적이었고, 공간의 분위기를 차분하게 만들어줬습니다.",
+    content:
+      "직선적인 형태와 단단한 소재감이 인상적이었고, 공간의 분위기를 차분하게 만들어줬습니다.",
   },
   {
     id: 3,
@@ -77,7 +78,8 @@ const mockReviews = [
       "https://i.ibb.co/FL4KmF4N/Ripple-Lounge-Slide3.webp",
       "https://i.ibb.co/nqjWwh3v/Ripple-Lounge-Slide2.webp",
     ],
-    content: "미니멀한 인테리어와 잘 어울리고 실제로 봤을 때 더 만족스러웠습니다.",
+    content:
+      "미니멀한 인테리어와 잘 어울리고 실제로 봤을 때 더 만족스러웠습니다.",
   },
   {
     id: 4,
@@ -733,7 +735,8 @@ const RatingPercent = styled.span`
 const RatingBarWrap = styled.div`
   width: 6px;
   border-radius: 20px;
-  height: ${(props) => (props.$percent > 0 ? `${(142 * props.$percent) / 100}px` : "142px")};
+  height: ${(props) =>
+    props.$percent > 0 ? `${(142 * props.$percent) / 100}px` : "142px"};
   min-height: ${(props) => (props.$percent > 0 ? "18px" : "142px")};
   background: ${(props) => (props.$percent > 0 ? "#ffbb00 70.2%" : "#d3d3d3")};
 `;
@@ -820,7 +823,8 @@ const ReviewTabButton = styled.button`
   border: none;
   padding: 0;
   font-size: 17px;
-  color: ${(props) => (props.$active ? Theme.colors.blacktext : Theme.colors.textsecondary)};
+  color: ${(props) =>
+    props.$active ? Theme.colors.blacktext : Theme.colors.textsecondary};
 
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
@@ -1078,7 +1082,10 @@ export default function DetailedPage() {
     const updated = [product, ...filterItem];
 
     // 최대 10개만 유지
-    localStorage.setItem("recentProducts", JSON.stringify(updated.slice(0, 10)));
+    localStorage.setItem(
+      "recentProducts",
+      JSON.stringify(updated.slice(0, 10)),
+    );
   }
   useEffect(() => {
     if (product) {
@@ -1146,7 +1153,9 @@ export default function DetailedPage() {
   const totalPrice = product.price * quantity;
   const totalReviewCount = mockReviews.length;
 
-  const photoReviews = mockReviews.filter((review) => review.images?.length > 0);
+  const photoReviews = mockReviews.filter(
+    (review) => review.images?.length > 0,
+  );
   const photoReviewCount = photoReviews.length;
   const filteredReviews = reviewFilter === "photo" ? photoReviews : mockReviews;
 
@@ -1167,42 +1176,62 @@ export default function DetailedPage() {
   const averageRating =
     totalReviewCount === 0
       ? 0
-      : (mockReviews.reduce((acc, review) => acc + review.rating, 0) / totalReviewCount).toFixed(1);
+      : (
+          mockReviews.reduce((acc, review) => acc + review.rating, 0) /
+          totalReviewCount
+        ).toFixed(1);
 
   // 별점
   const ratingPercentages = [5, 4, 3, 2, 1].map((score) => {
     // .5이상이면 0.5 더 놓기
-    const count = mockReviews.filter((review) => Math.floor(review.rating) === score).length;
+    const count = mockReviews.filter(
+      (review) => Math.floor(review.rating) === score,
+    ).length;
 
     return {
       score,
       count,
-      percent: totalReviewCount === 0 ? 0 : Math.round((count / totalReviewCount) * 100),
+      percent:
+        totalReviewCount === 0
+          ? 0
+          : Math.round((count / totalReviewCount) * 100),
     };
   });
 
   // 리뷰 이미지
-  const getReviewVisibleCount = (review) => Math.min(review.images?.length || 0, 3);
+  const getReviewVisibleCount = (review) =>
+    Math.min(review.images?.length || 0, 3);
 
   // 리뷰 이미지 슬라이더
   const getVisibleReviewImages = (review) => {
     const visibleCount = getReviewVisibleCount(review);
-    const maxStartIndex = Math.max(0, (review.images?.length || 0) - visibleCount);
+    const maxStartIndex = Math.max(
+      0,
+      (review.images?.length || 0) - visibleCount,
+    );
 
     // 최대 인덱스 넘지 X
-    const startIndex = Math.min(reviewImageIndexes[review.id] || 0, maxStartIndex);
+    const startIndex = Math.min(
+      reviewImageIndexes[review.id] || 0,
+      maxStartIndex,
+    );
 
-    return review.images.slice(startIndex, startIndex + visibleCount).map((src, index) => ({
-      src,
-      imageIndex: startIndex + index,
-    }));
+    return review.images
+      .slice(startIndex, startIndex + visibleCount)
+      .map((src, index) => ({
+        src,
+        imageIndex: startIndex + index,
+      }));
   };
 
   const handleReviewImageMove = (review, direction) => {
     setReviewImageIndexes((prev) => {
       const currentIndex = prev[review.id] || 0;
       const visibleCount = getReviewVisibleCount(review);
-      const maxStartIndex = Math.max(0, (review.images?.length || 0) - visibleCount);
+      const maxStartIndex = Math.max(
+        0,
+        (review.images?.length || 0) - visibleCount,
+      );
 
       let nextIndex;
       if (direction === "prev") {
@@ -1308,7 +1337,10 @@ export default function DetailedPage() {
           <Slider>
             {img.map((src, idx) => (
               <SlideItem key={idx} $position={getImgPosition(idx)}>
-                <SlideImg src={src} alt={`${product.name} 슬라이드 이미지 ${idx + 1}`} />
+                <SlideImg
+                  src={src}
+                  alt={`${product.name} 슬라이드 이미지 ${idx + 1}`}
+                />
               </SlideItem>
             ))}
           </Slider>
@@ -1318,7 +1350,12 @@ export default function DetailedPage() {
       </ImgGallery>
       <DetailSection>
         <LeftContent>
-          {detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}
+          {detailImgs[0] && (
+            <DetailImg
+              src={detailImgs[0]}
+              alt={`${product.name} 상세 이미지`}
+            />
+          )}
         </LeftContent>
 
         <RightContent>
@@ -1392,7 +1429,10 @@ export default function DetailedPage() {
 
                 return (
                   <AccordionItem key={accordion.title}>
-                    <AccordionBtn type="button" onClick={() => handleAccordionToggle(idx)}>
+                    <AccordionBtn
+                      type="button"
+                      onClick={() => handleAccordionToggle(idx)}
+                    >
                       <span>{accordion.title}</span>
                       <AccordionIcon>{isActive ? "−" : "+"}</AccordionIcon>
                     </AccordionBtn>
@@ -1443,11 +1483,19 @@ export default function DetailedPage() {
 
         <ReviewTabRow>
           <ReviewCountGroup>
-            <ReviewTabButton type="button" $active={reviewFilter === "photo"} onClick={() => setReviewFilter("photo")}>
+            <ReviewTabButton
+              type="button"
+              $active={reviewFilter === "photo"}
+              onClick={() => setReviewFilter("photo")}
+            >
               포토리뷰 ({photoReviewCount})
             </ReviewTabButton>
 
-            <ReviewTabButton type="button" $active={reviewFilter === "all"} onClick={() => setReviewFilter("all")}>
+            <ReviewTabButton
+              type="button"
+              $active={reviewFilter === "all"}
+              onClick={() => setReviewFilter("all")}
+            >
               전체리뷰 ({totalReviewCount})
             </ReviewTabButton>
           </ReviewCountGroup>
@@ -1464,14 +1512,21 @@ export default function DetailedPage() {
 
               <StarRow>
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <StarIcon key={star} src={getStarIcon(star, review.rating)} alt={`별점 ${review.rating}점`} />
+                  <StarIcon
+                    key={star}
+                    src={getStarIcon(star, review.rating)}
+                    alt={`별점 ${review.rating}점`}
+                  />
                 ))}
               </StarRow>
 
               {review.images.length > 0 && (
                 <ReviewImageSliderWrap>
                   {review.images.length > 3 && (
-                    <ReviewArrowLeft type="button" onClick={() => handleReviewImageMove(review, "prev")}>
+                    <ReviewArrowLeft
+                      type="button"
+                      onClick={() => handleReviewImageMove(review, "prev")}
+                    >
                       ‹
                     </ReviewArrowLeft>
                   )}
@@ -1480,14 +1535,20 @@ export default function DetailedPage() {
                     <ReviewSlideTrack>
                       {getVisibleReviewImages(review).map((image) => (
                         <ReviewImage key={image.imageIndex}>
-                          <img src={image.src} alt={`리뷰 이미지 ${image.imageIndex + 1}`} />
+                          <img
+                            src={image.src}
+                            alt={`리뷰 이미지 ${image.imageIndex + 1}`}
+                          />
                         </ReviewImage>
                       ))}
                     </ReviewSlideTrack>
                   </ReviewImageViewport>
 
                   {review.images.length > 3 && (
-                    <ReviewArrowRight type="button" onClick={() => handleReviewImageMove(review, "next")}>
+                    <ReviewArrowRight
+                      type="button"
+                      onClick={() => handleReviewImageMove(review, "next")}
+                    >
                       ›
                     </ReviewArrowRight>
                   )}
