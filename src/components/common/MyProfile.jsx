@@ -188,7 +188,7 @@ const UserType = styled.p`
   }
 `;
 
-export default function MyProfile({ userInfo, orderData, cartItem, isEdit, editData, setEditData }) {
+export default function MyProfile({ userInfo, orderData, cartItem }) {
   // 프로필 이미지 변경을 위한 상태값
   const [profileImg, setProfileImg] = useState(() => {
     return localStorage.getItem("profileImg") || defaultProfile;

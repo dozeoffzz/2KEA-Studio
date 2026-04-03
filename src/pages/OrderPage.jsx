@@ -247,14 +247,41 @@ export default function OrderPage() {
       order.id === orderId
         ? {
             ...order,
-            purchasedItems: order.purchasedItems.map((item) =>
-              item.id === productId ? { ...item, status: "배송완료" } : item
-            ),
+            purchasedItems: order.purchasedItems.map((item) => {
+              // 이미 배송완료면 그대로 반환 (중복 방지 핵심)
+              if (item.id === productId && item.status !== "배송완료") {
+                return { ...item, status: "배송완료" };
+              }
+              return item;
+            }),
           }
-        : order
+        : order,
     );
+
     // 상태 업데이트
     setOrderHistory(updated);
+    // delivery 상태 업데이트
+    const delivery = JSON.parse(localStorage.getItem("delivery")) || {
+      inDelivery: 0,
+      done: 0,
+    };
+    const targetOrder = orderHistory.find((o) => o.id === orderId);
+    const targetItem = targetOrder?.purchasedItems.find((i) => i.id === productId);
+
+    // 기존 상태가 "배송중"일 때만 증가
+    if (targetItem && targetItem.status !== "배송완료") {
+      const newDelivery = {
+        inDelivery: Math.max((delivery.inDelivery || 1) - 1, 0),
+        done: (delivery.done || 0) + 1,
+      };
+
+      localStorage.setItem("delivery", JSON.stringify(newDelivery));
+
+      setOrderData((prev) => ({
+        ...prev,
+        delivery: newDelivery,
+      }));
+    }
     // 새로고침 해도 상태 유지를 위해 로컬스토리지에 저장
     // 다시 순서를 뒤집어서 원상복구 후 저장
     // 다시 안뒤집으면 useEffect에서만 reverse가 돌아서 데이터 순서가 꼬임
@@ -270,7 +297,7 @@ export default function OrderPage() {
       ...item, // 원래 상품이 가지고 있던 정보를 그대로 복사
       orderId: order.id, // 이 상품이 몇번째 주문에서 온 건지 적어줌 (데이터 식별용)
       orderDate: order.orderDate, // 상품(purchasedItems) 데이터에는 날짜가 없음, 따라서 부모 기준에 적힌 날짜를 가져옴
-    }))
+    })),
   );
 
   // 주문내역이 있든 없든 항상 4개의 칸 유지
@@ -317,9 +344,7 @@ export default function OrderPage() {
               <li>3개월</li>
               <li>6개월</li>
             </DateFilter>
-            <DateInfo>
-              기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.
-            </DateInfo>
+            <DateInfo>기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.</DateInfo>
           </DateFilterWrap>
           <OrderInfo>
             <li>주문일자:</li>
@@ -363,9 +388,7 @@ export default function OrderPage() {
                       {item.status === "배송완료" ? (
                         <ReviewButton onClick={AccordionOpen}>리뷰작성</ReviewButton>
                       ) : (
-                        <ConfirmDeliverButton onClick={ConfirmDelivery}>
-                          배송확정
-                        </ConfirmDeliverButton>
+                        <ConfirmDeliverButton onClick={ConfirmDelivery}>배송확정</ConfirmDeliverButton>
                       )}
                     </OrderItemWrap>
                     <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
