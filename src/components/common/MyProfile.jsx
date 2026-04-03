@@ -186,7 +186,14 @@ const UserType = styled.p`
   }
 `;
 
-export default function MyProfile({ userInfo, orderData, cartItem, isEdit, editData, setEditData }) {
+export default function MyProfile({
+  userInfo,
+  orderData,
+  cartItem,
+  isEdit,
+  editData,
+  setEditData,
+}) {
   // 프로필 이미지 변경을 위한 상태값
   const [profileImg, setProfileImg] = useState(() => {
     return localStorage.getItem("profileImg") || defaultProfile;
@@ -214,7 +221,12 @@ export default function MyProfile({ userInfo, orderData, cartItem, isEdit, editD
         <ProfileImg>
           <NameWrap>
             {isEdit ? (
-              <NameInput value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
+              <NameInput
+                value={editData.name}
+                onChange={(e) =>
+                  setEditData({ ...editData, name: e.target.value })
+                }
+              />
             ) : (
               <p>{userInfo?.name}</p>
             )}
@@ -223,7 +235,12 @@ export default function MyProfile({ userInfo, orderData, cartItem, isEdit, editD
           <Overlay className="overlay" onClick={handleEditClick}>
             <img src={changeImg} style={{ width: "34px", height: "34px" }} />
           </Overlay>
-          <input type="file" ref={fileInputRef} style={{ display: "none" }} onChange={handleImageChange} />
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleImageChange}
+          />
           <UserType>*{userInfo?.userType}</UserType>
         </ProfileImg>
         <ProfileInfoWrap>
