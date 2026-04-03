@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Theme } from "../../styles/theme";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
+import WithdrawModal from "../modals/WithdrawModal";
 
 const SideMenu = styled.div`
   position: fixed;
@@ -30,6 +31,7 @@ const SideMenu = styled.div`
     border: none;
     border-bottom: 1px solid ${Theme.colors.grayline};
   }
+
   ${({ theme }) => theme.media.mobile} {
     position: fixed;
     font-size: ${Theme.fontsize.mobile.mini};
@@ -61,6 +63,7 @@ const SideMenuTap = styled.div`
     align-items: center;
     border: none;
   }
+
   ${({ theme }) => theme.media.mobile} {
     padding: 0;
     font-size: ${Theme.fontsize.mobile.mini};
@@ -75,11 +78,14 @@ const SideMenuRightIcon = styled.p`
   ${({ theme }) => theme.media.tablet} {
     display: none;
   }
+
   ${({ theme }) => theme.media.mobile} {
     display: none;
   }
 `;
+
 const SideMenuReview = styled(SideMenuTap)``;
+
 const SideMenuInsta = styled.a`
   padding: 10px;
   display: flex;
@@ -92,6 +98,7 @@ const SideMenuInsta = styled.a`
     border: none;
     justify-content: center;
   }
+
   ${({ theme }) => theme.media.mobile} {
     padding: 0;
     font-size: ${Theme.fontsize.mobile.mini};
@@ -99,6 +106,7 @@ const SideMenuInsta = styled.a`
     justify-content: center;
   }
 `;
+
 const SideMenuOut = styled.button`
   padding: 10px;
   display: flex;
@@ -106,6 +114,9 @@ const SideMenuOut = styled.button`
   justify-content: space-between;
   align-items: center;
   color: ${Theme.colors.black};
+  background: transparent;
+  border: none;
+  cursor: pointer;
 
   ${({ theme }) => theme.media.tablet} {
     display: flex;
@@ -114,6 +125,7 @@ const SideMenuOut = styled.button`
     border: none;
     color: ${Theme.colors.black};
   }
+
   ${({ theme }) => theme.media.mobile} {
     padding: 0;
     font-size: ${Theme.fontsize.mobile.mini};
@@ -124,6 +136,7 @@ const SideMenuOut = styled.button`
     color: ${Theme.colors.black};
   }
 `;
+
 const NavLinkTo = styled(NavLink)`
   display: flex;
   flex: 1;
@@ -136,6 +149,7 @@ const NavLinkTo = styled(NavLink)`
     align-items: center;
     border: none;
   }
+
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.mini};
     display: flex;
@@ -146,34 +160,60 @@ const NavLinkTo = styled(NavLink)`
 `;
 
 export default function SideMenuBar() {
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+
+  const handleOpenWithdrawModal = () => {
+    setIsWithdrawModalOpen(true);
+  };
+
+  const handleCloseWithdrawModal = () => {
+    setIsWithdrawModalOpen(false);
+  };
+
+  const handleConfirmWithdraw = () => {
+    setIsWithdrawModalOpen(false);
+  };
+
   return (
-    <SideMenu>
-      <SideMenuTap>
-        <NavLinkTo to={"/auth/me"}>
-          <p>마이페이지</p>
+    <>
+      <SideMenu>
+        <SideMenuTap>
+          <NavLinkTo to={"/auth/me"}>
+            <p>마이페이지</p>
+            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
+          </NavLinkTo>
+        </SideMenuTap>
+
+        <SideMenuTap>
+          <NavLinkTo to={"/auth/me/order"}>
+            <p>주문내역</p>
+            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
+          </NavLinkTo>
+        </SideMenuTap>
+
+        <SideMenuTap>
+          <NavLinkTo to={"/auth/me/review"}>
+            <p>리뷰</p>
+            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
+          </NavLinkTo>
+        </SideMenuTap>
+
+        <SideMenuInsta href="https://www.instagram.com/2kea_studio/" target="_blank" rel="noopener noreferrer">
+          <p>인스타그램</p>
           <SideMenuRightIcon>&gt;</SideMenuRightIcon>
-        </NavLinkTo>
-      </SideMenuTap>
-      <SideMenuTap>
-        <NavLinkTo to={"/auth/me/order"}>
-          <p>주문내역</p>
+        </SideMenuInsta>
+
+        <SideMenuOut type="button" onClick={handleOpenWithdrawModal}>
+          <p>회원탈퇴</p>
           <SideMenuRightIcon>&gt;</SideMenuRightIcon>
-        </NavLinkTo>
-      </SideMenuTap>
-      <SideMenuTap>
-        <NavLinkTo to={"/auth/me/review"}>
-          <p>리뷰</p>
-          <SideMenuRightIcon>&gt;</SideMenuRightIcon>
-        </NavLinkTo>
-      </SideMenuTap>
-      <SideMenuInsta href="https://www.instagram.com/2kea_studio/" target="_blank" rel="noopener noreferrer">
-        <p>인스타그램</p>
-        <SideMenuRightIcon>&gt;</SideMenuRightIcon>
-      </SideMenuInsta>
-      <SideMenuOut>
-        <p>회원탈퇴</p>
-        <SideMenuRightIcon>&gt;</SideMenuRightIcon>
-      </SideMenuOut>
-    </SideMenu>
+        </SideMenuOut>
+      </SideMenu>
+
+      <WithdrawModal
+        isOpen={isWithdrawModalOpen}
+        onClose={handleCloseWithdrawModal}
+        onWithdraw={handleConfirmWithdraw}
+      />
+    </>
   );
 }

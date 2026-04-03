@@ -1072,7 +1072,6 @@ export default function ShoppingCartPage() {
           </EditInfo>
           {msg.address && <ErrorMsg>{msg.address}</ErrorMsg>}
         </OrderInfoForm>
-
         <ThanksMsg>Thanks</ThanksMsg>
 
         <ProductPriceWrap>
