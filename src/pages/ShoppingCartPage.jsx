@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { useState, useRef } from "react";
-=======
 import React, { useEffect, useRef, useState } from "react";
->>>>>>> 44ded0e (feat:마이페이지 수정사항 저장)
 import DeleteModal from "../components/modals/DeleteModal";
 import DeleteProductBtn from "../assets/icons/deleteProductButton.svg";
 import styled from "@emotion/styled";
@@ -331,6 +327,8 @@ const OrderName = styled.div`
   }
 `;
 
+const InputNameEdit = styled.input``;
+
 const Ordermobile = styled(OrderName)``;
 const OrderEmail = styled(OrderName)``;
 const OrderAddress = styled(OrderName)``;
@@ -520,10 +518,9 @@ export default function ShoppingCartPage() {
   // 이미지 호버시 변경을 위해 상태값 저장
   const [hoverImg, setHoverImg] = useState(null);
   // useCaretStore에서 정의한 함수 구조분해로 가져오기
-  const { cartItems, handleQuantity, handleCheck, handleDelete } =
-    useCartStore();
+  const { cartItems, handleQuantity, handleCheck, handleDelete } = useCartStore();
 
-    const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   // 정보 수정을 위한 상태값
   const [isEdit, setIsEdit] = useState(false);
   // 필요한 유효성 검사 기본값
@@ -557,10 +554,20 @@ export default function ShoppingCartPage() {
             address: savedAddress || data.userInfo.address,
           };
 
-          setUserInfo(finalUser);
+          const rawPhone = finalUser.phone || "";
+          const phone = rawPhone.replace(/[^0-9]/g, "");
+
+          const phoneMid = phone.length >= 7 ? phone.slice(3, 7) : "";
+          const phoneEnd = phone.length >= 11 ? phone.slice(7, 11) : "";
+          setUserInfo({
+            ...finalUser,
+            phoneMid,
+            phoneEnd,
+          });
           setForm({
             name: finalUser.name || "",
-            phone: finalUser.phone || "",
+            phoneMid,
+            phoneEnd,
             email: finalUser.email || "",
             address: finalUser.address || "",
           });
@@ -665,9 +672,7 @@ export default function ShoppingCartPage() {
   };
 
   // 체크된 상품의 총 가격
-  const totalPrice = cartItems
-    .filter((item) => item.checked)
-    .reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+  const totalPrice = cartItems.filter((item) => item.checked).reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
   // 상품이 없을때 구매 버튼을 막기 위해 갯수 체크
   const HaveItems = cartItems.length > 0;
   // 체크된 상품이 없을때 구매 버튼을 막기 위해 갯수 체크
@@ -682,14 +687,8 @@ export default function ShoppingCartPage() {
 
     // 구매 데이터 계산
     const purchasedItems = cartItems;
-    const totalQuantity = purchasedItems.reduce(
-      (acc, cur) => acc + cur.quantity,
-      0,
-    );
-    const totalPrice = purchasedItems.reduce(
-      (acc, cur) => acc + cur.price * cur.quantity,
-      0,
-    );
+    const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
+    const totalPrice = purchasedItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
 
     // 포인트
     const earnedPoint = Math.floor(totalPrice * 0.01);
@@ -720,8 +719,6 @@ export default function ShoppingCartPage() {
 
     // 있으면 모달
     setOrderIsOpen(true);
-    // 장바구니 비우기
-    useCartStore.getState().clearCart();
   };
 
   const handleCheckedOrder = () => {
@@ -732,14 +729,8 @@ export default function ShoppingCartPage() {
 
     // 구매 데이터 계산
     const purchasedItems = cartItems;
-    const totalQuantity = purchasedItems.reduce(
-      (acc, cur) => acc + cur.quantity,
-      0,
-    );
-    const totalPrice = purchasedItems.reduce(
-      (acc, cur) => acc + cur.price * cur.quantity,
-      0,
-    );
+    const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
+    const totalPrice = purchasedItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
 
     // 포인트
     const earnedPoint = Math.floor(totalPrice * 0.01);
@@ -769,8 +760,6 @@ export default function ShoppingCartPage() {
     );
 
     setOrderIsOpen(true);
-    // 장바구니 비우기
-    useCartStore.getState().clearCart();
   };
 
   const handleDeleteAll = () => {
@@ -779,9 +768,10 @@ export default function ShoppingCartPage() {
   };
   // 수정 내용 저장
   const handleSave = () => {
+    const fullPhone = `010${form.phoneMid}${form.phoneEnd}`;
     const updatedUser = {
       name: form.name,
-      phone: form.phone,
+      phone: fullPhone,
       email: form.email,
       address: form.address,
     };
@@ -791,19 +781,22 @@ export default function ShoppingCartPage() {
     localStorage.setItem("address", form.address);
 
     // 상태 업데이트
-    setUserInfo((prev) => ({
-      ...prev,
+    setUserInfo({
       ...updatedUser,
-    }));
+      phoneMid: form.phoneMid,
+      phoneEnd: form.phoneEnd,
+    });
 
     setIsEdit(false);
   };
 
   const handleEditToggle = () => {
     if (!isEdit) {
+      const phone = userInfo?.phone || "";
       setForm({
         name: userInfo?.name || "",
-        phone: userInfo?.phone || "",
+        phoneMid: phone.slice(3, 7),
+        phoneEnd: phone.slice(7, 11),
         email: userInfo?.email || "",
         address: userInfo?.address || "",
       });
@@ -817,40 +810,17 @@ export default function ShoppingCartPage() {
           {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
           {cartItems.map((item, index) => (
             <Item key={item.id}>
-              <CheckBox
-                type="checkbox"
-                onChange={() => handleCheck(item.id)}
-                checked={item.checked}
-              />
-              <ItemImg
-                onMouseEnter={() => setHoverImg(index)}
-                onMouseLeave={() => setHoverImg(null)}
-              >
-                <NavLink
-                  key={item.id}
-                  large={item.large ? 1 : 0}
-                  to={`/products/${item.category}/${item.id}`}
-                >
-                  <Img
-                    src={item.src?.[0]}
-                    alt={item.name}
-                    visible={hoverImg !== index}
-                  />
-                  <Img
-                    src={item.src?.[1]}
-                    alt={item.name}
-                    visible={hoverImg === index}
-                  />
+              <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
+              <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+                <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
+                  <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
+                  <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
                 </NavLink>
               </ItemImg>
               <ItemInfoWrap>
                 <ItemName>{item.name}</ItemName>
-                <p style={{ whiteSpace: "nowrap" }}>
-                  {item.price.toLocaleString()} ₩
-                </p>
-                <ItemDelevery>
-                  적립: {Math.floor(item.price * 0.01).toLocaleString()}P
-                </ItemDelevery>
+                <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>
+                <ItemDelevery>적립: {Math.floor(item.price * 0.01).toLocaleString()}P</ItemDelevery>
                 <ItemDelevery>배송비: 무료</ItemDelevery>
               </ItemInfoWrap>
               <QuantityWrap>
@@ -860,13 +830,9 @@ export default function ShoppingCartPage() {
                 </Quantity>
                 <QuantityUpDown>
                   {/* 아이템 아이디, 프롭스를 useCartStore에 넘김 */}
-                  <UpButton onClick={() => handleQuantity(item.id, "dec")}>
-                    -
-                  </UpButton>
+                  <UpButton onClick={() => handleQuantity(item.id, "dec")}>-</UpButton>
                   <p>{item.quantity}</p>
-                  <UpButton onClick={() => handleQuantity(item.id, "inc")}>
-                    +
-                  </UpButton>
+                  <UpButton onClick={() => handleQuantity(item.id, "inc")}>+</UpButton>
                 </QuantityUpDown>
               </QuantityWrap>
               <DeleteProduct onClick={() => handleDelete(item.id)}>
@@ -900,36 +866,69 @@ export default function ShoppingCartPage() {
           {/* 폰 */}
           <Ordermobile>
             <p>Phone</p>
-            <PhoneInputWrap>
-              <PhoneFixed>010</PhoneFixed>
-              <PhoneFixed>-</PhoneFixed>
+            {isEdit ? (
+              <PhoneInputWrap>
+                <PhoneFixed>010</PhoneFixed>
+                <PhoneFixed>-</PhoneFixed>
 
-              {/* 중간 4자리 입력하면 끝번호로 자동 이동 */}
-              <PhonePartInput
-                name="phoneMid"
-                type="text"
-                value={form.phoneMid}
-                placeholder="0000"
-                maxLength="4"
-                inputMode="numeric"
-                error={error.phoneMid}
-                onChange={handleInput}
-              />
-              <PhoneFixed>-</PhoneFixed>
+                {/* 중간 4자리 입력하면 끝번호로 자동 이동 */}
+                <PhonePartInput
+                  name="phoneMid"
+                  type="text"
+                  value={form.phoneMid}
+                  placeholder="0000"
+                  maxLength="4"
+                  inputMode="numeric"
+                  error={error.phoneMid}
+                  onChange={handleInput}
+                />
+                <PhoneFixed>-</PhoneFixed>
 
-              {/* 끝에 4자리 */}
-              <PhonePartInput
-                name="phoneEnd"
-                type="text"
-                value={form.phoneEnd}
-                placeholder="0000"
-                maxLength="4"
-                inputMode="numeric"
-                ref={phoneEndRef}
-                error={error.phoneEnd}
-                onChange={handleInput}
-              />
-            </PhoneInputWrap>
+                {/* 끝에 4자리 */}
+                <PhonePartInput
+                  name="phoneEnd"
+                  type="text"
+                  value={form.phoneEnd}
+                  placeholder="0000"
+                  maxLength="4"
+                  inputMode="numeric"
+                  ref={phoneEndRef}
+                  error={error.phoneEnd}
+                  onChange={handleInput}
+                />
+              </PhoneInputWrap>
+            ) : (
+              <PhoneInputWrap>
+                <PhoneFixed>010</PhoneFixed>
+                <PhoneFixed>-</PhoneFixed>
+
+                {/* 중간 4자리 입력하면 끝번호로 자동 이동 */}
+                <PhonePartInput
+                  name="phoneMid"
+                  type="text"
+                  value={userInfo?.phoneMid || ""}
+                  placeholder="0000"
+                  maxLength="4"
+                  inputMode="numeric"
+                  error={error.phoneMid}
+                  onChange={handleInput}
+                />
+                <PhoneFixed>-</PhoneFixed>
+
+                {/* 끝에 4자리 */}
+                <PhonePartInput
+                  name="phoneEnd"
+                  type="text"
+                  value={userInfo?.phoneEnd || ""}
+                  placeholder="0000"
+                  maxLength="4"
+                  inputMode="numeric"
+                  ref={phoneEndRef}
+                  error={error.phoneEnd}
+                  onChange={handleInput}
+                />
+              </PhoneInputWrap>
+            )}
           </Ordermobile>
           {msg.phoneMid && <ErrorMsg>{msg.phoneMid}</ErrorMsg>}
 
@@ -1019,6 +1018,7 @@ export default function ShoppingCartPage() {
       <OrderModal
         OrderIsOpen={OrderIsOpen}
         OrderOnClose={() => setOrderIsOpen(false)}
+        onConfirm={() => useCartStore.getState().clearCart()}
       />
     </CartContainer>
   );

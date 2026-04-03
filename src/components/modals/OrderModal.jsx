@@ -141,9 +141,14 @@ const Button = styled(NavLink)`
   }
 `;
 
-export default function OrderModal({ OrderIsOpen, OrderOnClose }) {
+export default function OrderModal({ OrderIsOpen, OrderOnClose, onConfirm }) {
   const targetElement = document.querySelector("#modal-root");
   if (!OrderIsOpen) return null;
+
+  function handleConfirm() {
+    onConfirm();
+    OrderOnClose();
+  }
 
   return createPortal(
     <Overlay>
@@ -162,7 +167,9 @@ export default function OrderModal({ OrderIsOpen, OrderOnClose }) {
         </OrderModalWrap>
         <ButtonWrap>
           <CloseButton onClick={OrderOnClose}>취소</CloseButton>
-          <Button to={"/completed"}>구매</Button>
+          <Button onClick={handleConfirm} to={"/completed"}>
+            구매
+          </Button>
         </ButtonWrap>
       </OrderModalContainer>
     </Overlay>,
