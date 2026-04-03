@@ -5,11 +5,11 @@ import { Theme } from "../../styles/theme";
 import { useAuthStore } from "../../stores/useAuthStore";
 
 const OrderReviewContainer = styled.div`
-  position: absolute;
   display: flex;
   flex-direction: column;
   gap: 18px;
-  width: 930px;
+  width: 100%;
+  max-width: 930px;
   height: auto;
   padding: 21px 18px;
   background-color: ${Theme.colors.white};
@@ -154,11 +154,17 @@ export default function OrderReview({ item }) {
 
     if (images.length >= 5) return;
 
+    //파일을 가져오는 비동기 도구
     const reader = new FileReader();
+    //비동기 작업을 읽기 시작
     reader.readAsDataURL(file);
+    //완료 시점에 상태 업데이트
     reader.onloadend = () => {
       const base64String = reader.result;
-      setImages((prev) => [...prev, base64String]);
+      setImages((prev) => {
+        if (prev.length >= 5) return prev; //혹시 모를 중복 방지용
+        return [...prev, base64String]; // 항상 최신 상태값을 가져와서 합쳐줌
+      });
     };
     // 같은 파일 다시 올릴수 있게 input 값 초기화
     e.target.value = "";
@@ -197,8 +203,8 @@ export default function OrderReview({ item }) {
       productId: item.id, // 상품 ID
       name: item.name, // 상품 이름
       rating: rating, // 별점
-      title: title, // 제목
-      content: content, // 내용
+      title: title, // 리뷰 제목
+      content: content, // 리뷰 내용
       date: reviewDate, // 리뷰 작성 날짜
       orderDate: item.orderDate, // 상품 구매 날짜
       author: userInfo.name, // 작성자 이름
