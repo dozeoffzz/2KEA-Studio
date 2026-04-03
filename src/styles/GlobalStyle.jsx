@@ -107,7 +107,7 @@ const globalStyles = css`
   button {
     font-family: inherit;
     background-color: transparent;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.03em !important;
   }
 
   a {
