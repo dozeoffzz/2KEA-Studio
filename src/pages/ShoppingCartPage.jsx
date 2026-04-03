@@ -534,8 +534,7 @@ export default function ShoppingCartPage() {
   // 이미지 호버시 변경을 위해 상태값 저장
   const [hoverImg, setHoverImg] = useState(null);
   // useCaretStore에서 정의한 함수 구조분해로 가져오기
-  const { cartItems, handleQuantity, handleCheck, handleDelete } =
-    useCartStore();
+  const { cartItems, handleQuantity, handleCheck, handleDelete } = useCartStore();
 
   const [userInfo, setUserInfo] = useState(null);
   // 정보 수정을 위한 상태값
@@ -702,14 +701,8 @@ export default function ShoppingCartPage() {
 
     // 구매 데이터 계산
     const purchasedItems = cartItems;
-    const totalQuantity = purchasedItems.reduce(
-      (acc, cur) => acc + cur.quantity,
-      0,
-    );
-    const totalPrice = purchasedItems.reduce(
-      (acc, cur) => acc + cur.price * cur.quantity,
-      0,
-    );
+    const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
+    const totalPrice = purchasedItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
 
     // 포인트
     const earnedPoint = Math.floor(totalPrice * 0.01);
@@ -717,17 +710,49 @@ export default function ShoppingCartPage() {
     // 기존 포인트 가져오기
     const currentPoint = Number(localStorage.getItem("point") || 0);
 
+    // 주문 날짜 생성
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const orderDate = `${year}-${month}-${day}`;
+    // 매우 길고 복잡한 무작위 문자열 생성
+    const orderId = crypto.randomUUID();
+
+    // 주문 내역 가져오기
+    const prevOrders = JSON.parse(localStorage.getItem("orderHistory") || "[]");
+    // 주문 내역 로컬스토리지에 저장할 데이터
+    const newOrder = {
+      id: orderId,
+      totalQuantity,
+      totalPrice,
+      earnedPoint,
+      orderDate,
+      purchasedItems,
+    };
+
     // 저장
     localStorage.setItem(
       "orderData",
-      JSON.stringify({ totalQuantity, totalPrice, earnedPoint }),
+      JSON.stringify({
+        totalQuantity,
+        totalPrice,
+        earnedPoint,
+      })
     );
+
+    // 주문 내역 저장
+    localStorage.setItem("orderHistory", JSON.stringify([...prevOrders, newOrder])); // 누적해야 하기 때문에 배열에 계속 추가하는 식으로 저장
+    // 포인트 저장
     localStorage.setItem("point", currentPoint + earnedPoint);
 
     // 배송 상태 저장
     localStorage.setItem(
       "delivery",
-      JSON.stringify({ inDelivery: totalQuantity, done: 0 }),
+      JSON.stringify({
+        inDelivery: totalQuantity,
+        done: 0,
+      })
     );
 
     // 있으면 모달
@@ -742,14 +767,8 @@ export default function ShoppingCartPage() {
 
     // 구매 데이터 계산
     const purchasedItems = cartItems;
-    const totalQuantity = purchasedItems.reduce(
-      (acc, cur) => acc + cur.quantity,
-      0,
-    );
-    const totalPrice = purchasedItems.reduce(
-      (acc, cur) => acc + cur.price * cur.quantity,
-      0,
-    );
+    const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
+    const totalPrice = purchasedItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
 
     // 포인트
     const earnedPoint = Math.floor(totalPrice * 0.01);
@@ -757,17 +776,50 @@ export default function ShoppingCartPage() {
     // 기존 포인트 가져오기
     const currentPoint = Number(localStorage.getItem("point") || 0);
 
+    // 주문 날짜 생성
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const orderDate = `${year}-${month}-${day}`;
+    // 복잡한 무작위 UUID 생성
+    const orderId = crypto.randomUUID();
+
+    // 주문 내역 가져오기
+    const prevOrders = JSON.parse(localStorage.getItem("orderHistory") || "[]");
+    // 주문 내역 로컬스토리지에 저장할 데이터
+    const newOrder = {
+      id: orderId,
+      totalQuantity: totalQuantity,
+      totalPrice: totalPrice,
+      earnedPoint: earnedPoint,
+      orderDate: orderDate,
+      purchasedItems: purchasedItems,
+    };
+
     // 저장
     localStorage.setItem(
       "orderData",
-      JSON.stringify({ totalQuantity, totalPrice, earnedPoint }),
+      JSON.stringify({
+        totalQuantity,
+        totalPrice,
+        earnedPoint,
+        orderDate,
+      })
     );
+
+    // 주문 내역 저장(누적해야 하기 때문에 배열에 계속 추가하는 식으로 저장)
+    localStorage.setItem("orderHistory", JSON.stringify([...prevOrders, newOrder]));
+    // 포인트 저장
     localStorage.setItem("point", currentPoint + earnedPoint);
 
     // 배송 상태 저장
     localStorage.setItem(
       "delivery",
-      JSON.stringify({ inDelivery: totalQuantity, done: 0 }),
+      JSON.stringify({
+        inDelivery: totalQuantity,
+        done: 0,
+      })
     );
 
     setOrderIsOpen(true);
@@ -838,26 +890,14 @@ export default function ShoppingCartPage() {
                   large={item.large ? 1 : 0}
                   to={`/products/${item.category}/${item.id}`}
                 >
-                  <Img
-                    src={item.src?.[0]}
-                    alt={item.name}
-                    visible={hoverImg !== index}
-                  />
-                  <Img
-                    src={item.src?.[1]}
-                    alt={item.name}
-                    visible={hoverImg === index}
-                  />
+                  <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
+                  <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
                 </NavLink>
               </ItemImg>
               <ItemInfoWrap>
                 <ItemName>{item.name}</ItemName>
-                <p style={{ whiteSpace: "nowrap" }}>
-                  {item.price.toLocaleString()} ₩
-                </p>
-                <ItemDelevery>
-                  적립: {Math.floor(item.price * 0.01).toLocaleString()}P
-                </ItemDelevery>
+                <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>
+                <ItemDelevery>적립: {Math.floor(item.price * 0.01).toLocaleString()}P</ItemDelevery>
                 <ItemDelevery>배송비: 무료</ItemDelevery>
               </ItemInfoWrap>
               <QuantityWrap>
@@ -867,13 +907,9 @@ export default function ShoppingCartPage() {
                 </Quantity>
                 <QuantityUpDown>
                   {/* 아이템 아이디, 프롭스를 useCartStore에 넘김 */}
-                  <UpButton onClick={() => handleQuantity(item.id, "dec")}>
-                    -
-                  </UpButton>
+                  <UpButton onClick={() => handleQuantity(item.id, "dec")}>-</UpButton>
                   <p>{item.quantity}</p>
-                  <UpButton onClick={() => handleQuantity(item.id, "inc")}>
-                    +
-                  </UpButton>
+                  <UpButton onClick={() => handleQuantity(item.id, "inc")}>+</UpButton>
                 </QuantityUpDown>
               </QuantityWrap>
               <DeleteProduct onClick={() => handleDelete(item.id)}>
@@ -1071,11 +1107,7 @@ export default function ShoppingCartPage() {
       </OrderInfoWrap>
 
       <DeleteModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <OrderModal
-        OrderIsOpen={OrderIsOpen}
-        OrderOnClose={() => setOrderIsOpen(false)}
-        onConfirm={() => useCartStore.getState().clearCart()}
-      />
+      <OrderModal OrderIsOpen={OrderIsOpen} OrderOnClose={() => setOrderIsOpen(false)} />
     </CartContainer>
   );
 }
