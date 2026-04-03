@@ -13,6 +13,9 @@ import Full from "../assets/imgs/detail/Full.svg";
 import Half from "../assets/imgs/detail/Half.svg";
 import Review from "../assets/imgs/detail/review.svg";
 
+// 리뷰 API
+import { getReviews } from "../apis/reviewService";
+import { useAuthStore } from "../stores/useAuthStore";
 // 추가 정보 내용
 const accordionItems = [
   {
@@ -39,63 +42,6 @@ const accordionItems = [
     title: "커스터마이징",
     content:
       "사이즈 및 마감 방식에 따라 주문 제작이 가능한 상품입니다. 맞춤 제작 특성상 상담 후 제작이 진행되며, 제작 완료 후 교환 및 반품은 어려울 수 있습니다. 원하시는 사양이 있는 경우 문의를 통해 상세 안내를 받아보실 수 있습니다.",
-  },
-];
-
-// 임시 리뷰 넣어둔 상태
-const mockReviews = [
-  {
-    id: 1,
-    nickname: "Frieren",
-    memberType: "개인회원 구매자",
-    rating: 4,
-    images: [
-      "https://i.ibb.co/xtNLr7YV/Coco-Hanging-Chair-Slide2.webp",
-      "https://i.ibb.co/FL4KmF4N/Ripple-Lounge-Slide3.webp",
-      "https://i.ibb.co/nqjWwh3v/Ripple-Lounge-Slide2.webp",
-      "https://i.ibb.co/23hy65yW/Ripple-Lounge-Slide.webp",
-      "https://i.ibb.co/tNn0PBG/Hudson-Leather-Sofa-hover.webp",
-    ],
-    content:
-      "생각했던 거 이상으로 단단하고, 미니멀한 분위기와 잘 어울리는 제품이었습니다. 생각했던 거 이상으로 단단하고, 미니멀한 분위기와 잘 어울리는 제품이었습니다.  ",
-  },
-  {
-    id: 2,
-    nickname: "은우가왜저럴까",
-    memberType: "개인회원 구매자",
-    rating: 4,
-    images: [],
-    content:
-      "직선적인 형태와 단단한 소재감이 인상적이었고, 공간의 분위기를 차분하게 만들어줬습니다.",
-  },
-  {
-    id: 3,
-    nickname: "힘멜이라면",
-    memberType: "개인회원 구매자",
-    rating: 3.5,
-    images: [
-      "https://i.ibb.co/xtNLr7YV/Coco-Hanging-Chair-Slide2.webp",
-      "https://i.ibb.co/FL4KmF4N/Ripple-Lounge-Slide3.webp",
-      "https://i.ibb.co/nqjWwh3v/Ripple-Lounge-Slide2.webp",
-    ],
-    content:
-      "미니멀한 인테리어와 잘 어울리고 실제로 봤을 때 더 만족스러웠습니다.",
-  },
-  {
-    id: 4,
-    nickname: "아이고인생",
-    memberType: "개인회원 구매자",
-    rating: 1,
-    images: [],
-    content: "일이 안 끝나네요",
-  },
-  {
-    id: 5,
-    nickname: "2팀파이팅",
-    memberType: "개인회원 구매자",
-    rating: 5,
-    images: [],
-    content: "2팀 아자아자 파이팅....",
   },
 ];
 
@@ -735,8 +681,7 @@ const RatingPercent = styled.span`
 const RatingBarWrap = styled.div`
   width: 6px;
   border-radius: 20px;
-  height: ${(props) =>
-    props.$percent > 0 ? `${(142 * props.$percent) / 100}px` : "142px"};
+  height: ${(props) => (props.$percent > 0 ? `${(142 * props.$percent) / 100}px` : "142px")};
   min-height: ${(props) => (props.$percent > 0 ? "18px" : "142px")};
   background: ${(props) => (props.$percent > 0 ? "#ffbb00 70.2%" : "#d3d3d3")};
 `;
@@ -823,8 +768,7 @@ const ReviewTabButton = styled.button`
   border: none;
   padding: 0;
   font-size: 17px;
-  color: ${(props) =>
-    props.$active ? Theme.colors.blacktext : Theme.colors.textsecondary};
+  color: ${(props) => (props.$active ? Theme.colors.blacktext : Theme.colors.textsecondary)};
 
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
@@ -859,6 +803,10 @@ const ReviewCard = styled.article`
     border-right: none;
     border-bottom: 1px solid #222222;
     min-height: auto;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
   }
 
   @media screen and (max-width: 510px) {
@@ -896,10 +844,6 @@ const ReviewImageSliderWrap = styled.div`
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 24px;
-
-  @media screen and (max-width: 450px) {
-    justify-content: center;
-  }
 `;
 
 const ReviewImageViewport = styled.div`
@@ -995,6 +939,23 @@ const EmptyReviewCard = styled.article`
   }
 `;
 
+const EmptyReviewMessageBox = styled.div`
+  grid-column: 1 / -1;
+  min-height: 353px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const EmptyReviewMessage = styled.p`
+  font-size: 18px;
+  color: ${Theme.colors.textsecondary};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
+`;
+
 const ReviewImage = styled.div`
   width: 120px;
   height: 120px;
@@ -1030,12 +991,18 @@ export default function DetailedPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // 유저 정보 store
+  const userType = useAuthStore((state) => state.userInfo?.userType);
+
   // 장바구니 store
   const { addItem } = useCartStore();
 
   // products api 받아오기
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // 리뷰 api 받아오기
+  const [reviews, setReviews] = useState([]);
 
   // 모달 끄고 닫기
   const [isOpen, setIsOpen] = useState(false);
@@ -1052,11 +1019,13 @@ export default function DetailedPage() {
   // 리뷰 탭 상태값
   const [reviewFilter, setReviewFilter] = useState("all");
 
+  // 리뷰 페이지 인덱스
   const [reviewPage, setReviewPage] = useState(0);
 
   // 리뷰 이미지 인덱스
   const [reviewImageIndexes, setReviewImageIndexes] = useState({});
 
+  // 상품 정보 받아오기
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -1071,6 +1040,14 @@ export default function DetailedPage() {
 
     getProducts();
   }, [id]);
+
+  // 리뷰 정보 받아오기
+  useEffect(() => {
+    const allReviews = getReviews();
+    const currentProductReviews = allReviews.filter((review) => String(review.productId) === String(id));
+    setReviews(currentProductReviews);
+  }, [id]);
+
   // 마이페이지에서 최근 본 상품 보여주기 위해 로컬스토리지에 클릭된 상품 저장
   function SaveMyPageProducts(product) {
     const storeItem = JSON.parse(localStorage.getItem("recentProducts")) || [];
@@ -1082,11 +1059,10 @@ export default function DetailedPage() {
     const updated = [product, ...filterItem];
 
     // 최대 10개만 유지
-    localStorage.setItem(
-      "recentProducts",
-      JSON.stringify(updated.slice(0, 10)),
-    );
+    localStorage.setItem("recentProducts", JSON.stringify(updated.slice(0, 10)));
   }
+
+  // 상품 정보가 바뀔 때마다 로컬스토리지에 저장
   useEffect(() => {
     if (product) {
       SaveMyPageProducts({
@@ -1151,22 +1127,19 @@ export default function DetailedPage() {
 
   const lastIdx = img.length - 1;
   const totalPrice = product.price * quantity;
-  const totalReviewCount = mockReviews.length;
+  const totalReviewCount = reviews.length;
 
-  const photoReviews = mockReviews.filter(
-    (review) => review.images?.length > 0,
-  );
+  // 사진 리뷰 개수
+  const photoReviews = reviews.filter((review) => review.images && review.images.length > 0);
   const photoReviewCount = photoReviews.length;
-  const filteredReviews = reviewFilter === "photo" ? photoReviews : mockReviews;
 
+  // 리뷰 탭에 따른 리뷰 필터링
+  const filteredReviews = reviewFilter === "photo" ? photoReviews : reviews;
   const reviewsPerPage = 2;
   const totalReviewPages = Math.ceil(filteredReviews.length / reviewsPerPage);
 
   // 현재 페이지 리뷰 자르기
-  const visibleReviews = filteredReviews.slice(
-    reviewPage * reviewsPerPage,
-    reviewPage * reviewsPerPage + reviewsPerPage
-  );
+  const visibleReviews = filteredReviews.slice(reviewPage * reviewsPerPage, reviewPage * reviewsPerPage + reviewsPerPage);
 
   // 빈 칸 채우기
   const emptyVisibleReviewCount = reviewsPerPage - visibleReviews.length;
@@ -1174,65 +1147,44 @@ export default function DetailedPage() {
 
   // 평점
   const averageRating =
-    totalReviewCount === 0
-      ? 0
-      : (
-          mockReviews.reduce((acc, review) => acc + review.rating, 0) /
-          totalReviewCount
-        ).toFixed(1);
+    totalReviewCount === 0 ? 0 : (reviews.reduce((acc, review) => acc + review.rating, 0) / totalReviewCount).toFixed(1);
 
   // 별점
   const ratingPercentages = [5, 4, 3, 2, 1].map((score) => {
-    // .5이상이면 0.5 더 놓기
-    const count = mockReviews.filter(
-      (review) => Math.floor(review.rating) === score,
-    ).length;
+    const count = reviews.filter((review) => Math.floor(review.rating) === score).length;
 
     return {
       score,
       count,
-      percent:
-        totalReviewCount === 0
-          ? 0
-          : Math.round((count / totalReviewCount) * 100),
+      percent: totalReviewCount === 0 ? 0 : Math.round((count / totalReviewCount) * 100),
     };
   });
 
   // 리뷰 이미지
-  const getReviewVisibleCount = (review) =>
-    Math.min(review.images?.length || 0, 3);
+  const getReviewVisibleCount = (review) => Math.min(review.images?.length || 0, 3);
 
   // 리뷰 이미지 슬라이더
   const getVisibleReviewImages = (review) => {
     const visibleCount = getReviewVisibleCount(review);
-    const maxStartIndex = Math.max(
-      0,
-      (review.images?.length || 0) - visibleCount,
-    );
+    const maxStartIndex = Math.max(0, (review.images?.length || 0) - visibleCount);
 
     // 최대 인덱스 넘지 X
-    const startIndex = Math.min(
-      reviewImageIndexes[review.id] || 0,
-      maxStartIndex,
-    );
+    const startIndex = Math.min(reviewImageIndexes[review.id] || 0, maxStartIndex);
 
-    return review.images
-      .slice(startIndex, startIndex + visibleCount)
-      .map((src, index) => ({
-        src,
-        imageIndex: startIndex + index,
-      }));
+    return review.images.slice(startIndex, startIndex + visibleCount).map((src, index) => ({
+      src,
+      imageIndex: startIndex + index,
+    }));
   };
 
+  // 리뷰 이미지 슬라이더 이동
   const handleReviewImageMove = (review, direction) => {
     setReviewImageIndexes((prev) => {
       const currentIndex = prev[review.id] || 0;
       const visibleCount = getReviewVisibleCount(review);
-      const maxStartIndex = Math.max(
-        0,
-        (review.images?.length || 0) - visibleCount,
-      );
+      const maxStartIndex = Math.max(0, (review.images?.length || 0) - visibleCount);
 
+      // 최대 인덱스 넘지 않도록
       let nextIndex;
       if (direction === "prev") {
         nextIndex = currentIndex === 0 ? maxStartIndex : currentIndex - 1;
@@ -1337,10 +1289,7 @@ export default function DetailedPage() {
           <Slider>
             {img.map((src, idx) => (
               <SlideItem key={idx} $position={getImgPosition(idx)}>
-                <SlideImg
-                  src={src}
-                  alt={`${product.name} 슬라이드 이미지 ${idx + 1}`}
-                />
+                <SlideImg src={src} alt={`${product.name} 슬라이드 이미지 ${idx + 1}`} />
               </SlideItem>
             ))}
           </Slider>
@@ -1349,14 +1298,7 @@ export default function DetailedPage() {
         <ProductName>{product.name} Detail</ProductName>
       </ImgGallery>
       <DetailSection>
-        <LeftContent>
-          {detailImgs[0] && (
-            <DetailImg
-              src={detailImgs[0]}
-              alt={`${product.name} 상세 이미지`}
-            />
-          )}
-        </LeftContent>
+        <LeftContent>{detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}</LeftContent>
 
         <RightContent>
           <StickyBox>
@@ -1429,10 +1371,7 @@ export default function DetailedPage() {
 
                 return (
                   <AccordionItem key={accordion.title}>
-                    <AccordionBtn
-                      type="button"
-                      onClick={() => handleAccordionToggle(idx)}
-                    >
+                    <AccordionBtn type="button" onClick={() => handleAccordionToggle(idx)}>
                       <span>{accordion.title}</span>
                       <AccordionIcon>{isActive ? "−" : "+"}</AccordionIcon>
                     </AccordionBtn>
@@ -1483,19 +1422,11 @@ export default function DetailedPage() {
 
         <ReviewTabRow>
           <ReviewCountGroup>
-            <ReviewTabButton
-              type="button"
-              $active={reviewFilter === "photo"}
-              onClick={() => setReviewFilter("photo")}
-            >
+            <ReviewTabButton type="button" $active={reviewFilter === "photo"} onClick={() => setReviewFilter("photo")}>
               포토리뷰 ({photoReviewCount})
             </ReviewTabButton>
 
-            <ReviewTabButton
-              type="button"
-              $active={reviewFilter === "all"}
-              onClick={() => setReviewFilter("all")}
-            >
+            <ReviewTabButton type="button" $active={reviewFilter === "all"} onClick={() => setReviewFilter("all")}>
               전체리뷰 ({totalReviewCount})
             </ReviewTabButton>
           </ReviewCountGroup>
@@ -1504,64 +1435,59 @@ export default function DetailedPage() {
         </ReviewTabRow>
 
         <ReviewList>
-          {visibleReviews.map((review) => (
-            <ReviewCard key={review.id}>
-              <ReviewerInfo>
-                {review.nickname} : {review.memberType}
-              </ReviewerInfo>
+          {visibleReviews.length === 0 ? (
+            <EmptyReviewMessageBox>
+              <EmptyReviewMessage>리뷰가 없습니다.</EmptyReviewMessage>
+            </EmptyReviewMessageBox>
+          ) : (
+            <>
+              {visibleReviews.map((review) => (
+                <ReviewCard key={review.id}>
+                  <ReviewerInfo>
+                    {review.author} : {userType || review.memberType || "일반회원"}
+                  </ReviewerInfo>
 
-              <StarRow>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <StarIcon
-                    key={star}
-                    src={getStarIcon(star, review.rating)}
-                    alt={`별점 ${review.rating}점`}
-                  />
-                ))}
-              </StarRow>
+                  <StarRow>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <StarIcon key={star} src={getStarIcon(star, review.rating)} alt={`별점 ${review.rating}점`} />
+                    ))}
+                  </StarRow>
 
-              {review.images.length > 0 && (
-                <ReviewImageSliderWrap>
-                  {review.images.length > 3 && (
-                    <ReviewArrowLeft
-                      type="button"
-                      onClick={() => handleReviewImageMove(review, "prev")}
-                    >
-                      ‹
-                    </ReviewArrowLeft>
+                  {review.images.length > 0 && (
+                    <ReviewImageSliderWrap>
+                      {review.images.length > 3 && (
+                        <ReviewArrowLeft type="button" onClick={() => handleReviewImageMove(review, "prev")}>
+                          ‹
+                        </ReviewArrowLeft>
+                      )}
+
+                      <ReviewImageViewport>
+                        <ReviewSlideTrack>
+                          {getVisibleReviewImages(review).map((image) => (
+                            <ReviewImage key={image.imageIndex}>
+                              <img src={image.src} alt={`리뷰 이미지 ${image.imageIndex + 1}`} />
+                            </ReviewImage>
+                          ))}
+                        </ReviewSlideTrack>
+                      </ReviewImageViewport>
+
+                      {review.images.length > 3 && (
+                        <ReviewArrowRight type="button" onClick={() => handleReviewImageMove(review, "next")}>
+                          ›
+                        </ReviewArrowRight>
+                      )}
+                    </ReviewImageSliderWrap>
                   )}
 
-                  <ReviewImageViewport>
-                    <ReviewSlideTrack>
-                      {getVisibleReviewImages(review).map((image) => (
-                        <ReviewImage key={image.imageIndex}>
-                          <img
-                            src={image.src}
-                            alt={`리뷰 이미지 ${image.imageIndex + 1}`}
-                          />
-                        </ReviewImage>
-                      ))}
-                    </ReviewSlideTrack>
-                  </ReviewImageViewport>
+                  <ReviewText>{review.content}</ReviewText>
+                </ReviewCard>
+              ))}
 
-                  {review.images.length > 3 && (
-                    <ReviewArrowRight
-                      type="button"
-                      onClick={() => handleReviewImageMove(review, "next")}
-                    >
-                      ›
-                    </ReviewArrowRight>
-                  )}
-                </ReviewImageSliderWrap>
-              )}
-
-              <ReviewText>{review.content}</ReviewText>
-            </ReviewCard>
-          ))}
-
-          {emptyVisibleReviews.map((_, index) => (
-            <EmptyReviewCard key={`empty-visible-review-${index}`} />
-          ))}
+              {emptyVisibleReviews.map((_, index) => (
+                <EmptyReviewCard key={`empty-visible-review-${index}`} />
+              ))}
+            </>
+          )}
         </ReviewList>
 
         {totalReviewPages > 1 && (

@@ -45,14 +45,18 @@ export function addReview(reviewData) {
   const newReview = {
     // id: 현재 시각을 초로해서 문자열로
     id: Date.now().toString(),
+    // 리뷰 작성한 제품 아이디
+    productId: reviewData.productId,
     // 로컬에서 이름 꺼낼때 없으면 그냥 회원
     author: getUserName() || "회원",
+
     title: reviewData.title,
     content: reviewData.content,
     // 카테고리 all, seating. tables, lighting 중에 없으면 all로
     category: reviewData.category || "all",
     // 별점없으면 기본으로 5로
     rating: reviewData.rating || 5,
+    images: reviewData.images || [],
     // 리뷰 작성일  ISO 형식으로 저장해서 쓰기
     createdAt: new Date().toISOString(),
     // 구매일은 주문 완료뜰때 CompletedPage에서 저장한 날짜
