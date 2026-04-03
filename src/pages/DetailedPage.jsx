@@ -1165,7 +1165,7 @@ export default function DetailedPage() {
   // 현재 페이지 리뷰 자르기
   const visibleReviews = filteredReviews.slice(
     reviewPage * reviewsPerPage,
-    reviewPage * reviewsPerPage + reviewsPerPage,
+    reviewPage * reviewsPerPage + reviewsPerPage
   );
 
   // 빈 칸 채우기
