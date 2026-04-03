@@ -94,17 +94,20 @@ const CompleteButton = styled.button`
   font-size: ${Theme.fontsize.desktop.small};
 `;
 const ErrorMagWrap = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
 `;
 
 const ErrorMsg = styled.p`
+  position: absolute;
+  top: 100%;
+  left: 10px;
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.redaccent};
-  margin-top: 4px;
 `;
 
-export default function OrderReview({ item }) {
+export default function OrderReview({ item, onComplete }) {
   const [rating, setRating] = useState(0); //별점
   const [title, setTitle] = useState(""); //리뷰 제목
   const [content, setContent] = useState(""); //리뷰 본문
@@ -184,43 +187,51 @@ export default function OrderReview({ item }) {
       });
       return;
     }
+    try {
+      //현재 날짜 계산
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      const reviewDate = `${year}-${month}-${day}`;
 
-    //현재 날짜 계산
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    const reviewDate = `${year}-${month}-${day}`;
+      // 복잡한 무작위 UUID 생성
+      const reviewId = crypto.randomUUID();
 
-    // 복잡한 무작위 UUID 생성
-    const reviewId = crypto.randomUUID();
+      //리뷰 내역 불러오기
+      const existingReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
 
-    //리뷰 내역 불러오기
-    const existingReviews = JSON.parse(localStorage.getItem("user-reviews") || "[]");
+      const reviewData = {
+        id: reviewId, // 고유 ID (상품 ID는 중복가능성이 높기 때문에 랜덤 UUID로 고유 ID 설정)
+        productId: item.id, // 상품 ID
+        name: item.name, // 상품 이름
+        rating: rating, // 별점
+        title: title, // 리뷰 제목
+        content: content, // 리뷰 내용
+        date: reviewDate, // 리뷰 작성 날짜
+        orderDate: item.orderDate, // 상품 구매 날짜
+        author: userInfo.name, // 작성자 이름
+        images: images, // 이미지
+      };
 
-    const reviewData = {
-      id: reviewId, // 고유 ID (상품 ID는 중복가능성이 높기 때문에 랜덤 UUID로 고유 ID 설정)
-      productId: item.id, // 상품 ID
-      name: item.name, // 상품 이름
-      rating: rating, // 별점
-      title: title, // 리뷰 제목
-      content: content, // 리뷰 내용
-      date: reviewDate, // 리뷰 작성 날짜
-      orderDate: item.orderDate, // 상품 구매 날짜
-      author: userInfo.name, // 작성자 이름
-      images: images, // 이미지
-    };
+      // 작성한 리뷰 추가 및 로컬스토리지 저장
+      const updateReviews = [reviewData, ...existingReviews];
+      localStorage.setItem("reviews", JSON.stringify(updateReviews));
 
-    // 작성한 리뷰 추가 및 로컬스토리지 저장
-    const updateReviews = [reviewData, ...existingReviews];
-    localStorage.setItem("user-reviews", JSON.stringify(updateReviews));
+      // 부모 쪽에서 버튼을 닫는 로직 받아오기
+      if (onComplete) {
+        onComplete();
+      }
 
-    //저장 후 모든 상태 초기화
-    setRating(0);
-    setTitle("");
-    setContent("");
-    setErrors({ rating: false, input: false });
-    setImages([]);
+      //저장 후 모든 상태 초기화
+      setRating(0);
+      setTitle("");
+      setContent("");
+      setErrors({ rating: false, input: false });
+      setImages([]);
+    } catch (error) {
+      console.error("리뷰 저장 중 오류 발생:", error);
+    }
   };
 
   return (
