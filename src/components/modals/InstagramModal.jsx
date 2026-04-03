@@ -23,7 +23,7 @@ const Overlay = styled.div`
 
   ${({ theme }) => theme.media.mobile} {
     top: 260px;
-    left: 47%;
+    left: 52%;
     transform: translate(-50%, -50%);
   }
 `;
@@ -48,7 +48,7 @@ const ModalInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 5.5px;
   padding: 25px 20px 37px;
   background-image: url(${bgImage});
   background-size: cover;
@@ -167,8 +167,8 @@ const InstaLabel = styled.p`
 const QrBox = styled.div`
   position: relative;
   z-index: 1;
-  width: 140px;
-  height: 140px;
+  width: 130px;
+  height: 130px;
   background-color: ${Theme.colors.white};
   display: flex;
   justify-content: center;
@@ -178,11 +178,13 @@ const QrBox = styled.div`
   ${({ theme }) => theme.media.tablet} {
     width: 110px;
     height: 110px;
+    padding: 8px;
   }
 
   ${({ theme }) => theme.media.mobile} {
     width: 90px;
     height: 90px;
+    padding: 6px;
   }
 `;
 

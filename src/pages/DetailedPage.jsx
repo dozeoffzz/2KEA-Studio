@@ -596,6 +596,7 @@ const AccordionBody = styled.div`
   transition: 0.45s ease;
 `;
 
+// 아코디언 내용
 const AccordionContent = styled.div`
   padding: 0px 0px 16px;
   color: ${Theme.colors.textsecondary};
@@ -628,6 +629,7 @@ const ReviewSection = styled.section`
   }
 `;
 
+// 리뷰 제목
 const ReviewTitle = styled.h3`
   font-size: 32px;
   font-weight: 600;
@@ -655,6 +657,7 @@ const ReviewSummary = styled.div`
   }
 `;
 
+// 리뷰 평점 박스
 const RatingBox = styled.div`
   padding: 28px 24px;
   border-right: 1px solid #222222;
@@ -665,6 +668,7 @@ const RatingBox = styled.div`
   }
 `;
 
+// 리뷰 평점 요약 박스
 const RatingSummaryWrap = styled.div`
   display: flex;
   justify-content: space-around;
@@ -725,6 +729,7 @@ const RatingPercent = styled.span`
   }
 `;
 
+// 리뷰 평점 그래프 바
 const RatingBarWrap = styled.div`
   width: 6px;
   border-radius: 20px;
@@ -752,6 +757,7 @@ const BestReviewBox = styled.div`
   justify-content: flex-start;
 `;
 
+// best review 제목
 const BestReviewTitle = styled.p`
   margin: 0;
   font-size: 17px;
@@ -821,6 +827,7 @@ const ReviewTabButton = styled.button`
   }
 `;
 
+// 리뷰 리스트
 const ReviewList = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -855,6 +862,7 @@ const ReviewCard = styled.article`
   }
 `;
 
+// 리뷰 작성자 정보
 const ReviewerInfo = styled.p`
   font-size: 16px;
   margin-bottom: 10px;
@@ -877,6 +885,7 @@ const StarIcon = styled.img`
   flex-shrink: 0;
 `;
 
+// 리뷰 이미지 슬라이더 영역
 const ReviewImageSliderWrap = styled.div`
   position: relative;
   display: flex;
