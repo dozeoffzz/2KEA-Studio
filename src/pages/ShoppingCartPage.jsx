@@ -335,10 +335,12 @@ const EditInfo = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
+
 const EditInfoBtn = styled.button`
   font-size: ${Theme.fontsize.desktop.small};
   color: ${Theme.colors.blacktext};
 `;
+
 const EditCancel = styled.button`
   margin-right: 20px;
   font-size: ${Theme.fontsize.desktop.small};
@@ -363,13 +365,15 @@ const InputAddress = styled(InputName)``;
 
 const InputNameEdit = styled.input`
   padding: 5px 0;
-  outline: 1px solid ${Theme.colors.black};
+  outline: none;
+  border: none;
   text-align: right;
   width: 80%;
 `;
 const InputPhoneEdit = styled(InputNameEdit)``;
 const InputEmailEdit = styled(InputNameEdit)``;
 const InputAddressEdit = styled(InputNameEdit)``;
+
 // 폰 010 고정 + 중간 + 끝 가로로 묶는 박스
 const PhoneInputWrap = styled.div`
   display: flex;
@@ -536,7 +540,6 @@ export default function ShoppingCartPage() {
   const [userInfo, setUserInfo] = useState(null);
   // 정보 수정을 위한 상태값
   const [isEdit, setIsEdit] = useState(false);
-  // 필요한 유효성 검사 기본값
 
   // 폰 중간 4자리 채우면 끝번호로 자동 이동하는 ref
   const phoneEndRef = useRef(null);
@@ -563,7 +566,8 @@ export default function ShoppingCartPage() {
           // 입력한 주소 또는 기본주소
           const finalUser = {
             ...data.userInfo,
-            ...(savedUser || {}), //  수정값 덮어쓰기
+            // 수정값 덮어쓰기
+            ...(savedUser || {}),
             address: savedAddress || data.userInfo.address,
           };
 
@@ -598,7 +602,6 @@ export default function ShoppingCartPage() {
 
   function handleInput(e) {
     const { name, value } = e.target;
-
     let okValue = value;
 
     // 폰 중간이랑 끝 숫자만 입력할수 있고 4자리 넘어가면 막기
@@ -617,10 +620,7 @@ export default function ShoppingCartPage() {
       okValue = value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
     }
 
-    setForm((prev) => ({
-      ...prev,
-      [name]: okValue,
-    }));
+    setForm((prev) => ({ ...prev, [name]: okValue }));
 
     if (error[name]) {
       setError((prev) => ({ ...prev, [name]: false }));
@@ -633,7 +633,7 @@ export default function ShoppingCartPage() {
     }
   }
 
-  // 회원가입이랑 같은 유효성
+  // 회원가입이랑 같은 유효성 검사
   function validateForm() {
     let newErrors = {};
     let newMsgs = {};
@@ -696,7 +696,7 @@ export default function ShoppingCartPage() {
   const handleOrder = () => {
     // 상품이 없다면 되돌아 가라!
     if (!HaveItems) return;
-    // 폼 입력이 제대로 되지 않았다면 되돌아가라
+    // 폼 유효성 검사 통과해야 주문 진행
     const isValid = validateForm();
     if (!isValid) return;
 
@@ -720,22 +720,14 @@ export default function ShoppingCartPage() {
     // 저장
     localStorage.setItem(
       "orderData",
-      JSON.stringify({
-        totalQuantity,
-        totalPrice,
-        earnedPoint,
-      }),
+      JSON.stringify({ totalQuantity, totalPrice, earnedPoint }),
     );
-
     localStorage.setItem("point", currentPoint + earnedPoint);
 
     // 배송 상태 저장
     localStorage.setItem(
       "delivery",
-      JSON.stringify({
-        inDelivery: totalQuantity,
-        done: 0,
-      }),
+      JSON.stringify({ inDelivery: totalQuantity, done: 0 }),
     );
 
     // 있으면 모달
@@ -744,7 +736,7 @@ export default function ShoppingCartPage() {
 
   const handleCheckedOrder = () => {
     if (!HaveCheckedItems) return;
-    // 폼 입력이 제대로 되지 않았다면 되돌아가라
+    // 폼 유효성 검사 통과해야 주문 진행
     const isValid = validateForm();
     if (!isValid) return;
 
@@ -768,22 +760,14 @@ export default function ShoppingCartPage() {
     // 저장
     localStorage.setItem(
       "orderData",
-      JSON.stringify({
-        totalQuantity,
-        totalPrice,
-        earnedPoint,
-      }),
+      JSON.stringify({ totalQuantity, totalPrice, earnedPoint }),
     );
-
     localStorage.setItem("point", currentPoint + earnedPoint);
 
     // 배송 상태 저장
     localStorage.setItem(
       "delivery",
-      JSON.stringify({
-        inDelivery: totalQuantity,
-        done: 0,
-      }),
+      JSON.stringify({ inDelivery: totalQuantity, done: 0 }),
     );
 
     setOrderIsOpen(true);
@@ -793,6 +777,7 @@ export default function ShoppingCartPage() {
     if (!HaveItems) return;
     setIsOpen(true);
   };
+
   // 수정 내용 저장
   const handleSave = () => {
     const fullPhone = `010${form.phoneMid}${form.phoneEnd}`;
@@ -831,6 +816,7 @@ export default function ShoppingCartPage() {
     }
     setIsEdit((prev) => !prev);
   };
+
   return (
     <CartContainer>
       <CartListWrap>
@@ -931,7 +917,6 @@ export default function ShoppingCartPage() {
               <PhoneInputWrap>
                 <PhoneFixed>010</PhoneFixed>
                 <PhoneFixed>-</PhoneFixed>
-
                 {/* 중간 4자리 입력하면 끝번호로 자동 이동 */}
                 <PhonePartInput
                   name="phoneMid"
@@ -944,7 +929,6 @@ export default function ShoppingCartPage() {
                   onChange={handleInput}
                 />
                 <PhoneFixed>-</PhoneFixed>
-
                 {/* 끝에 4자리 */}
                 <PhonePartInput
                   name="phoneEnd"
@@ -962,8 +946,6 @@ export default function ShoppingCartPage() {
               <PhoneInputWrap>
                 <PhoneFixed>010</PhoneFixed>
                 <PhoneFixed>-</PhoneFixed>
-
-                {/* 중간 4자리 입력하면 끝번호로 자동 이동 */}
                 <PhonePartInput
                   name="phoneMid"
                   type="text"
@@ -971,12 +953,9 @@ export default function ShoppingCartPage() {
                   placeholder="0000"
                   maxLength="4"
                   inputMode="numeric"
-                  error={error.phoneMid}
-                  onChange={handleInput}
+                  readOnly
                 />
                 <PhoneFixed>-</PhoneFixed>
-
-                {/* 끝에 4자리 */}
                 <PhonePartInput
                   name="phoneEnd"
                   type="text"
@@ -984,9 +963,7 @@ export default function ShoppingCartPage() {
                   placeholder="0000"
                   maxLength="4"
                   inputMode="numeric"
-                  ref={phoneEndRef}
-                  error={error.phoneEnd}
-                  onChange={handleInput}
+                  readOnly
                 />
               </PhoneInputWrap>
             )}
@@ -1010,7 +987,7 @@ export default function ShoppingCartPage() {
                 placeholder="Email"
                 type="email"
                 value={userInfo?.email || ""}
-                onChange={handleInput}
+                readOnly
               />
             )}
           </OrderEmail>
@@ -1023,7 +1000,7 @@ export default function ShoppingCartPage() {
               <InputAddressEdit
                 name="address"
                 placeholder="Address"
-                type="address"
+                type="text"
                 value={form.address}
                 onChange={handleInput}
               />
@@ -1031,26 +1008,30 @@ export default function ShoppingCartPage() {
               <InputAddress
                 name="address"
                 placeholder="Address"
-                type="address"
+                type="text"
                 value={userInfo?.address || ""}
-                onChange={handleInput}
+                readOnly
               />
             )}
           </OrderAddress>
+
+          {/* 수정완료/정보수정 버튼 */}
           <EditInfo>
             <EditInfoBtn onClick={isEdit ? handleSave : handleEditToggle}>
               {isEdit && (
-                <EditCancel onClick={() => setIsEdit(!isEdit)}>
+                <EditCancel
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsEdit(false);
+                  }}
+                >
                   수정취소
                 </EditCancel>
               )}
-
               {isEdit ? "수정완료" : "정보수정"}
             </EditInfoBtn>
           </EditInfo>
-          {msg.address && (
-            <ErrorMsg style={{ color: "red" }}>{msg.address}</ErrorMsg>
-          )}
+          {msg.address && <ErrorMsg>{msg.address}</ErrorMsg>}
         </OrderInfoForm>
 
         <ThanksMsg>Thanks</ThanksMsg>

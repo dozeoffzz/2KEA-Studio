@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Theme } from "../styles/theme";
 import { authMeApi } from "../apis/authMeApi";
 import { useCartStore } from "../stores/useCartStore";
@@ -30,7 +30,7 @@ const UserTypeText = styled.p`
   text-align: right;
   width: 600px;
   font-size: ${Theme.fontsize.desktop.mini};
-  color: red;
+  color: ${Theme.colors.redaccent};
   ${({ theme }) => theme.media.tablet} {
     width: 550px;
   }
@@ -38,6 +38,7 @@ const UserTypeText = styled.p`
     display: none;
   }
 `;
+
 const MyInfo = styled.div`
   margin-top: 100px;
   display: flex;
@@ -45,7 +46,7 @@ const MyInfo = styled.div`
   gap: 50px;
   min-width: 600px;
   font-size: ${Theme.fontsize.desktop.medium};
-
+  letter-spacing: 0.05em !important;
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
     min-width: 500px;
@@ -56,11 +57,23 @@ const MyInfo = styled.div`
   }
 `;
 
+// outline 박스 제거하고 밑줄만
 const Input = styled.input`
   width: 80%;
   text-align: right;
-  outline: 1px solid ${Theme.colors.black};
+  outline: none;
+  border: none;
+  background: transparent;
+  font-size: ${Theme.fontsize.desktop.medium};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
 `;
+
 const MobileWrap = styled.div`
   display: flex;
   justify-content: space-between;
@@ -75,9 +88,66 @@ const MobileWrap = styled.div`
     width: 100%;
   }
 `;
+
 const EmailWrap = styled(MobileWrap)``;
 const AddressWrap = styled(MobileWrap)``;
 const IdWrap = styled(MobileWrap)``;
+
+// 에러 메시지 스타일
+const ErrorMsg = styled.p`
+  font-size: ${Theme.fontsize.desktop.small};
+  text-align: right;
+  color: ${Theme.colors.redaccent};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.small};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
+`;
+
+// 폰 010 고정,  중간, 끝 가로로 묶는 박스
+const PhoneInputWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-end;
+  flex: 1;
+`;
+
+// 폰 010 고정 텍스트랑 - 기호
+const PhoneFixed = styled.span`
+  font-size: ${Theme.fontsize.desktop.medium};
+  white-space: nowrap;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
+`;
+
+// 중간이랑 끝 4자리 입력창
+const PhonePartInput = styled.input`
+  width: 55px;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: ${Theme.fontsize.desktop.medium};
+  background: transparent;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+    width: 45px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+    width: 38px;
+  }
+`;
+
 const Button = styled.button`
   margin: 50px 0;
   display: flex;
@@ -96,17 +166,20 @@ const Button = styled.button`
     font-size: ${Theme.fontsize.tablet.small};
   }
 `;
+
 const HeartItem = styled.div`
   margin-top: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
+
 const ButtonWrap = styled.div`
   margin-bottom: 10px;
   display: flex;
   gap: 20px;
 `;
+
 const ButtonIcon = styled.button`
   font-size: ${Theme.fontsize.desktop.section};
 
@@ -117,12 +190,14 @@ const ButtonIcon = styled.button`
     font-size: ${Theme.fontsize.tablet.small};
   }
 `;
+
 const RecentItemWrap = styled.div`
   margin-bottom: 80px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
+
 const RecentItem = styled.div`
   position: relative;
   display: flex;
@@ -157,6 +232,7 @@ const RecentItemImg = styled.img`
   opacity: ${(props) => (props.visible ? 1 : 0)};
   transition: opacity 0.9s ease;
 `;
+
 const SliderWrapper = styled.div`
   overflow: hidden;
   width: 890px;
@@ -168,6 +244,7 @@ const SliderWrapper = styled.div`
     width: 342px;
   }
 `;
+
 const SliderTrack = styled.div`
   display: flex;
   gap: 30px;
@@ -185,12 +262,23 @@ export default function MyPage() {
   const [hoverImg, setHoverImg] = useState(null);
 
   // 수정사항을 저장하기 위한 상태값
+  // 폰 phoneMid, phoneEnd 로 분리
   const [editData, setEditData] = useState({
     name: "",
-    phone: "",
+    phoneMid: "",
+    phoneEnd: "",
     email: "",
     address: "",
   });
+
+  // 폰 중간 4자리 채우면 끝번호로 자동 이동
+  const phoneEndRef = useRef(null);
+
+  // 에러 상태값
+  const [errors, setErrors] = useState({});
+  // 에러 메시지 상태값
+  const [msgs, setMsgs] = useState({});
+
   // 최근 본 상품 리스트를 가져오기 위한 상태값
   const [recentProducts, setRecentProducts] = useState(() => {
     try {
@@ -199,12 +287,14 @@ export default function MyPage() {
       return [];
     }
   });
+
   const [orderData, setOrderData] = useState({
     totalQuantity: 0,
     totalPrice: 0,
     point: 0,
     delivery: { inDelivery: 0, done: 0 },
   });
+
   useEffect(() => {
     // 상품 주문한 아이템
     const order = JSON.parse(localStorage.getItem("orderData")) || {};
@@ -226,6 +316,7 @@ export default function MyPage() {
       delivery,
     });
   }, []);
+
   // api 연결하기
   useEffect(() => {
     async function fetchUser() {
@@ -255,11 +346,99 @@ export default function MyPage() {
     }
     fetchUser();
   }, []);
+
+  // 입력 핸들러로 한글 막기. 전화번호 자동 이동
+  function handleInput(e) {
+    const { name, value } = e.target;
+    let okValue = value;
+
+    // 전화번호 중간이랑 끝 숫자만 입력, 4자리까지만
+    if (name === "phoneMid" || name === "phoneEnd") {
+      okValue = value.replace(/[^0-9]/g, "");
+      if (okValue.length > 4) return;
+    }
+
+    // 이름 한글만 입력
+    if (name === "name") {
+      okValue = value.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+    }
+
+    // 이메일 한글 못쓰게
+    if (name === "email") {
+      okValue = value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+    }
+
+    setEditData((prev) => ({ ...prev, [name]: okValue }));
+
+    // 입력하면 에러 없애기
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: false }));
+      setMsgs((prev) => ({ ...prev, [name]: "" }));
+    }
+
+    // 전화번호 중간 4자리 채우면 끝번호로 자동 이동
+    if (name === "phoneMid" && okValue.length === 4) {
+      phoneEndRef.current.focus();
+    }
+  }
+
+  // 유효성 검사 회원가입, 카트랑 동일규칙
+  function validateEdit() {
+    let newErrors = {};
+    let newMsgs = {};
+
+    // 이름 - 한글만 2~10글자
+    const nameRegex = /^[가-힣]{2,10}$/;
+    if (!editData.name.trim()) {
+      newErrors.name = true;
+      newMsgs.name = "이름을 입력해주세요";
+    } else if (!nameRegex.test(editData.name)) {
+      newErrors.name = true;
+      newMsgs.name = "이름은 한글로 2~10글자 입력해주세요";
+    }
+
+    // 전화번호 - 중간/끝 각 4자리
+    if (!editData.phoneMid.trim() || !editData.phoneEnd.trim()) {
+      newErrors.phoneMid = true;
+      newMsgs.phoneMid = "전화번호를 입력해주세요";
+    } else if (editData.phoneMid.length < 4 || editData.phoneEnd.length < 4) {
+      newErrors.phoneMid = true;
+      newMsgs.phoneMid = "전화번호는 각 4자리씩 입력해주세요";
+    }
+
+    // 이메일 - 이메일 형식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!editData.email.trim()) {
+      newErrors.email = true;
+      newMsgs.email = "이메일을 입력해주세요";
+    } else if (!emailRegex.test(editData.email)) {
+      newErrors.email = true;
+      newMsgs.email = "이메일 형식이 올바르지 않습니다";
+    }
+
+    // 주소 - 빈칸 체크
+    if (!editData.address.trim()) {
+      newErrors.address = true;
+      newMsgs.address = "주소를 입력해주세요";
+    }
+
+    setErrors(newErrors);
+    setMsgs(newMsgs);
+
+    // 에러 없으면 true → 저장 진행
+    return Object.keys(newErrors).length === 0;
+  }
+
   // 수정 값 저장하기
   const handleSave = () => {
+    //  저장 전 유효성 검사 통과해야 저장됨
+    const isValid = validateEdit();
+    if (!isValid) return;
+
     const updatedUser = {
       name: editData.name,
-      phone: editData.phone,
+      // ← 폰 phoneMid, phoneEnd 합쳐서 저장
+      phone: `010-${editData.phoneMid}-${editData.phoneEnd}`,
       email: editData.email,
       address: editData.address,
     };
@@ -277,18 +456,26 @@ export default function MyPage() {
     // 수정 누를 때 값 입력하기
     window.scrollTo(0, 0);
   };
+
   // 수정 누를 때 값 입력하기
   const handleEditToggle = () => {
     if (!isEdit) {
+      // 폰 split으로 중간, 끝 분리
+      const phoneParts = (userInfo?.phone || "").split("-");
       setEditData({
         name: userInfo?.name || "",
-        phone: userInfo?.phone || "",
+        phoneMid: phoneParts[1] || "",
+        phoneEnd: phoneParts[2] || "",
         email: userInfo?.email || "",
         address: userInfo?.address || "",
       });
+      // 수정 모드 열 때 에러 초기화
+      setErrors({});
+      setMsgs({});
     }
     setIsEdit(!isEdit);
   };
+
   // 최근 본 상품 슬라이드
 
   // 현재 페이지
@@ -336,49 +523,103 @@ export default function MyPage() {
           <p>Id</p>
           <p>{userInfo?.loginId}</p>
         </IdWrap>
+
+        {/* 전화번호 */}
         <MobileWrap>
           <p>Phone</p>
           {isEdit ? (
-            <Input
-              value={editData.phone}
-              onChange={(e) =>
-                setEditData({ ...editData, phone: e.target.value })
-              }
-            />
+            // 010 고정 중간, 끝 분리
+            <PhoneInputWrap>
+              <PhonePartInput
+                value="010"
+                readOnly
+                style={{ width: "35px", cursor: "default" }}
+              />
+              <PhoneFixed>-</PhoneFixed>
+              {/* 중간 4자리 - 채우면 끝번호로 자동 이동 */}
+              <PhonePartInput
+                name="phoneMid"
+                type="text"
+                value={editData.phoneMid}
+                placeholder="0000"
+                maxLength="4"
+                inputMode="numeric"
+                onChange={handleInput}
+              />
+              <PhoneFixed>-</PhoneFixed>
+              {/* 끝 4자리 */}
+              <PhonePartInput
+                name="phoneEnd"
+                type="text"
+                value={editData.phoneEnd}
+                placeholder="0000"
+                maxLength="4"
+                inputMode="numeric"
+                ref={phoneEndRef}
+                onChange={handleInput}
+              />
+            </PhoneInputWrap>
           ) : (
             <p>{userInfo?.phone}</p>
           )}
         </MobileWrap>
+        {/* 폰 에러 메시지 */}
+        {isEdit && msgs.phoneMid && <ErrorMsg>{msgs.phoneMid}</ErrorMsg>}
+
+        {/* 이름 */}
+        <MobileWrap>
+          <p>Name</p>
+          {isEdit ? (
+            <Input
+              name="name"
+              value={editData.name}
+              onChange={handleInput}
+              placeholder="한글 2~10글자"
+            />
+          ) : (
+            <p>{userInfo?.name}</p>
+          )}
+        </MobileWrap>
+        {/* 이름 에러 메시지 */}
+        {isEdit && msgs.name && <ErrorMsg>{msgs.name}</ErrorMsg>}
+
         <EmailWrap>
           <p>Email</p>
           {isEdit ? (
             <Input
+              name="email"
               value={editData.email}
-              onChange={(e) =>
-                setEditData({ ...editData, email: e.target.value })
-              }
+              onChange={handleInput}
+              placeholder="이메일 입력"
             />
           ) : (
             <p>{userInfo?.email}</p>
           )}
         </EmailWrap>
+        {/* 이메일 에러 메시지 */}
+        {isEdit && msgs.email && <ErrorMsg>{msgs.email}</ErrorMsg>}
+
         <AddressWrap>
           <p>Address</p>
           {isEdit ? (
             <Input
+              name="address"
               value={editData.address}
-              onChange={(e) =>
-                setEditData({ ...editData, address: e.target.value })
-              }
+              onChange={handleInput}
+              placeholder="주소 입력"
             />
           ) : (
             <p>{userInfo?.address}</p>
           )}
         </AddressWrap>
+        {/* 주소 에러 메시지 */}
+        {isEdit && msgs.address && <ErrorMsg>{msgs.address}</ErrorMsg>}
       </MyInfo>
+
       <Button onClick={isEdit ? handleSave : handleEditToggle}>
         {isEdit ? "완료" : "수정"}
       </Button>
+
       <RecentItemWrap>
         {recentProducts.length === 0 ? (
           <p>최근 본 상품이 없습니다.</p>

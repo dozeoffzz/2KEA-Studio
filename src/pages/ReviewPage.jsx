@@ -102,6 +102,7 @@ const FilterWrap = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 12px;
 `;
 
 // 분류
@@ -208,6 +209,7 @@ const ReviewItem = styled.li`
   display: flex;
   align-items: center;
   padding: 30px 0 50px 0;
+  border-top: 1px solid ${Theme.colors.grayline};
   border-bottom: 1px solid ${Theme.colors.grayline};
 
   /* 리뷰 없을 때 */
@@ -328,7 +330,10 @@ function CustomDropdown({ options, value, onChange }) {
   return (
     <DropdownWrap ref={dropdownRef}>
       {/* 클릭하면 열리고 닫히는 토글 */}
-      <DropdownBtn className={isOpen ? "open" : ""} onClick={() => setIsOpen((prev) => !prev)}>
+      <DropdownBtn
+        className={isOpen ? "open" : ""}
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
         {selectedLabel}
       </DropdownBtn>
 
@@ -425,7 +430,12 @@ export default function ReviewPage() {
     setTimeout(() => {
       // 로컬에서 전체 리뷰 꺼내서 필터에 넣기
       const allReviews = getReviews();
-      const filtered = applyFilter(allReviews, category, searchField, appliedKeyword);
+      const filtered = applyFilter(
+        allReviews,
+        category,
+        searchField,
+        appliedKeyword,
+      );
       setReviews(filtered);
     }, 0);
   }, [category, searchField, appliedKeyword]);
@@ -439,7 +449,12 @@ export default function ReviewPage() {
 
     // 삭제하고 리뷰바로 조정하기
     const allReviews = getReviews();
-    const filtered = applyFilter(allReviews, category, searchField, appliedKeyword);
+    const filtered = applyFilter(
+      allReviews,
+      category,
+      searchField,
+      appliedKeyword,
+    );
     setReviews(filtered);
   }
 
@@ -464,7 +479,11 @@ export default function ReviewPage() {
   return (
     <ReviewPageContainer>
       <SideMenuBar />
-      <MyProfile userInfo={userInfo} orderData={orderData} cartItem={cartItem} />
+      <MyProfile
+        userInfo={userInfo}
+        orderData={orderData}
+        cartItem={cartItem}
+      />
 
       <ReviewContainer>
         <ReviewInfoWrap>
@@ -500,7 +519,7 @@ export default function ReviewPage() {
             />
           </FilterWrap>
 
-          <ReviewHeader>
+          {/* <ReviewHeader>
             <HeaderCell flex="1" align="left">
               제목 :
             </HeaderCell>
@@ -509,7 +528,7 @@ export default function ReviewPage() {
             <HeaderCell width="100px">구매일 :</HeaderCell>
             <HeaderCell width="90px">조회 :</HeaderCell>
             <HeaderCell width="30px"></HeaderCell>
-          </ReviewHeader>
+          </ReviewHeader> */}
         </ReviewInfoWrap>
 
         {/* 리뷰 목록 */}
@@ -522,7 +541,12 @@ export default function ReviewPage() {
             reviews.map((review) => (
               <ReviewItem key={review.id}>
                 {/* 제목 너무 길면 말줄임표... */}
-                <ReviewCell className="title" flex="1" align="left" style={{ maxWidth: "320px" }}>
+                <ReviewCell
+                  className="title"
+                  flex="1"
+                  align="left"
+                  style={{ maxWidth: "320px" }}
+                >
                   {review.title}
                 </ReviewCell>
 
@@ -530,19 +554,27 @@ export default function ReviewPage() {
                 <ReviewCell width="100px">{review.author}</ReviewCell>
 
                 {/* 작성일  */}
-                <ReviewCell width="130px">{formatShortDate(review.createdAt)}</ReviewCell>
+                <ReviewCell width="130px">
+                  {formatShortDate(review.createdAt)}
+                </ReviewCell>
 
                 {/* 구매일 */}
-                <ReviewCell width="100px">{formatShortDate(review.purchasedAt)}</ReviewCell>
+                <ReviewCell width="100px">
+                  {formatShortDate(review.purchasedAt)}
+                </ReviewCell>
 
                 {/* 조회수 */}
-                <ReviewCell width="90px">{formatViews(review.views)}</ReviewCell>
+                <ReviewCell width="90px">
+                  {formatViews(review.views)}
+                </ReviewCell>
 
                 {/* 헤더랑 열 맞추기용 */}
                 <ReviewCell width="30px"></ReviewCell>
 
                 {/* 삭제 버튼 */}
-                <DeleteBtn onClick={() => handleDelete(review.id)}>삭제</DeleteBtn>
+                <DeleteBtn onClick={() => handleDelete(review.id)}>
+                  삭제
+                </DeleteBtn>
               </ReviewItem>
             ))
           )}
