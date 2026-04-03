@@ -6,16 +6,14 @@ import WithdrawModal from "../modals/WithdrawModal";
 
 const SideMenu = styled.div`
   position: fixed;
-  top: 200px;
-  right: 150px;
+  top: 120px;
+  left: 0;
+  right: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  min-width: 300px;
-  height: 250px;
-  border-top: 1px solid ${Theme.colors.grayline};
-  border-bottom: 1px solid ${Theme.colors.grayline};
+  justify-content: space-around;
+  width: 100%;
   z-index: 1;
+  border-bottom: 1px solid ${Theme.colors.grayline};
 
   ${({ theme }) => theme.media.tablet} {
     position: fixed;
@@ -28,8 +26,6 @@ const SideMenu = styled.div`
     left: 0;
     width: 100%;
     height: 40px;
-    border: none;
-    border-bottom: 1px solid ${Theme.colors.grayline};
   }
 
   ${({ theme }) => theme.media.mobile} {
@@ -44,18 +40,15 @@ const SideMenu = styled.div`
     left: 0;
     width: 100%;
     height: 40px;
-    border: none;
-    border-bottom: 1px solid ${Theme.colors.grayline};
   }
 `;
 
-const SideMenuTap = styled.div`
+const SideMenuMyPage = styled.div`
   padding: 10px;
   display: flex;
   flex: 1;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  border-bottom: 1px solid ${Theme.colors.grayline};
 
   ${({ theme }) => theme.media.tablet} {
     display: flex;
@@ -74,25 +67,59 @@ const SideMenuTap = styled.div`
   }
 `;
 
-const SideMenuRightIcon = styled.p`
+const SideMenuOrder = styled.div`
+  padding: 10px;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+
   ${({ theme }) => theme.media.tablet} {
-    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    display: none;
+    padding: 0;
+    font-size: ${Theme.fontsize.mobile.mini};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
   }
 `;
+const SideMenuReivew = styled.div`
+  padding: 10px;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 
-const SideMenuReview = styled(SideMenuTap)``;
+  ${({ theme }) => theme.media.tablet} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0;
+    font-size: ${Theme.fontsize.mobile.mini};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+`;
 
 const SideMenuInsta = styled.a`
   padding: 10px;
   display: flex;
   flex: 1;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  border-bottom: 1px solid ${Theme.colors.grayline};
 
   ${({ theme }) => theme.media.tablet} {
     border: none;
@@ -111,7 +138,7 @@ const SideMenuOut = styled.button`
   padding: 10px;
   display: flex;
   flex: 1;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   color: ${Theme.colors.black};
   background: transparent;
@@ -140,7 +167,7 @@ const SideMenuOut = styled.button`
 const NavLinkTo = styled(NavLink)`
   display: flex;
   flex: 1;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
   ${({ theme }) => theme.media.tablet} {
@@ -177,35 +204,30 @@ export default function SideMenuBar() {
   return (
     <>
       <SideMenu>
-        <SideMenuTap>
+        <SideMenuMyPage>
           <NavLinkTo to={"/auth/me"}>
             <p>마이페이지</p>
-            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
           </NavLinkTo>
-        </SideMenuTap>
+        </SideMenuMyPage>
 
-        <SideMenuTap>
+        <SideMenuOrder>
           <NavLinkTo to={"/auth/me/order"}>
             <p>주문내역</p>
-            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
           </NavLinkTo>
-        </SideMenuTap>
+        </SideMenuOrder>
 
-        <SideMenuTap>
+        <SideMenuReivew>
           <NavLinkTo to={"/auth/me/review"}>
             <p>리뷰</p>
-            <SideMenuRightIcon>&gt;</SideMenuRightIcon>
           </NavLinkTo>
-        </SideMenuTap>
+        </SideMenuReivew>
 
         <SideMenuInsta href="https://www.instagram.com/2kea_studio/" target="_blank" rel="noopener noreferrer">
           <p>인스타그램</p>
-          <SideMenuRightIcon>&gt;</SideMenuRightIcon>
         </SideMenuInsta>
 
         <SideMenuOut type="button" onClick={handleOpenWithdrawModal}>
           <p>회원탈퇴</p>
-          <SideMenuRightIcon>&gt;</SideMenuRightIcon>
         </SideMenuOut>
       </SideMenu>
 
