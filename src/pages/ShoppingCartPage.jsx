@@ -985,15 +985,15 @@ export default function ShoppingCartPage() {
           </OrderAddress>
           <EditInfo>
             <EditInfoBtn onClick={isEdit ? handleSave : handleEditToggle}>
-<<<<<<< HEAD
+
               {isEdit && (
                 <EditCancel onClick={() => setIsEdit(!isEdit)}>
                   수정취소
                 </EditCancel>
               )}
-=======
+
               {isEdit && <EditCancel onClick={() => setIsEdit(!isEdit)}>수정취소</EditCancel>}
->>>>>>> origin/dev
+
               {isEdit ? "수정완료" : "정보수정"}
             </EditInfoBtn>
           </EditInfo>
