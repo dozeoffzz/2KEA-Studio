@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Theme } from "../styles/theme";
 import { authMeApi } from "../apis/authMeApi";
 import { useCartStore } from "../stores/useCartStore";
@@ -43,7 +43,7 @@ const MyInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 50px;
-  min-width: 500px;
+  min-width: 600px;
   font-size: ${Theme.fontsize.desktop.medium};
 
   ${({ theme }) => theme.media.tablet} {
@@ -124,25 +124,38 @@ const RecentItemWrap = styled.div`
   gap: 20px;
 `;
 const RecentItem = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
   text-align: right;
   width: 200px;
-  height: 294px;
+  height: 250px;
 
   ${({ theme }) => theme.media.tablet} {
   }
   ${({ theme }) => theme.media.mobile} {
     width: 156px;
-    height: 239px;
+    height: 195px;
   }
 `;
 
+const ItemName = styled.p`
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  font-size: ${Theme.fontsize.desktop.small};
+`;
+
 const RecentItemImg = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  transition: opacity 0.9s ease;
 `;
 const SliderWrapper = styled.div`
   overflow: hidden;
@@ -168,6 +181,8 @@ export default function MyPage() {
   const cartItem = useCartStore((state) => state.cartItems);
   // 프로필 이미지 변경을 위한 상태값
   const [profileImg, setProfileImg] = useState(defaultProfile);
+  // 이미지 호버시 변경을 위해 상태값 저장
+  const [hoverImg, setHoverImg] = useState(null);
 
   // 수정사항을 저장하기 위한 상태값
   const [editData, setEditData] = useState({
@@ -201,7 +216,6 @@ export default function MyPage() {
       inDelivery: 0,
       done: 0,
     };
-
     setOrderData({
       // 주문한 총 갯수
       totalQuantity: order.totalQuantity || 0,
@@ -220,15 +234,19 @@ export default function MyPage() {
         const token = localStorage.getItem("token");
         const data = await authMeApi(token);
         if (data.success) {
+          const savedUser = JSON.parse(localStorage.getItem("userInfo"));
           // 로컬스토리지에서 주소 가져오기
           const savedAddress = localStorage.getItem("address");
-          // 로컬스토리지에서 주소 가져오기
+          // 로컬스토리지에서 이미지 가져오기
           const savedImg = localStorage.getItem("profileImg");
           // 입력한 주소 또는 기본주소
-          setUserInfo({
+          const finalUser = {
             ...data.userInfo,
-            address: savedAddress || "서울특별시 강남구 테헤란로 123",
-          });
+            ...(savedUser || {}),
+            address: savedAddress || data.userInfo.address,
+          };
+
+          setUserInfo(finalUser);
           // 저장한 이미지가 있다면 불러오기
           if (savedImg) setProfileImg(savedImg);
         }
@@ -238,31 +256,24 @@ export default function MyPage() {
     }
     fetchUser();
   }, []);
-  const fileInputRef = useRef(null);
-  // 이미지 변경 로직
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    // edit버튼 클릭 시 input 열기
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfileImg(reader.result);
-      localStorage.setItem("profileImg", reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
-  // 이미지 변경값 저장
-  const handleEditClick = () => {
-    fileInputRef.current.click();
-  };
   // 수정 값 저장하기
   const handleSave = () => {
+    const updatedUser = {
+      name: editData.name,
+      phone: editData.phone,
+      email: editData.email,
+      address: editData.address,
+    };
+
+    // 로컬스토리지 저장
+    localStorage.setItem("userInfo", JSON.stringify(updatedUser));
+
     // api로 주소는 안 받아오니까 로컬스토리지에 저장
     localStorage.setItem("address", editData.address);
     // 이미지 변경값 저장
     localStorage.setItem("profileImg", profileImg);
     // 유저 정보,수정 정보 저장
-    setUserInfo((prev) => ({ ...prev, ...editData }));
+    setUserInfo((prev) => ({ ...prev, ...updatedUser }));
     setIsEdit(false);
     // 수정 누를 때 값 입력하기
     window.scrollTo(0, 0);
@@ -272,7 +283,7 @@ export default function MyPage() {
     if (!isEdit) {
       setEditData({
         name: userInfo?.name || "",
-        phone: userInfo?.mobile || "",
+        phone: userInfo?.phone || "",
         email: userInfo?.email || "",
         address: userInfo?.address || "",
       });
@@ -318,9 +329,6 @@ export default function MyPage() {
         editData={editData}
         setEditData={setEditData}
         profileImg={profileImg}
-        handleEditClick={handleEditClick}
-        handleImageChange={handleImageChange}
-        fileInputRef={fileInputRef}
       />
       <UserTypeText>*개인/사업자 변경은 문의 후 변경가능합니다.</UserTypeText>
       <MyInfo>
@@ -333,7 +341,7 @@ export default function MyPage() {
           {isEdit ? (
             <Input value={editData.phone} onChange={(e) => setEditData({ ...editData, phone: e.target.value })} />
           ) : (
-            <p>{userInfo?.mobile}</p>
+            <p>{userInfo?.phone}</p>
           )}
         </MobileWrap>
         <EmailWrap>
@@ -369,12 +377,13 @@ export default function MyPage() {
 
             <SliderWrapper>
               <SliderTrack style={{ transform: `translateX(${translateX}px)` }}>
-                {recentProducts.map((item) => (
+                {recentProducts.map((item, index) => (
                   <NavLink to={`/products/${item.category}/${item.id}`} key={item.id}>
-                    <RecentItem>
-                      <RecentItemImg src={item.img} />
-                      <p>{item.name}</p>
+                    <RecentItem onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+                      <RecentItemImg src={item.img[0]} alt={item.name} visible={hoverImg !== index} />
+                      <RecentItemImg src={item.img[1]} alt={item.name} visible={hoverImg === index} />
                     </RecentItem>
+                    <ItemName>{item.name}</ItemName>
                   </NavLink>
                 ))}
               </SliderTrack>

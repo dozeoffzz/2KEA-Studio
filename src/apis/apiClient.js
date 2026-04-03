@@ -15,7 +15,7 @@ export async function apiClient(endpoint, option = {}) {
       ...option.headers,
     },
   });
-  if (response.status === 401) {
+  if (response.status === 401 && !isAuthFree) {
     localStorage.removeItem("token");
     useAuthStore.getState().logout();
 

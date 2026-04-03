@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Theme } from "../../styles/theme";
 import styled from "@emotion/styled";
@@ -176,163 +176,38 @@ const UserType = styled.p`
   right: -20px;
   bottom: -20px;
   text-align: right;
-  font-size: ${Theme.fontsize.desktop.medium};
+  font-size: ${Theme.fontsize.desktop.small};
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.medium};
-  }
-  ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
-  }
-`;
-const SideMenu = styled.div`
-  position: sticky;
-  top: 200px;
-  right: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-width: 300px;
-  min-height: 250px;
-  border-top: 1px solid ${Theme.colors.grayline};
-  border-bottom: 1px solid ${Theme.colors.grayline};
-
-  ${({ theme }) => theme.media.tablet} {
-    position: fixed;
-    margin-bottom: 80px;
-    font-size: ${Theme.fontsize.tablet.medium};
-    flex-direction: row;
-    top: 120px;
-    right: 0;
-    left: 0;
-    width: 100%;
-    min-height: 40px;
-    border: none;
-    border-bottom: 1px solid ${Theme.colors.grayline};
-  }
-  ${({ theme }) => theme.media.mobile} {
-    position: fixed;
-    font-size: ${Theme.fontsize.mobile.mini};
-    margin-bottom: 80px;
-    font-size: ${Theme.fontsize.tablet.medium};
-    flex-direction: row;
-    top: 120px;
-    right: 0;
-    left: 0;
-    width: 100%;
-    min-height: 40px;
-    border: none;
-    border-bottom: 1px solid ${Theme.colors.grayline};
-  }
-`;
-
-const SideMenuTap = styled.div`
-  padding: 10px;
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid ${Theme.colors.grayline};
-
-  ${({ theme }) => theme.media.tablet} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-  }
-  ${({ theme }) => theme.media.mobile} {
-    padding: 0;
-    font-size: ${Theme.fontsize.mobile.mini};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-  }
-`;
-
-const SideMenuRightIcon = styled.p`
-  ${({ theme }) => theme.media.tablet} {
-    display: none;
-  }
-  ${({ theme }) => theme.media.mobile} {
-    display: none;
-  }
-`;
-const SideMenuReview = styled(SideMenuTap)``;
-const SideMenuInsta = styled.a`
-  padding: 10px;
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid ${Theme.colors.grayline};
-
-  ${({ theme }) => theme.media.tablet} {
-    border: none;
-    justify-content: center;
-  }
-  ${({ theme }) => theme.media.mobile} {
-    padding: 0;
-    font-size: ${Theme.fontsize.mobile.mini};
-    border: none;
-    justify-content: center;
-  }
-`;
-const SideMenuOut = styled.button`
-  padding: 10px;
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-
-  ${({ theme }) => theme.media.tablet} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-  }
-  ${({ theme }) => theme.media.mobile} {
-    padding: 0;
-    font-size: ${Theme.fontsize.mobile.mini};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-  }
-`;
-const NavLinkTo = styled(NavLink)`
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-
-  ${({ theme }) => theme.media.tablet} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
+    font-size: ${Theme.fontsize.tablet.small};
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.mini};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
   }
 `;
 
-export default function MyProfile({
-  userInfo,
-  orderData,
-  cartItem,
-  isEdit,
-  editData,
-  setEditData,
-  profileImg,
-  handleEditClick,
-  handleImageChange,
-  fileInputRef,
-}) {
+export default function MyProfile({ userInfo, orderData, cartItem, isEdit, editData, setEditData }) {
+  // 프로필 이미지 변경을 위한 상태값
+  const [profileImg, setProfileImg] = useState(() => {
+    return localStorage.getItem("profileImg") || defaultProfile;
+  });
+  const fileInputRef = useRef(null);
+  // 이미지 변경 로직
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    // edit버튼 클릭 시 input 열기
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfileImg(reader.result);
+      localStorage.setItem("profileImg", reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+  // 이미지 변경값 저장
+  const handleEditClick = () => {
+    fileInputRef.current.click();
+  };
   return (
     <MyPageContainer>
       <ProfileWrap>

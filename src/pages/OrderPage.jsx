@@ -116,8 +116,6 @@ const OrderPagination = styled.ul`
 
 export default function OrderPage() {
   const [userInfo, setUserInfo] = useState(null);
-  // 프로필 이미지 변경을 위한 상태값
-  const [profileImg, setProfileImg] = useState(defaultProfile);
   // useCartStore에서 카트 아이템 갯수 가져오기
   const cartItem = useCartStore((state) => state.cartItems);
 
@@ -169,7 +167,7 @@ export default function OrderPage() {
 
   return (
     <OrderPageContainer>
-      <MyProfile userInfo={userInfo} orderData={orderData} cartItem={cartItem} profileImg={profileImg} />
+      <MyProfile userInfo={userInfo} orderData={orderData} cartItem={cartItem} />
       <OrderContainer>
         <OrderInfoWrap>
           <OrderDetail>주문내역</OrderDetail>
