@@ -295,8 +295,7 @@ export default function MyPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   // 제품이미지 크기 + gap
   // 데스크탑,테블릿,모바일 크기에 따라 얼마나 움직일지
-  const itemWidth =
-    window.innerWidth <= 767 ? 186 : window.innerWidth <= 1024 ? 230 : 230;
+  const itemWidth = window.innerWidth <= 767 ? 186 : window.innerWidth <= 1024 ? 230 : 230;
 
   const visibleCount =
     window.innerWidth <= 767
@@ -339,12 +338,16 @@ export default function MyPage() {
         <MobileWrap>
           <p>Phone</p>
           {isEdit ? (
+<<<<<<< HEAD
             <Input
               value={editData.phone}
               onChange={(e) =>
                 setEditData({ ...editData, phone: e.target.value })
               }
             />
+=======
+            <Input value={editData.phone} onChange={(e) => setEditData({ ...editData, phone: e.target.value })} />
+>>>>>>> origin/dev
           ) : (
             <p>{userInfo?.phone}</p>
           )}
@@ -352,12 +355,16 @@ export default function MyPage() {
         <EmailWrap>
           <p>Email</p>
           {isEdit ? (
+<<<<<<< HEAD
             <Input
               value={editData.email}
               onChange={(e) =>
                 setEditData({ ...editData, email: e.target.value })
               }
             />
+=======
+            <Input value={editData.email} onChange={(e) => setEditData({ ...editData, email: e.target.value })} />
+>>>>>>> origin/dev
           ) : (
             <p>{userInfo?.email}</p>
           )}
@@ -365,20 +372,28 @@ export default function MyPage() {
         <AddressWrap>
           <p>Address</p>
           {isEdit ? (
+<<<<<<< HEAD
             <Input
               value={editData.address}
               onChange={(e) =>
                 setEditData({ ...editData, address: e.target.value })
               }
             />
+=======
+            <Input value={editData.address} onChange={(e) => setEditData({ ...editData, address: e.target.value })} />
+>>>>>>> origin/dev
           ) : (
             <p>{userInfo?.address}</p>
           )}
         </AddressWrap>
       </MyInfo>
+<<<<<<< HEAD
       <Button onClick={isEdit ? handleSave : handleEditToggle}>
         {isEdit ? "완료" : "수정"}
       </Button>
+=======
+      <Button onClick={isEdit ? handleSave : handleEditToggle}>{isEdit ? "완료" : "수정"}</Button>
+>>>>>>> origin/dev
       <RecentItemWrap>
         {recentProducts.length === 0 ? (
           <p>최근 본 상품이 없습니다.</p>
@@ -394,6 +409,7 @@ export default function MyPage() {
             <SliderWrapper>
               <SliderTrack style={{ transform: `translateX(${translateX}px)` }}>
                 {recentProducts.map((item, index) => (
+<<<<<<< HEAD
                   <NavLink
                     to={`/products/${item.category}/${item.id}`}
                     key={item.id}
@@ -412,6 +428,12 @@ export default function MyPage() {
                         alt={item.name}
                         visible={hoverImg === index}
                       />
+=======
+                  <NavLink to={`/products/${item.category}/${item.id}`} key={item.id}>
+                    <RecentItem onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+                      <RecentItemImg src={item.img[0]} alt={item.name} visible={hoverImg !== index} />
+                      <RecentItemImg src={item.img[1]} alt={item.name} visible={hoverImg === index} />
+>>>>>>> origin/dev
                     </RecentItem>
                     <ItemName>{item.name}</ItemName>
                   </NavLink>
