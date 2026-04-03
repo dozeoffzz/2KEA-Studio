@@ -4,6 +4,6 @@ export async function authMeApi() {
   const response = await apiClient("/auth/me", {
     method: "GET",
   });
-  const data = response.json();
+  const data = await response.json();
   return data;
 }

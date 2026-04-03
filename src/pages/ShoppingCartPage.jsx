@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useRef } from "react";
 import DeleteModal from "../components/modals/DeleteModal";
 import DeleteProductBtn from "../assets/icons/deleteProductButton.svg";
 import styled from "@emotion/styled";
@@ -202,6 +202,7 @@ const ItemDelevery = styled.p`
     font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
+
 const QuantityWrap = styled.div`
   margin-right: 20px;
   display: flex;
@@ -324,6 +325,7 @@ const OrderName = styled.div`
     font-size: ${Theme.fontsize.mobile.small};
   }
 `;
+
 const Ordermobile = styled(OrderName)``;
 const OrderEmail = styled(OrderName)``;
 const OrderAddress = styled(OrderName)``;
@@ -331,15 +333,60 @@ const OrderAddress = styled(OrderName)``;
 const ErrorMsg = styled.p`
   font-size: ${Theme.fontsize.desktop.mini};
   text-align: right;
+  color: ${Theme.colors.redaccent};
 `;
+
 const InputName = styled.input`
   text-align: right;
   outline: transparent;
   width: 100%;
 `;
+
 const Inputmobile = styled(InputName)``;
 const InputEmail = styled(InputName)``;
 const InputAddress = styled(InputName)``;
+
+// 폰 010 고정 + 중간 + 끝 가로로 묶는 박스
+const PhoneInputWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-end;
+  flex: 1;
+`;
+
+// 폰 010 고정 텍스트랑 - 기호 2개
+const PhoneFixed = styled.span`
+  font-size: ${Theme.fontsize.desktop.content};
+  white-space: nowrap;
+
+  @media screen and (max-width: 1282px) {
+    font-size: ${Theme.fontsize.tablet.content};
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
+`;
+
+// 중간이랑 끝 4자리 입력창
+const PhonePartInput = styled.input`
+  width: 55px;
+  text-align: center;
+  outline: none;
+  border: none;
+  ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.black)};
+  font-size: ${Theme.fontsize.desktop.content};
+  background: transparent;
+
+  @media screen and (max-width: 1282px) {
+    font-size: ${Theme.fontsize.tablet.content};
+    width: 45px;
+  }
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+    width: 38px;
+  }
+`;
 
 const ThanksMsg = styled.p`
   display: flex;
@@ -459,17 +506,23 @@ export default function ShoppingCartPage() {
   // 이미지 호버시 변경을 위해 상태값 저장
   const [hoverImg, setHoverImg] = useState(null);
   // useCaretStore에서 정의한 함수 구조분해로 가져오기
-  const { cartItems, handleQuantity, handleCheck, handleDelete } = useCartStore();
+  const { cartItems, handleQuantity, handleCheck, handleDelete } =
+    useCartStore();
 
-  // 필요한 유효성 검사 기본값
+  // 폰 중간 4자리 채우면 끝번호로 자동 이동하는 ref
+  const phoneEndRef = useRef(null);
+
+  // 유효성 기존 mobile 하나였던거 phoneMid, phoneEnd 로 회원가입 처럼 만든거
   const [form, setForm] = useState({
     name: "",
-    mobile: "",
+    phoneMid: "",
+    phoneEnd: "",
     email: "",
     address: "",
     baseAddress: "",
   });
-  // 에러 났을때 상황,메세지
+
+  // 에러 났을때
   const [error, setError] = useState({});
   const [msg, setMsg] = useState({});
 
@@ -478,8 +531,20 @@ export default function ShoppingCartPage() {
 
     let okValue = value;
 
-    if (name === "mobile") {
+    // 폰 중간이랑 끝 숫자만 입력할수 있고 4자리 넘어가면 막기
+    if (name === "phoneMid" || name === "phoneEnd") {
       okValue = value.replace(/[^0-9]/g, "");
+      if (okValue.length > 4) return;
+    }
+
+    // 이름 한글만 입력
+    if (name === "name") {
+      okValue = value.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+    }
+
+    // 이메일 한글 못쓰게
+    if (name === "email") {
+      okValue = value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
     }
 
     setForm((prev) => ({
@@ -491,32 +556,38 @@ export default function ShoppingCartPage() {
       setError((prev) => ({ ...prev, [name]: false }));
       setMsg((prev) => ({ ...prev, [name]: "" }));
     }
+
+    // 폰 중간 4자리 채우면 끝번호로 자동으로 이동
+    if (name === "phoneMid" && okValue.length === 4) {
+      phoneEndRef.current.focus();
+    }
   }
-  // 유효성 검사
+
+  // 회원가입이랑 같은 유효성
   function validateForm() {
     let newErrors = {};
     let newMsgs = {};
 
-    // 이름
+    // 이름 한글만 2~10글자
     const nameRegex = /^[가-힣]{2,10}$/;
     if (!form.name.trim()) {
       newErrors.name = true;
       newMsgs.name = "이름을 입력해주세요";
     } else if (!nameRegex.test(form.name)) {
       newErrors.name = true;
-      newMsgs.name = "한글 2~10자";
+      newMsgs.name = "이름은 한글로 2~10글자 입력해주세요";
     }
 
-    // 전화번호
-    if (!form.mobile.trim()) {
-      newErrors.mobile = true;
-      newMsgs.mobile = "전화번호를 입력해주세요";
-    } else if (form.mobile.length < 10) {
-      newErrors.mobile = true;
-      newMsgs.mobile = "전화번호 형식이 올바르지 않습니다";
+    // 폰 중간이랑 끝 각 4자리
+    if (!form.phoneMid.trim() || !form.phoneEnd.trim()) {
+      newErrors.phoneMid = true;
+      newMsgs.phoneMid = "전화번호를 입력해주세요";
+    } else if (form.phoneMid.length < 4 || form.phoneEnd.length < 4) {
+      newErrors.phoneMid = true;
+      newMsgs.phoneMid = "전화번호는 각 4자리씩 입력해주세요";
     }
 
-    // 이메일
+    // 이메일형식
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!form.email.trim()) {
       newErrors.email = true;
@@ -526,7 +597,7 @@ export default function ShoppingCartPage() {
       newMsgs.email = "이메일 형식이 올바르지 않습니다";
     }
 
-    // 주소
+    // 주소는 빈칸
     if (!form.address.trim()) {
       newErrors.address = true;
       newMsgs.address = "주소를 입력해주세요";
@@ -535,6 +606,7 @@ export default function ShoppingCartPage() {
     setError(newErrors);
     setMsg(newMsgs);
 
+    // 에러 없으면 true → 주문 진행
     return Object.keys(newErrors).length === 0;
   }
 
@@ -543,7 +615,9 @@ export default function ShoppingCartPage() {
   };
 
   // 체크된 상품의 총 가격
-  const totalPrice = cartItems.filter((item) => item.checked).reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+  const totalPrice = cartItems
+    .filter((item) => item.checked)
+    .reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
   // 상품이 없을때 구매 버튼을 막기 위해 갯수 체크
   const HaveItems = cartItems.length > 0;
   // 체크된 상품이 없을때 구매 버튼을 막기 위해 갯수 체크
@@ -558,8 +632,14 @@ export default function ShoppingCartPage() {
 
     // 구매 데이터 계산
     const purchasedItems = cartItems;
-    const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
-    const totalPrice = purchasedItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+    const totalQuantity = purchasedItems.reduce(
+      (acc, cur) => acc + cur.quantity,
+      0,
+    );
+    const totalPrice = purchasedItems.reduce(
+      (acc, cur) => acc + cur.price * cur.quantity,
+      0,
+    );
 
     // 포인트
     const earnedPoint = Math.floor(totalPrice * 0.01);
@@ -602,8 +682,14 @@ export default function ShoppingCartPage() {
 
     // 구매 데이터 계산
     const purchasedItems = cartItems;
-    const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
-    const totalPrice = purchasedItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+    const totalQuantity = purchasedItems.reduce(
+      (acc, cur) => acc + cur.quantity,
+      0,
+    );
+    const totalPrice = purchasedItems.reduce(
+      (acc, cur) => acc + cur.price * cur.quantity,
+      0,
+    );
 
     // 포인트
     const earnedPoint = Math.floor(totalPrice * 0.01);
@@ -649,17 +735,40 @@ export default function ShoppingCartPage() {
           {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
           {cartItems.map((item, index) => (
             <Item key={item.id}>
-              <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
-              <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
-                <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
-                  <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
-                  <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
+              <CheckBox
+                type="checkbox"
+                onChange={() => handleCheck(item.id)}
+                checked={item.checked}
+              />
+              <ItemImg
+                onMouseEnter={() => setHoverImg(index)}
+                onMouseLeave={() => setHoverImg(null)}
+              >
+                <NavLink
+                  key={item.id}
+                  large={item.large ? 1 : 0}
+                  to={`/products/${item.category}/${item.id}`}
+                >
+                  <Img
+                    src={item.src?.[0]}
+                    alt={item.name}
+                    visible={hoverImg !== index}
+                  />
+                  <Img
+                    src={item.src?.[1]}
+                    alt={item.name}
+                    visible={hoverImg === index}
+                  />
                 </NavLink>
               </ItemImg>
               <ItemInfoWrap>
                 <ItemName>{item.name}</ItemName>
-                <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>
-                <ItemDelevery>적립: {Math.floor(item.price * 0.01).toLocaleString()}P</ItemDelevery>
+                <p style={{ whiteSpace: "nowrap" }}>
+                  {item.price.toLocaleString()} ₩
+                </p>
+                <ItemDelevery>
+                  적립: {Math.floor(item.price * 0.01).toLocaleString()}P
+                </ItemDelevery>
                 <ItemDelevery>배송비: 무료</ItemDelevery>
               </ItemInfoWrap>
               <QuantityWrap>
@@ -669,9 +778,13 @@ export default function ShoppingCartPage() {
                 </Quantity>
                 <QuantityUpDown>
                   {/* 아이템 아이디, 프롭스를 useCartStore에 넘김 */}
-                  <UpButton onClick={() => handleQuantity(item.id, "dec")}>-</UpButton>
+                  <UpButton onClick={() => handleQuantity(item.id, "dec")}>
+                    -
+                  </UpButton>
                   <p>{item.quantity}</p>
-                  <UpButton onClick={() => handleQuantity(item.id, "inc")}>+</UpButton>
+                  <UpButton onClick={() => handleQuantity(item.id, "inc")}>
+                    +
+                  </UpButton>
                 </QuantityUpDown>
               </QuantityWrap>
               <DeleteProduct onClick={() => handleDelete(item.id)}>
@@ -681,24 +794,73 @@ export default function ShoppingCartPage() {
           ))}
         </CartList>
       </CartListWrap>
+
       <OrderInfoWrap>
         {/* 주문 폼 */}
         <OrderInfoForm onSubmit={handleSubmit}>
+          {/* 이름 */}
           <OrderName>
             <p>Name</p>
-            <InputName name="name" placeholder="Name" type="text" value={form.name} onChange={handleInput} />
+            <InputName
+              name="name"
+              placeholder="Name"
+              type="text"
+              value={form.name}
+              onChange={handleInput}
+            />
           </OrderName>
-          {msg.name && <ErrorMsg style={{ color: "red" }}>{msg.name}</ErrorMsg>}
+          {msg.name && <ErrorMsg>{msg.name}</ErrorMsg>}
+
+          {/* 폰 */}
           <Ordermobile>
             <p>Phone</p>
-            <Inputmobile name="mobile" placeholder="Phone" type="text" value={form.mobile} onChange={handleInput} />
+            <PhoneInputWrap>
+              <PhoneFixed>010</PhoneFixed>
+              <PhoneFixed>-</PhoneFixed>
+
+              {/* 중간 4자리 입력하면 끝번호로 자동 이동 */}
+              <PhonePartInput
+                name="phoneMid"
+                type="text"
+                value={form.phoneMid}
+                placeholder="0000"
+                maxLength="4"
+                inputMode="numeric"
+                error={error.phoneMid}
+                onChange={handleInput}
+              />
+              <PhoneFixed>-</PhoneFixed>
+
+              {/* 끝에 4자리 */}
+              <PhonePartInput
+                name="phoneEnd"
+                type="text"
+                value={form.phoneEnd}
+                placeholder="0000"
+                maxLength="4"
+                inputMode="numeric"
+                ref={phoneEndRef}
+                error={error.phoneEnd}
+                onChange={handleInput}
+              />
+            </PhoneInputWrap>
           </Ordermobile>
-          {msg.mobile && <ErrorMsg style={{ color: "red" }}>{msg.mobile}</ErrorMsg>}
+          {msg.phoneMid && <ErrorMsg>{msg.phoneMid}</ErrorMsg>}
+
+          {/* 이메일 */}
           <OrderEmail>
             <p>Email</p>
-            <InputEmail name="email" placeholder="Email" type="email" value={form.email} onChange={handleInput} />
+            <InputEmail
+              name="email"
+              placeholder="Email"
+              type="email"
+              value={form.email}
+              onChange={handleInput}
+            />
           </OrderEmail>
-          {msg.email && <ErrorMsg style={{ color: "red" }}>{msg.email}</ErrorMsg>}
+          {msg.email && <ErrorMsg>{msg.email}</ErrorMsg>}
+
+          {/* 주소 */}
           <OrderAddress>
             <p>Address</p>
             <InputAddress
@@ -719,9 +881,11 @@ export default function ShoppingCartPage() {
               onChange={handleInput}
             />
           </OrderAddress>
-          {msg.address && <ErrorMsg style={{ color: "red" }}>{msg.address}</ErrorMsg>}
+          {msg.address && <ErrorMsg>{msg.address}</ErrorMsg>}
         </OrderInfoForm>
+
         <ThanksMsg>Thanks</ThanksMsg>
+
         <ProductPriceWrap>
           <ProductPriceList>
             {cartItems
@@ -739,10 +903,12 @@ export default function ShoppingCartPage() {
               ))}
           </ProductPriceList>
         </ProductPriceWrap>
+
         <TotalPrice>
           <p>Total Price :</p>
           <p>{totalPrice.toLocaleString()} ₩</p>
         </TotalPrice>
+
         <ButtonWrap>
           <DeleteButton onClick={handleDeleteAll}>Clear Cart</DeleteButton>
           <OrderButton type="button" onClick={handleCheckedOrder}>
@@ -753,8 +919,12 @@ export default function ShoppingCartPage() {
           </OrderButton>
         </ButtonWrap>
       </OrderInfoWrap>
+
       <DeleteModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <OrderModal OrderIsOpen={OrderIsOpen} OrderOnClose={() => setOrderIsOpen(false)} />
+      <OrderModal
+        OrderIsOpen={OrderIsOpen}
+        OrderOnClose={() => setOrderIsOpen(false)}
+      />
     </CartContainer>
   );
 }
