@@ -356,9 +356,6 @@ function CustomDropdown({ options, value, onChange }) {
 // ReviewPage 컴포넌트
 export default function ReviewPage() {
   const [userInfo, setUserInfo] = useState(null);
-  // 프로필 이미지 변경을 위한 상태값
-  const [profileImg, _setProfileImg] = useState(defaultProfile);
-
   // useCartStore에서 카트 아이템 갯수 가져오기
   const cartItem = useCartStore((state) => state.cartItems);
 
@@ -467,7 +464,7 @@ export default function ReviewPage() {
   return (
     <ReviewPageContainer>
       <SideMenuBar />
-      <MyProfile userInfo={userInfo} orderData={orderData} cartItem={cartItem} profileImg={profileImg} />
+      <MyProfile userInfo={userInfo} orderData={orderData} cartItem={cartItem} />
 
       <ReviewContainer>
         <ReviewInfoWrap>

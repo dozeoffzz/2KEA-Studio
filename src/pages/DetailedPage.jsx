@@ -1085,7 +1085,7 @@ export default function DetailedPage() {
       SaveMyPageProducts({
         id: product.id,
         name: product.name,
-        img: product.slideImgs?.[0],
+        img: product.slideImgs,
       });
     }
   }, [product]);
@@ -1154,7 +1154,10 @@ export default function DetailedPage() {
   const totalReviewPages = Math.ceil(filteredReviews.length / reviewsPerPage);
 
   // 현재 페이지 리뷰 자르기
-  const visibleReviews = filteredReviews.slice(reviewPage * reviewsPerPage, reviewPage * reviewsPerPage + reviewsPerPage);
+  const visibleReviews = filteredReviews.slice(
+    reviewPage * reviewsPerPage,
+    reviewPage * reviewsPerPage + reviewsPerPage,
+  );
 
   // 빈 칸 채우기
   const emptyVisibleReviewCount = reviewsPerPage - visibleReviews.length;
@@ -1162,7 +1165,9 @@ export default function DetailedPage() {
 
   // 평점
   const averageRating =
-    totalReviewCount === 0 ? 0 : (mockReviews.reduce((acc, review) => acc + review.rating, 0) / totalReviewCount).toFixed(1);
+    totalReviewCount === 0
+      ? 0
+      : (mockReviews.reduce((acc, review) => acc + review.rating, 0) / totalReviewCount).toFixed(1);
 
   // 별점
   const ratingPercentages = [5, 4, 3, 2, 1].map((score) => {
@@ -1312,7 +1317,9 @@ export default function DetailedPage() {
         <ProductName>{product.name} Detail</ProductName>
       </ImgGallery>
       <DetailSection>
-        <LeftContent>{detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}</LeftContent>
+        <LeftContent>
+          {detailImgs[0] && <DetailImg src={detailImgs[0]} alt={`${product.name} 상세 이미지`} />}
+        </LeftContent>
 
         <RightContent>
           <StickyBox>

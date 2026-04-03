@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useState, useRef } from "react";
+=======
+import React, { useEffect, useRef, useState } from "react";
+>>>>>>> 44ded0e (feat:마이페이지 수정사항 저장)
 import DeleteModal from "../components/modals/DeleteModal";
 import DeleteProductBtn from "../assets/icons/deleteProductButton.svg";
 import styled from "@emotion/styled";
@@ -6,6 +10,7 @@ import { Theme } from "../styles/theme";
 import OrderModal from "../components/modals/OrderModal";
 import { useCartStore } from "../stores/useCartStore";
 import { NavLink } from "react-router-dom";
+import { authMeApi } from "../apis/authMeApi";
 
 const CartContainer = styled.div`
   margin-top: 180px;
@@ -330,6 +335,15 @@ const Ordermobile = styled(OrderName)``;
 const OrderEmail = styled(OrderName)``;
 const OrderAddress = styled(OrderName)``;
 
+const EditInfo = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+const EditInfoBtn = styled.button`
+  font-size: ${Theme.fontsize.desktop.small};
+  color: ${Theme.colors.blacktext};
+`;
+
 const ErrorMsg = styled.p`
   font-size: ${Theme.fontsize.desktop.mini};
   text-align: right;
@@ -509,6 +523,11 @@ export default function ShoppingCartPage() {
   const { cartItems, handleQuantity, handleCheck, handleDelete } =
     useCartStore();
 
+    const [userInfo, setUserInfo] = useState(null);
+  // 정보 수정을 위한 상태값
+  const [isEdit, setIsEdit] = useState(false);
+  // 필요한 유효성 검사 기본값
+
   // 폰 중간 4자리 채우면 끝번호로 자동 이동하는 ref
   const phoneEndRef = useRef(null);
 
@@ -522,7 +541,38 @@ export default function ShoppingCartPage() {
     baseAddress: "",
   });
 
-  // 에러 났을때
+  // api 연결하기
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const data = await authMeApi();
+        if (data.success) {
+          const savedUser = JSON.parse(localStorage.getItem("userInfo"));
+          // 로컬스토리지에서 주소 가져오기
+          const savedAddress = localStorage.getItem("address");
+          // 입력한 주소 또는 기본주소
+          const finalUser = {
+            ...data.userInfo,
+            ...(savedUser || {}), //  수정값 덮어쓰기
+            address: savedAddress || data.userInfo.address,
+          };
+
+          setUserInfo(finalUser);
+          setForm({
+            name: finalUser.name || "",
+            phone: finalUser.phone || "",
+            email: finalUser.email || "",
+            address: finalUser.address || "",
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    fetchUser();
+  }, []);
+
+  // 에러 났을때 상황,메세지
   const [error, setError] = useState({});
   const [msg, setMsg] = useState({});
 
@@ -727,7 +777,39 @@ export default function ShoppingCartPage() {
     if (!HaveItems) return;
     setIsOpen(true);
   };
+  // 수정 내용 저장
+  const handleSave = () => {
+    const updatedUser = {
+      name: form.name,
+      phone: form.phone,
+      email: form.email,
+      address: form.address,
+    };
 
+    // 저장
+    localStorage.setItem("userInfo", JSON.stringify(updatedUser));
+    localStorage.setItem("address", form.address);
+
+    // 상태 업데이트
+    setUserInfo((prev) => ({
+      ...prev,
+      ...updatedUser,
+    }));
+
+    setIsEdit(false);
+  };
+
+  const handleEditToggle = () => {
+    if (!isEdit) {
+      setForm({
+        name: userInfo?.name || "",
+        phone: userInfo?.phone || "",
+        email: userInfo?.email || "",
+        address: userInfo?.address || "",
+      });
+    }
+    setIsEdit((prev) => !prev);
+  };
   return (
     <CartContainer>
       <CartListWrap>
@@ -801,13 +883,17 @@ export default function ShoppingCartPage() {
           {/* 이름 */}
           <OrderName>
             <p>Name</p>
-            <InputName
-              name="name"
-              placeholder="Name"
-              type="text"
-              value={form.name}
-              onChange={handleInput}
-            />
+            {isEdit ? (
+              <InputNameEdit name="name" placeholder="Name" type="text" value={form.name} onChange={handleInput} />
+            ) : (
+              <InputName
+                name="name"
+                placeholder="Name"
+                type="text"
+                value={userInfo?.name || ""}
+                onChange={handleInput}
+              />
+            )}
           </OrderName>
           {msg.name && <ErrorMsg>{msg.name}</ErrorMsg>}
 
@@ -850,38 +936,47 @@ export default function ShoppingCartPage() {
           {/* 이메일 */}
           <OrderEmail>
             <p>Email</p>
-            <InputEmail
-              name="email"
-              placeholder="Email"
-              type="email"
-              value={form.email}
-              onChange={handleInput}
-            />
+            {isEdit ? (
+              <InputEmailEdit name="email" placeholder="Email" type="email" value={form.email} onChange={handleInput} />
+            ) : (
+              <InputEmail
+                name="email"
+                placeholder="Email"
+                type="email"
+                value={userInfo?.email || ""}
+                onChange={handleInput}
+              />
+            )}
           </OrderEmail>
           {msg.email && <ErrorMsg>{msg.email}</ErrorMsg>}
 
           {/* 주소 */}
           <OrderAddress>
             <p>Address</p>
-            <InputAddress
-              name="address"
-              placeholder="Address"
-              type="address"
-              value={form.address}
-              onChange={handleInput}
-            />
+            {isEdit ? (
+              <InputAddressEdit
+                name="address"
+                placeholder="Address"
+                type="address"
+                value={form.address}
+                onChange={handleInput}
+              />
+            ) : (
+              <InputAddress
+                name="address"
+                placeholder="Address"
+                type="address"
+                value={userInfo?.address || ""}
+                onChange={handleInput}
+              />
+            )}
           </OrderAddress>
-          <OrderAddress>
-            <p style={{ whiteSpace: "nowrap" }}>Address Detail</p>
-            <InputAddress
-              name="baseAddress"
-              placeholder="Address Detail"
-              type="address"
-              value={form.baseAddress}
-              onChange={handleInput}
-            />
-          </OrderAddress>
-          {msg.address && <ErrorMsg>{msg.address}</ErrorMsg>}
+          <EditInfo>
+            <EditInfoBtn onClick={isEdit ? handleSave : handleEditToggle}>
+              {isEdit ? "수정완료" : "정보수정"}
+            </EditInfoBtn>
+          </EditInfo>
+          {msg.address && <ErrorMsg style={{ color: "red" }}>{msg.address}</ErrorMsg>}
         </OrderInfoForm>
 
         <ThanksMsg>Thanks</ThanksMsg>

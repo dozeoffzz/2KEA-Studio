@@ -14,6 +14,7 @@ const SideMenu = styled.div`
   height: 250px;
   border-top: 1px solid ${Theme.colors.grayline};
   border-bottom: 1px solid ${Theme.colors.grayline};
+  z-index: 1;
 
   ${({ theme }) => theme.media.tablet} {
     position: fixed;
