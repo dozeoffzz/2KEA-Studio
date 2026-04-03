@@ -518,7 +518,8 @@ export default function ShoppingCartPage() {
   // 이미지 호버시 변경을 위해 상태값 저장
   const [hoverImg, setHoverImg] = useState(null);
   // useCaretStore에서 정의한 함수 구조분해로 가져오기
-  const { cartItems, handleQuantity, handleCheck, handleDelete } = useCartStore();
+  const { cartItems, handleQuantity, handleCheck, handleDelete } =
+    useCartStore();
 
   const [userInfo, setUserInfo] = useState(null);
   // 정보 수정을 위한 상태값
@@ -672,7 +673,9 @@ export default function ShoppingCartPage() {
   };
 
   // 체크된 상품의 총 가격
-  const totalPrice = cartItems.filter((item) => item.checked).reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+  const totalPrice = cartItems
+    .filter((item) => item.checked)
+    .reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
   // 상품이 없을때 구매 버튼을 막기 위해 갯수 체크
   const HaveItems = cartItems.length > 0;
   // 체크된 상품이 없을때 구매 버튼을 막기 위해 갯수 체크
@@ -687,8 +690,14 @@ export default function ShoppingCartPage() {
 
     // 구매 데이터 계산
     const purchasedItems = cartItems;
-    const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
-    const totalPrice = purchasedItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+    const totalQuantity = purchasedItems.reduce(
+      (acc, cur) => acc + cur.quantity,
+      0,
+    );
+    const totalPrice = purchasedItems.reduce(
+      (acc, cur) => acc + cur.price * cur.quantity,
+      0,
+    );
 
     // 포인트
     const earnedPoint = Math.floor(totalPrice * 0.01);
@@ -729,8 +738,14 @@ export default function ShoppingCartPage() {
 
     // 구매 데이터 계산
     const purchasedItems = cartItems;
-    const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
-    const totalPrice = purchasedItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+    const totalQuantity = purchasedItems.reduce(
+      (acc, cur) => acc + cur.quantity,
+      0,
+    );
+    const totalPrice = purchasedItems.reduce(
+      (acc, cur) => acc + cur.price * cur.quantity,
+      0,
+    );
 
     // 포인트
     const earnedPoint = Math.floor(totalPrice * 0.01);
@@ -810,17 +825,40 @@ export default function ShoppingCartPage() {
           {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
           {cartItems.map((item, index) => (
             <Item key={item.id}>
-              <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
-              <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
-                <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
-                  <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
-                  <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
+              <CheckBox
+                type="checkbox"
+                onChange={() => handleCheck(item.id)}
+                checked={item.checked}
+              />
+              <ItemImg
+                onMouseEnter={() => setHoverImg(index)}
+                onMouseLeave={() => setHoverImg(null)}
+              >
+                <NavLink
+                  key={item.id}
+                  large={item.large ? 1 : 0}
+                  to={`/products/${item.category}/${item.id}`}
+                >
+                  <Img
+                    src={item.src?.[0]}
+                    alt={item.name}
+                    visible={hoverImg !== index}
+                  />
+                  <Img
+                    src={item.src?.[1]}
+                    alt={item.name}
+                    visible={hoverImg === index}
+                  />
                 </NavLink>
               </ItemImg>
               <ItemInfoWrap>
                 <ItemName>{item.name}</ItemName>
-                <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>
-                <ItemDelevery>적립: {Math.floor(item.price * 0.01).toLocaleString()}P</ItemDelevery>
+                <p style={{ whiteSpace: "nowrap" }}>
+                  {item.price.toLocaleString()} ₩
+                </p>
+                <ItemDelevery>
+                  적립: {Math.floor(item.price * 0.01).toLocaleString()}P
+                </ItemDelevery>
                 <ItemDelevery>배송비: 무료</ItemDelevery>
               </ItemInfoWrap>
               <QuantityWrap>
@@ -830,9 +868,13 @@ export default function ShoppingCartPage() {
                 </Quantity>
                 <QuantityUpDown>
                   {/* 아이템 아이디, 프롭스를 useCartStore에 넘김 */}
-                  <UpButton onClick={() => handleQuantity(item.id, "dec")}>-</UpButton>
+                  <UpButton onClick={() => handleQuantity(item.id, "dec")}>
+                    -
+                  </UpButton>
                   <p>{item.quantity}</p>
-                  <UpButton onClick={() => handleQuantity(item.id, "inc")}>+</UpButton>
+                  <UpButton onClick={() => handleQuantity(item.id, "inc")}>
+                    +
+                  </UpButton>
                 </QuantityUpDown>
               </QuantityWrap>
               <DeleteProduct onClick={() => handleDelete(item.id)}>
@@ -850,7 +892,13 @@ export default function ShoppingCartPage() {
           <OrderName>
             <p>Name</p>
             {isEdit ? (
-              <InputNameEdit name="name" placeholder="Name" type="text" value={form.name} onChange={handleInput} />
+              <InputNameEdit
+                name="name"
+                placeholder="Name"
+                type="text"
+                value={form.name}
+                onChange={handleInput}
+              />
             ) : (
               <InputName
                 name="name"
@@ -869,7 +917,7 @@ export default function ShoppingCartPage() {
             {isEdit ? (
               <PhoneInputWrap>
                 <PhoneFixed>010</PhoneFixed>
-                <PhoneFixed>-</PhoneFixed>
+                <PhoneFixed style={{ marginTop: "8px" }}>-</PhoneFixed>
 
                 {/* 중간 4자리 입력하면 끝번호로 자동 이동 */}
                 <PhonePartInput
@@ -936,7 +984,13 @@ export default function ShoppingCartPage() {
           <OrderEmail>
             <p>Email</p>
             {isEdit ? (
-              <InputEmailEdit name="email" placeholder="Email" type="email" value={form.email} onChange={handleInput} />
+              <InputEmailEdit
+                name="email"
+                placeholder="Email"
+                type="email"
+                value={form.email}
+                onChange={handleInput}
+              />
             ) : (
               <InputEmail
                 name="email"
@@ -975,7 +1029,9 @@ export default function ShoppingCartPage() {
               {isEdit ? "수정완료" : "정보수정"}
             </EditInfoBtn>
           </EditInfo>
-          {msg.address && <ErrorMsg style={{ color: "red" }}>{msg.address}</ErrorMsg>}
+          {msg.address && (
+            <ErrorMsg style={{ color: "red" }}>{msg.address}</ErrorMsg>
+          )}
         </OrderInfoForm>
 
         <ThanksMsg>Thanks</ThanksMsg>
