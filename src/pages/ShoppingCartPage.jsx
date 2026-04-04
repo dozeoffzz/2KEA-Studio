@@ -527,6 +527,20 @@ const OrderButton = styled(DeleteButton)`
   background-color: ${Theme.colors.black};
 `;
 
+const EmptyWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 500px;
+`;
+
+const EmptyText = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export default function ShoppingCartPage() {
   // 모달 상태값 저장하기
   const [isOpen, setIsOpen] = useState(false);
@@ -873,41 +887,47 @@ export default function ShoppingCartPage() {
   return (
     <CartContainer>
       <CartListWrap>
-        <CartList>
-          {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
-          {cartItems.map((item, index) => (
-            <Item key={item.id}>
-              <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
-              <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
-                <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
-                  <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
-                  <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
-                </NavLink>
-              </ItemImg>
-              <ItemInfoWrap>
-                <ItemName>{item.name}</ItemName>
-                <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>
-                <ItemDelevery>적립: {Math.floor(item.price * 0.01).toLocaleString()}P</ItemDelevery>
-                <ItemDelevery>배송비: 무료</ItemDelevery>
-              </ItemInfoWrap>
-              <QuantityWrap>
-                <Quantity>
-                  <p>Quantity:</p>
-                  <p>{item.quantity}</p>
-                </Quantity>
-                <QuantityUpDown>
-                  {/* 아이템 아이디, 프롭스를 useCartStore에 넘김 */}
-                  <UpButton onClick={() => handleQuantity(item.id, "dec")}>-</UpButton>
-                  <p>{item.quantity}</p>
-                  <UpButton onClick={() => handleQuantity(item.id, "inc")}>+</UpButton>
-                </QuantityUpDown>
-              </QuantityWrap>
-              <DeleteProduct onClick={() => handleDelete(item.id)}>
-                <img src={DeleteProductBtn} />
-              </DeleteProduct>
-            </Item>
-          ))}
-        </CartList>
+        {!cartItems.length ? (
+          <EmptyWrap>
+            <EmptyText>담은 상품이 없습니다.</EmptyText>
+          </EmptyWrap>
+        ) : (
+          <CartList>
+            {/* 디테일 페이지에서 상품 추가 리스트 배열 받아오기 예시 */}
+            {cartItems.map((item, index) => (
+              <Item key={item.id}>
+                <CheckBox type="checkbox" onChange={() => handleCheck(item.id)} checked={item.checked} />
+                <ItemImg onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+                  <NavLink key={item.id} large={item.large ? 1 : 0} to={`/products/${item.category}/${item.id}`}>
+                    <Img src={item.src?.[0]} alt={item.name} visible={hoverImg !== index} />
+                    <Img src={item.src?.[1]} alt={item.name} visible={hoverImg === index} />
+                  </NavLink>
+                </ItemImg>
+                <ItemInfoWrap>
+                  <ItemName>{item.name}</ItemName>
+                  <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>
+                  <ItemDelevery>적립: {Math.floor(item.price * 0.01).toLocaleString()}P</ItemDelevery>
+                  <ItemDelevery>배송비: 무료</ItemDelevery>
+                </ItemInfoWrap>
+                <QuantityWrap>
+                  <Quantity>
+                    <p>Quantity:</p>
+                    <p>{item.quantity}</p>
+                  </Quantity>
+                  <QuantityUpDown>
+                    {/* 아이템 아이디, 프롭스를 useCartStore에 넘김 */}
+                    <UpButton onClick={() => handleQuantity(item.id, "dec")}>-</UpButton>
+                    <p>{item.quantity}</p>
+                    <UpButton onClick={() => handleQuantity(item.id, "inc")}>+</UpButton>
+                  </QuantityUpDown>
+                </QuantityWrap>
+                <DeleteProduct onClick={() => handleDelete(item.id)}>
+                  <img src={DeleteProductBtn} />
+                </DeleteProduct>
+              </Item>
+            ))}
+          </CartList>
+        )}
       </CartListWrap>
 
       <OrderInfoWrap>
@@ -996,13 +1016,7 @@ export default function ShoppingCartPage() {
             {isEdit ? (
               <InputEmailEdit name="email" placeholder="Email" type="email" value={form.email} onChange={handleInput} />
             ) : (
-              <InputEmail
-                name="email"
-                placeholder="Email"
-                type="email"
-                value={userInfo?.email || ""}
-                readOnly
-              />
+              <InputEmail name="email" placeholder="Email" type="email" value={userInfo?.email || ""} readOnly />
             )}
           </OrderEmail>
           {msg.email && <ErrorMsg>{msg.email}</ErrorMsg>}
@@ -1019,13 +1033,7 @@ export default function ShoppingCartPage() {
                 onChange={handleInput}
               />
             ) : (
-              <InputAddress
-                name="address"
-                placeholder="Address"
-                type="text"
-                value={userInfo?.address || ""}
-                readOnly
-              />
+              <InputAddress name="address" placeholder="Address" type="text" value={userInfo?.address || ""} readOnly />
             )}
           </OrderAddress>
 

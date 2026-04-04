@@ -148,6 +148,11 @@ const PhonePartInput = styled.input`
   }
 `;
 
+const EditButtonWrap = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
 const Button = styled.button`
   margin: 50px 0;
   display: flex;
@@ -164,6 +169,8 @@ const Button = styled.button`
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.tablet.small};
+    width: 140px;
+    height: 30px;
   }
 `;
 
@@ -599,8 +606,10 @@ export default function MyPage() {
         {/* 주소 에러 메시지 */}
         {isEdit && msgs.address && <ErrorMsg>{msgs.address}</ErrorMsg>}
       </MyInfo>
-
-      <Button onClick={isEdit ? handleSave : handleEditToggle}>{isEdit ? "완료" : "수정"}</Button>
+      <EditButtonWrap>
+        {isEdit && <Button onClick={() => setIsEdit(!isEdit)}>취소</Button>}
+        <Button onClick={isEdit ? handleSave : handleEditToggle}>{isEdit ? "완료" : "수정"}</Button>
+      </EditButtonWrap>
 
       <RecentItemWrap>
         {recentProducts.length === 0 ? (
