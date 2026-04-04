@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "@emotion/styled";
 
 import { Theme } from "../styles/theme";
@@ -6,6 +6,7 @@ import Star from "../assets/imgs/detail/Star.svg";
 import Full from "../assets/imgs/detail/Full.svg";
 import Half from "../assets/imgs/detail/Half.svg";
 import Review from "../assets/imgs/detail/review.svg";
+import backIcon from "../assets/icons/backIcon.svg";
 
 // 리뷰 영역
 const ReviewSection = styled.section`
@@ -264,11 +265,28 @@ const ReviewCard = styled.article`
 
 // 리뷰 작성자 정보
 const ReviewerInfo = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 10px;
+  font-weight: 600;
+  color: #383838;
 
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.content};
+  }
+`;
+
+const ReviewTitleSecond = styled.div`
+  font-size: 17px;
+  margin-bottom: 12px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.medium};
+  }
+
+  @media screen and (max-width: 500px) {
+    font-size: 13px;
   }
 `;
 
@@ -279,10 +297,15 @@ const StarRow = styled.div`
 `;
 
 const StarIcon = styled.img`
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
   display: block;
   flex-shrink: 0;
+
+  @media screen and (max-width: 500px) {
+    width: 22px;
+    height: 22px;
+  }
 `;
 
 // 리뷰 이미지 슬라이더 영역
@@ -303,18 +326,26 @@ const ReviewImageViewport = styled.div`
     width: 340px;
   }
 
+  ${({ theme }) => theme.media.tablet} {
+    width: 332px;
+  }
+
   @media screen and (max-width: 510px) {
     width: 300px;
   }
 
   @media screen and (max-width: 450px) {
-    width: 250px;
+    width: 240px;
   }
 `;
 
 const ReviewSlideTrack = styled.div`
   display: flex;
   gap: 16px;
+
+  @media screen and (max-width: 450px) {
+    gap: 12px;
+  }
 `;
 
 const ReviewArrowButton = styled.button`
@@ -323,12 +354,38 @@ const ReviewArrowButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
+  background: none;
+  padding: 0;
 
   ${({ theme }) => theme.media.mobile} {
     width: 28px;
     height: 28px;
-    font-size: 18px;
+  }
+`;
+
+const ReviewArrowIcon = styled.img`
+  width: 22px;
+  height: 22px;
+  opacity: 0.5;
+
+  @media screen and (max-width: 1220px) {
+    width: 20px;
+    height: 20px;
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 18px;
+    height: 18px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media screen and (max-width: 450px) {
+    width: 14px;
+    height: 14px;
   }
 `;
 
@@ -340,10 +397,15 @@ const ReviewArrowRight = styled(ReviewArrowButton)`
   margin-left: 6px;
 `;
 
+const ReviewArrowRightIcon = styled(ReviewArrowIcon)`
+  transform: rotate(180deg);
+`;
+
 const ReviewText = styled.p`
   font-size: 16px;
   line-height: 1.6;
-  word-break: keep-all;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
@@ -361,16 +423,32 @@ const ReviewPagination = styled.div`
 const ReviewPageArrow = styled.button`
   width: 36px;
   height: 36px;
-  border: 1px solid #222222;
   background: none;
-  font-size: 20px;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 
   ${({ theme }) => theme.media.mobile} {
     width: 28px;
     height: 28px;
-    font-size: 18px;
   }
+`;
+
+const ReviewPageArrowIcon = styled.img`
+  width: 16px;
+  height: 16px;
+  display: block;
+  opacity: 0.6;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 13px;
+    height: 13px;
+  }
+`;
+
+const ReviewPageArrowRightIcon = styled(ReviewPageArrowIcon)`
+  transform: rotate(180deg);
 `;
 
 const ReviewPageText = styled.span`
@@ -434,6 +512,29 @@ const ReviewImage = styled.div`
   }
 `;
 
+const ReviewSortGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const ReviewSortButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 17px;
+  color: ${({ $active }) => ($active ? Theme.colors.blacktext : Theme.colors.textsecondary)};
+  font-weight: ${({ $active }) => ($active ? 500 : 400)};
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.small};
+  }
+`;
+
+const ReviewSortDivider = styled.span`
+  color: ${Theme.colors.textsecondary};
+`;
+
 export default function DetailedPageReview({ reviews, userType }) {
   // 리뷰 탭 상태값
   const [reviewFilter, setReviewFilter] = useState("all");
@@ -452,12 +553,57 @@ export default function DetailedPageReview({ reviews, userType }) {
 
   // 리뷰 탭에 따른 리뷰 필터링
   const filteredReviews = reviewFilter === "photo" ? photoReviews : reviews;
+
+  // 리뷰 정렬 상태값
+  const [sortType, setSortType] = useState("latest");
+
+  // 리뷰 정렬
+  const sortedReviews = useMemo(() => {
+    const copiedReviews = [...filteredReviews];
+
+    // 최신순, 추천순 정렬
+    return copiedReviews.sort((a, b) => {
+      // 최신순
+      if (sortType === "latest") {
+        const aDate = new Date(a.createdAt || a.date || 0).getTime();
+        const bDate = new Date(b.createdAt || b.date || 0).getTime();
+        return bDate - aDate;
+      }
+
+      // 추천순 (조회수 -> 평점 -> 날짜)
+      if (sortType === "recommended") {
+        const aViews = a.views || 0;
+        const bViews = b.views || 0;
+
+        // 조회수 다르면 조회수 높은 순
+        if (bViews !== aViews) {
+          return bViews - aViews;
+        }
+
+        // 조회수 같으면 평점 높은 순
+        const aRating = a.rating || 0;
+        const bRating = b.rating || 0;
+
+        // 평점도 같으면 최신순
+        if (bRating !== aRating) {
+          return bRating - aRating;
+        }
+
+        // 평점도 같으면 최신순
+        const aDate = new Date(a.createdAt || a.date || 0).getTime();
+        const bDate = new Date(b.createdAt || b.date || 0).getTime();
+        return bDate - aDate;
+      }
+
+      return 0;
+    });
+  }, [filteredReviews, sortType]);
+
   const reviewsPerPage = 2;
-  const totalReviewPages = Math.ceil(filteredReviews.length / reviewsPerPage);
 
-  // 현재 페이지 리뷰 자르기
-  const visibleReviews = filteredReviews.slice(reviewPage * reviewsPerPage, reviewPage * reviewsPerPage + reviewsPerPage);
+  const totalReviewPages = Math.ceil(sortedReviews.length / reviewsPerPage);
 
+  const visibleReviews = sortedReviews.slice(reviewPage * reviewsPerPage, reviewPage * reviewsPerPage + reviewsPerPage);
   // 빈 칸 채우기
   const emptyVisibleReviewCount = reviewsPerPage - visibleReviews.length;
   const emptyVisibleReviews = Array.from({ length: emptyVisibleReviewCount });
@@ -569,16 +715,53 @@ export default function DetailedPageReview({ reviews, userType }) {
 
       <ReviewTabRow>
         <ReviewCountGroup>
-          <ReviewTabButton type="button" $active={reviewFilter === "photo"} onClick={() => setReviewFilter("photo")}>
+          <ReviewTabButton
+            type="button"
+            $active={reviewFilter === "photo"}
+            onClick={() => {
+              setReviewFilter("photo");
+              setReviewPage(0);
+            }}
+          >
             포토리뷰 ({photoReviewCount})
           </ReviewTabButton>
 
-          <ReviewTabButton type="button" $active={reviewFilter === "all"} onClick={() => setReviewFilter("all")}>
+          <ReviewTabButton
+            type="button"
+            $active={reviewFilter === "all"}
+            onClick={() => {
+              setReviewFilter("all");
+              setReviewPage(0);
+            }}
+          >
             전체리뷰 ({totalReviewCount})
           </ReviewTabButton>
         </ReviewCountGroup>
+        <ReviewSortGroup>
+          <ReviewSortButton
+            type="button"
+            $active={sortType === "latest"}
+            onClick={() => {
+              setSortType("latest");
+              setReviewPage(0);
+            }}
+          >
+            최신순
+          </ReviewSortButton>
 
-        <div>최신순 | 추천순</div>
+          <ReviewSortDivider>|</ReviewSortDivider>
+
+          <ReviewSortButton
+            type="button"
+            $active={sortType === "recommended"}
+            onClick={() => {
+              setSortType("recommended");
+              setReviewPage(0);
+            }}
+          >
+            추천순
+          </ReviewSortButton>
+        </ReviewSortGroup>
       </ReviewTabRow>
 
       <ReviewList>
@@ -599,12 +782,13 @@ export default function DetailedPageReview({ reviews, userType }) {
                     <StarIcon key={star} src={getStarIcon(star, review.rating)} alt={`별점 ${review.rating}점`} />
                   ))}
                 </StarRow>
+                <ReviewTitleSecond>{review.title}</ReviewTitleSecond>
 
                 {review.images.length > 0 && (
                   <ReviewImageSliderWrap>
                     {review.images.length > 3 && (
                       <ReviewArrowLeft type="button" onClick={() => handleReviewImageMove(review, "prev")}>
-                        ‹
+                        <ReviewArrowIcon src={backIcon} alt="이전 리뷰 이미지" />
                       </ReviewArrowLeft>
                     )}
 
@@ -620,7 +804,7 @@ export default function DetailedPageReview({ reviews, userType }) {
 
                     {review.images.length > 3 && (
                       <ReviewArrowRight type="button" onClick={() => handleReviewImageMove(review, "next")}>
-                        ›
+                        <ReviewArrowRightIcon src={backIcon} alt="다음 리뷰 이미지" />
                       </ReviewArrowRight>
                     )}
                   </ReviewImageSliderWrap>
@@ -640,7 +824,7 @@ export default function DetailedPageReview({ reviews, userType }) {
       {totalReviewPages > 1 && (
         <ReviewPagination>
           <ReviewPageArrow type="button" onClick={handlePrevReviewPage}>
-            ‹
+            <ReviewPageArrowIcon src={backIcon} alt="이전 페이지" />
           </ReviewPageArrow>
 
           <ReviewPageText>
@@ -648,7 +832,7 @@ export default function DetailedPageReview({ reviews, userType }) {
           </ReviewPageText>
 
           <ReviewPageArrow type="button" onClick={handleNextReviewPage}>
-            ›
+            <ReviewPageArrowRightIcon src={backIcon} alt="다음 페이지" />
           </ReviewPageArrow>
         </ReviewPagination>
       )}

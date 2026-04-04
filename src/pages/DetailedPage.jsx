@@ -15,6 +15,8 @@ import { useAuthStore } from "../stores/useAuthStore";
 
 import DetailedPageReview from "../pages/DetailedPageReview";
 
+import backIcon from "../assets/icons/backIcon.svg";
+
 // 추가 정보 내용
 const accordionItems = [
   {
@@ -165,69 +167,66 @@ const SlideImg = styled.img`
 const ArrowButton = styled.button`
   position: absolute;
   top: 50%;
-  font-size: 52px;
-  color: ${Theme.colors.textsecondary};
   background: none;
   z-index: 10;
+  transform: translateY(-50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 35px;
+    height: 35px;
+    opacity: 0.5;
+  }
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: 40px;
+    img {
+      width: 30px;
+      height: 30px;
+    }
   }
 
-  ${({ theme }) => theme.media.mobile} {
-    width: 40px;
-    height: 40px;
-    font-size: 26px;
+  @media screen and (max-width: 800px) {
+    img {
+      width: 25px;
+      height: 25px;
+    }
   }
 
-  @media screen and (max-width: 440px) {
-    width: 30px;
-    height: 30px;
-    font-size: 20px;
+  @media screen and (max-width: 600px) {
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    img {
+      width: 18px;
+      height: 18px;
+    }
   }
 `;
 
 const LeftArrow = styled(ArrowButton)`
-  left: 20%;
-  transform: translateY(-50%);
-  transition: 0.45s ease;
-
-  ${({ theme }) => theme.media.mobile} {
-    left: 18%;
-  }
-
-  @media screen and (max-width: 600px) {
-    left: 16%;
-  }
+  left: 19%;
 
   @media screen and (max-width: 500px) {
-    left: 15%;
-  }
-
-  @media screen and (max-width: 440px) {
-    left: 16%;
+    left: 18%;
   }
 `;
 
 const RightArrow = styled(ArrowButton)`
-  right: 20%;
-  transform: translateY(-50%);
-  transition: 0.45s ease;
+  right: 19%;
 
-  ${({ theme }) => theme.media.mobile} {
-    right: 18%;
-  }
-
-  @media screen and (max-width: 600px) {
-    right: 16%;
+  img {
+    transform: rotate(180deg);
   }
 
   @media screen and (max-width: 500px) {
-    right: 15%;
-  }
-
-  @media screen and (max-width: 440px) {
-    right: 16%;
+    right: 18%;
   }
 `;
 
@@ -756,11 +755,12 @@ export default function DetailedPage() {
     <MainWrap>
       <ImgGallery>
         <SliderWrap>
-          <LeftArrow type="button" onClick={handlePrevSlide}>
-            ‹
+          <LeftArrow onClick={handlePrevSlide}>
+            <img src={backIcon} alt="이전" />
           </LeftArrow>
-          <RightArrow type="button" onClick={handleNextSlide}>
-            ›
+
+          <RightArrow onClick={handleNextSlide}>
+            <img src={backIcon} alt="다음" />
           </RightArrow>
 
           <Slider>
