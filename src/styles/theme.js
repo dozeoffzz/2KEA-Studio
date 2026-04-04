@@ -2,7 +2,7 @@ export const Theme = {
   colors: {
     redaccent: "#752323",
     greenaccent: "#898861",
-    greentext: "#6A7620",
+    greentext: "#0c0c0c30",
     yellowaccent: "#dda351",
     white: "#fafafa",
     black: "#0c0c0c",
@@ -20,7 +20,9 @@ export const Theme = {
     desktop: {
       title: "48px",
       section: "32px",
+      sectionM: "28px",
       content: "18px",
+      contentM: "17px",
       medium: "16px",
       small: "14px",
       mini: "12px",
@@ -33,7 +35,9 @@ export const Theme = {
     tablet: {
       title: "36px",
       section: "26px",
+      sectionM: "22px",
       content: "16px",
+      contentM: "15px",
       medium: "15px",
       small: "14px",
       mini: "12px",
@@ -47,6 +51,7 @@ export const Theme = {
       title: "28px",
       section: "22px",
       content: "16px",
+      contentM: "13px",
       medium: "15px",
       small: "14px",
       mini: "12px",
@@ -57,7 +62,6 @@ export const Theme = {
       },
     },
   },
-  // New
   fontweight: {
     qrweight: "700",
   },

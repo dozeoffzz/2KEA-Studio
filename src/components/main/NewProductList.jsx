@@ -2,12 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import ScrollReveal from "../common/ScrollReveal";
 import { Theme } from "../../styles/theme";
-
-//API 호출
 import { fetchMain } from "../../apis/mainApi";
 import { Link } from "react-router-dom";
 
-//스타일 컴포넌트
 const ItemList = styled.div`
   position: relative;
   display: flex;
@@ -23,17 +20,44 @@ const ItemList = styled.div`
 `;
 
 const ListTitle = styled.p`
-  font-size: clamp(24px, 2vw, ${Theme.fontsize.desktop.main.title});
-  line-height: clamp(24px, 2vw, ${Theme.fontsize.desktop.main.title});
+  font-size: ${Theme.fontsize.desktop.section};
+  line-height: 1.2;
   text-align: center;
 
-  ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.main.title};
-    line-height: ${Theme.fontsize.tablet.main.title};
+  @media (max-width: 1470px) {
+    font-size: 30px;
   }
-  ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.main.title};
-    line-height: ${Theme.fontsize.mobile.main.title};
+
+  @media (max-width: 1350px) {
+    font-size: ${Theme.fontsize.tablet.section};
+  }
+
+  @media (max-width: 1000px) {
+    font-size: 25px;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 22px;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 19px;
+  }
+
+  @media (max-width: 660px) {
+    font-size: 17px;
+  }
+
+  @media (max-width: 590px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 530px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 13px;
   }
 `;
 
@@ -101,15 +125,14 @@ const ListImageBox = styled.div`
   overflow: hidden;
 `;
 
-//슬라이드용 컴포넌트
 const ListSlide = styled.div`
   display: flex;
-  /* 보이는 리스트 부분 양옆 패딩 제거 */
   margin: 0 -10px;
-  /* 인덱스 위치에 따라 슬라이드 위치 결정 */
-  transform: translateX(${({ index, visibleCount }) => `-${(100 / visibleCount) * index}%`});
-  /* 슬라이드 애니메이션 */
-  transition: ${({ isTranslation }) => (isTranslation ? "transform 0.6s ease-in-out" : "none")};
+  transform: translateX(
+    ${({ index, visibleCount }) => `-${(100 / visibleCount) * index}%`}
+  );
+  transition: ${({ isTranslation }) =>
+    isTranslation ? "transform 0.6s ease-in-out" : "none"};
 
   ${({ theme }) => theme.media.tablet} {
     margin: 0 -7.5px;
@@ -120,10 +143,9 @@ const ListSlide = styled.div`
 `;
 
 const ListImageWrapper = styled.div`
-  //계산 복잡도를 낮추기 위해 padding으로 간격 설정
   padding: 0 10px;
-  //슬라이드 너비 설정(크기 고정 및 찌그러짐 방지)
   flex: 0 0 ${({ visibleCount }) => `calc(100% / ${visibleCount})`};
+
   ${({ theme }) => theme.media.tablet} {
     padding: 0 7.5px;
   }
@@ -158,23 +180,23 @@ const HoverImage = styled(DefaultImage)`
 `;
 
 export default function NewProductList() {
-  const [loading, setLoading] = useState(true); // API 데이터 로딩 완료 여부
-  const [list, setList] = useState([]); //API로 받아올 리스트 데이터
-  const [index, setIndex] = useState(0); //현재 슬라이드 기준 위치
-  const [isTranslation, setIsTranslation] = useState(false); //애니메이션 활성화 여부
-  const [slideCount, setSlideCount] = useState(2); //버튼 클릭시 슬라이드할 아이템 갯수
-  const isSliding = useRef(false); // 슬라이드 애니메이션 진행 여부(버튼 연타 방지용)
+  const [loading, setLoading] = useState(true);
+  const [list, setList] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [isTranslation, setIsTranslation] = useState(false);
+  const [slideCount, setSlideCount] = useState(2);
+  const isSliding = useRef(false);
 
-  const visibleCount = 4; // 한 화면에 보이는 슬라이드 갯수
+  const visibleCount = 4;
   const extendedList =
-    list.length > 0 ? [...list.slice(-visibleCount), ...list, ...list.slice(0, visibleCount)] : []; //무한 슬라이드 구현용 복사 리스트
+    list.length > 0
+      ? [...list.slice(-visibleCount), ...list, ...list.slice(0, visibleCount)]
+      : [];
 
-  //api 데이터 받아오기
   useEffect(() => {
     const loadData = async () => {
       try {
         const result = await fetchMain();
-        // 데이터가 배열인지 확인 후 저장하기
         if (result && Array.isArray(result.data.recommendations)) {
           setList(result.data.recommendations);
           setIndex(visibleCount);
@@ -188,7 +210,6 @@ export default function NewProductList() {
     loadData();
   }, []);
 
-  //화면 리사이즈 시 슬라이드 버튼 클릭시 이동 갯수 업데이트
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
@@ -197,52 +218,41 @@ export default function NewProductList() {
         setSlideCount(2);
       }
     };
-
     handleResize();
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  //api 데이터 로딩 이후 슬라이드 초기 위치 설정
   useEffect(() => {
     if (list.length > 0) {
-      //초기 배치시 애니메이션 방지(바로 배치되는것처럼 보이기)
       setIsTranslation(false);
-      //앞에 붙은 복제본을 건너뛰고 실제 첫 상품 위치로 인덱스 설정
       setIndex(visibleCount);
     }
-  }, [list]); //리스트 데이터 변경시마다 실행
+  }, [list]);
 
-  //오른쪽 목록으로 슬라이드
   const nextSlide = () => {
-    if (isSliding.current) return; //애니메이션 진행 중 반복클릭 방지
-    isSliding.current = true; //애니메이션 시작 상태로 변경
-    setIsTranslation(true); //애니메이션 활성화
-    setIndex((prev) => prev + slideCount); //오른쪽으로 슬라이드
+    if (isSliding.current) return;
+    isSliding.current = true;
+    setIsTranslation(true);
+    setIndex((prev) => prev + slideCount);
   };
 
-  //왼쪽 방향으로 슬라이드
   const previousSlide = () => {
     if (isSliding.current) return;
     isSliding.current = true;
     setIsTranslation(true);
-    setIndex((prev) => prev - slideCount); //왼쪽으로 슬라이드
+    setIndex((prev) => prev - slideCount);
   };
 
   const handleTransitionEnd = () => {
-    isSliding.current = false; //애니메이션 중단 상태로 변경
-
-    //오른쪽 끝 도달 시
+    isSliding.current = false;
     if (index >= list.length + visibleCount) {
-      setIsTranslation(false); //애니메이션 끄기
-      setIndex(visibleCount); //실제 리스트 첫 위치로 점프
+      setIsTranslation(false);
+      setIndex(visibleCount);
     }
-
-    //왼쪽 끝 도달 시
     if (index <= 0) {
-      setIsTranslation(false); //애니메이션 끄기
-      setIndex(list.length); //실제 리스트 마지막 위치로 점프
+      setIsTranslation(false);
+      setIndex(list.length);
     }
   };
 
@@ -259,7 +269,6 @@ export default function NewProductList() {
               width="16"
               height="16"
               fill="currentColor"
-              className="bi bi-chevron-left"
               viewBox="0 0 16 16"
             >
               <path
@@ -274,7 +283,6 @@ export default function NewProductList() {
               width="16"
               height="16"
               fill="currentColor"
-              className="bi bi-chevron-right"
               viewBox="0 0 16 16"
             >
               <path
@@ -285,21 +293,25 @@ export default function NewProductList() {
           </LeftSlideButton>
         </ButtonContainer>
         <ListImageBox>
-          {/* 슬라이드용 컴포넌트 */}
           <ListSlide
             index={index}
             visibleCount={visibleCount}
             isTranslation={isTranslation}
             onTransitionEnd={handleTransitionEnd}
           >
-            {/* 이미지 데이터 배열 받아오기 */}
             {extendedList.map((item, idx) => (
-              // 복제된 아이템의 key값 충돌 방지를 위해 id 와 index 조합
-              <ListImageWrapper key={`${item.id}-${idx}`} visibleCount={visibleCount}>
+              <ListImageWrapper
+                key={`${item.id}-${idx}`}
+                visibleCount={visibleCount}
+              >
                 <InnerImageBox>
                   <DefaultImage src={item.src[0]} alt={item.name} />
                   <Link to={`/products/${item.category}/${item.productId}`}>
-                    <HoverImage src={item.src[1]} alt={item.name} className="list-hover-img" />
+                    <HoverImage
+                      src={item.src[1]}
+                      alt={item.name}
+                      className="list-hover-img"
+                    />
                   </Link>
                 </InnerImageBox>
               </ListImageWrapper>
