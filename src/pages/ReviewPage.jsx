@@ -251,7 +251,7 @@ const ReviewItem = styled.li`
   padding: 30px 0 50px 0;
   border-top: 1px solid ${Theme.colors.grayline};
   border-bottom: 1px solid ${Theme.colors.grayline};
-  height: 200px;
+  height: 300px;
 
   ${({ theme }) => theme.media.tablet} {
   }
@@ -288,6 +288,9 @@ const ReviewInfo = styled.div`
 
 // 리뷰 각 데이터 칸
 const ReviewCell = styled.span`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   font-size: ${Theme.fontsize.desktop.small};
   width: ${({ width }) => width || "auto"};
   flex: ${({ flex }) => flex || "none"};
@@ -304,11 +307,21 @@ const ReviewCell = styled.span`
   /* 제목 칸 내용이 길면 말줄임표로 보이게 */
   &.title {
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
     text-align: left;
     font-size: ${Theme.fontsize.desktop.small};
   }
+`;
+
+const ImgWrap = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const ReviewImg = styled.img`
+  object-fit: cover;
+  width: 98px;
+  height: 115px;
 `;
 
 // 삭제 버튼
@@ -393,8 +406,8 @@ const Pagination = styled.ul`
   button {
     background: none;
     border: none;
-    cursor: pointer;
     font-size: ${Theme.fontsize.desktop.medium};
+    color: ${Theme.colors.black};
   }
 
   ${({ theme }) => theme.media.tablet} {
@@ -404,6 +417,24 @@ const Pagination = styled.ul`
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
     width: 100%;
+  }
+`;
+const CarouselWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const ReviewContent = styled.p`
+  font-size: ${Theme.fontsize.desktop.mini};
+`;
+
+const ArrowBtn = styled.button`
+  width: 24px;
+  height: 24px;
+
+  &:hover {
+    background: ${Theme.colors.qrimgbg};
   }
 `;
 
@@ -462,6 +493,7 @@ function CustomDropdown({ options, value, onChange }) {
 
 // ReviewPage 컴포넌트
 export default function ReviewPage() {
+  const [imageIndexMap, setImageIndexMap] = useState({});
   const [userInfo, setUserInfo] = useState(null);
   // useCartStore에서 카트 아이템 갯수 가져오기
   const cartItem = useCartStore((state) => state.cartItems);
@@ -476,6 +508,19 @@ export default function ReviewPage() {
   // 보여줄 리뷰 목록
   const [reviews, setReviews] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+
+  // 현재 페이지 데이터
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = reviews.slice(startIndex, startIndex + itemsPerPage);
+
+  const totalPages = Math.ceil(reviews.length / itemsPerPage) || 1;
+  // 항상 4칸 유지
+  const itemDisplay = [...currentItems];
+  while (itemDisplay.length < 4) {
+    itemDisplay.push(null);
+  }
   // 드롭다운 all, seating, tables, lighting)
   const [category, setCategory] = useState("all");
 
@@ -568,6 +613,46 @@ export default function ReviewPage() {
     setAppliedKeyword("");
   }
 
+  // 리뷰 이미지 캐러셀
+  const handlePrevImage = (reviewId) => {
+    setImageIndexMap((prev) => {
+      const current = prev[reviewId] || 0;
+      return {
+        ...prev,
+        [reviewId]: Math.max(current - 1, 0),
+      };
+    });
+  };
+
+  const handleNextImage = (reviewId, total) => {
+    setImageIndexMap((prev) => {
+      const current = prev[reviewId] || 0;
+      return {
+        ...prev,
+        [reviewId]: current + 3 < total ? current + 1 : current,
+      };
+    });
+  };
+
+  // 페이지 이동 함수
+  const goToFirstPage = () => setCurrentPage(1);
+  const goToPrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const goToNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const goToLastPage = () => setCurrentPage(totalPages);
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+
+    let start = Math.max(currentPage - 1, 1);
+    let end = start + 2;
+
+    // totalPages보다 커도 그냥 3개 유지
+    for (let i = start; i <= end; i++) {
+      pageNumbers.push(i);
+    }
+
+    return pageNumbers;
+  };
   return (
     <ReviewPageContainer>
       <SideMenuBar />
@@ -626,33 +711,54 @@ export default function ReviewPage() {
             <ReviewItem className="empty">작성된 리뷰가 없습니다.</ReviewItem>
           ) : (
             // map으로 렌더링 하고 key React가 항목 구분할 때 쓰는 고유값임
-            reviews.map((review) => (
-              <ReviewItem key={review.id}>
-                {/* 제목 너무 길면 말줄임표... */}
-                <ReviewCell className="title" flex="1" align="left" style={{ maxWidth: "320px" }}>
-                  {review.title}
-                </ReviewCell>
-                <ReviewInfo>
-                  {/* 작성자 */}
-                  <ReviewCell>작성자: {review.author}</ReviewCell>
+            itemDisplay.map((review, idx) =>
+              review ? (
+                <ReviewItem key={review.id}>
+                  {/* 제목 너무 길면 말줄임표... */}
+                  <ReviewCell className="title" flex="1" align="left">
+                    {review.title}
+                    {/* 리뷰 이미지 캐러셀 */}
+                    <CarouselWrap>
+                      {/* 이미지 4개 이상일 때만 이전 버튼 */}
+                      {review.images?.length > 3 && (
+                        <ArrowBtn onClick={() => handlePrevImage(review.id)}>{"<"}</ArrowBtn>
+                      )}
 
-                  {/* 작성일  */}
-                  <ReviewCell>작성일: {formatShortDate(review.date)}</ReviewCell>
+                      <ImgWrap>
+                        {review.images
+                          ?.slice(imageIndexMap[review.id] || 0, (imageIndexMap[review.id] || 0) + 3)
+                          .map((img, i) => (
+                            <ReviewImg key={i} src={img} />
+                          ))}
+                      </ImgWrap>
 
-                  {/* 구매일 */}
-                  <ReviewCell>구매일: {formatShortDate(review.orderDate)}</ReviewCell>
+                      {review.images?.length > 3 && (
+                        <ArrowBtn onClick={() => handleNextImage(review.id, review.images.length)}>{">"}</ArrowBtn>
+                      )}
+                    </CarouselWrap>
 
-                  {/* 조회수 */}
-                  <ReviewCell>조회: {formatViews(review.views)}</ReviewCell>
+                    <ReviewContent>{review.content}</ReviewContent>
+                  </ReviewCell>
 
-                  {/* 헤더랑 열 맞추기용 */}
-                  <ReviewCell></ReviewCell>
-
-                  {/* 삭제 버튼 */}
-                  <DeleteBtn onClick={() => handleDelete(review.id)}>삭제</DeleteBtn>
-                </ReviewInfo>
-              </ReviewItem>
-            ))
+                  <ReviewInfo>
+                    {/* 작성자 */}
+                    <ReviewCell>작성자: {review.author}</ReviewCell>
+                    {/* 작성일  */}
+                    <ReviewCell>작성일: {formatShortDate(review.date)}</ReviewCell>
+                    {/* 구매일 */}
+                    <ReviewCell>구매일: {formatShortDate(review.orderDate)}</ReviewCell>
+                    {/* 조회수 */}
+                    <ReviewCell>조회: {formatViews(review.views)}</ReviewCell>
+                    {/* 헤더랑 열 맞추기용 */}
+                    <ReviewCell></ReviewCell>
+                    {/* 삭제 버튼 */}
+                    <DeleteBtn onClick={() => handleDelete(review.id)}>삭제</DeleteBtn>
+                  </ReviewInfo>
+                </ReviewItem>
+              ) : (
+                <ReviewItem key={`empty-${idx}`} />
+              ),
+            )
           )}
         </ReviewList>
 
@@ -681,19 +787,41 @@ export default function ReviewPage() {
 
         <Pagination>
           <li>
-            <button>First</button>
+            <button onClick={goToFirstPage} disabled={currentPage === 1}>
+              First
+            </button>
           </li>
+
           <li>
-            <button>Prev</button>
+            <button onClick={goToPrevPage} disabled={currentPage === 1}>
+              Prev
+            </button>
           </li>
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
+
+          {getPageNumbers().map((page) => (
+            <li
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              style={{
+                cursor: "pointer",
+                fontWeight: currentPage === page ? "bold" : "normal",
+                textDecoration: currentPage === page ? "underline" : "none",
+              }}
+            >
+              {page}
+            </li>
+          ))}
+
           <li>
-            <button>Next</button>
+            <button onClick={goToNextPage} disabled={currentPage === totalPages}>
+              Next
+            </button>
           </li>
+
           <li>
-            <button>Last</button>
+            <button onClick={goToLastPage} disabled={currentPage === totalPages}>
+              Last
+            </button>
           </li>
         </Pagination>
       </ReviewContainer>
