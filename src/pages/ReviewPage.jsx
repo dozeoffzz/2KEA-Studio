@@ -442,7 +442,7 @@ const Pagination = styled.ul`
       font-size: ${Theme.fontsize.mobile.small};
     }
     max-width: 100%;
-    max-width: 300px;
+    max-width: 330px;
     margin: 50px auto 0 auto;
   }
 `;
