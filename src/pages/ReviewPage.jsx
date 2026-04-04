@@ -322,6 +322,11 @@ const ReviewImg = styled.img`
   object-fit: cover;
   width: 98px;
   height: 115px;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 70px;
+    height: 82px;
+  }
 `;
 
 // 삭제 버튼
@@ -423,10 +428,20 @@ const CarouselWrap = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+
+  ${({ theme }) => theme.media.mobile} {
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const ReviewContent = styled.p`
+  margin-bottom: 10px;
   font-size: ${Theme.fontsize.desktop.mini};
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-bottom: 20px;
+  }
 `;
 
 const ArrowBtn = styled.button`

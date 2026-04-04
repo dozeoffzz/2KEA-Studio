@@ -210,8 +210,8 @@ const RecentItem = styled.div`
   ${({ theme }) => theme.media.tablet} {
   }
   ${({ theme }) => theme.media.mobile} {
-    width: 156px;
-    height: 195px;
+    width: 140px;
+    height: 175px;
   }
 `;
 
@@ -241,7 +241,7 @@ const SliderWrapper = styled.div`
     width: 660px;
   }
   ${({ theme }) => theme.media.mobile} {
-    width: 342px;
+    width: 290px;
   }
 `;
 
@@ -249,6 +249,10 @@ const SliderTrack = styled.div`
   display: flex;
   gap: 30px;
   transition: transform 0.5s ease;
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 10px;
+  }
 `;
 
 export default function MyPage() {
@@ -482,8 +486,7 @@ export default function MyPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   // 제품이미지 크기 + gap
   // 데스크탑,테블릿,모바일 크기에 따라 얼마나 움직일지
-  const itemWidth =
-    window.innerWidth <= 767 ? 186 : window.innerWidth <= 1024 ? 230 : 230;
+  const itemWidth = window.innerWidth <= 767 ? 150 : window.innerWidth <= 1024 ? 230 : 230;
 
   const visibleCount =
     window.innerWidth <= 767
@@ -530,11 +533,7 @@ export default function MyPage() {
           {isEdit ? (
             // 010 고정 중간, 끝 분리
             <PhoneInputWrap>
-              <PhonePartInput
-                value="010"
-                readOnly
-                style={{ width: "35px", cursor: "default" }}
-              />
+              <PhonePartInput value="010" readOnly style={{ width: "35px", cursor: "default" }} />
               <PhoneFixed>-</PhoneFixed>
               {/* 중간 4자리 - 채우면 끝번호로 자동 이동 */}
               <PhonePartInput
@@ -570,12 +569,7 @@ export default function MyPage() {
         <MobileWrap>
           <p>Name</p>
           {isEdit ? (
-            <Input
-              name="name"
-              value={editData.name}
-              onChange={handleInput}
-              placeholder="한글 2~10글자"
-            />
+            <Input name="name" value={editData.name} onChange={handleInput} placeholder="한글 2~10글자" />
           ) : (
             <p>{userInfo?.name}</p>
           )}
@@ -586,12 +580,7 @@ export default function MyPage() {
         <EmailWrap>
           <p>Email</p>
           {isEdit ? (
-            <Input
-              name="email"
-              value={editData.email}
-              onChange={handleInput}
-              placeholder="이메일 입력"
-            />
+            <Input name="email" value={editData.email} onChange={handleInput} placeholder="이메일 입력" />
           ) : (
             <p>{userInfo?.email}</p>
           )}
@@ -602,12 +591,7 @@ export default function MyPage() {
         <AddressWrap>
           <p>Address</p>
           {isEdit ? (
-            <Input
-              name="address"
-              value={editData.address}
-              onChange={handleInput}
-              placeholder="주소 입력"
-            />
+            <Input name="address" value={editData.address} onChange={handleInput} placeholder="주소 입력" />
           ) : (
             <p>{userInfo?.address}</p>
           )}
@@ -616,9 +600,7 @@ export default function MyPage() {
         {isEdit && msgs.address && <ErrorMsg>{msgs.address}</ErrorMsg>}
       </MyInfo>
 
-      <Button onClick={isEdit ? handleSave : handleEditToggle}>
-        {isEdit ? "완료" : "수정"}
-      </Button>
+      <Button onClick={isEdit ? handleSave : handleEditToggle}>{isEdit ? "완료" : "수정"}</Button>
 
       <RecentItemWrap>
         {recentProducts.length === 0 ? (
@@ -635,24 +617,10 @@ export default function MyPage() {
             <SliderWrapper>
               <SliderTrack style={{ transform: `translateX(${translateX}px)` }}>
                 {recentProducts.map((item, index) => (
-                  <NavLink
-                    to={`/products/${item.category}/${item.id}`}
-                    key={item.id}
-                  >
-                    <RecentItem
-                      onMouseEnter={() => setHoverImg(index)}
-                      onMouseLeave={() => setHoverImg(null)}
-                    >
-                      <RecentItemImg
-                        src={item.img[0]}
-                        alt={item.name}
-                        visible={hoverImg !== index}
-                      />
-                      <RecentItemImg
-                        src={item.img[1]}
-                        alt={item.name}
-                        visible={hoverImg === index}
-                      />
+                  <NavLink to={`/products/${item.category}/${item.id}`} key={item.id}>
+                    <RecentItem onMouseEnter={() => setHoverImg(index)} onMouseLeave={() => setHoverImg(null)}>
+                      <RecentItemImg src={item.img[0]} alt={item.name} visible={hoverImg !== index} />
+                      <RecentItemImg src={item.img[1]} alt={item.name} visible={hoverImg === index} />
                     </RecentItem>
                     <ItemName>{item.name}</ItemName>
                   </NavLink>
