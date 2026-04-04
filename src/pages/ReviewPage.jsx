@@ -784,20 +784,17 @@ export default function ReviewPage() {
           />
           <SearchButton onClick={handleSearch}>찾기</SearchButton>
         </SearchWrap>
-
         <Pagination>
           <li>
             <button onClick={goToFirstPage} disabled={currentPage === 1}>
               First
             </button>
           </li>
-
           <li>
             <button onClick={goToPrevPage} disabled={currentPage === 1}>
               Prev
             </button>
           </li>
-
           {getPageNumbers().map((page) => (
             <li
               key={page}
@@ -811,13 +808,11 @@ export default function ReviewPage() {
               {page}
             </li>
           ))}
-
           <li>
             <button onClick={goToNextPage} disabled={currentPage === totalPages}>
               Next
             </button>
           </li>
-
           <li>
             <button onClick={goToLastPage} disabled={currentPage === totalPages}>
               Last
