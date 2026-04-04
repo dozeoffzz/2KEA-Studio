@@ -76,21 +76,34 @@ const ReviewPageContainer = styled.div`
   align-items: center;
   gap: 160px;
   width: 100%;
+
+  ${({ theme }) => theme.media.tablet} {
+    gap: 120px;
+    padding: 0 50px;
+  }
+
   ${({ theme }) => theme.media.mobile} {
     gap: 80px;
+    padding: 0 30px;
+  }
+
+  @media screen and (max-width: 420px) {
+    padding: 0 10px;
   }
 `;
 
 // 리뷰 목록 섹션
 const ReviewContainer = styled.section`
-  width: 915px;
+  width: 100%;
+  max-width: 915px;
   height: auto;
 
   ${({ theme }) => theme.media.tablet} {
-    width: 715px;
+    max-width: 715px;
   }
+
   ${({ theme }) => theme.media.mobile} {
-    width: 325px;
+    max-width: 715px;
     gap: 100px;
   }
 `;
@@ -324,8 +337,8 @@ const ReviewImg = styled.img`
   height: 115px;
 
   ${({ theme }) => theme.media.mobile} {
-    width: 70px;
-    height: 82px;
+    width: 80px;
+    height: 90px;
   }
 `;
 
@@ -372,7 +385,7 @@ const SearchInput = styled.input`
     font-size: ${Theme.fontsize.tablet.medium};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.mini};
     width: 150px;
     height: 25px;
   }
@@ -391,7 +404,7 @@ const SearchButton = styled.button`
     font-size: ${Theme.fontsize.tablet.medium};
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: ${Theme.fontsize.mobile.mini};
     width: 100px;
     height: 25px;
   }
@@ -416,12 +429,21 @@ const Pagination = styled.ul`
   }
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.medium};
-    width: 100%;
+    li,
+    button {
+      font-size: ${Theme.fontsize.tablet.medium};
+    }
+    width: 500px;
   }
+
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.small};
-    width: 100%;
+    li,
+    button {
+      font-size: ${Theme.fontsize.mobile.small};
+    }
+    max-width: 100%;
+    max-width: 330px;
+    margin: 50px auto 0 auto;
   }
 `;
 const CarouselWrap = styled.div`
@@ -438,6 +460,8 @@ const CarouselWrap = styled.div`
 const ReviewContent = styled.p`
   margin-bottom: 10px;
   font-size: ${Theme.fontsize.desktop.mini};
+  word-break: break-word;
+  overflow-wrap: anywhere;
 
   ${({ theme }) => theme.media.mobile} {
     margin-bottom: 20px;
