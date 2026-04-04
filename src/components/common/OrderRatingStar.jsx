@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import EmptyStar from "../../assets/imgs/detail/Star.svg";
+import HalfStar from "../../assets/imgs/detail/Half.svg";
 import FullStar from "../../assets/imgs/detail/Full.svg";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const StarContainer = styled.div`
   display: flex;
@@ -9,6 +10,8 @@ const StarContainer = styled.div`
 `;
 
 const StarWrap = styled.div`
+  position: relative;
+  display: flex;
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   cursor: pointer;
@@ -19,44 +22,76 @@ const StarIcon = styled.img`
   pointer-events: none;
 `;
 
-export default function OrderRatingStar({ rating, setRating, baseSize = 24, step = 2 }) {
-  const [hover, setHover] = useState(0);
-  return (
-    <StarContainer>
-      {Array.from({ length: 5 }).map((_, idx) => {
-        const starValue = idx + 1;
-        const currentSize = baseSize + idx * step; // 점점 커지는 크기 계산
-        const isFull = (hover || rating) >= starValue;
+const HalfSection = styled.div`
+  position: absolute;
+  top: 0;
+  left: ${({ isLeft }) => (isLeft ? "0" : "auto")};
+  right: ${({ isLeft }) => (isLeft ? "auto" : "0")};
+  width: 50%;
+  height: 100%;
+  z-index: 1;
+`;
 
-        //별점 클릭시 채우고, 채운 별점을 다시 클릭하면 비우기
-        const handleStarClick = () => {
-          if (rating === starValue) {
+export default function OrderRatingStar({ rating, setRating, baseSize = 24, step = 2 }) {
+  const [hover, setHover] = useState(0); //호버시 채워지는 별 상태값
+
+  //호버 벗어나면 별 초기화
+  const StarHoverOut = () => {
+    setHover(0);
+  };
+
+  return (
+    <StarContainer onMouseLeave={StarHoverOut}>
+      {Array.from({ length: 5 }).map((_, idx) => {
+        const starIndex = idx + 1;
+        const currentSize = baseSize + idx * step; // 점점 커지는 크기 계산
+
+        //왼쪽에 마우스 올리면 별 반개짜리, 오른쪽에 마우스 올리면 별 1개짜리 나오기
+        const getStarImg = (value) => {
+          if (value >= starIndex) return FullStar;
+          if (value >= starIndex - 0.5) return HalfStar;
+          return EmptyStar;
+        };
+
+        //호버 중일때는 호버 점수를 우션적으로 보여주기
+        const starValue = hover || rating;
+        const starImg = getStarImg(starValue);
+
+        const handleInterSection = (isHalf) => {
+          //현재 마우스 올린 위치가 별 절반 기준으로 왼쪽인지 오른쪽인지 확인
+          const newStar = isHalf ? starIndex - 0.5 : starIndex;
+
+          //이미 선택된 점수를 클릭하면 0점으로 초기화
+          if (rating === newStar) {
             setRating(0);
           } else {
-            setRating(starValue);
-            setHover(0);
+            setRating(newStar);
           }
         };
 
-        //별 호버시 별 꽉 채운거로 보이기
-        const hoverRateStar = () => {
-          setHover(starValue);
+        //별 왼쪽 호버 및 클릭 로직
+        const halfStarHover = () => {
+          setHover(starIndex - 0.5);
+        };
+        const halfStarClick = () => {
+          handleInterSection(true);
+          setHover(0);
         };
 
-        //호버 해제하면 별 기존으로 보이기
-        const hoverOutStar = () => {
+        //별 오른쪽 호버 및 클릭 로직
+        const fullStarHover = () => {
+          setHover(starIndex);
+        };
+        const fullStarClick = () => {
+          handleInterSection(false);
           setHover(0);
         };
 
         return (
-          <StarWrap
-            key={idx}
-            size={currentSize}
-            onClick={handleStarClick}
-            onMouseEnter={hoverRateStar}
-            onMouseLeave={hoverOutStar}
-          >
-            <StarIcon src={isFull ? FullStar : EmptyStar} alt={`${starValue}점`}></StarIcon>
+          <StarWrap key={idx} size={currentSize}>
+            <HalfSection isLeft={true} onMouseEnter={halfStarHover} onClick={halfStarClick} />
+            <HalfSection isLeft={false} onMouseEnter={fullStarHover} onClick={fullStarClick} />
+            <StarIcon src={starImg} alt={`${starValue}점`}></StarIcon>
           </StarWrap>
         );
       })}
