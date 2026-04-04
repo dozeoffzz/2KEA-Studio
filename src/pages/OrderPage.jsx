@@ -501,7 +501,6 @@ export default function OrderPage() {
       <OrderContainer>
         <OrderInfoWrap>
           <OrderDetail>주문내역</OrderDetail>
-
           <DateFilterContainer>
             <DateFilterWrap>
               {FILTER_DATES.map((p) => (
