@@ -67,20 +67,6 @@ const DateFilterWrap = styled.ul`
   width: 256px;
 `;
 
-  li {
-    font-size: ${Theme.fontsize.desktop.medium};
-  }
-
-  ${({ theme }) => theme.media.tablet} {
-    li {
-      font-size: ${Theme.fontsize.tablet.content};
-    }
-  }
-  ${({ theme }) => theme.media.mobile} {
-    li {
-      font-size: ${Theme.fontsize.mobile.small};
-    }
-  }
 const DateFilter = styled.li`
   color: ${({ isActive }) => (isActive ? Theme.colors.blacktext : Theme.colors.textsecondary)};
   font-size: ${Theme.fontsize.desktop.medium};
@@ -391,7 +377,7 @@ export default function OrderPage() {
               return item;
             }),
           }
-        : order
+        : order,
     );
 
     // 상태 업데이트
@@ -433,7 +419,7 @@ export default function OrderPage() {
       ...item, // 원래 상품이 가지고 있던 정보를 그대로 복사
       orderId: order.id, // 이 상품이 몇번째 주문에서 온 건지 적어줌 (데이터 식별용)
       orderDate: order.orderDate, // 상품(purchasedItems) 데이터에는 날짜가 없음, 따라서 부모 기준에 적힌 날짜를 가져옴
-    }))
+    })),
   );
 
   const goToFirstPage = () => {
@@ -498,10 +484,7 @@ export default function OrderPage() {
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage) || 1;
 
   // 날짜 필터에 따라 아이템 배치
-  const itemDisplay = filteredItems.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const itemDisplay = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   // 실제 들어온 데이터보다 남은곳이 많을 경우 남은곳은 빈칸으로 채움
   while (itemDisplay.length < 4) {
     itemDisplay.push(null);
@@ -518,33 +501,18 @@ export default function OrderPage() {
       <OrderContainer>
         <OrderInfoWrap>
           <OrderDetail>주문내역</OrderDetail>
-          <DateFilterWrap>
-            <DateFilter>
-              <li>오늘</li>
-              <li>1주일</li>
-              <li>1개월</li>
-              <li>3개월</li>
-              <li>6개월</li>
-            </DateFilter>
-            <DateInfo>
-              기본적으로 최근 3개월간의 자료가 조회되며, <MobileBr />
-              지난 주문내역을 조회하실 수 있습니다.
-            </DateInfo>
-          </DateFilterWrap>
+
           <DateFilterContainer>
             <DateFilterWrap>
               {FILTER_DATES.map((p) => (
-                <DateFilter
-                  key={p}
-                  isActive={dateFilter === p}
-                  onClick={() => handleFilterClick(p)}
-                >
+                <DateFilter key={p} isActive={dateFilter === p} onClick={() => handleFilterClick(p)}>
                   {p}
                 </DateFilter>
               ))}
             </DateFilterWrap>
             <DateInfo>
-              기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.
+              기본적으로 최근 3개월간의 자료가 조회되며, <MobileBr />
+              지난 주문내역을 조회하실 수 있습니다.
             </DateInfo>
           </DateFilterContainer>
           <OrderInfo>
@@ -589,9 +557,7 @@ export default function OrderPage() {
                       {item.status === "배송완료" ? (
                         <ReviewButton onClick={AccordionOpen}>리뷰작성</ReviewButton>
                       ) : (
-                        <ConfirmDeliverButton onClick={ConfirmDelivery}>
-                          배송확정
-                        </ConfirmDeliverButton>
+                        <ConfirmDeliverButton onClick={ConfirmDelivery}>배송확정</ConfirmDeliverButton>
                       )}
                     </OrderItemWrap>
                     <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
