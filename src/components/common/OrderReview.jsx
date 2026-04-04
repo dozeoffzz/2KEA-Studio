@@ -14,17 +14,52 @@ const OrderReviewContainer = styled.div`
   padding: 21px 18px;
   background-color: ${Theme.colors.white};
   border: 1px solid ${Theme.colors.black};
+
+  ${({ theme }) => theme.media.mobile} {
+    max-width: 100%;
+    padding: 24px 14px 5px;
+    gap: 2px;
+  }
 `;
 
 const OrderTitleWrap = styled.div`
   display: flex;
   gap: 20px;
+
+  ${({ theme }) => theme.media.tablet} {
+    p {
+      font-size: ${Theme.fontsize.tablet.content};
+    }
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+
+    p:first-of-type {
+      font-size: 14px;
+    }
+
+    p:last-of-type {
+      font-size: 16px;
+    }
+  }
 `;
 
 const ReviewRatingWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  ${({ theme }) => theme.media.mobile} {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+  }
 `;
 
 const ReviewTitle = styled.input`
@@ -34,9 +69,32 @@ const ReviewTitle = styled.input`
   outline: none;
   border-top: 1px solid ${Theme.colors.grayline};
   border-bottom: 1px solid ${Theme.colors.grayline};
+  box-sizing: border-box;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+
+  @media screen and (max-width: 850px) {
+    width: 300px;
+    transition: 0.45s ease;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 100%;
+    height: 38px;
+    padding: 8px 10px;
+    font-size: 13px;
+    border-bottom: none;
+  }
 `;
 
-const ReviewPhotoWarp = styled(ReviewRatingWrap)``;
+const ReviewPhotoWarp = styled(ReviewRatingWrap)`
+  ${({ theme }) => theme.media.mobile} {
+    width: 100%;
+    gap: 0px;
+  }
+`;
 
 const PhotoWrap = styled.div`
   display: flex;
@@ -46,6 +104,11 @@ const PhotoWrap = styled.div`
   height: 235px;
   border: 1px solid ${Theme.colors.grayline};
   border-width: 1px 0;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 100%;
+    height: 160px;
+  }
 `;
 
 const AddPhotoButton = styled.button`
@@ -57,10 +120,29 @@ const AddPhotoButton = styled.button`
   width: 100px;
   height: 100px;
   border: 1px solid ${Theme.colors.grayline};
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 100px;
+    height: 100px;
+    gap: 6px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
 `;
 
 const UploadedPhoto = styled.p`
   color: ${Theme.colors.textsecondary};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+  }
 `;
 
 const ReviewText = styled.textarea`
@@ -71,6 +153,7 @@ const ReviewText = styled.textarea`
   border-width: 1px 0;
   resize: none;
   outline: none;
+  box-sizing: border-box;
 
   &::placeholder {
     display: flex;
@@ -78,12 +161,39 @@ const ReviewText = styled.textarea`
     align-items: center;
     font-size: ${Theme.fontsize.desktop.medium};
   }
+
+  ${({ theme }) => theme.media.tablet} {
+    &::placeholder {
+      font-size: ${Theme.fontsize.tablet.medium};
+    }
+  }
+
+  @media screen and (max-width: 850px) {
+    width: 300px;
+    transition: 0.45s ease;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 100%;
+    height: 140px;
+    padding: 12px 10px;
+    font-size: 13px;
+
+    &::placeholder {
+      font-size: 13px;
+    }
+  }
 `;
 
 const ButtonWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
+
+  ${({ theme }) => theme.media.mobile} {
+    justify-content: flex-end;
+    margin-top: 4px;
+  }
 `;
 
 const CompleteButton = styled.button`
@@ -92,11 +202,24 @@ const CompleteButton = styled.button`
   background-color: ${Theme.colors.black};
   color: ${Theme.colors.whitetext};
   font-size: ${Theme.fontsize.desktop.small};
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 52px;
+    height: 18px;
+    font-size: 11px;
+  }
 `;
+
 const ErrorMagWrap = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+`;
+
+const TextErrorWrap = styled(ErrorMagWrap)`
+  ${({ theme }) => theme.media.mobile} {
+    width: 100%;
+  }
 `;
 
 const ErrorMsg = styled.p`
@@ -238,50 +361,29 @@ export default function OrderReview({ item, onComplete }) {
     <OrderReviewContainer>
       <OrderTitleWrap>
         <p>{item.name}</p>
-        <p>상품은 만족하셧나요?</p>
+        <p>상품은 만족하셨나요?</p>
       </OrderTitleWrap>
       <ReviewRatingWrap>
         <ErrorMagWrap>
           <OrderRatingStar rating={rating} setRating={handleRatingChange} />
           {errors.rating && <ErrorMsg>별점을 선택해 주세요.</ErrorMsg>}
         </ErrorMagWrap>
-        <ReviewTitle
-          type="text"
-          placeholder="리뷰 제목을 작성해주세요"
-          value={title}
-          onChange={titleChange}
-        />
+        <ReviewTitle type="text" placeholder="리뷰 제목을 작성해주세요" value={title} onChange={titleChange} />
       </ReviewRatingWrap>
       <ReviewPhotoWarp>
         <PhotoWrap>
           <AddPhotoButton onClick={handlePhotoClick}>
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              ref={photoRef}
-              onChange={handleImageChange}
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="19px"
-              viewBox="0 -960 960 960"
-              width="19px"
-              fill="#999999"
-            >
+            <input type="file" accept="image/*" style={{ display: "none" }} ref={photoRef} onChange={handleImageChange} />
+            <svg xmlns="http://www.w3.org/2000/svg" height="19px" viewBox="0 -960 960 960" width="19px" fill="#999999">
               <path d="M240-280h480L597-444q-11-2-22.5-5t-22.5-7L450-320l-90-120-120 160Zm-40 160q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h200v80H200v560h560v-213l80 80v133q0 33-23.5 56.5T760-120H200Zm280-360Zm382 56L738-548q-21 14-45 21t-51 7q-74 0-126-52.5T464-700q0-75 52.5-127.5T644-880q75 0 127.5 52.5T824-700q0 27-8 52t-20 46l122 122-56 56ZM644-600q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Z" />
             </svg>
             <UploadedPhoto>사진 {images.length}/5</UploadedPhoto>
           </AddPhotoButton>
         </PhotoWrap>
-        <ErrorMagWrap>
-          <ReviewText
-            placeholder="리뷰 본문을 작성해주세요"
-            value={content}
-            onChange={contentChange}
-          />
+        <TextErrorWrap>
+          <ReviewText placeholder="리뷰 본문을 작성해주세요" value={content} onChange={contentChange} />
           {errors.input && <ErrorMsg>제목과 내용을 모두 입력해 주세요.</ErrorMsg>}
-        </ErrorMagWrap>
+        </TextErrorWrap>
       </ReviewPhotoWarp>
       <ButtonWrap>
         <CompleteButton type="button" onClick={handleComplete}>

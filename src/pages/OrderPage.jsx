@@ -238,6 +238,10 @@ const OrderReviewWrap = styled.div`
   background-color: ${Theme.colors.white};
   overflow: hidden;
   transition: max-height 0.6s ease-in-out;
+
+  ${({ theme }) => theme.media.mobile} {
+    max-height: ${({ openAccordion }) => (openAccordion ? "700px" : "0")};
+  }
 `;
 
 const OrderutilityWrap = styled.div`
@@ -252,6 +256,10 @@ const OrderSearchBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 22px;
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 10px;
+  }
 `;
 
 const SearchOrder = styled.input`
@@ -260,6 +268,17 @@ const SearchOrder = styled.input`
   height: 30px;
   padding: 0 6px;
   border: 1px solid ${Theme.colors.black};
+
+  ${({ theme }) => theme.media.tablet} {
+    height: 27px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    max-width: 300px;
+    min-width: 150px;
+    margin: 10px;
+    height: 25px;
+  }
 `;
 
 const SearchButton = styled.button`
@@ -267,6 +286,18 @@ const SearchButton = styled.button`
   height: 30px;
   background-color: ${Theme.colors.black};
   color: ${Theme.colors.whitetext};
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 100px;
+    height: 27px;
+    font-size: ${Theme.fontsize.tablet.medium};
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 80px;
+    height: 25px;
+    font-size: ${Theme.fontsize.mobile.mini};
+  }
 `;
 
 const OrderPagination = styled.ul`
