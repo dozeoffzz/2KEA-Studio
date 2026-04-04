@@ -165,6 +165,14 @@ const BottomLinks = styled.div`
 
 const Copyright = styled.p``;
 
+const MobileBr = styled.br`
+  display: none;
+
+  @media screen and (max-width: 400px) {
+    display: block;
+  }
+`;
+
 export default function Footer() {
   return (
     <FooterWrap>
@@ -173,7 +181,10 @@ export default function Footer() {
           {/* 왼쪽 고객센터 정보 */}
           <CustomerBlock>
             <FooterTitle>CUSTOMER SERVICE</FooterTitle>
-            <CustomerText>평일 9:00 - 18:00 (점심시간 1:00 - 2:00)</CustomerText>
+            <CustomerText>
+              평일 9:00 - 18:00 <MobileBr />
+              (점심시간 1:00 - 2:00)
+            </CustomerText>
             <CustomerText>(토,일 공휴일 휴무)</CustomerText>
             <InquiryLink href="mailto:2KEA@email.com">온라인 문의 바로가기 →</InquiryLink>
           </CustomerBlock>
@@ -209,9 +220,7 @@ export default function Footer() {
         {/* 푸터 맨 아래 사업자 정보 */}
         <FooterBottom>
           <div>
-            <BottomText>
-              광주광역시 XX XX 대표 이가람, 이영연, 이해랑, 최은우, 최원희 사업자번호 XXX-XX-XXXXX
-            </BottomText>
+            <BottomText>광주광역시 XX XX 대표 이가람, 이영연, 이해랑, 최은우, 최원희 사업자번호 XXX-XX-XXXXX</BottomText>
             <BottomLinks>
               <span>이용약관</span>
               <span>개인정보 보호정책</span>
