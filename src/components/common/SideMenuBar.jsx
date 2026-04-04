@@ -6,14 +6,15 @@ import WithdrawModal from "../modals/WithdrawModal";
 
 const SideMenu = styled.div`
   position: fixed;
-  top: 120px;
+  top: 0px;
   left: 0;
   right: 0;
   display: flex;
   justify-content: space-around;
   width: 100%;
   z-index: 1;
-  border-bottom: 1px solid ${Theme.colors.grayline};
+  background: ${Theme.colors.white};
+  height: 180px;
 
   ${({ theme }) => theme.media.tablet} {
     position: fixed;
@@ -21,11 +22,11 @@ const SideMenu = styled.div`
     font-size: ${Theme.fontsize.tablet.medium};
     flex-direction: row;
     justify-content: space-around;
-    top: 120px;
+    top: 0px;
     right: 0;
     left: 0;
     width: 100%;
-    height: 40px;
+    height: 180px;
   }
 
   ${({ theme }) => theme.media.mobile} {
@@ -35,11 +36,11 @@ const SideMenu = styled.div`
     font-size: ${Theme.fontsize.tablet.medium};
     flex-direction: row;
     justify-content: space-around;
-    top: 120px;
+    top: 0px;
     right: 0;
     left: 0;
     width: 100%;
-    height: 40px;
+    height: 120px;
   }
 `;
 
@@ -48,12 +49,12 @@ const SideMenuMyPage = styled.div`
   display: flex;
   flex: 1;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 
   ${({ theme }) => theme.media.tablet} {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     border: none;
   }
 
@@ -62,7 +63,7 @@ const SideMenuMyPage = styled.div`
     font-size: ${Theme.fontsize.mobile.mini};
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     border: none;
   }
 `;
@@ -72,12 +73,12 @@ const SideMenuOrder = styled.div`
   display: flex;
   flex: 1;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 
   ${({ theme }) => theme.media.tablet} {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     border: none;
   }
 
@@ -86,7 +87,7 @@ const SideMenuOrder = styled.div`
     font-size: ${Theme.fontsize.mobile.mini};
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     border: none;
   }
 `;
@@ -95,12 +96,12 @@ const SideMenuReivew = styled.div`
   display: flex;
   flex: 1;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 
   ${({ theme }) => theme.media.tablet} {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     border: none;
   }
 
@@ -109,7 +110,7 @@ const SideMenuReivew = styled.div`
     font-size: ${Theme.fontsize.mobile.mini};
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     border: none;
   }
 `;
@@ -119,11 +120,12 @@ const SideMenuInsta = styled.a`
   display: flex;
   flex: 1;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 
   ${({ theme }) => theme.media.tablet} {
     border: none;
     justify-content: center;
+    align-items: flex-end;
   }
 
   ${({ theme }) => theme.media.mobile} {
@@ -131,6 +133,7 @@ const SideMenuInsta = styled.a`
     font-size: ${Theme.fontsize.mobile.mini};
     border: none;
     justify-content: center;
+    align-items: flex-end;
   }
 `;
 
@@ -139,7 +142,7 @@ const SideMenuOut = styled.button`
   display: flex;
   flex: 1;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   color: ${Theme.colors.black};
   background: transparent;
   border: none;
@@ -148,7 +151,7 @@ const SideMenuOut = styled.button`
   ${({ theme }) => theme.media.tablet} {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     border: none;
     color: ${Theme.colors.black};
   }
@@ -158,7 +161,7 @@ const SideMenuOut = styled.button`
     font-size: ${Theme.fontsize.mobile.mini};
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     border: none;
     color: ${Theme.colors.black};
   }
@@ -169,6 +172,11 @@ const NavLinkTo = styled(NavLink)`
   flex: 1;
   justify-content: center;
   align-items: center;
+
+  &.active p {
+    border-bottom: 2px solid ${Theme.colors.black};
+    padding-bottom: 4px;
+  }
 
   ${({ theme }) => theme.media.tablet} {
     display: flex;
@@ -205,7 +213,7 @@ export default function SideMenuBar() {
     <>
       <SideMenu>
         <SideMenuMyPage>
-          <NavLinkTo to={"/auth/me"}>
+          <NavLinkTo to={"/auth/me"} end>
             <p>마이페이지</p>
           </NavLinkTo>
         </SideMenuMyPage>
