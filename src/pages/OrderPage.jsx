@@ -9,6 +9,9 @@ import { authMeApi } from "../apis/authMeApi";
 import SideMenuBar from "../components/common/SideMenuBar";
 import OrderReview from "../components/common/OrderReview";
 
+//날짜 필터링을 위한 배열 선언
+const FILTER_DATES = ["전체", "오늘", "1주일", "1개월", "3개월"];
+
 const OrderPageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -47,7 +50,7 @@ const OrderDetail = styled.p`
   text-align: center;
 `;
 
-const DateFilterWrap = styled.div`
+const DateFilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -58,10 +61,11 @@ const DateFilterWrap = styled.div`
   }
 `;
 
-const DateFilter = styled.ul`
+const DateFilterWrap = styled.ul`
   display: flex;
   justify-content: space-between;
   width: 256px;
+`;
 
   li {
     font-size: ${Theme.fontsize.desktop.medium};
@@ -77,6 +81,10 @@ const DateFilter = styled.ul`
       font-size: ${Theme.fontsize.mobile.small};
     }
   }
+const DateFilter = styled.li`
+  color: ${({ isActive }) => (isActive ? Theme.colors.blacktext : Theme.colors.textsecondary)};
+  font-size: ${Theme.fontsize.desktop.medium};
+  cursor: pointer;
 `;
 
 const DateInfo = styled.p`
@@ -316,6 +324,8 @@ export default function OrderPage() {
   const [orderHistory, setOrderHistory] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [openAccordion, setOpenAccordion] = useState(null);
+  // 주문 날짜 필터링(기본값 전체)
+  const [dateFilter, setDateFilter] = useState("전체");
 
   const [orderData, setOrderData] = useState({
     totalQuantity: 0,
@@ -381,7 +391,7 @@ export default function OrderPage() {
               return item;
             }),
           }
-        : order,
+        : order
     );
 
     // 상태 업데이트
@@ -423,18 +433,8 @@ export default function OrderPage() {
       ...item, // 원래 상품이 가지고 있던 정보를 그대로 복사
       orderId: order.id, // 이 상품이 몇번째 주문에서 온 건지 적어줌 (데이터 식별용)
       orderDate: order.orderDate, // 상품(purchasedItems) 데이터에는 날짜가 없음, 따라서 부모 기준에 적힌 날짜를 가져옴
-    })),
+    }))
   );
-
-  // 주문내역이 있든 없든 항상 4개의 칸 유지
-  const itemDisplay = [...allPurchasedItems.slice(0, 4)];
-  // 실제 들어온 데이터보다 남은곳이 많을 경우 남은곳은 빈칸으로 채움
-  while (itemDisplay.length < 4) {
-    itemDisplay.push(null);
-  }
-
-  const itemsPerPage = 4;
-  const totalPages = Math.ceil(allPurchasedItems.length / itemsPerPage) || 1;
 
   const goToFirstPage = () => {
     setCurrentPage(1);
@@ -456,6 +456,62 @@ export default function OrderPage() {
     e.preventDefault();
   };
 
+  const getFilterDate = (period) => {
+    if (period == "전체") return null;
+
+    const now = new Date();
+
+    switch (period) {
+      case "1주일":
+        now.setDate(now.getDate() - 7);
+        break;
+      case "1개월":
+        now.setMonth(now.getMonth() - 1);
+        break;
+      case "3개월":
+        now.setMonth(now.getMonth() - 3);
+        break;
+      // 오늘 일때는 아무것도 수정하지 않음
+      case "오늘":
+        break;
+      // 혹시 모를 에러 방지
+      default:
+        break;
+    }
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
+  // 선택된 날짜 필터에 따라 화면에 표시
+  const filteredItems = allPurchasedItems.filter((item) => {
+    const startDate = getFilterDate(dateFilter);
+    if (startDate === null) return true; // 필터가 전체 일 경우 모든 아이템 보이기
+    return item.orderDate >= startDate; // 문자열 비교
+  });
+
+  // 한 페이지에 보일 주문 내역 갯수
+  const itemsPerPage = 4;
+  //필터링된 아이템 갯수에 따라 페이지 생성
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage) || 1;
+
+  // 날짜 필터에 따라 아이템 배치
+  const itemDisplay = filteredItems.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  // 실제 들어온 데이터보다 남은곳이 많을 경우 남은곳은 빈칸으로 채움
+  while (itemDisplay.length < 4) {
+    itemDisplay.push(null);
+  }
+
+  const handleFilterClick = (period) => {
+    setDateFilter(period);
+    setCurrentPage(1);
+  };
+
   return (
     <OrderPageContainer>
       <MyProfile userInfo={userInfo} orderData={orderData} cartItem={cartItem} />
@@ -475,6 +531,22 @@ export default function OrderPage() {
               지난 주문내역을 조회하실 수 있습니다.
             </DateInfo>
           </DateFilterWrap>
+          <DateFilterContainer>
+            <DateFilterWrap>
+              {FILTER_DATES.map((p) => (
+                <DateFilter
+                  key={p}
+                  isActive={dateFilter === p}
+                  onClick={() => handleFilterClick(p)}
+                >
+                  {p}
+                </DateFilter>
+              ))}
+            </DateFilterWrap>
+            <DateInfo>
+              기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.
+            </DateInfo>
+          </DateFilterContainer>
           <OrderInfo>
             <li>주문일자:</li>
             <li>상품:</li>
@@ -517,7 +589,9 @@ export default function OrderPage() {
                       {item.status === "배송완료" ? (
                         <ReviewButton onClick={AccordionOpen}>리뷰작성</ReviewButton>
                       ) : (
-                        <ConfirmDeliverButton onClick={ConfirmDelivery}>배송확정</ConfirmDeliverButton>
+                        <ConfirmDeliverButton onClick={ConfirmDelivery}>
+                          배송확정
+                        </ConfirmDeliverButton>
                       )}
                     </OrderItemWrap>
                     <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
