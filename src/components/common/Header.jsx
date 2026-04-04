@@ -34,7 +34,8 @@ const HeaderContainer = styled.header`
 
   background: linear-gradient(
     to bottom,
-    rgba(250, 250, 250, ${(props) => (props.isOpen || props.isScroll ? 1 : 0)}) 0%,
+    rgba(250, 250, 250, ${(props) => (props.isOpen || props.isScroll ? 1 : 0)})
+      0%,
     rgba(250, 250, 250, 0) 100%
   );
   transition: all 0.4s ease;
@@ -58,7 +59,7 @@ const HeaderWrap = styled.div`
 
 // 왼쪽 상단 + 버튼
 const PlusButton = styled.button`
-  width: 32px;
+  width: 25px;
 
   ${({ theme }) => theme.media.mobile} {
     width: 15px;
@@ -69,18 +70,20 @@ const PlusButton = styled.button`
 // Link 태그는 to 는 본인이 사용하고 커스텀 프롭스를 그냥 전달하면 a 태그로 넘김
 // 하지만 a 태그는 커스텀 프롭스를 이해하지 못하기 때문에 오류가 발생함
 // 스타일 계산만 하고 실제 DOM 요소까지 전달 방지를 위해 shouldForwardProp 키워드 사용
-const Brand = styled(Link, { shouldForwardProp: (prop) => prop !== "animated" })`
+const Brand = styled(Link, {
+  shouldForwardProp: (prop) => prop !== "animated",
+})`
   display: ${({ animated }) => (animated ? "flex" : "none")};
   justify-content: center;
   align-items: center;
-  font-size: ${Theme.fontsize.desktop.main.animationTitle};
+  font-size: 56px;
   text-align: center;
 
   ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.main.animationTitle};
+    font-size: 40px;
   }
   ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.main.animationTitle};
+    font-size: 28px;
   }
 `;
 
@@ -99,7 +102,7 @@ const Logo = styled.h1`
 
 // 오른쪽 상단 햄버거 버튼
 const MenuButton = styled.button`
-  width: 32px;
+  width: 25px;
 
   ${({ theme }) => theme.media.mobile} {
     width: 15px;
@@ -194,7 +197,10 @@ export default function Header() {
 
   // 페이지 바뀌면 헤더 닫기
   useEffect(() => {
-    setIsOpen(false);
+    const timer = setTimeout(() => {
+      setIsOpen(false);
+    }, 0);
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
   const ClickOpenMenu = () => {
@@ -208,17 +214,25 @@ export default function Header() {
       {/* // useState로 스크롤 값변경하기 위해 프롭스 전달 */}
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>
-          <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
+          <PlusButton
+            onClick={ClickOpenMenu}
+            isOpen={isOpen}
+            isScroll={isScroll}
+          >
             <img src={menuIcon} />
           </PlusButton>
           <Brand to={"/"} animated={animated}>
             <Logo>2KEA</Logo>
           </Brand>
-          <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
+          <MenuButton
+            onClick={ClickOpenMenu}
+            isOpen={isOpen}
+            isScroll={isScroll}
+          >
             <img src={plusIcon} />
           </MenuButton>
         </HeaderWrap>
-        {/* // useState로 값변경하기 위해 프롭스 전달 */}
+        {/* // useState로 값 변경하기 위해 프롭스 전달 */}
         <MenuWrap isOpen={isOpen}>
           {/* 왼쪽메뉴 */}
           <LeftMenu>

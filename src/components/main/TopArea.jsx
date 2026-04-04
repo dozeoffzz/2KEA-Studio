@@ -6,98 +6,138 @@ import { LogoAnimationContext } from "../contexts/LogoAnimationContext";
 
 const TopContainer = styled.div`
   position: relative;
-  width: 100%;
-  height: auto;
+  width: 100vw;
   overflow: hidden;
 `;
 
-const TopImage = styled.img`
+const TopImageWrapper = styled.div`
+  position: relative;
   width: 100%;
-  height: 968px;
+  height: 100vh;
+  max-height: 968px;
+  overflow: hidden;
+
+  @media (max-width: 1024px) {
+    height: 820px;
+    max-height: 820px;
+  }
+
+  @media (max-width: 767px) {
+    height: 500px;
+    max-height: 500px;
+  }
+
+  @media (max-width: 480px) {
+    height: 420px;
+    max-height: 420px;
+  }
+
+  @media (max-width: 360px) {
+    height: 360px;
+    max-height: 360px;
+  }
+`;
+
+const TopImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
   transform: scale(${({ isLoaded }) => (isLoaded ? 1 : 1.4)});
   transition: transform 1s ease-in-out;
-
-  ${({ theme }) => theme.media.tablet} {
-    height: 820px;
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    height: 360px;
-  }
 `;
 
 const FirstTitle = styled.p`
   position: absolute;
   top: 45%;
   left: 50%;
-  font-size: ${Theme.fontsize.desktop.main.animationTitle};
+  font-size: 56px;
   font-weight: 500;
   letter-spacing: 0.3rem;
-  display: ${({ isAnimated }) => (isAnimated ? "inline-block" : "inline-block")};
+  white-space: nowrap;
   pointer-events: none;
-  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-362px" : 0)});
-  transition: transform 1s ease-in-out;
+  opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
+  transform: translate(-50%, -50%)
+    translateY(${({ isLoaded }) => (isLoaded ? "-43vh" : "0")});
+  transition:
+    transform 1s ease-in-out,
+    opacity 0.8s ease-in-out;
   z-index: 10;
 
-  ${({ theme }) => theme.media.tablet} {
-    font-size: ${Theme.fontsize.tablet.main.animationTitle};
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-297px" : 0)});
+  @media (max-width: 1024px) {
+    font-size: 40px;
     letter-spacing: 0.2rem;
+    transform: translate(-50%, -50%)
+      translateY(${({ isLoaded }) => (isLoaded ? "-37vh" : "0")});
   }
-
-  ${({ theme }) => theme.media.mobile} {
-    font-size: ${Theme.fontsize.mobile.main.animationTitle};
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-115px" : 0)});
-    letter-spacing: 0.1rem;
+  @media (max-width: 767px) {
+    font-size: 32px;
+    letter-spacing: 0.15rem;
+    transform: translate(-50%, -50%)
+      translateY(${({ isLoaded }) => (isLoaded ? "-30vh" : "0")});
   }
 `;
 
-//하단 텍스트는 내려가다 사라지게 하는 애니메이션 적용
-const SecondTitle = styled(FirstTitle)`
+const SecondTitle = styled.p`
+  position: absolute;
   top: 55%;
+  left: 50%;
+  font-size: 56px;
+  font-weight: 500;
+  letter-spacing: 0.3rem;
+  white-space: nowrap;
   pointer-events: none;
   opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
   visibility: ${({ isLoaded }) => (isLoaded ? "hidden" : "visible")};
-  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "800px" : 0)});
+  transform: translate(-50%, -50%)
+    translateY(${({ isLoaded }) => (isLoaded ? "100vh" : "0")});
   transition:
     opacity 1s ease-in-out,
     visibility 1s ease-in-out,
     transform 1.8s ease-in-out;
+  z-index: 10;
 
-  ${({ theme }) => theme.media.tablet} {
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "600px" : 0)});
+  @media (max-width: 1024px) {
+    font-size: 40px;
+    letter-spacing: 0.2rem;
   }
-
-  ${({ theme }) => theme.media.mobile} {
-    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "180px" : 0)});
+  @media (max-width: 767px) {
+    font-size: 32px;
+    letter-spacing: 0.15rem;
   }
 `;
 
 export default function TopArea() {
   const [isLoaded, setIsLoaded] = useState(false);
-  //제공받은 Context 사용
   const { isAnimated, setIsAnimated } = useContext(LogoAnimationContext);
 
-  //이미지 로딩시 상태 변경하기
   const loadCompleted = () => {
     setIsLoaded(true);
-    //설정해둔 애니메이션 시간(1초)이 끝나면 애니메이션 완료 상태 전달
-    //애니메이션을 시작하는데 딜레이를 주는게 아닌, 애니메이션이 완료되었다는 상태를 전달하는 것에 딜레이를 주는 로직
     setTimeout(() => {
       setIsAnimated(true);
     }, 1000);
   };
 
-  //onLoad 이벤트로 이미지 로딩시 실행 및 애니메이션 진행됨
   return (
     <TopContainer>
-      <TopImage src={topImage} onLoad={loadCompleted} isLoaded={isLoaded} alt="Top Image" />
-      <FirstTitle isLoaded={isLoaded} isAnimated={isAnimated}>
-        2KEA
-      </FirstTitle>
-      <SecondTitle isLoaded={isLoaded} isAnimated={isAnimated}>
-        STUDIO
-      </SecondTitle>
+      <TopImageWrapper>
+        <TopImage
+          src={topImage}
+          onLoad={loadCompleted}
+          isLoaded={isLoaded}
+          alt="Top Image"
+        />
+        <FirstTitle isLoaded={isLoaded} isAnimated={isAnimated}>
+          2KEA
+        </FirstTitle>
+        <SecondTitle isLoaded={isLoaded} isAnimated={isAnimated}>
+          STUDIO
+        </SecondTitle>
+      </TopImageWrapper>
     </TopContainer>
   );
 }
