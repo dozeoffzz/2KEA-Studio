@@ -738,7 +738,6 @@ export default function ReviewPage() {
                       {review.images?.length > 3 && (
                         <ArrowBtn onClick={() => handlePrevImage(review.id)}>{"<"}</ArrowBtn>
                       )}
-
                       <ImgWrap>
                         {review.images
                           ?.slice(imageIndexMap[review.id] || 0, (imageIndexMap[review.id] || 0) + 3)
@@ -746,15 +745,12 @@ export default function ReviewPage() {
                             <ReviewImg key={i} src={img} />
                           ))}
                       </ImgWrap>
-
                       {review.images?.length > 3 && (
                         <ArrowBtn onClick={() => handleNextImage(review.id, review.images.length)}>{">"}</ArrowBtn>
                       )}
                     </CarouselWrap>
-
                     <ReviewContent>{review.content}</ReviewContent>
                   </ReviewCell>
-
                   <ReviewInfo>
                     {/* 작성자 */}
                     <ReviewCell>작성자: {review.author}</ReviewCell>
@@ -776,7 +772,6 @@ export default function ReviewPage() {
             )
           )}
         </ReviewList>
-
         {/* 검색창이랑 찾기 버튼 */}
         <SearchWrap>
           <SearchInput
