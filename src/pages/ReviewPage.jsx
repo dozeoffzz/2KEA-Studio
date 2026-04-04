@@ -322,6 +322,11 @@ const ReviewImg = styled.img`
   object-fit: cover;
   width: 98px;
   height: 115px;
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 70px;
+    height: 82px;
+  }
 `;
 
 // 삭제 버튼
@@ -423,10 +428,20 @@ const CarouselWrap = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+
+  ${({ theme }) => theme.media.mobile} {
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const ReviewContent = styled.p`
+  margin-bottom: 10px;
   font-size: ${Theme.fontsize.desktop.mini};
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-bottom: 20px;
+  }
 `;
 
 const ArrowBtn = styled.button`
@@ -723,7 +738,6 @@ export default function ReviewPage() {
                       {review.images?.length > 3 && (
                         <ArrowBtn onClick={() => handlePrevImage(review.id)}>{"<"}</ArrowBtn>
                       )}
-
                       <ImgWrap>
                         {review.images
                           ?.slice(imageIndexMap[review.id] || 0, (imageIndexMap[review.id] || 0) + 3)
@@ -731,15 +745,12 @@ export default function ReviewPage() {
                             <ReviewImg key={i} src={img} />
                           ))}
                       </ImgWrap>
-
                       {review.images?.length > 3 && (
                         <ArrowBtn onClick={() => handleNextImage(review.id, review.images.length)}>{">"}</ArrowBtn>
                       )}
                     </CarouselWrap>
-
                     <ReviewContent>{review.content}</ReviewContent>
                   </ReviewCell>
-
                   <ReviewInfo>
                     {/* 작성자 */}
                     <ReviewCell>작성자: {review.author}</ReviewCell>
@@ -761,7 +772,6 @@ export default function ReviewPage() {
             )
           )}
         </ReviewList>
-
         {/* 검색창이랑 찾기 버튼 */}
         <SearchWrap>
           <SearchInput
