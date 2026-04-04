@@ -130,7 +130,6 @@ const OrderedList = styled.ul`
 const OrderListItem = styled.li`
   position: relative;
   min-height: 200px;
-  padding: 25px 0 0 0;
   border-bottom: 1px solid ${Theme.colors.grayline};
   overflow: hidden;
 
@@ -146,7 +145,7 @@ const OrderItemWrap = styled.ul`
   grid-template-columns: 1fr 1.8fr 1.8fr 1fr 1fr 1fr;
   align-items: center;
   text-align: center;
-  padding-bottom: 25px;
+  min-height: 200px;
 
   img {
     width: 120px;
@@ -300,37 +299,48 @@ const SearchButton = styled.button`
   }
 `;
 
-const OrderPagination = styled.ul`
+const OrderPaginationWrap = styled.ul`
   display: flex;
   justify-content: center;
   gap: 37px;
   margin: 0 auto;
+`;
 
-  li {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+const PaginationList = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 40px;
+`;
+
+const PaginationButton = styled.button`
+  width: 100%;
+  height: 100%;
+
+  &:disabled {
+    color: ${Theme.colors.textsecondary};
+    cursor: auto;
   }
+`;
 
-  button {
-    width: 100px;
+const PageNumber = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+`;
 
-    &:disabled {
-      color: ${Theme.colors.grayline};
-      cursor: auto;
-    }
-  }
-
-  li:not(:has(button)) {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    line-height: 40px;
-  }
+const PageNumberButton = styled.button`
+  width: 100%;
+  height: 100%;
+  color: ${({ isActive }) => (isActive ? Theme.colors.blacktext : Theme.colors.textsecondary)};
 `;
 
 const EmptyOrderList = styled.div`
   height: 100%;
+  min-height: 200px;
 `;
 
 export default function OrderPage() {
@@ -339,7 +349,9 @@ export default function OrderPage() {
   const cartItem = useCartStore((state) => state.cartItems);
   //전체 주문 내역 상태
   const [orderHistory, setOrderHistory] = useState([]);
+  //현재 주문내역 페이지 번호
   const [currentPage, setCurrentPage] = useState(1);
+  //아코디언 메뉴 오픈 상태
   const [openAccordion, setOpenAccordion] = useState(null);
   // 주문 날짜 필터링(기본값 전체)
   const [dateFilter, setDateFilter] = useState("전체");
@@ -408,7 +420,7 @@ export default function OrderPage() {
               return item;
             }),
           }
-        : order,
+        : order
     );
 
     // 상태 업데이트
@@ -450,7 +462,7 @@ export default function OrderPage() {
       ...item, // 원래 상품이 가지고 있던 정보를 그대로 복사
       orderId: order.id, // 이 상품이 몇번째 주문에서 온 건지 적어줌 (데이터 식별용)
       orderDate: order.orderDate, // 상품(purchasedItems) 데이터에는 날짜가 없음, 따라서 부모 기준에 적힌 날짜를 가져옴
-    })),
+    }))
   );
 
   const goToFirstPage = () => {
@@ -509,22 +521,50 @@ export default function OrderPage() {
     return item.orderDate >= startDate; // 문자열 비교
   });
 
+  //날짜 필터 입력 필터링 클릭 이벤트
+  const handleFilterClick = (period) => {
+    setDateFilter(period);
+    setCurrentPage(1);
+  };
+
   // 한 페이지에 보일 주문 내역 갯수
   const itemsPerPage = 4;
   //필터링된 아이템 갯수에 따라 페이지 생성
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage) || 1;
 
-  // 날짜 필터에 따라 아이템 배치
-  const itemDisplay = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  //날짜필터 등 이유로 페이지 수가 줄어들 경우 자동으로 1페이지로 보내기
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [filteredItems, totalPages]);
+
+  // 현재 페이지 번호에 맞춰서 itemsPerPage만큼 즉 4개씩 잘라내기
+  const itemDisplay = filteredItems.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   // 실제 들어온 데이터보다 남은곳이 많을 경우 남은곳은 빈칸으로 채움
   while (itemDisplay.length < 4) {
     itemDisplay.push(null);
   }
 
-  const handleFilterClick = (period) => {
-    setDateFilter(period);
-    setCurrentPage(1);
-  };
+  // 한번에 보여줄 리뷰 페이지 갯수
+  const pagesPerGroup = 3;
+
+  // 현재 페이지 그룹 시작 번호 계산 (1, 4, 7....)
+  const startPage = Math.floor((currentPage - 1) / pagesPerGroup) * pagesPerGroup + 1;
+  // 현재 페이지 그룹 끝 번호 계산 (3, 6, 9....)
+  // 전체 페이지 수를 넘기지 않게 Math.min 함수로 둘중 더 작은쪽 선택
+  const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+
+  // 화면에 보일 페이지 번호 배열 생성
+  const pageNumbers = [];
+
+  //페이지 끝 번호까지 존재하는 페이지 갯수 추가
+  for (let i = startPage; i <= endPage; i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <OrderPageContainer>
@@ -535,14 +575,17 @@ export default function OrderPage() {
           <DateFilterContainer>
             <DateFilterWrap>
               {FILTER_DATES.map((p) => (
-                <DateFilter key={p} isActive={dateFilter === p} onClick={() => handleFilterClick(p)}>
+                <DateFilter
+                  key={p}
+                  isActive={dateFilter === p}
+                  onClick={() => handleFilterClick(p)}
+                >
                   {p}
                 </DateFilter>
               ))}
             </DateFilterWrap>
             <DateInfo>
-              기본적으로 최근 3개월간의 자료가 조회되며, <MobileBr />
-              지난 주문내역을 조회하실 수 있습니다.
+              기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.
             </DateInfo>
           </DateFilterContainer>
           <OrderInfo>
@@ -558,16 +601,20 @@ export default function OrderPage() {
           {itemDisplay.map((item, idx) => {
             // 주문정보가 있다면 그 데이터를 집어넣고, 없으면 빈칸 집어넣기
             const itemLKey = item ? `${item.orderId}-${item.id}` : `empty-${idx}`;
+            //각각 주문 정보에 알맞는 아코디언 열기
             const ReviewAccordionOpen = openAccordion === itemLKey;
 
+            //아코디언 열기
             const AccordionOpen = () => {
               handleAccordionToggle(itemLKey);
             };
 
+            //주문 확정하기
             const ConfirmDelivery = () => {
               handleConfirmDelivery(item.orderId, item.id);
             };
 
+            //아코디언 닫기
             const CloseAccordion = () => {
               handleAccordionToggle(null);
             };
@@ -587,7 +634,9 @@ export default function OrderPage() {
                       {item.status === "배송완료" ? (
                         <ReviewButton onClick={AccordionOpen}>리뷰작성</ReviewButton>
                       ) : (
-                        <ConfirmDeliverButton onClick={ConfirmDelivery}>배송확정</ConfirmDeliverButton>
+                        <ConfirmDeliverButton onClick={ConfirmDelivery}>
+                          배송확정
+                        </ConfirmDeliverButton>
                       )}
                     </OrderItemWrap>
                     <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
@@ -606,31 +655,46 @@ export default function OrderPage() {
             <SearchOrder type="text" />
             <SearchButton type="button">찾기</SearchButton>
           </OrderSearchBox>
-          <OrderPagination>
-            <li>
-              <button type="button" onClick={goToFirstPage} disabled={currentPage === 1}>
+          <OrderPaginationWrap>
+            <PaginationList>
+              <PaginationButton type="button" onClick={goToFirstPage} disabled={currentPage === 1}>
                 First
-              </button>
-            </li>
-            <li>
-              <button type="button" onClick={goToPrevPage} disabled={currentPage === 1}>
+              </PaginationButton>
+            </PaginationList>
+            <PaginationList>
+              <PaginationButton type="button" onClick={goToPrevPage} disabled={currentPage === 1}>
                 Prev
-              </button>
-            </li>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>
-              <button type="button" onClick={goToNextPage} disabled={currentPage === totalPages}>
+              </PaginationButton>
+            </PaginationList>
+            {pageNumbers.map((number) => (
+              <PageNumber key={number}>
+                <PageNumberButton
+                  onClick={() => setCurrentPage(number)}
+                  isActive={currentPage === number}
+                >
+                  {number}
+                </PageNumberButton>
+              </PageNumber>
+            ))}
+            <PaginationList>
+              <PaginationButton
+                type="button"
+                onClick={goToNextPage}
+                disabled={currentPage === totalPages}
+              >
                 Next
-              </button>
-            </li>
-            <li>
-              <button type="button" onClick={goToLastPage} disabled={currentPage === totalPages}>
+              </PaginationButton>
+            </PaginationList>
+            <PaginationList>
+              <PaginationButton
+                type="button"
+                onClick={goToLastPage}
+                disabled={currentPage === totalPages}
+              >
                 Last
-              </button>
-            </li>
-          </OrderPagination>
+              </PaginationButton>
+            </PaginationList>
+          </OrderPaginationWrap>
         </OrderutilityWrap>
       </OrderContainer>
       <SideMenuBar />
