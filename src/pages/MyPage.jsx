@@ -610,7 +610,6 @@ export default function MyPage() {
         {isEdit && <Button onClick={() => setIsEdit(!isEdit)}>취소</Button>}
         <Button onClick={isEdit ? handleSave : handleEditToggle}>{isEdit ? "완료" : "수정"}</Button>
       </EditButtonWrap>
-
       <RecentItemWrap>
         {recentProducts.length === 0 ? (
           <p>최근 본 상품이 없습니다.</p>
