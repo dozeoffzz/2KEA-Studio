@@ -16,6 +16,19 @@ const OrderPageContainer = styled.div`
   align-items: center;
   gap: 160px;
   width: 100%;
+
+  ${({ theme }) => theme.media.tablet} {
+    padding: 0 20px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0 20px;
+    gap: 100px;
+  }
+
+  /* @media screen and (max-width: 467px) {
+    padding: 0 10px;
+  } */
 `;
 
 const OrderContainer = styled.section`
@@ -38,6 +51,11 @@ const DateFilterWrap = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+
+  ${({ theme }) => theme.media.mobile} {
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
 
 const DateFilter = styled.ul`
@@ -48,10 +66,35 @@ const DateFilter = styled.ul`
   li {
     font-size: ${Theme.fontsize.desktop.medium};
   }
+
+  ${({ theme }) => theme.media.tablet} {
+    li {
+      font-size: ${Theme.fontsize.tablet.content};
+    }
+  }
+  ${({ theme }) => theme.media.mobile} {
+    li {
+      font-size: ${Theme.fontsize.mobile.small};
+    }
+  }
 `;
 
 const DateInfo = styled.p`
   font-size: ${Theme.fontsize.desktop.mini};
+
+  ${({ theme }) => theme.media.mobile} {
+    border-bottom: 2px solid ${Theme.colors.grayline};
+    padding-bottom: 20px;
+    font-size: 11px;
+  }
+`;
+
+const MobileBr = styled.br`
+  display: none;
+
+  @media screen and (max-width: 440px) {
+    display: block;
+  }
 `;
 
 const OrderInfo = styled.ul`
@@ -65,6 +108,21 @@ const OrderInfo = styled.ul`
 
   li {
     font-size: ${Theme.fontsize.desktop.medium};
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    li {
+      font-size: ${Theme.fontsize.tablet.content};
+    }
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    li {
+      font-size: ${Theme.fontsize.mobile.small};
+    }
+  }
+  @media screen and (max-width: 650px) {
+    display: none;
   }
 `;
 
@@ -81,6 +139,11 @@ const OrderListItem = styled.li`
   padding: 25px 0 0 0;
   border-bottom: 1px solid ${Theme.colors.grayline};
   overflow: hidden;
+
+  ${({ theme }) => theme.media.mobile} {
+    min-height: auto;
+    padding: 16px 0 0 0;
+  }
 `;
 
 const OrderItemWrap = styled.ul`
@@ -97,6 +160,65 @@ const OrderItemWrap = styled.ul`
     object-fit: cover;
     margin: 0 auto;
   }
+
+  ${({ theme }) => theme.media.tablet} {
+    li {
+      font-size: ${Theme.fontsize.tablet.small};
+    }
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    li {
+      font-size: ${Theme.fontsize.mobile.mini};
+    }
+  }
+  // 모바일에서는 각 칸마다 상품별로 따로 배치하기
+  @media screen and (max-width: 650px) {
+    grid-template-columns: 120px;
+    // 각 칸마다 상품별로 따로 배치
+    grid-template-areas:
+      "date date"
+      "image name"
+      "image quantity"
+      "image price"
+      "image status"
+      "button button";
+    row-gap: 3px;
+    align-items: start;
+    text-align: left;
+    padding-bottom: 50px;
+
+    li:nth-of-type(1) {
+      grid-area: date;
+    }
+
+    li:nth-of-type(2) {
+      grid-area: image;
+    }
+
+    li:nth-of-type(3) {
+      grid-area: name;
+      text-align: right;
+    }
+
+    li:nth-of-type(4) {
+      grid-area: quantity;
+      text-align: right;
+      margin-top: -4px;
+    }
+
+    li:nth-of-type(5) {
+      grid-area: price;
+      text-align: right;
+      margin-top: -4px;
+    }
+
+    li:nth-of-type(6) {
+      grid-area: status;
+      text-align: right;
+      margin-top: -4px;
+    }
+  }
 `;
 
 const ReviewButton = styled.button`
@@ -109,6 +231,10 @@ const ReviewButton = styled.button`
   color: ${Theme.colors.whitetext};
   font-size: ${Theme.fontsize.desktop.small};
   font-weight: 400;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: ${Theme.fontsize.mobile.mini};
+  }
 `;
 
 const ConfirmDeliverButton = styled(ReviewButton)``;
@@ -344,7 +470,10 @@ export default function OrderPage() {
               <li>3개월</li>
               <li>6개월</li>
             </DateFilter>
-            <DateInfo>기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.</DateInfo>
+            <DateInfo>
+              기본적으로 최근 3개월간의 자료가 조회되며, <MobileBr />
+              지난 주문내역을 조회하실 수 있습니다.
+            </DateInfo>
           </DateFilterWrap>
           <OrderInfo>
             <li>주문일자:</li>

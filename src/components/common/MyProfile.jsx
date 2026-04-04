@@ -117,8 +117,8 @@ const ProfileImg = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 150px;
-  height: 150px;
+  width: 170px;
+  height: 170px;
   border-radius: 50%;
 
   img {
@@ -133,11 +133,12 @@ const ProfileImg = styled.div`
     opacity: 1;
   }
 
-  ${({ theme }) => theme.media.tablet} {
-    width: 100px;
-    height: 100px;
-  }
   ${({ theme }) => theme.media.mobile} {
+    width: 150px;
+    height: 150px;
+  }
+
+  @media screen and (max-width: 500px) {
     width: 100px;
     height: 100px;
   }
