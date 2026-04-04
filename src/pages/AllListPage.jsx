@@ -227,6 +227,10 @@ const ItemNum = styled.span`
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.section};
   }
+
+  @media screen and (max-width: 450px) {
+    font-size: 18px;
+  }
 `;
 
 const ItemTextWrap = styled.div`
@@ -267,6 +271,10 @@ const ItemName = styled.span`
     width: 100%;
     font-size: ${Theme.fontsize.mobile.small};
   }
+
+  @media screen and (max-width: 450px) {
+    font-size: ${Theme.fontsize.mobile.mini};
+  }
 `;
 
 const ItemSeparator = styled.span`
@@ -304,6 +312,10 @@ const ItemMaterial = styled.span`
   ${({ theme }) => theme.media.mobile} {
     width: 100%;
     font-size: ${Theme.fontsize.mobile.small};
+  }
+
+  @media screen and (max-width: 450px) {
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -411,6 +423,10 @@ const PageNationWrap = styled.div`
     margin-bottom: 28px;
     flex-wrap: wrap;
   }
+
+  @media screen and (max-width: 450px) {
+    gap: 22px;
+  }
 `;
 
 const CurrentPage = styled.button`
@@ -448,6 +464,10 @@ const PageNationButton = styled.button`
 
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
+  }
+
+  @media screen and (max-width: 450px) {
+    font-size: ${Theme.fontsize.mobile.mini};
   }
 `;
 
@@ -562,21 +582,13 @@ export default function AllListPage() {
         </ItemListMain>
         <PageNationWrap>
           <PageNationButton onClick={() => setCurrentPage(1)}>First</PageNationButton>
-          <PageNationButton onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}>
-            Prev
-          </PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}>Prev</PageNationButton>
           {totalPages.map((list) => (
-            <CurrentPage
-              key={list}
-              onClick={() => setCurrentPage(list)}
-              className={currentPage === list ? "active" : ""}
-            >
+            <CurrentPage key={list} onClick={() => setCurrentPage(list)} className={currentPage === list ? "active" : ""}>
               {list}
             </CurrentPage>
           ))}
-          <PageNationButton
-            onClick={() => setCurrentPage(currentPage < totalPage.length ? currentPage + 1 : totalPage.length)}
-          >
+          <PageNationButton onClick={() => setCurrentPage(currentPage < totalPage.length ? currentPage + 1 : totalPage.length)}>
             Next
           </PageNationButton>
           <PageNationButton onClick={() => setCurrentPage(4)}>Last</PageNationButton>
