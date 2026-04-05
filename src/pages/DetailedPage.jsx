@@ -50,6 +50,7 @@ const MainWrap = styled.div`
   margin-top: 180px;
   width: 100%;
   background-color: ${Theme.colors.white};
+  transition: 0.35s ease-in-out;
 `;
 
 const ImgGallery = styled.section`
@@ -74,15 +75,14 @@ const SliderWrap = styled.div`
   height: 44vw;
   max-height: 760px;
   overflow: hidden;
+  transition: 0.45s ease-in-out;
 
   ${({ theme }) => theme.media.tablet} {
     height: 52vw;
-    transition: 0.45s ease;
   }
 
   ${({ theme }) => theme.media.mobile} {
     height: 52vw;
-    transition: 0.45s ease;
   }
 `;
 
@@ -170,7 +170,7 @@ const ArrowButton = styled.button`
   background: none;
   z-index: 10;
   transform: translateY(-50%);
-
+  transition: 0.35s ease-in-out;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -251,14 +251,14 @@ const ProductName = styled.p`
 const DetailSection = styled.section`
   display: flex;
   align-items: flex-start;
-  gap: 48px;
+  gap: 160px;
   padding: 0 100px 50px;
   margin-bottom: 100px;
+  transition: 0.35s ease-in-out;
 
   @media screen and (max-width: 1280px) {
     gap: 36px;
     padding: 0 70px 50px;
-    transition: 0.45s ease;
   }
 
   @media screen and (max-width: 1024px) {
@@ -266,7 +266,6 @@ const DetailSection = styled.section`
     gap: 48px;
     padding: 0 40px 50px;
     margin-bottom: 60px;
-    transition: 0.45s ease;
   }
 
   ${({ theme }) => theme.media.mobile} {
@@ -297,10 +296,11 @@ const LeftContent = styled.div`
 
 const DetailImg = styled.img`
   width: 100%;
-  max-width: 760px;
+  max-width: 880px;
   min-width: 600px;
   height: auto;
   display: block;
+  transition: 0.35s ease-in-out;
 
   ${({ theme }) => theme.media.mobile} {
     max-width: 600px;

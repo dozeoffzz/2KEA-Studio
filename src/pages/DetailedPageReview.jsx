@@ -12,6 +12,7 @@ import backIcon from "../assets/icons/backIcon.svg";
 const ReviewSection = styled.section`
   width: 100%;
   padding: 0 100px 80px;
+  transition: 0.35s ease-in-out;
 
   @media screen and (max-width: 1280px) {
     padding: 0 70px 70px;
@@ -32,6 +33,7 @@ const ReviewTitle = styled.h3`
   font-weight: 600;
   border-bottom: 1px solid #222222;
   padding-bottom: 31px;
+  transition: 0.35s ease-in-out;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: 28px;
@@ -58,6 +60,7 @@ const ReviewSummary = styled.div`
 const RatingBox = styled.div`
   padding: 28px 24px;
   border-right: 1px solid #222222;
+  transition: 0.35s ease-in-out;
 
   @media screen and (max-width: 1050px) {
     border-right: none;
@@ -103,10 +106,10 @@ const RatingGraphList = styled.div`
   display: flex;
   gap: 30px;
   align-items: flex-end;
+  transition: 0.35s ease-in-out;
 
   @media screen and (max-width: 1280px) {
     gap: 23px;
-    transition: 0.45s ease;
   }
 `;
 
@@ -114,6 +117,7 @@ const RatingGraphItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: 0.35s ease-in-out;
 `;
 
 const RatingPercent = styled.span`
@@ -152,6 +156,7 @@ const BestReviewBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  transition: 0.35s ease-in-out;
 `;
 
 // best review 제목
@@ -210,6 +215,7 @@ const ReviewCountGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  transition: 0.35s ease-in-out;
 `;
 
 const ReviewTabButton = styled.button`
@@ -229,6 +235,7 @@ const ReviewList = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   border-bottom: 1px solid #222222;
+  transition: 0.35s ease-in-out;
 
   & > *:nth-of-type(2n) {
     border-right: none;
