@@ -22,9 +22,10 @@ const Contents = styled.div`
   gap: 160px;
   width: 100%;
   padding: 160px 90px 0;
+  transition: 0.3s ease-in-out;
 
   ${({ theme }) => theme.media.tablet} {
-    padding: 120px 90px 0;
+    padding: 120px 70px 0;
     gap: 120px;
   }
 
@@ -32,16 +33,25 @@ const Contents = styled.div`
     padding: 60px 50px 0;
     gap: 60px;
   }
+
+  @media (max-width: 600px) {
+    padding: 40px 20px 0;
+  }
 `;
 
 const SofaImageBox = styled.div`
   position: relative;
-  width: 100%;
-  max-width: 1592px;
-  margin: 0 0 0 auto;
+  width: 88%;
+  max-width: 1280px;
+  margin: 0 auto;
+  transition: 0.45s ease-in-out;
 
   &:hover .sofa-hover-img {
     opacity: 1;
+  }
+
+  @media (max-width: 1300px) {
+    width: 100%;
   }
 `;
 
@@ -49,20 +59,29 @@ const SofaImageBox = styled.div`
 const SofaImageWrapper = styled.div`
   position: relative;
   width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  transition: 0.45s ease-in-out;
 `;
 
 /* 초록 박스 이미지 wrapper */
 const ImgWrapper = styled.div`
   position: relative;
   width: 100%;
+  aspect-ratio: 16 / 12;
+  overflow: hidden;
+
+  ${({ theme }) => theme.media.mobile} {
+    aspect-ratio: 16 / 14;
+  }
 `;
 
 const SofaImage = styled.img`
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
 `;
-
 const SofaHoverImage = styled.img`
   position: absolute;
   top: 0;
@@ -103,11 +122,11 @@ const BigTitle = styled.p`
     font-size: ${Theme.fontsize.desktop.sectionM};
   }
 
-  @media (max-width: 1024px) {
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};
   }
 
-  @media (max-width: 780px) {
+  @media (max-width: 850px) {
     font-size: ${Theme.fontsize.tablet.sectionM};
   }
 
@@ -115,8 +134,12 @@ const BigTitle = styled.p`
     font-size: ${Theme.fontsize.mobile.section};
   }
 
+  @media (max-width: 460px) {
+    font-size: 18px;
+  }
+
   @media (max-width: 400px) {
-    font-size: ${Theme.fontsize.mobile.small};
+    font-size: 16px;
   }
 
   @media (max-width: 340px) {
@@ -131,7 +154,7 @@ const SmallDesc = styled.p`
   line-height: 1.6;
   word-break: keep-all;
 
-  @media (max-width: 768px) {
+  ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.tablet.contentM};
   }
 
@@ -151,8 +174,13 @@ const SofaDesc = styled(SmallDesc)`
     margin-left: 40px;
   }
 
-  ${({ theme }) => theme.media.mobile} {
-    margin-left: 16px;
+  @media (max-width: 850px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 460px) {
+    font-size: 14px;
+    margin-left: 30px;
   }
 `;
 
@@ -160,44 +188,73 @@ const SofaDesc = styled(SmallDesc)`
 const LightImageBox = styled.div`
   position: relative;
   width: 100%;
+  max-width: 1450px;
+  margin: 0 auto;
   background-color: ${Theme.colors.redaccent};
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 96%;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    width: 100%;
+  }
 `;
 
 const LightImageContainer = styled.div`
   position: relative;
   width: 100%;
+  aspect-ratio: 16 / 12;
   overflow: hidden;
+  transition: 0.45s ease-in-out;
 
   :hover .light-hover-img {
     opacity: 1;
+  }
+
+  @media (max-width: 1350px) {
+    aspect-ratio: 16 / 14;
+  }
+
+  @media (max-width: 1170px) {
+    aspect-ratio: 16 / 17;
+  }
+
+  @media (max-width: 686px) {
+    aspect-ratio: auto;
+    min-height: 420px;
   }
 `;
 
 const LightImage = styled.img`
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+
   display: block;
 
   @media (max-width: 686px) {
-    min-height: 500px;
-    object-fit: cover;
-  }
-
-  @media (max-width: 480px) {
     min-height: 420px;
   }
 
-  @media (max-width: 360px) {
+  @media (max-width: 480px) {
     min-height: 360px;
+  }
+
+  @media (max-width: 360px) {
+    min-height: 320px;
   }
 `;
 
-const LightHoverImage = styled(LightImage)`
+const LightHoverImage = styled.img`
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 25%;
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
   cursor: pointer;
@@ -210,13 +267,12 @@ const LightTextContainer = styled.div`
   left: 0;
   right: 0;
   padding: 40px 40px 32px;
-  background: ${({ theme }) =>
-    `linear-gradient(to top, ${theme.colors.redaccent} 60%, transparent)`};
+  background: ${({ theme }) => `linear-gradient(to top, ${theme.colors.redaccent} 60%, transparent)`};
   display: flex;
   flex-direction: column;
   gap: 8px;
 
-  @media (max-width: 1024px) {
+  ${({ theme }) => theme.media.tablet} {
     padding: 30px 30px 24px;
   }
 
@@ -242,7 +298,7 @@ const LightVerticalText = styled.p`
     font-size: ${Theme.fontsize.desktop.sectionM};
   }
 
-  @media (max-width: 1024px) {
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};
     margin-bottom: 8px;
   }
@@ -291,20 +347,20 @@ const LightDesc = styled.p`
     font-size: ${Theme.fontsize.desktop.contentM};
   }
 
-  @media (max-width: 1024px) {
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
-  @media (max-width: 768px) {
+  ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.tablet.contentM};
   }
 
   @media (max-width: 560px) {
-    font-size: ${Theme.fontsize.mobile.contentM};
+    font-size: 13px;
   }
 
-  @media (max-width: 400px) {
-    font-size: ${Theme.fontsize.mobile.mini};
+  @media (max-width: 460px) {
+    font-size: 11px;
   }
 `;
 
@@ -313,13 +369,17 @@ const ChairImageContainer = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 20px;
-  width: 100%;
+  width: 94%;
+  max-width: 1450px;
+  margin: 0 auto;
 
   ${({ theme }) => theme.media.tablet} {
+    width: 96%;
     gap: 10px;
   }
 
   ${({ theme }) => theme.media.mobile} {
+    width: 100%;
     gap: 6px;
   }
 `;
@@ -345,7 +405,7 @@ const LeftChairImageBox = styled.div`
   gap: 16px;
   flex: 1;
 
-  @media (max-width: 1024px) {
+  ${({ theme }) => theme.media.tablet} {
     gap: 12px;
   }
 
@@ -357,22 +417,31 @@ const LeftChairImageBox = styled.div`
 const LeftImageContainer = styled.div`
   position: relative;
   width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  transition: 0.45s ease-in-out;
 
   :hover .left-chair-hover-img {
     opacity: 1;
+  }
+
+  @media (max-width: 1300px) {
+    aspect-ratio: 6 / 7;
   }
 `;
 
 const LeftChair = styled.img`
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
 `;
 
-const LeftChairHover = styled(LeftChair)`
+const LeftChairHover = styled.img`
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0;
@@ -385,7 +454,7 @@ const ChairCommentContainer = styled.div`
   gap: 12px;
   padding-left: 8px;
 
-  @media (max-width: 1024px) {
+  ${({ theme }) => theme.media.tablet} {
     gap: 10px;
   }
 
@@ -402,6 +471,10 @@ const TopChairDescBox = styled.div`
 `;
 
 const TopChairDesc = styled(SmallDesc)`
+  @media (max-width: 676px) {
+    font-size: 13px;
+  }
+
   @media (max-width: 518px) {
     font-size: ${Theme.fontsize.mobile.mini};
     line-height: 1.4;
@@ -416,6 +489,10 @@ const BottomChairDescBox = styled.div`
 `;
 
 const BottomChairDesc = styled(SmallDesc)`
+  @media (max-width: 676px) {
+    font-size: 13px;
+  }
+
   @media (max-width: 518px) {
     font-size: ${Theme.fontsize.mobile.mini};
     line-height: 1.4;
@@ -454,7 +531,7 @@ const ChairVerticalText = styled.p`
     font-size: ${Theme.fontsize.desktop.sectionM};
   }
 
-  @media (max-width: 1024px) {
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};
   }
 
@@ -494,22 +571,31 @@ const ChairVerticalLine = styled.div`
 const RightImageContainer = styled.div`
   position: relative;
   flex: 1.15;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  transition: 0.45s ease-in-out;
 
   :hover .right-chair-hover-img {
     opacity: 1;
+  }
+
+  @media (max-width: 1300px) {
+    aspect-ratio: 5 / 7;
   }
 `;
 
 const RightChair = styled.img`
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
 `;
 
-const RightChairHover = styled(RightChair)`
+const RightChairHover = styled.img`
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0;
@@ -520,26 +606,30 @@ const RightChairHover = styled(RightChair)`
 const BottomImageBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 60px;
-  width: 100%;
-  padding: 50px 50px 80px;
+  gap: 48px;
+  width: 94%;
+  max-width: 1450px;
+  margin: 0 auto;
+  padding: 40px 36px 64px;
   background-color: ${Theme.colors.greenaccent};
 
   ${({ theme }) => theme.media.tablet} {
-    gap: 50px;
-    padding: 40px 30px 60px;
+    width: 96%;
+    gap: 36px;
+    padding: 32px 24px 48px;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    gap: 30px;
-    padding: 20px 20px 40px;
+    width: 100%;
+    gap: 24px;
+    padding: 20px 16px 32px;
   }
 `;
 
 const BottomChairBox = styled.div`
   position: relative;
-  width: 90%;
-  max-width: 1210px;
+  width: 92%;
+  max-width: 1280px;
   margin-left: auto;
   cursor: pointer;
 
@@ -548,11 +638,11 @@ const BottomChairBox = styled.div`
   }
 
   ${({ theme }) => theme.media.tablet} {
-    width: 95%;
+    width: 96%;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    width: 95%;
+    width: 100%;
   }
 `;
 
@@ -570,8 +660,8 @@ const ChairTextBox = styled.div`
 
 const BottomDeskBox = styled.div`
   position: relative;
-  width: 95%;
-  max-width: 1329px;
+  width: 94%;
+  max-width: 1320px;
   cursor: pointer;
 
   &:hover .hover-img {
@@ -579,11 +669,11 @@ const BottomDeskBox = styled.div`
   }
 
   ${({ theme }) => theme.media.tablet} {
-    width: 95%;
+    width: 96%;
   }
 
   ${({ theme }) => theme.media.mobile} {
-    width: 95%;
+    width: 100%;
   }
 `;
 
@@ -650,8 +740,10 @@ const SecondDeskMessageBox = styled(FirstDeskMessageBox)`
 
 const ChairImage = styled.img`
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
+  object-position: center 45%;
 `;
 
 const ChairHoverImage = styled.img`
@@ -667,8 +759,10 @@ const ChairHoverImage = styled.img`
 
 const DeskImage = styled.img`
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
+  object-position: center 55%;
 `;
 
 const DeskHoverImage = styled.img`
@@ -678,6 +772,7 @@ const DeskHoverImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
 `;
@@ -777,25 +872,14 @@ export default function MainPage() {
           {firstBanner && (
             <SofaImageBox>
               <SofaImageWrapper>
-                <SofaImage
-                  src={firstBanner.src[0]}
-                  alt={firstBanner.name || "Sofa Image"}
-                />
-                <Link
-                  to={`/products/${firstBanner.category}/${firstBanner.productId}`}
-                >
-                  <SofaHoverImage
-                    src={firstBanner.src[1]}
-                    alt="Sofa Hover Image"
-                    className="sofa-hover-img"
-                  />
+                <SofaImage src={firstBanner.src[0]} alt={firstBanner.name || "Sofa Image"} />
+                <Link to={`/products/${firstBanner.category}/${firstBanner.productId}`}>
+                  <SofaHoverImage src={firstBanner.src[1]} alt="Sofa Hover Image" className="sofa-hover-img" />
                 </Link>
               </SofaImageWrapper>
               <SofaDescBox>
                 <BigTitle>Classic Leather, Timeless Modern</BigTitle>
-                <SofaDesc>
-                  The perfect balance of warmth and structure.
-                </SofaDesc>
+                <SofaDesc>The perfect balance of warmth and structure.</SofaDesc>
               </SofaDescBox>
             </SofaImageBox>
           )}
@@ -807,13 +891,8 @@ export default function MainPage() {
           {secondBanner && (
             <LightImageBox>
               <LightImageContainer>
-                <LightImage
-                  src={secondBanner.src[0]}
-                  alt={secondBanner.name || "Light Image"}
-                />
-                <Link
-                  to={`/products/${secondBanner.category}/${secondBanner.productId}`}
-                >
+                <LightImage src={secondBanner.src[0]} alt={secondBanner.name || "Light Image"} />
+                <Link to={`/products/${secondBanner.category}/${secondBanner.productId}`}>
                   <LightHoverImage
                     src={secondBanner.src[1]}
                     alt={secondBanner.name || "Light Hover Image"}
@@ -821,20 +900,14 @@ export default function MainPage() {
                   />
                 </Link>
                 <LightTextContainer>
-                  <LightVerticalText>
-                    For Deep Sleep and Dream
-                  </LightVerticalText>
+                  <LightVerticalText>For Deep Sleep and Dream</LightVerticalText>
                   <LightDescContainer>
+                    <LightDesc>"The Light of Night, Your Gentle Companion."</LightDesc>
                     <LightDesc>
-                      "The Light of Night, Your Gentle Companion."
+                      Leave the day's exhaustion behind and return to the warmth of your own private sanctuary.
                     </LightDesc>
                     <LightDesc>
-                      Leave the day's exhaustion behind and return to the warmth
-                      of your own private sanctuary.
-                    </LightDesc>
-                    <LightDesc>
-                      Where the soft touch of linen meets a subtle glow, we
-                      curate the moments where your night becomes brighter.
+                      Where the soft touch of linen meets a subtle glow, we curate the moments where your night becomes brighter.
                     </LightDesc>
                   </LightDescContainer>
                 </LightTextContainer>
@@ -849,13 +922,8 @@ export default function MainPage() {
               <LeftChairImageBox>
                 {thirdBanner && (
                   <LeftImageContainer>
-                    <LeftChair
-                      src={thirdBanner.src[0]}
-                      alt={thirdBanner.name || "Left Chair Image"}
-                    />
-                    <Link
-                      to={`/products/${thirdBanner.category}/${thirdBanner.productId}`}
-                    >
+                    <LeftChair src={thirdBanner.src[0]} alt={thirdBanner.name || "Left Chair Image"} />
+                    <Link to={`/products/${thirdBanner.category}/${thirdBanner.productId}`}>
                       <LeftChairHover
                         src={thirdBanner.src[1]}
                         alt={thirdBanner.name || "Left Chair Hover Image"}
@@ -867,15 +935,11 @@ export default function MainPage() {
                 <ChairCommentContainer>
                   <TopChairDescBox>
                     <TopChairDesc>
-                      Every fiber is crafted to hold the warmth of your home.
-                      Beyond the visual elegance, we focus on
+                      Every fiber is crafted to hold the warmth of your home. Beyond the visual elegance, we focus on
                     </TopChairDesc>
                   </TopChairDescBox>
                   <BottomChairDescBox>
-                    <BottomChairDesc>
-                      the tactile experience that touches your soul in a
-                      sanctuary of peace.
-                    </BottomChairDesc>
+                    <BottomChairDesc>the tactile experience that touches your soul in a sanctuary of peace.</BottomChairDesc>
                   </BottomChairDescBox>
                 </ChairCommentContainer>
               </LeftChairImageBox>
@@ -886,13 +950,8 @@ export default function MainPage() {
             </LeftChairContainer>
             {fourthBanner && (
               <RightImageContainer>
-                <RightChair
-                  src={fourthBanner.src[0]}
-                  alt={fourthBanner.name || "Right Chair Image"}
-                />
-                <Link
-                  to={`/products/${fourthBanner.category}/${fourthBanner.productId}`}
-                >
+                <RightChair src={fourthBanner.src[0]} alt={fourthBanner.name || "Right Chair Image"} />
+                <Link to={`/products/${fourthBanner.category}/${fourthBanner.productId}`}>
                   <RightChairHover
                     src={fourthBanner.src[1]}
                     alt={fourthBanner.name || "Right Chair Hover Image"}
@@ -909,24 +968,13 @@ export default function MainPage() {
             {fifthBanner && (
               <BottomChairBox>
                 <ImgWrapper>
-                  <ChairImage
-                    src={fifthBanner.src[0]}
-                    alt={fifthBanner.name || "Desk Image"}
-                  />
-                  <Link
-                    to={`/products/${fifthBanner.category}/${fifthBanner.productId}`}
-                  >
-                    <ChairHoverImage
-                      src={fifthBanner.src[1]}
-                      alt="Hover Desk Image"
-                      className="hover-img"
-                    />
+                  <ChairImage src={fifthBanner.src[0]} alt={fifthBanner.name || "Desk Image"} />
+                  <Link to={`/products/${fifthBanner.category}/${fifthBanner.productId}`}>
+                    <ChairHoverImage src={fifthBanner.src[1]} alt="Hover Desk Image" className="hover-img" />
                   </Link>
                 </ImgWrapper>
                 <ChairTextBox>
-                  <BigTitle style={{ color: Theme.colors.whitetext }}>
-                    TIMELESS TRACE
-                  </BigTitle>
+                  <BigTitle style={{ color: Theme.colors.whitetext }}>TIMELESS TRACE</BigTitle>
                   <SmallDesc
                     style={{
                       color: Theme.colors.whitetext,
@@ -941,35 +989,22 @@ export default function MainPage() {
             {sixthBanner && (
               <BottomDeskBox>
                 <ImgWrapper>
-                  <DeskImage
-                    src={sixthBanner.src[0]}
-                    alt={sixthBanner.name || "Bed Image"}
-                  />
-                  <Link
-                    to={`/products/${sixthBanner.category}/${sixthBanner.productId}`}
-                  >
-                    <DeskHoverImage
-                      src={sixthBanner.src[1]}
-                      alt="Hover Bed Image"
-                      className="hover-img"
-                    />
+                  <DeskImage src={sixthBanner.src[0]} alt={sixthBanner.name || "Bed Image"} />
+                  <Link to={`/products/${sixthBanner.category}/${sixthBanner.productId}`}>
+                    <DeskHoverImage src={sixthBanner.src[1]} alt="Hover Bed Image" className="hover-img" />
                   </Link>
                 </ImgWrapper>
                 <DesktextBox>
-                  <BigTitle style={{ color: Theme.colors.whitetext }}>
-                    The Whisper of Morning Light
-                  </BigTitle>
+                  <BigTitle style={{ color: Theme.colors.whitetext }}>The Whisper of Morning Light</BigTitle>
                   <DeskMessageContainer>
                     <FirstDeskMessageBox>
                       <SmallDesc style={{ color: Theme.colors.whitetext }}>
-                        The softest embrace of sun and linen, creating a
-                        peaceful moment for your deepest rest.
+                        The softest embrace of sun and linen, creating a peaceful moment for your deepest rest.
                       </SmallDesc>
                     </FirstDeskMessageBox>
                     <SecondDeskMessageBox>
                       <SmallDesc style={{ color: Theme.colors.whitetext }}>
-                        Where the day begins with a gentle glow, we curate
-                        spaces for your own sanctuary.
+                        Where the day begins with a gentle glow, we curate spaces for your own sanctuary.
                       </SmallDesc>
                     </SecondDeskMessageBox>
                   </DeskMessageContainer>
@@ -986,14 +1021,8 @@ export default function MainPage() {
         </BottomTextContainer>
       </ScrollReveal>
 
-      <MainIntroModalCarousel
-        isOpen={isEventOpen}
-        onClose={() => setIsEventOpen(false)}
-      />
-      <InstagramModal
-        isOpen={isInstaOpen}
-        onClose={() => setIsInstaOpen(false)}
-      />
+      <MainIntroModalCarousel isOpen={isEventOpen} onClose={() => setIsEventOpen(false)} />
+      <InstagramModal isOpen={isInstaOpen} onClose={() => setIsInstaOpen(false)} />
     </MainSection>
   );
 }
