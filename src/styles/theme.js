@@ -2,7 +2,7 @@ export const Theme = {
   colors: {
     redaccent: "#752323",
     greenaccent: "#898861",
-    greentext: "#0c0c0c30",
+    greentext: "#6A7620",
     yellowaccent: "#dda351",
     white: "#fafafa",
     black: "#0c0c0c",

@@ -197,7 +197,7 @@ const ItemDelevery = styled.p`
     font-size: ${Theme.fontsize.tablet.content};
   }
   @media screen and (max-width: 400px) {
-    display: none;
+    /* display: none; */
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.mini};
@@ -291,7 +291,7 @@ const OrderInfoWrap = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    position: static;
+    position: relative;
     top: auto;
     max-width: 100%;
     min-width: 250px;
@@ -525,6 +525,7 @@ const OrderButton = styled(DeleteButton)`
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.whitetext};
   background-color: ${Theme.colors.black};
+  z-index: 10;
 `;
 
 const EmptyWrap = styled.div`
@@ -581,7 +582,7 @@ export default function ShoppingCartPage() {
             ...data.userInfo,
             // 수정값 덮어쓰기
             ...(savedUser || {}),
-            address: savedAddress || data.userInfo.address,
+            address: savedAddress || data.userInfo.address || "",
           };
 
           const rawPhone = finalUser.phone || "";
@@ -647,13 +648,15 @@ export default function ShoppingCartPage() {
   }
 
   // 회원가입이랑 같은 유효성 검사
-  function validateForm() {
+  function validateForm(data) {
     let newErrors = {};
     let newMsgs = {};
 
+    const target = data || form; // 기본은 form
+
     // 이름 한글만 2~10글자
     const nameRegex = /^[가-힣]{2,10}$/;
-    if (!form.name.trim()) {
+    if (!target.name.trim()) {
       newErrors.name = true;
       newMsgs.name = "이름을 입력해주세요";
     } else if (!nameRegex.test(form.name)) {
@@ -662,26 +665,26 @@ export default function ShoppingCartPage() {
     }
 
     // 폰 중간이랑 끝 각 4자리
-    if (!form.phoneMid.trim() || !form.phoneEnd.trim()) {
+    if (!target.phoneMid.trim() || !target.phoneEnd.trim()) {
       newErrors.phoneMid = true;
       newMsgs.phoneMid = "전화번호를 입력해주세요";
-    } else if (form.phoneMid.length < 4 || form.phoneEnd.length < 4) {
+    } else if (target.phoneMid.length < 4 || target.phoneEnd.length < 4) {
       newErrors.phoneMid = true;
       newMsgs.phoneMid = "전화번호는 각 4자리씩 입력해주세요";
     }
 
     // 이메일형식
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!form.email.trim()) {
+    if (!target.email.trim()) {
       newErrors.email = true;
       newMsgs.email = "이메일을 입력해주세요";
-    } else if (!emailRegex.test(form.email)) {
+    } else if (!emailRegex.test(target.email)) {
       newErrors.email = true;
       newMsgs.email = "이메일 형식이 올바르지 않습니다";
     }
 
     // 주소는 빈칸
-    if (!form.address.trim()) {
+    if (!target.address.trim()) {
       newErrors.address = true;
       newMsgs.address = "주소를 입력해주세요";
     }
@@ -706,9 +709,13 @@ export default function ShoppingCartPage() {
 
   const handleOrder = () => {
     // 상품이 없다면 되돌아 가라!
-    if (!HaveItems) return;
+    if (!HaveCheckedItems) {
+      return;
+    }
     // 폼 유효성 검사 통과해야 주문 진행
-    const isValid = validateForm();
+    // 변경
+    const dataToValidate = isEdit ? form : userInfo;
+    const isValid = validateForm(dataToValidate);
     if (!isValid) return;
 
     // 구매 데이터 계산
@@ -772,11 +779,13 @@ export default function ShoppingCartPage() {
   };
 
   const handleCheckedOrder = () => {
-    if (!HaveCheckedItems) return;
-    // 폼 유효성 검사 통과해야 주문 진행
-    const isValid = validateForm();
-    if (!isValid) return;
+    if (!HaveCheckedItems) {
+      return;
+    }
 
+    // 수정 모드면 form, 읽기 모드면 userInfo로 validation
+    const isValid = validateForm(isEdit ? form : userInfo);
+    if (!isValid) return;
     // 구매 데이터 계산
     const purchasedItems = cartItems;
     const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
@@ -929,7 +938,6 @@ export default function ShoppingCartPage() {
           </CartList>
         )}
       </CartListWrap>
-
       <OrderInfoWrap>
         {/* 주문 폼 */}
         <OrderInfoForm onSubmit={handleSubmit}>
@@ -1079,15 +1087,10 @@ export default function ShoppingCartPage() {
           <p>Total Price :</p>
           <p>{totalPrice.toLocaleString()} ₩</p>
         </TotalPrice>
-
         <ButtonWrap>
           <DeleteButton onClick={handleDeleteAll}>Clear Cart</DeleteButton>
-          <OrderButton type="button" onClick={handleCheckedOrder}>
-            Buy Selected
-          </OrderButton>
-          <OrderButton type="button" onClick={handleOrder}>
-            Checkout All
-          </OrderButton>
+          <OrderButton onClick={handleCheckedOrder}>Buy Selected</OrderButton>
+          <OrderButton onClick={handleOrder}>Checkout All</OrderButton>
         </ButtonWrap>
       </OrderInfoWrap>
 

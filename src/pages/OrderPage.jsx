@@ -3,7 +3,7 @@ import { Theme } from "../styles/theme";
 import styled from "@emotion/styled";
 import { useCartStore } from "../stores/useCartStore";
 import defaultProfile from "../assets/icons/defaultProfile.svg";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import MyProfile from "../components/common/MyProfile";
 import { authMeApi } from "../apis/authMeApi";
 import SideMenuBar from "../components/common/SideMenuBar";
@@ -304,6 +304,7 @@ const OrderPaginationWrap = styled.ul`
   justify-content: center;
   gap: 37px;
   margin: 0 auto;
+  width: 100%;
 `;
 
 const PaginationList = styled.li`
@@ -355,6 +356,8 @@ export default function OrderPage() {
   const [openAccordion, setOpenAccordion] = useState(null);
   // 주문 날짜 필터링(기본값 전체)
   const [dateFilter, setDateFilter] = useState("전체");
+  // 아코디언 열 때 해당 아이템 리뷰를 가져와 폼 초기값
+  const [editingReview, setEditingReview] = useState(null);
 
   const [orderData, setOrderData] = useState({
     totalQuantity: 0,
@@ -420,7 +423,7 @@ export default function OrderPage() {
               return item;
             }),
           }
-        : order
+        : order,
     );
 
     // 상태 업데이트
@@ -458,11 +461,18 @@ export default function OrderPage() {
   // flatMap : 각 주문을 순회하면서 상품 배열을 꺼낸 후, 해당 배열들이 서로 다른 중첩 배열에 있지 않도록 바닥에 깔아서 하나로 합침
   // 이후 map 함수로 각 상품들을 하나씩 순회함
   const allPurchasedItems = orderHistory.flatMap((order) =>
-    order.purchasedItems.map((item) => ({
-      ...item, // 원래 상품이 가지고 있던 정보를 그대로 복사
-      orderId: order.id, // 이 상품이 몇번째 주문에서 온 건지 적어줌 (데이터 식별용)
-      orderDate: order.orderDate, // 상품(purchasedItems) 데이터에는 날짜가 없음, 따라서 부모 기준에 적힌 날짜를 가져옴
-    }))
+    order.purchasedItems.map((item) => {
+      const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
+      const hasReview = reviewList.some(
+        (review) => review.productId === item.id && review.orderDate === order.orderDate,
+      );
+      return {
+        ...item, // 원래 상품이 가지고 있던 정보를 그대로 복사
+        orderId: order.id, // 이 상품이 몇번째 주문에서 온 건지 적어줌 (데이터 식별용)
+        orderDate: order.orderDate, // 상품(purchasedItems) 데이터에는 날짜가 없음, 따라서 부모 기준에 적힌 날짜를 가져옴
+        hasReview, // 리뷰 작성 여부
+      };
+    }),
   );
 
   const goToFirstPage = () => {
@@ -540,10 +550,7 @@ export default function OrderPage() {
   }, [filteredItems, totalPages]);
 
   // 현재 페이지 번호에 맞춰서 itemsPerPage만큼 즉 4개씩 잘라내기
-  const itemDisplay = filteredItems.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const itemDisplay = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   // 실제 들어온 데이터보다 남은곳이 많을 경우 남은곳은 빈칸으로 채움
   while (itemDisplay.length < 4) {
     itemDisplay.push(null);
@@ -566,6 +573,17 @@ export default function OrderPage() {
     pageNumbers.push(i);
   }
 
+  const handleReviewComplete = (productId, orderDate) => {
+    setOrderHistory((prev) =>
+      prev.map((order) => ({
+        ...order,
+        purchasedItems: order.purchasedItems.map((item) =>
+          item.id === productId && item.orderDate === orderDate ? { ...item, hasReview: true } : item,
+        ),
+      })),
+    );
+    setOpenAccordion(null); // 아코디언 닫기
+  };
   return (
     <OrderPageContainer>
       <MyProfile userInfo={userInfo} orderData={orderData} cartItem={cartItem} />
@@ -575,18 +593,12 @@ export default function OrderPage() {
           <DateFilterContainer>
             <DateFilterWrap>
               {FILTER_DATES.map((p) => (
-                <DateFilter
-                  key={p}
-                  isActive={dateFilter === p}
-                  onClick={() => handleFilterClick(p)}
-                >
+                <DateFilter key={p} isActive={dateFilter === p} onClick={() => handleFilterClick(p)}>
                   {p}
                 </DateFilter>
               ))}
             </DateFilterWrap>
-            <DateInfo>
-              기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.
-            </DateInfo>
+            <DateInfo>최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.</DateInfo>
           </DateFilterContainer>
           <OrderInfo>
             <li>주문일자:</li>
@@ -606,7 +618,13 @@ export default function OrderPage() {
 
             //아코디언 열기
             const AccordionOpen = () => {
-              handleAccordionToggle(itemLKey);
+              const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
+              const existingReview = reviewList.find(
+                (review) => review.productId === item.id && review.orderDate === item.orderDate,
+              );
+
+              setEditingReview(existingReview || null); // 기존 리뷰 있으면 세팅, 없으면 null
+              handleAccordionToggle(`${item.orderId}-${item.id}`); // 아코디언 열기
             };
 
             //주문 확정하기
@@ -625,22 +643,24 @@ export default function OrderPage() {
                     <OrderItemWrap>
                       <li>{item.orderDate}</li>
                       <li>
-                        <img src={item.src[0]} alt={item.name} />
+                        <NavLink to={`/products/${item.caregory}/${item.id}`}>
+                          <img src={item.src[0]} alt={item.name} />
+                        </NavLink>
                       </li>
                       <li>{item.name}</li>
                       <li>{item.quantity}</li>
                       <li>{(item.price * item.quantity).toLocaleString()}₩</li>
                       <li>{item.status === "배송완료" ? "배송완료" : "배송중"}</li>
                       {item.status === "배송완료" ? (
-                        <ReviewButton onClick={AccordionOpen}>리뷰작성</ReviewButton>
+                        <ReviewButton onClick={() => AccordionOpen(item)}>
+                          {item.hasReview ? "리뷰수정" : "리뷰작성"}
+                        </ReviewButton>
                       ) : (
-                        <ConfirmDeliverButton onClick={ConfirmDelivery}>
-                          배송확정
-                        </ConfirmDeliverButton>
+                        <ConfirmDeliverButton onClick={ConfirmDelivery}>배송확정</ConfirmDeliverButton>
                       )}
                     </OrderItemWrap>
                     <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
-                      <OrderReview item={item} onComplete={CloseAccordion}></OrderReview>
+                      <OrderReview item={item} editingReview={editingReview} onComplete={handleReviewComplete} />
                     </OrderReviewWrap>
                   </>
                 ) : (
@@ -668,29 +688,18 @@ export default function OrderPage() {
             </PaginationList>
             {pageNumbers.map((number) => (
               <PageNumber key={number}>
-                <PageNumberButton
-                  onClick={() => setCurrentPage(number)}
-                  isActive={currentPage === number}
-                >
+                <PageNumberButton onClick={() => setCurrentPage(number)} isActive={currentPage === number}>
                   {number}
                 </PageNumberButton>
               </PageNumber>
             ))}
             <PaginationList>
-              <PaginationButton
-                type="button"
-                onClick={goToNextPage}
-                disabled={currentPage === totalPages}
-              >
+              <PaginationButton type="button" onClick={goToNextPage} disabled={currentPage === totalPages}>
                 Next
               </PaginationButton>
             </PaginationList>
             <PaginationList>
-              <PaginationButton
-                type="button"
-                onClick={goToLastPage}
-                disabled={currentPage === totalPages}
-              >
+              <PaginationButton type="button" onClick={goToLastPage} disabled={currentPage === totalPages}>
                 Last
               </PaginationButton>
             </PaginationList>

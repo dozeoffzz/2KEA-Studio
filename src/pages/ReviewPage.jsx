@@ -165,6 +165,7 @@ const DropdownBtn = styled.button`
   cursor: pointer;
   text-align: left;
   position: relative;
+  color: ${Theme.colors.blacktext};
 
   /* CSS 삼각형 화살표 */
   &::after {
@@ -260,11 +261,12 @@ const ReviewItem = styled.li`
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   padding: 30px 0 50px 0;
   border-top: 1px solid ${Theme.colors.grayline};
   border-bottom: 1px solid ${Theme.colors.grayline};
-  height: 300px;
+  /* height: 300px; */
+  min-height: 150px;
+  height: auto;
 
   ${({ theme }) => theme.media.tablet} {
   }
@@ -324,6 +326,10 @@ const ReviewCell = styled.span`
     text-align: left;
     font-size: ${Theme.fontsize.desktop.small};
   }
+`;
+const ReviewTitleText = styled.p`
+  margin-bottom: 20px;
+  font-weight: 600;
 `;
 
 const ImgWrap = styled.div`
@@ -450,6 +456,7 @@ const CarouselWrap = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 20px;
 
   ${({ theme }) => theme.media.mobile} {
     justify-content: center;
@@ -755,24 +762,26 @@ export default function ReviewPage() {
                 <ReviewItem key={review.id}>
                   {/* 제목 너무 길면 말줄임표... */}
                   <ReviewCell className="title" flex="1" align="left">
-                    {review.title}
+                    <ReviewTitleText>{review.title}</ReviewTitleText>
                     {/* 리뷰 이미지 캐러셀 */}
-                    <CarouselWrap>
-                      {/* 이미지 4개 이상일 때만 이전 버튼 */}
-                      {review.images?.length > 3 && (
-                        <ArrowBtn onClick={() => handlePrevImage(review.id)}>{"<"}</ArrowBtn>
-                      )}
-                      <ImgWrap>
-                        {review.images
-                          ?.slice(imageIndexMap[review.id] || 0, (imageIndexMap[review.id] || 0) + 3)
-                          .map((img, i) => (
-                            <ReviewImg key={i} src={img} />
-                          ))}
-                      </ImgWrap>
-                      {review.images?.length > 3 && (
-                        <ArrowBtn onClick={() => handleNextImage(review.id, review.images.length)}>{">"}</ArrowBtn>
-                      )}
-                    </CarouselWrap>
+                    {review.images && review.images.length > 0 && (
+                      <CarouselWrap>
+                        {/* 이미지 4개 이상일 때만 이전 버튼 */}
+                        {review.images?.length > 3 && (
+                          <ArrowBtn onClick={() => handlePrevImage(review.id)}>{"<"}</ArrowBtn>
+                        )}
+                        <ImgWrap>
+                          {review.images
+                            ?.slice(imageIndexMap[review.id] || 0, (imageIndexMap[review.id] || 0) + 3)
+                            .map((img, i) => (
+                              <ReviewImg key={i} src={img} />
+                            ))}
+                        </ImgWrap>
+                        {review.images?.length > 3 && (
+                          <ArrowBtn onClick={() => handleNextImage(review.id, review.images.length)}>{">"}</ArrowBtn>
+                        )}
+                      </CarouselWrap>
+                    )}
                     <ReviewContent>{review.content}</ReviewContent>
                   </ReviewCell>
                   <ReviewInfo>
