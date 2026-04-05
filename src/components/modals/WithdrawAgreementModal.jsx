@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { Theme } from "../../styles/theme";
 import WithdrawTermsModal from "./WithdrawTermsModal";
 import { useCartStore } from "../../stores/useCartStore";
+import { useAuthStore } from "../../stores/useAuthStore";
 
 const Overlay = styled.div`
   display: flex;
@@ -247,6 +248,7 @@ export default function WithdrawAgreementModal({ isOpen, onClose, onConfirm }) {
   const targetElement = document.getElementById("modal-root");
   const [isChecked, setIsChecked] = useState(false);
   const [termsType, setTermsType] = useState("");
+  const logout = useAuthStore((state) => state.logout);
 
   if (!isOpen || !targetElement) return null;
 
@@ -255,12 +257,9 @@ export default function WithdrawAgreementModal({ isOpen, onClose, onConfirm }) {
       alert("약관에 동의해주세요.");
       return;
     }
-    localStorage.removeItem("userInfo");
-    localStorage.removeItem("token");
-    localStorage.removeItem("address");
-    localStorage.removeItem("point");
-    localStorage.removeItem("orderData");
-    localStorage.removeItem("delivery");
+
+    logout();
+    localStorage.clear();
 
     // 장바구니 초기화
     useCartStore.getState().clearCart();

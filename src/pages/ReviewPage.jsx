@@ -159,7 +159,7 @@ const DropdownBtn = styled.button`
   width: 120px;
   height: 25px;
   padding: 0 30px 0 10px;
-  border: 1px solid ${Theme.colors.black};
+  /* border: 1px solid ${Theme.colors.black}; */
   font-size: ${Theme.fontsize.desktop.medium};
   background-color: transparent;
   cursor: pointer;
@@ -202,9 +202,11 @@ const DropdownList = styled.ul`
   top: 32px;
   left: 0;
   width: 100%;
-  border: 1px solid ${Theme.colors.black};
-  background-color: ${Theme.colors.graybg};
+  /* border: 1px solid ${Theme.colors.black}; */
+  /* background-color: ${Theme.colors.graybg}; */
   z-index: 100;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  background-color: ${Theme.colors.white};
 `;
 
 // 드롭다운 각 항목

@@ -34,8 +34,7 @@ const HeaderContainer = styled.header`
 
   background: linear-gradient(
     to bottom,
-    rgba(250, 250, 250, ${(props) => (props.isOpen || props.isScroll ? 1 : 0)})
-      0%,
+    rgba(250, 250, 250, ${(props) => (props.isOpen || props.isScroll ? 1 : 0)}) 0%,
     rgba(250, 250, 250, 0) 100%
   );
   transition: all 0.4s ease;
@@ -142,8 +141,28 @@ const Font = styled(NavLink)`
   }
 `;
 
-const Products = styled.p`
+const ProductDropdown = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  max-height: ${(props) => (props.isOpen ? "200px" : "0")};
+  opacity: ${(props) => (props.isOpen ? 1 : 0)};
+  transform: translateY(${(props) => (props.isOpen ? "0" : "-10px")});
+
+  overflow: hidden;
+
+  transition:
+    max-height 0.4s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease;
+`;
+
+const Products = styled.button`
+  position: relative;
   font-size: ${Theme.fontsize.desktop.content};
+  color: ${Theme.colors.black};
+  font-weight: 600;
 
   ${Theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
@@ -151,6 +170,24 @@ const Products = styled.p`
 
   ${Theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.content};
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid ${Theme.colors.blacktext};
+  }
+
+  &.open::after {
+    border-top: none;
+    border-bottom: 5px solid ${Theme.colors.blacktext};
   }
 `;
 
@@ -176,6 +213,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScroll, setIsScroll] = useState(false);
   const { isLogin, logout } = useAuthStore();
+  const [isProductOpen, setIsProductOpen] = useState(false);
   //제공받은 Context 사용
   const { isAnimated } = useContext(LogoAnimationContext);
   //메인페이지는 애니메이션 완료 여부에 따라 로고가 보이고, 다른 페이지는 즉시 로고 보이기
@@ -206,6 +244,9 @@ export default function Header() {
   const ClickOpenMenu = () => {
     setIsOpen((prev) => !prev);
   };
+  const toggleProductMenu = () => {
+    setIsProductOpen((prev) => !prev);
+  };
 
   return (
     <>
@@ -214,21 +255,13 @@ export default function Header() {
       {/* // useState로 스크롤 값변경하기 위해 프롭스 전달 */}
       <HeaderContainer isScroll={isScroll} isOpen={isOpen}>
         <HeaderWrap>
-          <PlusButton
-            onClick={ClickOpenMenu}
-            isOpen={isOpen}
-            isScroll={isScroll}
-          >
+          <PlusButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
             <img src={menuIcon} />
           </PlusButton>
           <Brand to={"/"} animated={animated}>
             <Logo>2KEA</Logo>
           </Brand>
-          <MenuButton
-            onClick={ClickOpenMenu}
-            isOpen={isOpen}
-            isScroll={isScroll}
-          >
+          <MenuButton onClick={ClickOpenMenu} isOpen={isOpen} isScroll={isScroll}>
             <img src={plusIcon} />
           </MenuButton>
         </HeaderWrap>
@@ -236,11 +269,15 @@ export default function Header() {
         <MenuWrap isOpen={isOpen}>
           {/* 왼쪽메뉴 */}
           <LeftMenu>
-            <Products>Products</Products>
-            <Font to={"/products"}>All</Font>
-            <Font to={"/products/seating"}>Seating</Font>
-            <Font to={"/products/tables"}>Tables</Font>
-            <Font to={"/products/lighting"}>Lighting</Font>
+            <Products onClick={toggleProductMenu} className={isProductOpen ? "open" : ""}>
+              Products
+            </Products>
+            <ProductDropdown isOpen={isProductOpen}>
+              <Font to={"/products"}>All</Font>
+              <Font to={"/products/seating"}>Seating</Font>
+              <Font to={"/products/tables"}>Tables</Font>
+              <Font to={"/products/lighting"}>Lighting</Font>
+            </ProductDropdown>
           </LeftMenu>
           <RightMenu>
             {isLogin ? <Font to={"/auth/me"}>MyPage</Font> : null}
