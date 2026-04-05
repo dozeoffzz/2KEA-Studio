@@ -43,8 +43,8 @@ export default function OrderRatingStar({ rating, setRating, baseSize = 24, step
   return (
     <StarContainer onMouseLeave={StarHoverOut}>
       {Array.from({ length: 5 }).map((_, idx) => {
-        const starIndex = idx + 1;
-        const currentSize = baseSize + idx * step; // 점점 커지는 크기 계산
+        const starIndex = idx + 1; //1~5까지 별의 순서
+        const currentSize = baseSize + idx * step; // 뒤로 갈수록 점점 커지는 디자인
 
         //왼쪽에 마우스 올리면 별 반개짜리, 오른쪽에 마우스 올리면 별 1개짜리 나오기
         const getStarImg = (value) => {
