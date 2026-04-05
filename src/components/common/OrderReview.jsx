@@ -97,10 +97,11 @@ const ReviewPhotoWarp = styled(ReviewRatingWrap)`
 `;
 
 const PhotoWrap = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 457px;
+  width: 450px;
   height: 235px;
   border: 1px solid ${Theme.colors.grayline};
   border-width: 1px 0;
@@ -112,6 +113,9 @@ const PhotoWrap = styled.div`
 `;
 
 const AddPhotoButton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -119,7 +123,13 @@ const AddPhotoButton = styled.button`
   gap: 13px;
   width: 100px;
   height: 100px;
-  border: 1px solid ${Theme.colors.grayline};
+  transform: translate(-50%, -50%);
+  border: 1px solid ${Theme.colors.black};
+  z-index: 10;
+
+  input {
+    display: none;
+  }
 
   ${({ theme }) => theme.media.mobile} {
     width: 100px;
@@ -134,7 +144,7 @@ const AddPhotoButton = styled.button`
 `;
 
 const UploadedPhoto = styled.p`
-  color: ${Theme.colors.textsecondary};
+  color: ${Theme.colors.black};
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
@@ -143,6 +153,44 @@ const UploadedPhoto = styled.p`
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.mini};
   }
+`;
+
+const UploadPhotoWrap = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  width: 400px;
+  height: auto;
+  overflow: hidden;
+`;
+
+const PreviewPhotoWrap = styled.div`
+  position: relative;
+  width: 120px;
+  height: 150px;
+  flex-shrink: 0;
+`;
+
+const PreviewPhoto = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+`;
+
+const PhotoDeleteButton = styled.button`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  color: ${Theme.colors.blacktext};
+  background-color: ${Theme.colors.white};
+  font-size: 14px;
 `;
 
 const ReviewText = styled.textarea`
@@ -297,6 +345,11 @@ export default function OrderReview({ item, onComplete }) {
     e.target.value = "";
   };
 
+  // 올린 사진 삭제하기
+  const handleRemoveImage = (idx) => {
+    setImages((prev) => prev.filter((_, i) => i !== idx));
+  };
+
   //리뷰 데이터 로컬스토리지 저장 로직
   const handleComplete = () => {
     //유효성 검사
@@ -369,26 +422,46 @@ export default function OrderReview({ item, onComplete }) {
           <OrderRatingStar rating={rating} setRating={handleRatingChange} />
           {errors.rating && <ErrorMsg>별점을 선택해 주세요.</ErrorMsg>}
         </ErrorMagWrap>
-        <ReviewTitle type="text" placeholder="리뷰 제목을 작성해주세요" value={title} onChange={titleChange} />
+        <ReviewTitle
+          type="text"
+          placeholder="리뷰 제목을 작성해주세요"
+          value={title}
+          onChange={titleChange}
+        />
       </ReviewRatingWrap>
       <ReviewPhotoWarp>
         <PhotoWrap>
           <AddPhotoButton onClick={handlePhotoClick}>
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              ref={photoRef}
-              onChange={handleImageChange}
-            />
-            <svg xmlns="http://www.w3.org/2000/svg" height="19px" viewBox="0 -960 960 960" width="19px" fill="#999999">
+            <input type="file" accept="image/*" ref={photoRef} onChange={handleImageChange} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="19px"
+              viewBox="0 -960 960 960"
+              width="19px"
+              fill="#0c0c0c"
+            >
               <path d="M240-280h480L597-444q-11-2-22.5-5t-22.5-7L450-320l-90-120-120 160Zm-40 160q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h200v80H200v560h560v-213l80 80v133q0 33-23.5 56.5T760-120H200Zm280-360Zm382 56L738-548q-21 14-45 21t-51 7q-74 0-126-52.5T464-700q0-75 52.5-127.5T644-880q75 0 127.5 52.5T824-700q0 27-8 52t-20 46l122 122-56 56ZM644-600q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Z" />
             </svg>
             <UploadedPhoto>사진 {images.length}/5</UploadedPhoto>
           </AddPhotoButton>
+          <UploadPhotoWrap>
+            {/* 문자열로 저장된 이미지는 별도 변환과정 없이 그대로 다시 쓰면 됨 */}
+            {images.map((src, idx) => (
+              <PreviewPhotoWrap key={idx}>
+                <PreviewPhoto src={src} alt={`review-image-${idx}`} />
+                <PhotoDeleteButton type="button" onClick={() => handleRemoveImage(idx)}>
+                  X
+                </PhotoDeleteButton>
+              </PreviewPhotoWrap>
+            ))}
+          </UploadPhotoWrap>
         </PhotoWrap>
         <TextErrorWrap>
-          <ReviewText placeholder="리뷰 본문을 작성해주세요" value={content} onChange={contentChange} />
+          <ReviewText
+            placeholder="리뷰 본문을 작성해주세요"
+            value={content}
+            onChange={contentChange}
+          />
           {errors.input && <ErrorMsg>제목과 내용을 모두 입력해 주세요.</ErrorMsg>}
         </TextErrorWrap>
       </ReviewPhotoWarp>
