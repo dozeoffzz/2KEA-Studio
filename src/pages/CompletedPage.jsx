@@ -58,12 +58,21 @@ const GotoMain = styled(NavLink)`
   font-size: ${Theme.fontsize.desktop.content};
   margin-top: 20px;
 
+  &:hover {
+    font-weight: 600;
+  }
+
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
   }
+`;
+
+const BtnWrap = styled.div`
+  display: flex;
+  gap: 40px;
 `;
 export default function CompletedPage() {
   // 주문 완료랑 같이 구매일 저장
@@ -89,7 +98,10 @@ export default function CompletedPage() {
         <CompletedMsg>감사합니다.</CompletedMsg>
         <CompletedMsg>{TodaySort}</CompletedMsg>
         <CompletedMsg>주문번호: 20-76040312</CompletedMsg>
-        <GotoMain to={"/"}>메인으로</GotoMain>
+        <BtnWrap>
+          <GotoMain to={"/"}>메인으로</GotoMain>
+          <GotoMain to={"/auth/me/order"}>주문내역</GotoMain>
+        </BtnWrap>
       </CompletedWrap>
     </CompletedContainer>
   );

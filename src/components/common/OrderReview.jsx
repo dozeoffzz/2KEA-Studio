@@ -279,17 +279,24 @@ const ErrorMsg = styled.p`
   color: ${Theme.colors.redaccent};
 `;
 
-export default function OrderReview({ item, onComplete }) {
-  const [rating, setRating] = useState(0); //별점
-  const [title, setTitle] = useState(""); //리뷰 제목
-  const [content, setContent] = useState(""); //리뷰 본문
-  const [images, setImages] = useState([]); // 이미지를 Base64 인코딩으로 문자열로 변환후 담을 배열
+export default function OrderReview({ item, onComplete, editingReview }) {
+  const [rating, setRating] = useState(editingReview?.rating || 0); //별점
+  const [title, setTitle] = useState(editingReview?.title || ""); //리뷰 제목
+  const [content, setContent] = useState(editingReview?.content || ""); //리뷰 본문
+  const [images, setImages] = useState(editingReview?.images || []); // 이미지를 Base64 인코딩으로 문자열로 변환후 담을 배열
   const [errors, setErrors] = useState({
     rating: false,
     input: false,
   }); // 에러메시지 상태
   const { userInfo } = useAuthStore(); // 로그인 유저 정보 가져오기
   const photoRef = useRef(null); // 사진 업로드 버튼 조작을 위한 리모컨
+
+  useEffect(() => {
+    setRating(editingReview?.rating || 0);
+    setTitle(editingReview?.title || "");
+    setContent(editingReview?.content || "");
+    setImages(editingReview?.images || []);
+  }, [editingReview]);
 
   const titleChange = (e) => {
     setTitle(e.target.value);
@@ -379,25 +386,28 @@ export default function OrderReview({ item, onComplete }) {
       const existingReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
 
       const reviewData = {
-        id: reviewId, // 고유 ID (상품 ID는 중복가능성이 높기 때문에 랜덤 UUID로 고유 ID 설정)
+        id: editingReview?.id || crypto.randomUUID(), // 고유 ID (상품 ID는 중복가능성이 높기 때문에 랜덤 UUID로 고유 ID 설정)
         productId: item.id, // 상품 ID
         name: item.name, // 상품 이름
         rating: rating, // 별점
         title: title, // 리뷰 제목
         content: content, // 리뷰 내용
-        date: reviewDate, // 리뷰 작성 날짜
+        date: new Date().toISOString().split("T")[0], // 리뷰 작성 날짜
         orderDate: item.orderDate, // 상품 구매 날짜
         author: userInfo.name, // 작성자 이름
         images: images, // 이미지
       };
 
       // 작성한 리뷰 추가 및 로컬스토리지 저장
-      const updateReviews = [reviewData, ...existingReviews];
-      localStorage.setItem("reviews", JSON.stringify(updateReviews));
+      const updatedReviews = editingReview
+        ? existingReviews.map((r) => (r.id === editingReview.id ? reviewData : r))
+        : [reviewData, ...existingReviews];
+
+      localStorage.setItem("reviews", JSON.stringify(updatedReviews));
 
       // 부모 쪽에서 버튼을 닫는 로직 받아오기
       if (onComplete) {
-        onComplete();
+        onComplete(item.id, item.orderDate);
       }
 
       //저장 후 모든 상태 초기화
@@ -409,6 +419,19 @@ export default function OrderReview({ item, onComplete }) {
     } catch (error) {
       console.error("리뷰 저장 중 오류 발생:", error);
     }
+
+    // 부모에 완료 알려주기
+    if (onComplete) {
+      onComplete(item.id, item.orderDate); // 상품 id + 주문 날짜
+    }
+  };
+  const handleCancel = () => {
+    setRating(0);
+    setTitle("");
+    setContent("");
+    setImages([]);
+    setErrors({ rating: false, input: false });
+    if (onComplete) onComplete(); // 아코디언 닫기
   };
 
   return (
@@ -466,7 +489,7 @@ export default function OrderReview({ item, onComplete }) {
         </TextErrorWrap>
       </ReviewPhotoWarp>
       <ButtonWrap>
-        <CompleteButton type="button" onClick={onComplete}>
+        <CompleteButton type="button" onClick={handleCancel}>
           취소
         </CompleteButton>
         <CompleteButton type="button" onClick={handleComplete}>

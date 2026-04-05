@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import { createPortal } from "react-dom";
 import { Theme } from "../../styles/theme";
 import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 const Overlay = styled.div`
   display: flex;
@@ -127,7 +126,7 @@ const CloseButton = styled.button`
   }
 `;
 
-const Button = styled.button`
+const Button = styled(NavLink)`
   width: 50%;
   display: flex;
   justify-content: center;
@@ -144,13 +143,11 @@ const Button = styled.button`
 
 export default function OrderModal({ OrderIsOpen, OrderOnClose, onConfirm }) {
   const targetElement = document.querySelector("#modal-root");
-  const navigate = useNavigate();
   if (!OrderIsOpen) return null;
 
   function handleConfirm() {
     onConfirm();
     OrderOnClose();
-    navigate("/completed");
   }
 
   return createPortal(
@@ -170,7 +167,9 @@ export default function OrderModal({ OrderIsOpen, OrderOnClose, onConfirm }) {
         </OrderModalWrap>
         <ButtonWrap>
           <CloseButton onClick={OrderOnClose}>취소</CloseButton>
-          <Button onClick={handleConfirm}>구매</Button>
+          <Button onClick={handleConfirm} to={"/completed"}>
+            구매
+          </Button>
         </ButtonWrap>
       </OrderModalContainer>
     </Overlay>,
