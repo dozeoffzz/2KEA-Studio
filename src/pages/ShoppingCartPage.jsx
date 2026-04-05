@@ -567,6 +567,10 @@ export default function ShoppingCartPage() {
     address: "",
     baseAddress: "",
   });
+  const nameRef = useRef(null);
+  const phoneMidRef = useRef(null);
+  const emailRef = useRef(null);
+  const addressRef = useRef(null);
 
   // api 연결하기
   useEffect(() => {
@@ -651,6 +655,7 @@ export default function ShoppingCartPage() {
   function validateForm(data) {
     let newErrors = {};
     let newMsgs = {};
+    let firstErrorField = null;
 
     const target = data || form; // 기본은 form
 
@@ -659,18 +664,22 @@ export default function ShoppingCartPage() {
     if (!target.name.trim()) {
       newErrors.name = true;
       newMsgs.name = "이름을 입력해주세요";
+      firstErrorField ??= "name";
     } else if (!nameRegex.test(form.name)) {
       newErrors.name = true;
       newMsgs.name = "이름은 한글로 2~10글자 입력해주세요";
+      firstErrorField ??= "name";
     }
 
     // 폰 중간이랑 끝 각 4자리
     if (!target.phoneMid.trim() || !target.phoneEnd.trim()) {
       newErrors.phoneMid = true;
       newMsgs.phoneMid = "전화번호를 입력해주세요";
+      firstErrorField ??= "phoneMid";
     } else if (target.phoneMid.length < 4 || target.phoneEnd.length < 4) {
       newErrors.phoneMid = true;
       newMsgs.phoneMid = "전화번호는 각 4자리씩 입력해주세요";
+      firstErrorField ??= "phoneMid";
     }
 
     // 이메일형식
@@ -678,22 +687,36 @@ export default function ShoppingCartPage() {
     if (!target.email.trim()) {
       newErrors.email = true;
       newMsgs.email = "이메일을 입력해주세요";
+      firstErrorField ??= "email";
     } else if (!emailRegex.test(target.email)) {
       newErrors.email = true;
       newMsgs.email = "이메일 형식이 올바르지 않습니다";
+      firstErrorField ??= "email";
     }
 
     // 주소는 빈칸
     if (!target.address.trim()) {
       newErrors.address = true;
       newMsgs.address = "주소를 입력해주세요";
+      firstErrorField ??= "address";
     }
 
     setError(newErrors);
     setMsg(newMsgs);
 
     // 에러 없으면 true → 주문 진행
-    return Object.keys(newErrors).length === 0;
+    if (Object.keys(newErrors).length > 0) {
+      setIsEdit(true);
+
+      setTimeout(() => {
+        if (firstErrorField === "name") nameRef.current?.focus();
+        if (firstErrorField === "phoneMid") phoneMidRef.current?.focus();
+        if (firstErrorField === "email") emailRef.current?.focus();
+        if (firstErrorField === "address") addressRef.current?.focus();
+      }, 0);
+      return false;
+    }
+    return true;
   }
 
   const handleSubmit = (e) => {
@@ -945,7 +968,14 @@ export default function ShoppingCartPage() {
           <OrderName>
             <p>Name</p>
             {isEdit ? (
-              <InputNameEdit name="name" placeholder="Name" type="text" value={form.name} onChange={handleInput} />
+              <InputNameEdit
+                name="name"
+                placeholder="Name"
+                type="text"
+                value={form.name}
+                onChange={handleInput}
+                ref={nameRef}
+              />
             ) : (
               <InputName
                 name="name"
@@ -975,6 +1005,7 @@ export default function ShoppingCartPage() {
                   inputMode="numeric"
                   error={error.phoneMid}
                   onChange={handleInput}
+                  ref={phoneMidRef}
                 />
                 <PhoneFixed>-</PhoneFixed>
                 {/* 끝에 4자리 */}
@@ -1022,7 +1053,14 @@ export default function ShoppingCartPage() {
           <OrderEmail>
             <p>Email</p>
             {isEdit ? (
-              <InputEmailEdit name="email" placeholder="Email" type="email" value={form.email} onChange={handleInput} />
+              <InputEmailEdit
+                name="email"
+                placeholder="Email"
+                type="email"
+                value={form.email}
+                onChange={handleInput}
+                ref={emailRef}
+              />
             ) : (
               <InputEmail name="email" placeholder="Email" type="email" value={userInfo?.email || ""} readOnly />
             )}
@@ -1039,11 +1077,13 @@ export default function ShoppingCartPage() {
                 type="text"
                 value={form.address}
                 onChange={handleInput}
+                ref={addressRef}
               />
             ) : (
               <InputAddress name="address" placeholder="Address" type="text" value={userInfo?.address || ""} readOnly />
             )}
           </OrderAddress>
+          {msg.address && <ErrorMsg>{msg.address}</ErrorMsg>}
 
           {/* 수정완료/정보수정 버튼 */}
           <EditInfo>
@@ -1061,7 +1101,6 @@ export default function ShoppingCartPage() {
               {isEdit ? "수정완료" : "정보수정"}
             </EditInfoBtn>
           </EditInfo>
-          {msg.address && <ErrorMsg>{msg.address}</ErrorMsg>}
         </OrderInfoForm>
         <ThanksMsg>Thanks</ThanksMsg>
 
