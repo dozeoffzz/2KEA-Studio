@@ -460,24 +460,23 @@ export default function OrderPage() {
     localStorage.setItem("orderHistory", JSON.stringify([...updated].reverse()));
   };
 
+  const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
   // 같은 날짜에 여러 상품 주문시 칸마다 상품별로 따로 배치하기
-  // 저장된 데이터는 한번의 주문에 모든 상품이 묶여있고, 나열헤야하는건 개별 상품 단위
-  // flatMap : 각 주문을 순회하면서 상품 배열을 꺼낸 후, 해당 배열들이 서로 다른 중첩 배열에 있지 않도록 바닥에 깔아서 하나로 합침
-  // 이후 map 함수로 각 상품들을 하나씩 순회함
-  const allPurchasedItems = orderHistory.flatMap((order) =>
+  const allPurchasedItems = orderHistory.reduce((acc, order) => {
     order.purchasedItems.map((item) => {
-      const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
+      // 해당 상품에 대한 리뷰가 작성되었는지 체크
       const hasReview = reviewList.some(
         (review) => review.productId === item.id && review.orderDate === order.orderDate
       );
-      return {
-        ...item, // 원래 상품이 가지고 있던 정보를 그대로 복사
-        orderId: order.id, // 이 상품이 몇번째 주문에서 온 건지 적어줌 (데이터 식별용)
-        orderDate: order.orderDate, // 상품(purchasedItems) 데이터에는 날짜가 없음, 따라서 부모 기준에 적힌 날짜를 가져옴
-        hasReview, // 리뷰 작성 여부
-      };
-    })
-  );
+      acc.push({
+        ...item,
+        orderId: order.id,
+        orderDate: order.orderDate,
+        hasReview,
+      });
+    });
+    return acc;
+  }, []);
 
   const goToFirstPage = () => {
     setCurrentPage(1);
