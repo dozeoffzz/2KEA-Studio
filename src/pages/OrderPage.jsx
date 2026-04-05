@@ -358,6 +358,10 @@ export default function OrderPage() {
   const [dateFilter, setDateFilter] = useState("전체");
   // 아코디언 열 때 해당 아이템 리뷰를 가져와 폼 초기값
   const [editingReview, setEditingReview] = useState(null);
+  // 검색창에 입력중일때
+  const [keyword, setKeyword] = useState("");
+  // 찾기 버튼 눌렀을 때만
+  const [appliedKeyword, setAppliedKeyword] = useState("");
 
   const [orderData, setOrderData] = useState({
     totalQuantity: 0,
@@ -423,7 +427,7 @@ export default function OrderPage() {
               return item;
             }),
           }
-        : order,
+        : order
     );
 
     // 상태 업데이트
@@ -464,7 +468,7 @@ export default function OrderPage() {
     order.purchasedItems.map((item) => {
       const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
       const hasReview = reviewList.some(
-        (review) => review.productId === item.id && review.orderDate === order.orderDate,
+        (review) => review.productId === item.id && review.orderDate === order.orderDate
       );
       return {
         ...item, // 원래 상품이 가지고 있던 정보를 그대로 복사
@@ -472,7 +476,7 @@ export default function OrderPage() {
         orderDate: order.orderDate, // 상품(purchasedItems) 데이터에는 날짜가 없음, 따라서 부모 기준에 적힌 날짜를 가져옴
         hasReview, // 리뷰 작성 여부
       };
-    }),
+    })
   );
 
   const goToFirstPage = () => {
@@ -491,8 +495,15 @@ export default function OrderPage() {
     setCurrentPage((prev) => prev + 1);
   };
   // 폼 기본 입력 이벤트 방지
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const handleSearch = () => {
+    setAppliedKeyword(keyword);
+    setCurrentPage(1);
+  };
+
+  const keyBoardSearch = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
   };
 
   const getFilterDate = (period) => {
@@ -527,14 +538,22 @@ export default function OrderPage() {
   // 선택된 날짜 필터에 따라 화면에 표시
   const filteredItems = allPurchasedItems.filter((item) => {
     const startDate = getFilterDate(dateFilter);
-    if (startDate === null) return true; // 필터가 전체 일 경우 모든 아이템 보이기
-    return item.orderDate >= startDate; // 문자열 비교
+    // startDate가 null 이면 전체 상태 이므로 무조건 true
+    // 특정 기간이 선택됐다면 주문일이 기준일보다 크거나 같은지 확인
+    const dateMatch = startDate === null || item.orderDate >= startDate;
+    const nameMatch = item.name.toLowerCase().includes(appliedKeyword.toLowerCase().trim()); //단어가 상품명에 포함 되어 있는지 확인
+    return dateMatch && nameMatch; // 날짜 조건과 이름 조건이 모두 같아야 화면에 표시
   });
 
   //날짜 필터 입력 필터링 클릭 이벤트
   const handleFilterClick = (period) => {
     setDateFilter(period);
     setCurrentPage(1);
+  };
+
+  //주문내역 단어 검색
+  const searchKeyword = (e) => {
+    setKeyword(e.target.value);
   };
 
   // 한 페이지에 보일 주문 내역 갯수
@@ -550,7 +569,10 @@ export default function OrderPage() {
   }, [filteredItems, totalPages]);
 
   // 현재 페이지 번호에 맞춰서 itemsPerPage만큼 즉 4개씩 잘라내기
-  const itemDisplay = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const itemDisplay = filteredItems.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   // 실제 들어온 데이터보다 남은곳이 많을 경우 남은곳은 빈칸으로 채움
   while (itemDisplay.length < 4) {
     itemDisplay.push(null);
@@ -578,9 +600,11 @@ export default function OrderPage() {
       prev.map((order) => ({
         ...order,
         purchasedItems: order.purchasedItems.map((item) =>
-          item.id === productId && item.orderDate === orderDate ? { ...item, hasReview: true } : item,
+          item.id === productId && item.orderDate === orderDate
+            ? { ...item, hasReview: true }
+            : item
         ),
-      })),
+      }))
     );
     setOpenAccordion(null); // 아코디언 닫기
   };
@@ -593,12 +617,18 @@ export default function OrderPage() {
           <DateFilterContainer>
             <DateFilterWrap>
               {FILTER_DATES.map((p) => (
-                <DateFilter key={p} isActive={dateFilter === p} onClick={() => handleFilterClick(p)}>
+                <DateFilter
+                  key={p}
+                  isActive={dateFilter === p}
+                  onClick={() => handleFilterClick(p)}
+                >
                   {p}
                 </DateFilter>
               ))}
             </DateFilterWrap>
-            <DateInfo>최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.</DateInfo>
+            <DateInfo>
+              최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.
+            </DateInfo>
           </DateFilterContainer>
           <OrderInfo>
             <li>주문일자:</li>
@@ -620,7 +650,7 @@ export default function OrderPage() {
             const AccordionOpen = () => {
               const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
               const existingReview = reviewList.find(
-                (review) => review.productId === item.id && review.orderDate === item.orderDate,
+                (review) => review.productId === item.id && review.orderDate === item.orderDate
               );
 
               setEditingReview(existingReview || null); // 기존 리뷰 있으면 세팅, 없으면 null
@@ -630,11 +660,6 @@ export default function OrderPage() {
             //주문 확정하기
             const ConfirmDelivery = () => {
               handleConfirmDelivery(item.orderId, item.id);
-            };
-
-            //아코디언 닫기
-            const CloseAccordion = () => {
-              handleAccordionToggle(null);
             };
             return (
               <OrderListItem key={itemLKey}>
@@ -656,11 +681,17 @@ export default function OrderPage() {
                           {item.hasReview ? "리뷰수정" : "리뷰작성"}
                         </ReviewButton>
                       ) : (
-                        <ConfirmDeliverButton onClick={ConfirmDelivery}>배송확정</ConfirmDeliverButton>
+                        <ConfirmDeliverButton onClick={ConfirmDelivery}>
+                          배송확정
+                        </ConfirmDeliverButton>
                       )}
                     </OrderItemWrap>
                     <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
-                      <OrderReview item={item} editingReview={editingReview} onComplete={handleReviewComplete} />
+                      <OrderReview
+                        item={item}
+                        editingReview={editingReview}
+                        onComplete={handleReviewComplete}
+                      />
                     </OrderReviewWrap>
                   </>
                 ) : (
@@ -671,9 +702,16 @@ export default function OrderPage() {
           })}
         </OrderedList>
         <OrderutilityWrap>
-          <OrderSearchBox as="form" onSubmit={handleSearch}>
-            <SearchOrder type="text" />
-            <SearchButton type="button">찾기</SearchButton>
+          <OrderSearchBox>
+            <SearchOrder
+              type="text"
+              value={keyword}
+              onChange={searchKeyword}
+              onKeyDown={keyBoardSearch}
+            />
+            <SearchButton type="button" onClick={handleSearch}>
+              찾기
+            </SearchButton>
           </OrderSearchBox>
           <OrderPaginationWrap>
             <PaginationList>
@@ -688,18 +726,29 @@ export default function OrderPage() {
             </PaginationList>
             {pageNumbers.map((number) => (
               <PageNumber key={number}>
-                <PageNumberButton onClick={() => setCurrentPage(number)} isActive={currentPage === number}>
+                <PageNumberButton
+                  onClick={() => setCurrentPage(number)}
+                  isActive={currentPage === number}
+                >
                   {number}
                 </PageNumberButton>
               </PageNumber>
             ))}
             <PaginationList>
-              <PaginationButton type="button" onClick={goToNextPage} disabled={currentPage === totalPages}>
+              <PaginationButton
+                type="button"
+                onClick={goToNextPage}
+                disabled={currentPage === totalPages}
+              >
                 Next
               </PaginationButton>
             </PaginationList>
             <PaginationList>
-              <PaginationButton type="button" onClick={goToLastPage} disabled={currentPage === totalPages}>
+              <PaginationButton
+                type="button"
+                onClick={goToLastPage}
+                disabled={currentPage === totalPages}
+              >
                 Last
               </PaginationButton>
             </PaginationList>
