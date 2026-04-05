@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Theme } from "../styles/theme";
 import styled from "@emotion/styled";
 import { useCartStore } from "../stores/useCartStore";
@@ -460,23 +460,28 @@ export default function OrderPage() {
     localStorage.setItem("orderHistory", JSON.stringify([...updated].reverse()));
   };
 
-  const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
-  // 같은 날짜에 여러 상품 주문시 칸마다 상품별로 따로 배치하기
-  const allPurchasedItems = orderHistory.reduce((acc, order) => {
-    order.purchasedItems.map((item) => {
-      // 해당 상품에 대한 리뷰가 작성되었는지 체크
-      const hasReview = reviewList.some(
-        (review) => review.productId === item.id && review.orderDate === order.orderDate
-      );
-      acc.push({
-        ...item,
-        orderId: order.id,
-        orderDate: order.orderDate,
-        hasReview,
+  // 주문 히스토리가 바뀔 때마다 최신 로컬스토리지 읽기
+  const allPurchasedItems = useMemo(() => {
+    //렌더링 시점에 최신 리뷰 목록 가져오기
+    const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
+    //같은 날짜에 주문한 내역(다차원 배열)을 1차원 상품 배열로 펼치기
+    return orderHistory.reduce((acc, order) => {
+      order.purchasedItems.forEach((item) => {
+        // 해당 상품에 대한 리뷰가 작성되었는지 체크
+        const hasReview = reviewList.some(
+          (review) => review.productId === item.id && review.orderDate === order.orderDate
+        );
+        //기존 상품에 주문ID, 주문날짜, 리뷰 여부 데이터 합치기
+        acc.push({
+          ...item,
+          orderId: order.id,
+          orderDate: order.orderDate,
+          hasReview,
+        });
       });
-    });
-    return acc;
-  }, []);
+      return acc;
+    }, []);
+  }, [orderHistory]);
 
   const goToFirstPage = () => {
     setCurrentPage(1);

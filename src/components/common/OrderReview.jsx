@@ -371,17 +371,13 @@ export default function OrderReview({ item, onComplete, editingReview }) {
       });
       return;
     }
+
+    //리뷰 작성 사용자 확인
+    if (!confirm("리뷰를 등록하시겠습니까?")) {
+      return; // 취소를 누르면 함수 종료
+    }
+
     try {
-      //현재 날짜 계산
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const day = String(now.getDate()).padStart(2, "0");
-      const reviewDate = `${year}-${month}-${day}`;
-
-      // 복잡한 무작위 UUID 생성
-      const reviewId = crypto.randomUUID();
-
       //리뷰 내역 불러오기
       const existingReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
 
@@ -405,7 +401,7 @@ export default function OrderReview({ item, onComplete, editingReview }) {
 
       localStorage.setItem("reviews", JSON.stringify(updatedReviews));
 
-      // 부모 쪽에서 버튼을 닫는 로직 받아오기
+      // 저장에 성공했을 때만 부모에게 알리고 창 닫기
       if (onComplete) {
         onComplete(item.id, item.orderDate);
       }
@@ -418,11 +414,6 @@ export default function OrderReview({ item, onComplete, editingReview }) {
       setImages([]);
     } catch (error) {
       console.error("리뷰 저장 중 오류 발생:", error);
-    }
-
-    // 부모에 완료 알려주기
-    if (onComplete) {
-      onComplete(item.id, item.orderDate); // 상품 id + 주문 날짜
     }
   };
   const handleCancel = () => {
