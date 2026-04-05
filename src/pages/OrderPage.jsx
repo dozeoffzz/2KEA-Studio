@@ -643,7 +643,9 @@ export default function OrderPage() {
                     <OrderItemWrap>
                       <li>{item.orderDate}</li>
                       <li>
-                        <img src={item.src[0]} alt={item.name} />
+                        <NavLink to={`/products/${item.caregory}/${item.id}`}>
+                          <img src={item.src[0]} alt={item.name} />
+                        </NavLink>
                       </li>
                       <li>{item.name}</li>
                       <li>{item.quantity}</li>
