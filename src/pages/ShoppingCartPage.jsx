@@ -197,7 +197,7 @@ const ItemDelevery = styled.p`
     font-size: ${Theme.fontsize.tablet.content};
   }
   @media screen and (max-width: 400px) {
-    display: none;
+    /* display: none; */
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.mini};
@@ -291,7 +291,7 @@ const OrderInfoWrap = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    position: static;
+    position: relative;
     top: auto;
     max-width: 100%;
     min-width: 250px;
@@ -525,6 +525,7 @@ const OrderButton = styled(DeleteButton)`
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.whitetext};
   background-color: ${Theme.colors.black};
+  z-index: 10;
 `;
 
 const EmptyWrap = styled.div`
@@ -581,7 +582,7 @@ export default function ShoppingCartPage() {
             ...data.userInfo,
             // 수정값 덮어쓰기
             ...(savedUser || {}),
-            address: savedAddress || data.userInfo.address,
+            address: savedAddress || data.userInfo.address || "",
           };
 
           const rawPhone = finalUser.phone || "";
@@ -706,7 +707,10 @@ export default function ShoppingCartPage() {
 
   const handleOrder = () => {
     // 상품이 없다면 되돌아 가라!
-    if (!HaveItems) return;
+    if (!HaveCheckedItems) {
+      alert("상품을 선택해주세요");
+      return;
+    }
     // 폼 유효성 검사 통과해야 주문 진행
     const isValid = validateForm();
     if (!isValid) return;
@@ -772,11 +776,13 @@ export default function ShoppingCartPage() {
   };
 
   const handleCheckedOrder = () => {
-    if (!HaveCheckedItems) return;
+    if (!HaveCheckedItems) {
+      alert("상품을 선택해주세요");
+      return;
+    }
     // 폼 유효성 검사 통과해야 주문 진행
     const isValid = validateForm();
     if (!isValid) return;
-
     // 구매 데이터 계산
     const purchasedItems = cartItems;
     const totalQuantity = purchasedItems.reduce((acc, cur) => acc + cur.quantity, 0);
@@ -929,7 +935,6 @@ export default function ShoppingCartPage() {
           </CartList>
         )}
       </CartListWrap>
-
       <OrderInfoWrap>
         {/* 주문 폼 */}
         <OrderInfoForm onSubmit={handleSubmit}>
@@ -1079,7 +1084,6 @@ export default function ShoppingCartPage() {
           <p>Total Price :</p>
           <p>{totalPrice.toLocaleString()} ₩</p>
         </TotalPrice>
-
         <ButtonWrap>
           <DeleteButton onClick={handleDeleteAll}>Clear Cart</DeleteButton>
           <OrderButton type="button" onClick={handleCheckedOrder}>

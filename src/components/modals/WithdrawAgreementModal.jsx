@@ -180,6 +180,10 @@ const AgreeRow = styled.label`
 const AgreeText = styled.span`
   display: inline-block;
   text-align: center;
+
+  ${({ theme }) => theme.media.mobile} {
+    font-size: 10px;
+  }
 `;
 
 const Checkbox = styled.input`

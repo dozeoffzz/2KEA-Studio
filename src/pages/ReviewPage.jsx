@@ -165,6 +165,7 @@ const DropdownBtn = styled.button`
   cursor: pointer;
   text-align: left;
   position: relative;
+  color: ${Theme.colors.blacktext};
 
   /* CSS 삼각형 화살표 */
   &::after {

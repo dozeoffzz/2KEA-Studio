@@ -304,6 +304,7 @@ const OrderPaginationWrap = styled.ul`
   justify-content: center;
   gap: 37px;
   margin: 0 auto;
+  width: 100%;
 `;
 
 const PaginationList = styled.li`
@@ -420,7 +421,7 @@ export default function OrderPage() {
               return item;
             }),
           }
-        : order
+        : order,
     );
 
     // 상태 업데이트
@@ -462,7 +463,7 @@ export default function OrderPage() {
       ...item, // 원래 상품이 가지고 있던 정보를 그대로 복사
       orderId: order.id, // 이 상품이 몇번째 주문에서 온 건지 적어줌 (데이터 식별용)
       orderDate: order.orderDate, // 상품(purchasedItems) 데이터에는 날짜가 없음, 따라서 부모 기준에 적힌 날짜를 가져옴
-    }))
+    })),
   );
 
   const goToFirstPage = () => {
@@ -540,10 +541,7 @@ export default function OrderPage() {
   }, [filteredItems, totalPages]);
 
   // 현재 페이지 번호에 맞춰서 itemsPerPage만큼 즉 4개씩 잘라내기
-  const itemDisplay = filteredItems.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const itemDisplay = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   // 실제 들어온 데이터보다 남은곳이 많을 경우 남은곳은 빈칸으로 채움
   while (itemDisplay.length < 4) {
     itemDisplay.push(null);
@@ -575,18 +573,12 @@ export default function OrderPage() {
           <DateFilterContainer>
             <DateFilterWrap>
               {FILTER_DATES.map((p) => (
-                <DateFilter
-                  key={p}
-                  isActive={dateFilter === p}
-                  onClick={() => handleFilterClick(p)}
-                >
+                <DateFilter key={p} isActive={dateFilter === p} onClick={() => handleFilterClick(p)}>
                   {p}
                 </DateFilter>
               ))}
             </DateFilterWrap>
-            <DateInfo>
-              기본적으로 최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.
-            </DateInfo>
+            <DateInfo>최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.</DateInfo>
           </DateFilterContainer>
           <OrderInfo>
             <li>주문일자:</li>
@@ -634,9 +626,7 @@ export default function OrderPage() {
                       {item.status === "배송완료" ? (
                         <ReviewButton onClick={AccordionOpen}>리뷰작성</ReviewButton>
                       ) : (
-                        <ConfirmDeliverButton onClick={ConfirmDelivery}>
-                          배송확정
-                        </ConfirmDeliverButton>
+                        <ConfirmDeliverButton onClick={ConfirmDelivery}>배송확정</ConfirmDeliverButton>
                       )}
                     </OrderItemWrap>
                     <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
@@ -668,29 +658,18 @@ export default function OrderPage() {
             </PaginationList>
             {pageNumbers.map((number) => (
               <PageNumber key={number}>
-                <PageNumberButton
-                  onClick={() => setCurrentPage(number)}
-                  isActive={currentPage === number}
-                >
+                <PageNumberButton onClick={() => setCurrentPage(number)} isActive={currentPage === number}>
                   {number}
                 </PageNumberButton>
               </PageNumber>
             ))}
             <PaginationList>
-              <PaginationButton
-                type="button"
-                onClick={goToNextPage}
-                disabled={currentPage === totalPages}
-              >
+              <PaginationButton type="button" onClick={goToNextPage} disabled={currentPage === totalPages}>
                 Next
               </PaginationButton>
             </PaginationList>
             <PaginationList>
-              <PaginationButton
-                type="button"
-                onClick={goToLastPage}
-                disabled={currentPage === totalPages}
-              >
+              <PaginationButton type="button" onClick={goToLastPage} disabled={currentPage === totalPages}>
                 Last
               </PaginationButton>
             </PaginationList>

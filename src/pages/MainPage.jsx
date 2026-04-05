@@ -233,6 +233,7 @@ const LightImage = styled.img`
   object-position: center 40%;
 
   display: block;
+  object-fit: cover;
 
   @media (max-width: 686px) {
     min-height: 420px;
@@ -683,7 +684,7 @@ const DesktextBox = styled.div`
   gap: 20px;
   margin-top: 14px;
   padding: 20px 32px;
-  background-color: ${Theme.colors.greentext};
+  background-color: ${Theme.colors.overlay};
 
   ${({ theme }) => theme.media.tablet} {
     gap: 14px;
@@ -886,7 +887,6 @@ export default function MainPage() {
         </ScrollReveal>
 
         <NewProductList />
-
         <ScrollReveal>
           {secondBanner && (
             <LightImageBox>
@@ -907,7 +907,8 @@ export default function MainPage() {
                       Leave the day's exhaustion behind and return to the warmth of your own private sanctuary.
                     </LightDesc>
                     <LightDesc>
-                      Where the soft touch of linen meets a subtle glow, we curate the moments where your night becomes brighter.
+                      Where the soft touch of linen meets a subtle glow, we curate the moments where your night becomes
+                      brighter.
                     </LightDesc>
                   </LightDescContainer>
                 </LightTextContainer>
@@ -939,7 +940,9 @@ export default function MainPage() {
                     </TopChairDesc>
                   </TopChairDescBox>
                   <BottomChairDescBox>
-                    <BottomChairDesc>the tactile experience that touches your soul in a sanctuary of peace.</BottomChairDesc>
+                    <BottomChairDesc>
+                      the tactile experience that touches your soul in a sanctuary of peace.
+                    </BottomChairDesc>
                   </BottomChairDescBox>
                 </ChairCommentContainer>
               </LeftChairImageBox>
