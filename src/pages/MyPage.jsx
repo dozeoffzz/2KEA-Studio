@@ -273,8 +273,6 @@ export default function MyPage() {
   const [profileImg, setProfileImg] = useState(defaultProfile);
   // 이미지 호버시 변경을 위해 상태값 저장
   const [hoverImg, setHoverImg] = useState(null);
-  // 헤더 열었을때 사이즈 메뉴 숨기기 위한 상태값
-  const [isHeaderOpen, setIsHeaderOpen] = useState(false);
 
   // 수정사항을 저장하기 위한 상태값
   // 폰 phoneMid, phoneEnd 로 분리
@@ -294,43 +292,30 @@ export default function MyPage() {
   // 에러 메시지 상태값
   const [msgs, setMsgs] = useState({});
 
-  // 최근 본 상품 리스트를 가져오기 위한 상태값
-  const [recentProducts, setRecentProducts] = useState(() => {
+  // 최근 본 상품 리스트를 가져오기 위한
+  const recentProducts = (() => {
     try {
       return JSON.parse(localStorage.getItem("recentProducts")) || [];
     } catch {
       return [];
     }
-  });
+  })();
 
-  const [orderData, setOrderData] = useState({
-    totalQuantity: 0,
-    totalPrice: 0,
-    point: 0,
-    delivery: { inDelivery: 0, done: 0 },
-  });
-
-  useEffect(() => {
-    // 상품 주문한 아이템
+  const orderData = (() => {
     const order = JSON.parse(localStorage.getItem("orderData")) || {};
-    // 주문하고 얻은 포인트
     const point = Number(localStorage.getItem("point") || 0);
-    // 배송중,배송완료 상태
     const delivery = JSON.parse(localStorage.getItem("delivery")) || {
       inDelivery: 0,
       done: 0,
     };
-    setOrderData({
-      // 주문한 총 갯수
+
+    return {
       totalQuantity: order.totalQuantity || 0,
-      // 주문한 총 갯수
       totalPrice: order.totalPrice || 0,
-      // 포인트
       point,
-      // 배송 상태
       delivery,
-    });
-  }, []);
+    };
+  })();
 
   // api 연결하기
   useEffect(() => {

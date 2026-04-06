@@ -9,6 +9,7 @@ import { authSignupApi } from "../apis/authSignupApi";
 import { authLoginApi } from "../apis/authLoginApi";
 import { useAuthStore } from "../stores/useAuthStore";
 import { saveUserName } from "../apis/reviewService";
+import { authcheckIdApi } from "../apis/authCheckIdApi";
 
 const SignupPage = styled.div`
   margin-top: 100px;
@@ -728,29 +729,20 @@ export default function Signup() {
 
     // api로 중복확인 요청
     try {
-      const res = await fetch("https://api.mylecture.kr/api/team2/auth/check-id", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: form.id }),
-      });
-      // 콘솔로 중복결과 확인
-      const data = await res.json();
+      const data = await authcheckIdApi(form.id);
 
       if (data.success) {
-        // 사용 가능한 아이디
         setErrors({ ...errors, id: false });
         setMsgs({ ...msgs, id: data.message });
         setIdChecked(true);
         setIdCheckPassed(true);
       } else {
-        // 중복이거나 금지어 포함
         setErrors({ ...errors, id: true });
         setMsgs({ ...msgs, id: data.message });
         setIdChecked(true);
         setIdCheckPassed(false);
       }
     } catch (error) {
-      // 네트워크 오류
       setMsgs({ ...msgs, id: "중복확인 중 오류가 발생했습니다" });
       console.log(error);
     }
@@ -1289,8 +1281,13 @@ export default function Signup() {
                 </AgreeGroupTitle>
                 <AgreeItemRow>
                   <AgreeItemLabel error={errors.agreePrivacy}>
-                    <input type="checkbox" name="agreePrivacy" checked={agreement.agreePrivacy} onChange={handleAgreement} />[
-                    필수 ] 개인정보 이용약관
+                    <input
+                      type="checkbox"
+                      name="agreePrivacy"
+                      checked={agreement.agreePrivacy}
+                      onChange={handleAgreement}
+                    />
+                    [ 필수 ] 개인정보 이용약관
                   </AgreeItemLabel>
                 </AgreeItemRow>
                 <AgreeItemDesc>
@@ -1311,14 +1308,24 @@ export default function Signup() {
                 </AgreeGroupTitle>
                 <AgreeItemRow>
                   <AgreeItemLabel error={errors.agreeTerms}>
-                    <input type="checkbox" name="agreeTerms" checked={agreement.agreeTerms} onChange={handleAgreement} />[ 필수 ]
-                    쇼핑몰 이용약관
+                    <input
+                      type="checkbox"
+                      name="agreeTerms"
+                      checked={agreement.agreeTerms}
+                      onChange={handleAgreement}
+                    />
+                    [ 필수 ] 쇼핑몰 이용약관
                   </AgreeItemLabel>
                 </AgreeItemRow>
                 <AgreeItemRow>
                   <AgreeItemLabel error={errors.agreeTerms}>
-                    <input type="checkbox" name="servicePolicy" checked={agreement.servicePolicy} onChange={handleAgreement} />[
-                    필수 ] 개인정보 수집 및 이용 동의
+                    <input
+                      type="checkbox"
+                      name="servicePolicy"
+                      checked={agreement.servicePolicy}
+                      onChange={handleAgreement}
+                    />
+                    [ 필수 ] 개인정보 수집 및 이용 동의
                   </AgreeItemLabel>
                 </AgreeItemRow>
               </div>

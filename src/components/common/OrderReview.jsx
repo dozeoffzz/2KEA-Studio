@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import OrderRatingStar from "./OrderRatingStar";
 import styled from "@emotion/styled";
 import { Theme } from "../../styles/theme";
@@ -300,36 +300,29 @@ export default function OrderReview({ item, onComplete, editingReview }) {
   const { userInfo } = useAuthStore(); // 로그인 유저 정보 가져오기
   const photoRef = useRef(null); // 사진 업로드 버튼 조작을 위한 리모컨
 
-  useEffect(() => {
-    setRating(editingReview?.rating || 0);
-    setTitle(editingReview?.title || "");
-    setContent(editingReview?.content || "");
-    setImages(editingReview?.images || []);
-  }, [editingReview]);
-
   const titleChange = (e) => {
-    setTitle(e.target.value);
+    const value = e.target.value;
+    setTitle(value);
+    //내용과 제목이 채워지면 에러 삭제
+    if (value.trim() && content.trim() && errors.input) {
+      setErrors((prev) => ({ ...prev, input: false }));
+    }
   };
   const contentChange = (e) => {
-    setContent(e.target.value);
+    const value = e.target.value;
+    setContent(value);
+    //내용과 제목이 채워지면 에러 삭제
+    if (title.trim() && value.trim() && errors.input) {
+      setErrors((prev) => ({ ...prev, input: false }));
+    }
   };
   const handleRatingChange = (value) => {
     setRating(value);
-  };
-
-  //별점 설정시 에러 삭제
-  useEffect(() => {
-    if (rating > 0 && errors.rating) {
+    //별점 설정시 에러 삭제
+    if (errors.rating) {
       setErrors((prev) => ({ ...prev, rating: false }));
     }
-  }, [rating]);
-
-  //내용과 제목이 채워지면 에러 삭제
-  useEffect(() => {
-    if (title.trim() && content.trim() && errors.input) {
-      setErrors((prev) => ({ ...prev, input: false }));
-    }
-  }, [title, content]);
+  };
 
   //사진 추가 버튼 클릭 로직
   const handlePhotoClick = () => {
@@ -480,24 +473,13 @@ export default function OrderReview({ item, onComplete, editingReview }) {
           <OrderRatingStar rating={rating} setRating={handleRatingChange} />
           {errors.rating && <ErrorMsg>별점을 선택해 주세요.</ErrorMsg>}
         </ErrorMagWrap>
-        <ReviewTitle
-          type="text"
-          placeholder="리뷰 제목을 작성해주세요"
-          value={title}
-          onChange={titleChange}
-        />
+        <ReviewTitle type="text" placeholder="리뷰 제목을 작성해주세요" value={title} onChange={titleChange} />
       </ReviewRatingWrap>
       <ReviewPhotoWarp>
         <PhotoWrap>
           <AddPhotoButton onClick={handlePhotoClick}>
             <input type="file" accept="image/*" ref={photoRef} onChange={handleImageChange} />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="19px"
-              viewBox="0 -960 960 960"
-              width="19px"
-              fill="#0c0c0c"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" height="19px" viewBox="0 -960 960 960" width="19px" fill="#0c0c0c">
               <path d="M240-280h480L597-444q-11-2-22.5-5t-22.5-7L450-320l-90-120-120 160Zm-40 160q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h200v80H200v560h560v-213l80 80v133q0 33-23.5 56.5T760-120H200Zm280-360Zm382 56L738-548q-21 14-45 21t-51 7q-74 0-126-52.5T464-700q0-75 52.5-127.5T644-880q75 0 127.5 52.5T824-700q0 27-8 52t-20 46l122 122-56 56ZM644-600q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Z" />
             </svg>
             <UploadedPhoto>사진 {images.length}/5</UploadedPhoto>
@@ -515,11 +497,7 @@ export default function OrderReview({ item, onComplete, editingReview }) {
           </UploadPhotoWrap>
         </PhotoWrap>
         <TextErrorWrap>
-          <ReviewText
-            placeholder="리뷰 본문을 작성해주세요"
-            value={content}
-            onChange={contentChange}
-          />
+          <ReviewText placeholder="리뷰 본문을 작성해주세요" value={content} onChange={contentChange} />
           {errors.input && <ErrorMsg>제목과 내용을 모두 입력해 주세요.</ErrorMsg>}
         </TextErrorWrap>
       </ReviewPhotoWarp>

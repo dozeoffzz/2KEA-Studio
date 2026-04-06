@@ -487,17 +487,14 @@ export default function LightingListPage() {
   const [totalPage, setTotalPage] = useState(1);
   const [category, setCategory] = useState("lighting");
   const [hoverImg, setHoverImg] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia(MOBILE_MEDIA_QUERY).matches);
 
   useEffect(() => {
-    // 화면 폭이 767px 이하인지 감지해서 모바일 구간에서는 세로 설명 텍스트를 숨기도록 분기
     const mobileMediaQuery = window.matchMedia(MOBILE_MEDIA_QUERY);
 
     const handleMobileChange = (event) => {
       setIsMobile(event.matches);
     };
-
-    setIsMobile(mobileMediaQuery.matches);
 
     if (mobileMediaQuery.addEventListener) {
       mobileMediaQuery.addEventListener("change", handleMobileChange);
@@ -592,7 +589,11 @@ export default function LightingListPage() {
           <PageNationButton onClick={() => setCurrentPage(1)}>First</PageNationButton>
           <PageNationButton onClick={() => setCurrentPage(1)}>Prev</PageNationButton>
           {totalPages.map((list) => (
-            <CurrentPage key={list} onClick={() => setCurrentPage(list)} className={currentPage === list ? "active" : ""}>
+            <CurrentPage
+              key={list}
+              onClick={() => setCurrentPage(list)}
+              className={currentPage === list ? "active" : ""}
+            >
               {list}
             </CurrentPage>
           ))}
