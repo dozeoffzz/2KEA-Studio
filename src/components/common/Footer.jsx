@@ -167,8 +167,9 @@ const Copyright = styled.p``;
 
 const MobileBr = styled.br`
   display: none;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 400px) {
+  @media (max-width: 400px) {
     display: block;
   }
 `;
@@ -220,7 +221,10 @@ export default function Footer() {
         {/* 푸터 맨 아래 사업자 정보 */}
         <FooterBottom>
           <div>
-            <BottomText>광주광역시 XX XX 대표 이가람, 이영연, 이해랑, 최은우, 최원희 사업자번호 XXX-XX-XXXXX</BottomText>
+            <BottomText>
+              광주광역시 XX XX 대표 이가람, 이영연, 이해랑, 최은우, 최원희 <MobileBr />
+              사업자번호 XXX-XX-XXXXX
+            </BottomText>
             <BottomLinks>
               <span>이용약관</span>
               <span>개인정보 보호정책</span>

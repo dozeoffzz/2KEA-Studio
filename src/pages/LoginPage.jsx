@@ -42,6 +42,7 @@ const LoginForm = styled.form`
   gap: 25px;
   position: relative;
   z-index: 10;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     min-width: 400px;
@@ -56,6 +57,7 @@ const LoginInputWrap = styled.div`
   display: flex;
   /* gap: 40px; */
   font-size: ${Theme.fontsize.desktop.content};
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
@@ -76,9 +78,9 @@ const InputInfo = styled.p`
   width: 100px;
   text-align: left;
   margin-bottom: 10px;
-  color: ${({ error }) =>
-    error ? Theme.colors.redaccent : Theme.colors.blacktext};
+  color: ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
   font-size: ${Theme.fontsize.tablet.content};
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
@@ -96,8 +98,8 @@ const LoginInput = styled.input`
   font-size: ${Theme.fontsize.desktop.content};
   margin-bottom: 10px;
   flex: 1;
-  border-bottom: 1px solid
-    ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  border-bottom: 1px solid ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.blacktext)};
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
@@ -112,6 +114,8 @@ const ButtonWrap = styled.div`
   justify-content: flex-end;
   gap: 30px;
   margin: 40px 0 200px 0;
+  transition: all 0.3s ease;
+
   ${({ theme }) => theme.media.tablet} {
     margin: 40px 0 80px 0;
   }
@@ -126,6 +130,7 @@ const LoginButton = styled.button`
   background: none;
   border: none;
   padding: 0;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
@@ -139,6 +144,8 @@ const SignupButton = styled(NavLink)`
   font-size: ${Theme.fontsize.desktop.content};
   text-decoration: none;
   color: ${Theme.colors.blacktext};
+  transition: all 0.3s ease;
+
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
   }
@@ -151,6 +158,7 @@ const DesignText = styled.p`
   font-size: ${Theme.fontsize.desktop.section};
   text-align: center;
   letter-spacing: 0.1rem;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.section};
@@ -267,24 +275,13 @@ export default function LoginPage() {
         {/* ID 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.id}>
           <InputInfo error={errors.id}>ID</InputInfo>
-          <LoginInput
-            name="id"
-            type="text"
-            value={input.id}
-            onChange={handleChange}
-            ref={focus}
-          />
+          <LoginInput name="id" type="text" value={input.id} onChange={handleChange} ref={focus} />
         </LoginInputWrap>
 
         {/* Password 입력 - 에러 시 스타일 변경 */}
         <LoginInputWrap error={errors.password}>
           <InputInfo error={errors.password}>Password</InputInfo>
-          <LoginInput
-            name="password"
-            type="password"
-            value={input.password}
-            onChange={handleChange}
-          />
+          <LoginInput name="password" type="password" value={input.password} onChange={handleChange} />
         </LoginInputWrap>
         {loginError && <ErrorMsg>{loginError}</ErrorMsg>}
 

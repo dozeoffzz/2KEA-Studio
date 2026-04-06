@@ -12,9 +12,9 @@ import backIcon from "../assets/icons/backIcon.svg";
 const ReviewSection = styled.section`
   width: 100%;
   padding: 0 100px 80px;
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1280px) {
+  @media (max-width: 1280px) {
     padding: 0 70px 70px;
   }
 
@@ -33,7 +33,7 @@ const ReviewTitle = styled.h3`
   font-weight: 600;
   border-bottom: 1px solid #222222;
   padding-bottom: 31px;
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: 28px;
@@ -51,7 +51,7 @@ const ReviewSummary = styled.div`
   border-bottom: 1px solid #222222;
   align-items: stretch;
 
-  @media screen and (max-width: 1050px) {
+  @media (max-width: 1050px) {
     grid-template-columns: 1fr;
   }
 `;
@@ -60,9 +60,9 @@ const ReviewSummary = styled.div`
 const RatingBox = styled.div`
   padding: 28px 24px;
   border-right: 1px solid #222222;
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1050px) {
+  @media (max-width: 1050px) {
     border-right: none;
     border-bottom: 1px solid #222222;
   }
@@ -74,7 +74,7 @@ const RatingSummaryWrap = styled.div`
   justify-content: space-around;
   align-items: center;
 
-  @media screen and (max-width: 600px) {
+  @media (max-width: 600px) {
     flex-direction: column;
     gap: 20px;
   }
@@ -85,7 +85,7 @@ const RatingNum = styled.p`
   font-size: 45px;
   color: ${Theme.colors.blacktext};
 
-  @media screen and (max-width: 1280px) {
+  @media (max-width: 1280px) {
     font-size: 40px;
   }
 
@@ -97,7 +97,7 @@ const RatingNum = styled.p`
     font-size: 27px;
   }
 
-  @media screen and (max-width: 600px) {
+  @media (max-width: 600px) {
     text-align: center;
   }
 `;
@@ -106,9 +106,9 @@ const RatingGraphList = styled.div`
   display: flex;
   gap: 30px;
   align-items: flex-end;
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1280px) {
+  @media (max-width: 1280px) {
     gap: 23px;
   }
 `;
@@ -117,7 +117,7 @@ const RatingGraphItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
 `;
 
 const RatingPercent = styled.span`
@@ -156,7 +156,7 @@ const BestReviewBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
 `;
 
 // best review 제목
@@ -215,7 +215,7 @@ const ReviewCountGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
 `;
 
 const ReviewTabButton = styled.button`
@@ -235,13 +235,13 @@ const ReviewList = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   border-bottom: 1px solid #222222;
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
 
   & > *:nth-of-type(2n) {
     border-right: none;
   }
 
-  @media screen and (max-width: 1050px) {
+  @media (max-width: 1050px) {
     grid-template-columns: 1fr;
 
     & > *:nth-of-type(2n) {
@@ -255,7 +255,7 @@ const ReviewCard = styled.article`
   min-height: 420px;
   border-right: 1px solid #222222;
 
-  @media screen and (max-width: 1050px) {
+  @media (max-width: 1050px) {
     border-right: none;
     border-bottom: 1px solid #222222;
     min-height: auto;
@@ -265,7 +265,7 @@ const ReviewCard = styled.article`
     }
   }
 
-  @media screen and (max-width: 510px) {
+  @media (max-width: 510px) {
     padding: 15px 10px 15px;
   }
 `;
@@ -292,7 +292,7 @@ const ReviewTitleSecond = styled.div`
     font-size: ${Theme.fontsize.mobile.medium};
   }
 
-  @media screen and (max-width: 500px) {
+  @media (max-width: 500px) {
     font-size: 13px;
   }
 `;
@@ -309,7 +309,7 @@ const StarIcon = styled.img`
   display: block;
   flex-shrink: 0;
 
-  @media screen and (max-width: 500px) {
+  @media (max-width: 500px) {
     width: 22px;
     height: 22px;
   }
@@ -329,7 +329,7 @@ const ReviewImageViewport = styled.div`
   width: 390px;
   transition: 0.45s ease;
 
-  @media screen and (max-width: 1220px) {
+  @media (max-width: 1220px) {
     width: 340px;
   }
 
@@ -337,11 +337,11 @@ const ReviewImageViewport = styled.div`
     width: 332px;
   }
 
-  @media screen and (max-width: 510px) {
+  @media (max-width: 510px) {
     width: 300px;
   }
 
-  @media screen and (max-width: 450px) {
+  @media (max-width: 450px) {
     width: 240px;
   }
 `;
@@ -350,7 +350,7 @@ const ReviewSlideTrack = styled.div`
   display: flex;
   gap: 16px;
 
-  @media screen and (max-width: 450px) {
+  @media (max-width: 450px) {
     gap: 12px;
   }
 `;
@@ -363,6 +363,9 @@ const ReviewArrowButton = styled.button`
   justify-content: center;
   background: none;
   padding: 0;
+  :hover {
+    transform: scale(1.1);
+  }
 
   ${({ theme }) => theme.media.mobile} {
     width: 28px;
@@ -375,7 +378,7 @@ const ReviewArrowIcon = styled.img`
   height: 22px;
   opacity: 0.5;
 
-  @media screen and (max-width: 1220px) {
+  @media (max-width: 1220px) {
     width: 20px;
     height: 20px;
   }
@@ -390,7 +393,7 @@ const ReviewArrowIcon = styled.img`
     height: 16px;
   }
 
-  @media screen and (max-width: 450px) {
+  @media (max-width: 450px) {
     width: 14px;
     height: 14px;
   }
@@ -430,6 +433,7 @@ const ReviewPagination = styled.div`
 const ReviewPageArrow = styled.button`
   width: 36px;
   height: 36px;
+  border: 1px solid #222222;
   background: none;
   display: flex;
   align-items: center;
@@ -467,7 +471,7 @@ const EmptyReviewCard = styled.article`
   min-height: 353px;
   border-right: 1px solid #222222;
 
-  @media screen and (max-width: 1050px) {
+  @media (max-width: 1050px) {
     display: none;
   }
 `;
@@ -496,17 +500,17 @@ const ReviewImage = styled.div`
   flex-shrink: 0;
   transition: 0.45s ease;
 
-  @media screen and (max-width: 1220px) {
+  @media (max-width: 1220px) {
     width: 100px;
     height: 100px;
   }
 
-  @media screen and (max-width: 510px) {
+  @media (max-width: 510px) {
     width: 90px;
     height: 90px;
   }
 
-  @media screen and (max-width: 450px) {
+  @media (max-width: 450px) {
     width: 72px;
     height: 72px;
   }

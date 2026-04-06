@@ -85,7 +85,7 @@ const LeftSlideButton = styled.button`
   border: none;
   color: ${Theme.colors.textsecondary};
   cursor: pointer;
-  transition: transform 0.3s;
+  transition: all 0.3s ease;
   outline: none;
 
   ${({ theme }) => theme.media.tablet} {
@@ -128,11 +128,8 @@ const ListImageBox = styled.div`
 const ListSlide = styled.div`
   display: flex;
   margin: 0 -10px;
-  transform: translateX(
-    ${({ index, visibleCount }) => `-${(100 / visibleCount) * index}%`}
-  );
-  transition: ${({ isTranslation }) =>
-    isTranslation ? "transform 0.6s ease-in-out" : "none"};
+  transform: translateX(${({ index, visibleCount }) => `-${(100 / visibleCount) * index}%`});
+  transition: ${({ isTranslation }) => (isTranslation ? "transform 0.6s ease-in-out" : "none")};
 
   ${({ theme }) => theme.media.tablet} {
     margin: 0 -7.5px;
@@ -188,10 +185,7 @@ export default function NewProductList() {
   const isSliding = useRef(false);
 
   const visibleCount = 4;
-  const extendedList =
-    list.length > 0
-      ? [...list.slice(-visibleCount), ...list, ...list.slice(0, visibleCount)]
-      : [];
+  const extendedList = list.length > 0 ? [...list.slice(-visibleCount), ...list, ...list.slice(0, visibleCount)] : [];
 
   useEffect(() => {
     const loadData = async () => {
@@ -264,13 +258,7 @@ export default function NewProductList() {
         <ListTitle>NEW TRACE: THE COLLECTION</ListTitle>
         <ButtonContainer>
           <RightSlideButton onClick={previousSlide}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path
                 fillRule="evenodd"
                 d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
@@ -278,13 +266,7 @@ export default function NewProductList() {
             </svg>
           </RightSlideButton>
           <LeftSlideButton onClick={nextSlide}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path
                 fillRule="evenodd"
                 d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
@@ -300,18 +282,11 @@ export default function NewProductList() {
             onTransitionEnd={handleTransitionEnd}
           >
             {extendedList.map((item, idx) => (
-              <ListImageWrapper
-                key={`${item.id}-${idx}`}
-                visibleCount={visibleCount}
-              >
+              <ListImageWrapper key={`${item.id}-${idx}`} visibleCount={visibleCount}>
                 <InnerImageBox>
                   <DefaultImage src={item.src[0]} alt={item.name} />
                   <Link to={`/products/${item.category}/${item.productId}`}>
-                    <HoverImage
-                      src={item.src[1]}
-                      alt={item.name}
-                      className="list-hover-img"
-                    />
+                    <HoverImage src={item.src[1]} alt={item.name} className="list-hover-img" />
                   </Link>
                 </InnerImageBox>
               </ListImageWrapper>

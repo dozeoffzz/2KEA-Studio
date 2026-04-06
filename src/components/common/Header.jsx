@@ -37,7 +37,7 @@ const HeaderContainer = styled.header`
     rgba(250, 250, 250, ${(props) => (props.isOpen || props.isScroll ? 1 : 0)}) 0%,
     rgba(250, 250, 250, 0) 100%
   );
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     padding: 25px 60px;

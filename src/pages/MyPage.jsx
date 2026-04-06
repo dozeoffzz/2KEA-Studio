@@ -243,12 +243,14 @@ const RecentItemImg = styled.img`
 const SliderWrapper = styled.div`
   overflow: hidden;
   width: 890px;
+  transition: all 0.4s ease;
 
   ${({ theme }) => theme.media.tablet} {
     width: 660px;
   }
   ${({ theme }) => theme.media.mobile} {
     width: 290px;
+    transition: all 0.7s ease;
   }
 `;
 
