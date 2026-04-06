@@ -489,7 +489,7 @@ export default function AllListPage() {
   const [totalPage, setTotalPage] = useState(1);
   const [category, setCategory] = useState("all");
   const [hoverImg, setHoverImg] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia(MOBILE_MEDIA_QUERY).matches);
 
   useEffect(() => {
     // 화면 폭이 767px 이하인지 감지해서 모바일 구간에서는 세로 설명 텍스트를 숨기도록 분기
@@ -498,8 +498,6 @@ export default function AllListPage() {
     const handleMobileChange = (event) => {
       setIsMobile(event.matches);
     };
-
-    setIsMobile(mobileMediaQuery.matches);
 
     if (mobileMediaQuery.addEventListener) {
       mobileMediaQuery.addEventListener("change", handleMobileChange);
@@ -515,7 +513,6 @@ export default function AllListPage() {
       }
     };
   }, []);
-
   // products api 받아오기
   const [item, setItem] = useState([]);
 
