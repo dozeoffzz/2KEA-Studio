@@ -189,18 +189,32 @@ const UserType = styled.p`
 export default function MyProfile({ userInfo, orderData, cartItem }) {
   // 프로필 이미지 변경을 위한 상태값
   const [profileImg, setProfileImg] = useState(() => {
-    return localStorage.getItem("profileImg") || defaultProfile;
+    const saved = localStorage.getItem("profileImg");
+    if (!saved || !saved.startsWith("data:image")) {
+      return defaultProfile;
+    }
+
+    return saved;
   });
   const fileInputRef = useRef(null);
   // 이미지 변경 로직
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    if (file.size > 1024 * 1024) {
+      alert("이미지는 1MB 이하만 가능합니다.");
+      return;
+    }
+
     // edit버튼 클릭 시 input 열기
     const reader = new FileReader();
     reader.onloadend = () => {
-      setProfileImg(reader.result);
-      localStorage.setItem("profileImg", reader.result);
+      const result = reader.result;
+      if (typeof result === "string" && result.startsWith("data:image")) {
+        setProfileImg(result);
+        localStorage.setItem("profileImg", result);
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -215,7 +229,11 @@ export default function MyProfile({ userInfo, orderData, cartItem }) {
           <NameWrap>
             <p>{userInfo?.name}</p>
           </NameWrap>
-          <img src={profileImg || defaultProfile} alt="프로필 이미지" />
+          <img
+            src={profileImg || defaultProfile}
+            alt="프로필 이미지"
+            onError={(e) => (e.target.src = defaultProfile)}
+          />
           <Overlay className="overlay" onClick={handleEditClick}>
             <img src={changeImg} style={{ width: "34px", height: "34px" }} />
           </Overlay>

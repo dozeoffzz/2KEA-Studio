@@ -1,7 +1,7 @@
 import { useAuthStore } from "../stores/useAuthStore";
 
 // const BASE_URL = "/api/team2";
-const BASE_URL = `${import.meta.env.VITE_API_URL}/api/team2`;
+const BASE_URL = "/api";
 let isHandling401 = false;
 
 export async function apiClient(endpoint, option = {}) {
