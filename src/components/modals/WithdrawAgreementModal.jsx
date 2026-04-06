@@ -12,7 +12,7 @@ const Overlay = styled.div`
   align-items: center;
   position: fixed;
   inset: 0;
-  z-index: 998;
+  z-index: 999;
   background-color: ${Theme.colors.overlay};
   backdrop-filter: blur(2px);
 `;
