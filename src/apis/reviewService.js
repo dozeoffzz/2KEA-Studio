@@ -163,3 +163,11 @@ export function formatDate(isoString) {
 export function formatViews(views) {
   return views?.toLocaleString() || "0";
 }
+// 리뷰 수정기능
+export function updateReview(updatedReview) {
+  const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+
+  const newReviews = reviews.map((r) => (r.id === updatedReview.id ? updatedReview : r));
+
+  localStorage.setItem("reviews", JSON.stringify(newReviews));
+}
