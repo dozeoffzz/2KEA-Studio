@@ -663,7 +663,9 @@ export default function OrderPage() {
 
             //주문 확정하기
             const ConfirmDelivery = () => {
-              handleConfirmDelivery(item.orderId, item.id);
+              if (confirm("배송을 확정하시겠습니까?")) {
+                handleConfirmDelivery(item.orderId, item.id);
+              }
             };
             return (
               <OrderListItem key={itemLKey}>
