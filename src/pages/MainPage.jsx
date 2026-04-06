@@ -41,17 +41,13 @@ const Contents = styled.div`
 
 const SofaImageBox = styled.div`
   position: relative;
-  width: 88%;
+  width: 90%;
   max-width: 1280px;
   margin: 0 auto;
   transition: 0.45s ease-in-out;
 
   &:hover .sofa-hover-img {
     opacity: 1;
-  }
-
-  @media (max-width: 1300px) {
-    width: 100%;
   }
 `;
 
@@ -188,7 +184,7 @@ const SofaDesc = styled(SmallDesc)`
 const LightImageBox = styled.div`
   position: relative;
   width: 100%;
-  max-width: 1450px;
+  max-width: 1280px;
   margin: 0 auto;
   background-color: ${Theme.colors.redaccent};
 
@@ -204,7 +200,7 @@ const LightImageBox = styled.div`
 const LightImageContainer = styled.div`
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 12;
+  aspect-ratio: 8 / 8;
   overflow: hidden;
   transition: 0.45s ease-in-out;
 
@@ -255,7 +251,8 @@ const LightHoverImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 25%;
+  object-position: center 15%;
+  transform: scaleX(-1);
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
   cursor: pointer;
@@ -907,8 +904,7 @@ export default function MainPage() {
                       Leave the day's exhaustion behind and return to the warmth of your own private sanctuary.
                     </LightDesc>
                     <LightDesc>
-                      Where the soft touch of linen meets a subtle glow, we curate the moments where your night becomes
-                      brighter.
+                      Where the soft touch of linen meets a subtle glow, we curate the moments where your night becomes brighter.
                     </LightDesc>
                   </LightDescContainer>
                 </LightTextContainer>
@@ -940,9 +936,7 @@ export default function MainPage() {
                     </TopChairDesc>
                   </TopChairDescBox>
                   <BottomChairDescBox>
-                    <BottomChairDesc>
-                      the tactile experience that touches your soul in a sanctuary of peace.
-                    </BottomChairDesc>
+                    <BottomChairDesc>the tactile experience that touches your soul in a sanctuary of peace.</BottomChairDesc>
                   </BottomChairDescBox>
                 </ChairCommentContainer>
               </LeftChairImageBox>
