@@ -63,7 +63,7 @@
 
 <!-- 여기부터 팀  -->
 
-## _💻&nbsp;팀 소개_
+## _🏷️&nbsp;&nbsp;팀 소개_
 
 <span style="color:#8A6FCF; font-weight:600;">
   &nbsp;&nbsp;&nbsp;&nbsp;⇒&nbsp;&nbsp; 팀 이름 : 2KEA_STUDIO
@@ -83,16 +83,16 @@
 
 |     이름      |                                       공식 역할                                        | 세부 역할                                                                                                                                                                                                                                                                                                                                                                                                                   |                                                                        GitHub                                                                         |
 | :-----------: | :------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------: |
-| 🧑🏻‍💻 **최원희** | <img src="https://img.shields.io/badge/팀장-E1702A?style=flat-square&logoColor=white"> | <div align="left">기획 및 관리: 프로젝트 리드 / 기획 · 디자인 / 회의록 작성 <br> 개발: 라우팅 및 공통 레이아웃 구성 / 주요 페이지 제작<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (제품 리스트, 쇼핑카트, 로그인, 결제완료, 마이페이지) /<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; API 연결 / 디테일 리팩토링</div>                                                             |       [![dozeoffzz](https://img.shields.io/badge/dozeoffzz-E1702A?style=flat-square&logo=github&logoColor=white)](https://github.com/dozeoffzz)       |
-| 👩🏻‍💻 **최은우** | <img src="https://img.shields.io/badge/팀원-5A4FCF?style=flat-square&logoColor=white"> | <div align="left">기획 및 설계: 제품 이미지 리서치 / API 제품 데이터 정리 / UserFlow 그래프 제작 <br> 개발: 반응형 UI / 상세 페이지 제작 / 리뷰 리스트 제작 / 디테일 리팩토링 <br> 문서: 발표용 PPT 제작</div>                                                                                                                                                                                                              |    [![eunwooring9](https://img.shields.io/badge/eunwooring9-5A4FCF?style=flat-square&logo=github&logoColor=white)](https://github.com/eunwooring9)    |
-| 👨🏻‍💻 **이가람** | <img src="https://img.shields.io/badge/팀원-C7A008?style=flat-square&logoColor=white"> | <div align="left">개발: 제품 리스트 페이지 반응형 / 404 에러 페이지 제작 및 반응형 / <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 회원탈퇴 모달 레이아웃 제작 <br> 로직 구현: 광고 모달 노출 타이머(시간) 로직 구현</div>                                                                                                                                                                               |          [![RiverGR](https://img.shields.io/badge/RiverGR-C7A008?style=flat-square&logo=github&logoColor=white)](https://github.com/RiverGR)          |
-| 🧑🏻‍💻 **이해랑** | <img src="https://img.shields.io/badge/팀원-2F6BFF?style=flat-square&logoColor=white"> | <div align="left">기획 및 설계: 전체 기획 · 디자인 리드 / 요구사항 정의 / 화면 흐름(User Flow) 설계 <br> 개발: 페이지 및 모달 제작 (회원가입, 리뷰, 인스타그램) / <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 폼 유효성 검사 (로그인, 장바구니, 마이페이지) / 디테일 리팩토링 / <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; README 작성 / 최종 발표</div>                         |              [![h7-r](https://img.shields.io/badge/h7--r-2F6BFF?style=flat-square&logo=github&logoColor=white)](https://github.com/h7-r)              |
-| 👨🏻‍💻 **이영현** | <img src="https://img.shields.io/badge/팀원-6B8E23?style=flat-square&logoColor=white"> | <div align="left">개발: 메인 페이지 및 주문 내역 페이지 제작 <br> 주문-리뷰 주요 기능: 주문 내역 필터링 및 검색(날짜별/순서별) / 페이지네이션 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 리뷰 아코디언 UI 및 별점, 사진 등록, 글 작성 기능 구현</div> | [![yeongyeon1802](https://img.shields.io/badge/yeongyeon1802-6B8E23?style=flat-square&logo=github&logoColor=white)](https://github.com/yeongyeon1802) |
+| 🧑🏻‍💻 **최원희** | <img src="https://img.shields.io/badge/팀장-E1702A?style=flat-square&logoColor=white"> | <div align="left">기획 및 관리 : 프로젝트 리드 / 기획 · 디자인 / 회의록 작성 <br> 개발 : 라우팅 및 공통 레이아웃 구성 / 주요 페이지 제작<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (제품 리스트, 쇼핑카트, 로그인, 결제완료, 마이페이지) /<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; API 연결 / 디테일 리팩토링</div>                                                             |       [![dozeoffzz](https://img.shields.io/badge/dozeoffzz-E1702A?style=flat-square&logo=github&logoColor=white)](https://github.com/dozeoffzz)       |
+| 👩🏻‍💻 **최은우** | <img src="https://img.shields.io/badge/팀원-5A4FCF?style=flat-square&logoColor=white"> | <div align="left">기획 및 설계 : 제품 이미지 리서치 / API 제품 데이터 정리 / UserFlow 그래프 제작 <br> 개발 : 반응형 UI / 상세 페이지 제작 / 리뷰 리스트 제작 / 디테일 리팩토링 <br> 문서 : 발표용 PPT 제작</div>                                                                                                                                                                                                              |    [![eunwooring9](https://img.shields.io/badge/eunwooring9-5A4FCF?style=flat-square&logo=github&logoColor=white)](https://github.com/eunwooring9)    |
+| 👨🏻‍💻 **이가람** | <img src="https://img.shields.io/badge/팀원-C7A008?style=flat-square&logoColor=white"> | <div align="left">개발 : 제품 리스트 페이지 반응형 / 404 에러 페이지 제작 및 반응형 / <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 회원탈퇴 모달 레이아웃 제작 <br> 로직 구현 : 광고 모달 노출 타이머(시간) 로직 구현</div>                                                                                                                                                                               |          [![RiverGR](https://img.shields.io/badge/RiverGR-C7A008?style=flat-square&logo=github&logoColor=white)](https://github.com/RiverGR)          |
+| 🧑🏻‍💻 **이해랑** | <img src="https://img.shields.io/badge/팀원-2F6BFF?style=flat-square&logoColor=white"> | <div align="left">기획 및 설계 : 전체 기획 · 디자인 리드 / 요구사항 정의 / 화면 흐름(User Flow) 설계 <br> 개발 : 페이지 및 모달 제작 (회원가입, 리뷰, 인스타그램) / <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 폼 유효성 검사 (로그인, 장바구니, 마이페이지) / 디테일 리팩토링 / <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; README 작성 / 최종 발표</div>                         |              [![h7-r](https://img.shields.io/badge/h7--r-2F6BFF?style=flat-square&logo=github&logoColor=white)](https://github.com/h7-r)              |
+| 👨🏻‍💻 **이영현** | <img src="https://img.shields.io/badge/팀원-6B8E23?style=flat-square&logoColor=white"> | <div align="left">개발 : 메인 페이지 및 주문 내역 페이지 제작 <br> 주문 · 리뷰 주요 기능 : 주문 내역 필터링 및 검색(날짜별/순서별) / 페이지네이션 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 리뷰 아코디언 UI 및 별점, 사진 등록, 글 작성 기능 구현</div> | [![yeongyeon1802](https://img.shields.io/badge/yeongyeon1802-6B8E23?style=flat-square&logo=github&logoColor=white)](https://github.com/yeongyeon1802) |
 
 <br>
 <br>
 
-## _🛠️&nbsp;Technology Stack (기술 스택)_
+## _🛠️&nbsp;&nbsp;Technology Stack (기술 스택)_
 
 |          Category          | Stack                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | :------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -103,7 +103,7 @@
 <br>
 <br>
 
-## _🖥️&nbsp;기획한 웹 페이지 소개_
+## _🖥️&nbsp;&nbsp;기획한 웹 페이지 소개_
 
 &nbsp;&nbsp;&nbsp;&nbsp;⇒&nbsp;&nbsp; 2030 세대의 라이프스타일을 반영한 가구 쇼핑 환경을 기반으로,
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;감각적인 연출과 직관적인 UI, 몰입도 높은 디자인을 통해 브랜드 가치를 전달하는 이커머스를 기획하였습니다.
@@ -143,7 +143,7 @@
 <br>
 <br>
 
-## _⌨️&nbsp;프로젝트 구조_
+## _📁&nbsp;&nbsp;프로젝트 구조_
 
 ```txt
 2KEA-STUDIO/
@@ -169,21 +169,21 @@
 │   │   ├── icons/                           # 아이콘 파일
 │   │   └── imgs/                            # 이미지 리소스
 │   │
-│   ├── constants/                         # 공통 상수 관리 (새로 추가)
+│   ├── constants/                         # 공통 상수 관리 
 │   │
 │   ├── components/                        # 재사용 UI 컴포넌트
 │   │   ├── common/                          # 공통 UI 요소
 │   │   │   ├── Header.jsx                     # 상단 네비게이션 및 로고
 │   │   │   ├── Footer.jsx                     # 하단 푸터
-│   │   │   ├── GoTopButton.jsx                # 상단 이동 버튼 (추가)
-│   │   │   ├── MyProfile.jsx                  # 마이페이지 프로필 컴포넌트 (추가)
-│   │   │   ├── OrderRatingStar.jsx            # 주문 별점 컴포넌트 (추가)
-│   │   │   ├── OrderReview.jsx                # 주문 리뷰 컴포넌트 (추가)
+│   │   │   ├── GoTopButton.jsx                # 상단 이동 버튼 
+│   │   │   ├── MyProfile.jsx                  # 마이페이지 프로필 컴포넌트 
+│   │   │   ├── OrderRatingStar.jsx            # 주문 별점 컴포넌트 
+│   │   │   ├── OrderReview.jsx                # 주문 리뷰 컴포넌트 
 │   │   │   ├── ScrollReveal.jsx               # 스크롤 애니메이션
 │   │   │   ├── ScrollToTop.jsx                # 페이지 이동 시 스크롤 초기화
-│   │   │   └── SideMenuBar.jsx                # 사이드 메뉴 바 (추가)
+│   │   │   └── SideMenuBar.jsx                # 사이드 메뉴 바 
 │   │   │
-│   │   ├── contexts/                        # Context API 상태 관리 (추가)
+│   │   ├── contexts/                        # Context API 상태 관리 
 │   │   │   └── LogoAnimationContext.js        # 로고 애니메이션 상태
 │   │   │
 │   │   ├── layout/                          # 레이아웃 구조
@@ -202,24 +202,24 @@
 │   │       ├── SignUpModal.jsx                # 회원가입 완료 모달
 │   │       ├── TermsModal.jsx                 # 상세약관 모달
 │   │       ├── DeleteModal.jsx                # 삭제 확인 모달
-│   │       ├── WithdrawModal.jsx              # 탈퇴 확인 모달 (추가)
-│   │       ├── WithdrawTermsModal.jsx         # 탈퇴 약관 모달 (추가)
-│   │       └── WithdrawAgreementModal.jsx     # 탈퇴 동의 모달 (추가)
+│   │       ├── WithdrawModal.jsx              # 탈퇴 확인 모달
+│   │       ├── WithdrawTermsModal.jsx         # 탈퇴 약관 모달 
+│   │       └── WithdrawAgreementModal.jsx     # 탈퇴 동의 모달
 │   │
 │   ├── hooks/                             # 커스텀 훅
-│   │   └── useResopnsive.js                 # 반응형 디자인 체크 훅 (추가)
+│   │   └── useResopnsive.js                 # 반응형 디자인 체크 훅 
 │   │
 │   ├── pages/                             # 라우팅 기준 페이지
 │   │   ├── MainPage.jsx                      # 메인 페이지
 │   │   ├── LoginPage.jsx                     # 로그인 페이지
 │   │   ├── SignUpPage.jsx                    # 회원가입 페이지
 │   │   ├── DetailedPage.jsx                  # 상품 상세 페이지
-│   │   ├── DetailedPageReview.jsx            # 상품 상세 리뷰 페이지 (추가)
+│   │   ├── DetailedPageReview.jsx            # 상품 상세 리뷰 페이지 
 │   │   ├── ShoppingCartPage.jsx              # 장바구니 페이지
-│   │   ├── MyPage.jsx                        # 마이페이지 (추가)
-│   │   ├── OrderPage.jsx                     # 주문/결제 페이지 (추가)
-│   │   ├── ReviewPage.jsx                    # 리뷰 작성/목록 페이지 (추가)
-│   │   ├── CompletedPage.jsx                 # 주문 완료 페이지 (추가)
+│   │   ├── MyPage.jsx                        # 마이페이지 
+│   │   ├── OrderPage.jsx                     # 주문/결제 페이지 
+│   │   ├── ReviewPage.jsx                    # 리뷰 작성/목록 페이지 
+│   │   ├── CompletedPage.jsx                 # 주문 완료 페이지 
 │   │   ├── AllListPage.jsx                   # 전체 상품 리스트
 │   │   ├── LightingListPage.jsx              # 조명 카테고리
 │   │   ├── SeatingListPage.jsx               # 소파/의자 카테고리
@@ -232,7 +232,7 @@
 │   │
 │   ├── styles/                            # 스타일 관리
 │   │   ├── GlobalStyle.jsx                   # 전역 스타일 (CSS-in-JS)
-│   │   ├── theme.js                          # 테마 설정 (컬러 등)
+│   │   ├── theme.js                          # 테마 설정 
 │   │   ├── App.css                           # 앱 기본 CSS
 │   │   └── index.css                         # 초기 CSS
 │   │
@@ -242,18 +242,17 @@
 ├── .gitignore                          # Git 제외 파일 설정
 ├── eslint.config.js                    # ESLint 설정
 ├── prettierrc.js                       # Prettier 포맷팅 설정
-└── vite.config.js                      # Vite 설정 (루트 위치)
+└── vite.config.js                      # Vite 설정 
 ```
 
 <br>
+
+<img src="https://github.com/dozeoffzz/2KEA-Studio/blob/dev/src/assets/imgs/readme/readme.png?raw=true" width="100%" alt="리드미 이미지">
+
+<br>
 <br>
 
-<img src="https://github.com/dozeoffzz/2KEA-Studio/blob/dev/src/assets/imgs/readme/readme.png?raw=true" width="80%" alt="리드미 이미지">
-
-<br>
-<br>
-
-## _주요 기능 구현_
+## _⚙️&nbsp;&nbsp;주요 기능 구현_
 
 ### 메인 페이지 구현
 
@@ -460,7 +459,7 @@
 <br>
 <br>
 
-## _☑️&nbsp;요구사항 충족 범위_
+## _☑️&nbsp;&nbsp;요구사항 충족 범위_
 
 ```txt
 - 필수 요구사항
@@ -523,7 +522,7 @@
 <br>
 <br>
 
-## _🧾&nbsp;기술적 문제와 해결 과정 (Trouble Shooting)_
+## _📑&nbsp;&nbsp;기술적 문제와 해결 과정 (Trouble Shooting)_
 
 ### 구현 과정에서 발생한 문제와 해결
 
