@@ -16,8 +16,9 @@ const CartContainer = styled.div`
   gap: 120px;
   min-height: calc(100vh - 100px);
   align-items: start;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     gap: 80px;
     padding: 30px 40px;
     grid-template-columns: 1fr;
@@ -72,7 +73,7 @@ const CartList = styled.ul`
   height: auto;
   min-height: 0;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     height: auto;
     min-width: 818px;
     overflow: visible;
@@ -91,14 +92,15 @@ const Item = styled.li`
   column-gap: 30px;
   align-items: center;
   min-height: 230px;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     grid-template-columns: 30px 1fr 1.4fr 0.9fr 150px;
     grid-template-rows: auto;
     font-size: ${Theme.fontsize.tablet.content};
   }
 
-  @media screen and (max-width: 1060px) {
+  @media (max-width: 1060px) {
     grid-template-columns: 30px 1fr 1.2fr 0.8fr 100px;
     grid-template-rows: auto;
     font-size: ${Theme.fontsize.tablet.content};
@@ -132,8 +134,9 @@ const ItemImg = styled.div`
   width: 198px;
   height: 231px;
   background-color: ${Theme.colors.overlay};
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     width: 198px;
     height: 231px;
   }
@@ -162,8 +165,9 @@ const ItemInfoWrap = styled.div`
   flex-direction: column;
   gap: 5px;
   font-size: ${Theme.fontsize.desktop.content};
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -177,26 +181,28 @@ const ItemName = styled.p`
   white-space: nowrap;
   font-size: ${Theme.fontsize.desktop.section};
   margin-bottom: 40px;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
     font-size: 18px;
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
   }
-  /* @media screen and (max-width: 390px) {
+  /* @media (max-width: 390px) {
     font-size: 12px;
   } */
 `;
 
 const ItemDelevery = styled.p`
   font-size: ${Theme.fontsize.desktop.content};
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
-  @media screen and (max-width: 400px) {
+  @media (max-width: 400px) {
     /* display: none; */
   }
   ${({ theme }) => theme.media.mobile} {
@@ -211,8 +217,9 @@ const QuantityWrap = styled.div`
   align-items: flex-end;
   font-size: ${Theme.fontsize.desktop.content};
   gap: 20px;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -243,7 +250,7 @@ const Quantity = styled.div`
   display: flex;
   gap: 60px;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     gap: 40px;
   }
   ${({ theme }) => theme.media.mobile} {
@@ -265,8 +272,9 @@ const QuantityUpDown = styled.div`
 const UpButton = styled.button`
   font-size: ${Theme.fontsize.desktop.section};
   color: ${Theme.colors.black};
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -283,8 +291,9 @@ const OrderInfoWrap = styled.div`
   max-width: 605px;
   position: sticky;
   top: 100px;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     position: static;
     top: auto;
     max-width: 100%;
@@ -302,8 +311,9 @@ const OrderInfoForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     padding: 0 30px;
   }
   ${({ theme }) => theme.media.mobile} {
@@ -318,8 +328,9 @@ const OrderName = styled.div`
   align-items: center;
   font-size: ${Theme.fontsize.desktop.content};
   border-bottom: 1px solid ${Theme.colors.black};
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -387,8 +398,9 @@ const PhoneInputWrap = styled.div`
 const PhoneFixed = styled.span`
   font-size: ${Theme.fontsize.desktop.content};
   white-space: nowrap;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -405,8 +417,9 @@ const PhonePartInput = styled.input`
   ${({ error }) => (error ? Theme.colors.redaccent : Theme.colors.black)};
   font-size: ${Theme.fontsize.desktop.content};
   background: transparent;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
     width: 45px;
   }
@@ -420,8 +433,9 @@ const ThanksMsg = styled.p`
   display: flex;
   align-self: center;
   font-size: ${Theme.fontsize.desktop.section};
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.section};
   }
 
@@ -435,8 +449,9 @@ const ProductPriceWrap = styled.div`
   border-top: 1px solid ${Theme.colors.black};
   border-bottom: 1px solid ${Theme.colors.black};
   font-size: ${Theme.fontsize.desktop.content};
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
 
@@ -478,8 +493,9 @@ const TotalPrice = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: ${Theme.fontsize.desktop.content};
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
@@ -491,6 +507,7 @@ const ButtonWrap = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.mobile} {
     flex-direction: column;
@@ -506,14 +523,15 @@ const DeleteButton = styled.button`
   font-size: ${Theme.fontsize.desktop.content};
   color: ${Theme.colors.whitetext};
   background-color: ${Theme.colors.black};
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1282px) {
+  @media (max-width: 1282px) {
     font-size: ${Theme.fontsize.tablet.content};
   }
   ${({ theme }) => theme.media.mobile} {
     font-size: ${Theme.fontsize.mobile.small};
   }
-  @media screen and (max-width: 1024px) {
+  @media (max-width: 1024px) {
     flex: 1;
   }
 `;
@@ -938,7 +956,7 @@ export default function ShoppingCartPage() {
                 <ItemInfoWrap>
                   <ItemName>{item.name}</ItemName>
                   <p style={{ whiteSpace: "nowrap" }}>{item.price.toLocaleString()} ₩</p>
-                  <ItemDelevery>적립: {Math.floor(item.price * 0.01).toLocaleString()}P</ItemDelevery>
+                  <ItemDelevery>적립: {Math.floor(item.price * item.quantity * 0.01).toLocaleString()}P</ItemDelevery>
                   <ItemDelevery>배송비: 무료</ItemDelevery>
                 </ItemInfoWrap>
                 <QuantityWrap>
@@ -968,22 +986,9 @@ export default function ShoppingCartPage() {
           <OrderName>
             <p>Name</p>
             {isEdit ? (
-              <InputNameEdit
-                name="name"
-                placeholder="Name"
-                type="text"
-                value={form.name}
-                onChange={handleInput}
-                ref={nameRef}
-              />
+              <InputNameEdit name="name" placeholder="Name" type="text" value={form.name} onChange={handleInput} ref={nameRef} />
             ) : (
-              <InputName
-                name="name"
-                placeholder="Name"
-                type="text"
-                value={userInfo?.name || ""}
-                onChange={handleInput}
-              />
+              <InputName name="name" placeholder="Name" type="text" value={userInfo?.name || ""} onChange={handleInput} />
             )}
           </OrderName>
           {msg.name && <ErrorMsg>{msg.name}</ErrorMsg>}

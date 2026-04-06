@@ -54,6 +54,7 @@ const BackBtnTitle = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+  transition: all 0.3s ease;
 
   // 태블릿에서는 좌우 여백과 요소 간격을 줄여 폭에 맞춤
   ${({ theme }) => theme.media.tablet} {
@@ -100,6 +101,7 @@ const NavLinkWrap = styled.div`
   gap: 40px;
   border-bottom: 1px solid ${Theme.colors.textsecondary};
   width: 100%;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     padding: 0 32px 16px;
@@ -141,6 +143,7 @@ const ItemListMain = styled.div`
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-auto-rows: auto;
   gap: 40px;
+  transition: all 0.3s ease;
 
   // 1650px 이하에서는 4열 리스트를 2열 구조로 바꿔서 카드가 갑자기 찌그러지지 않게 조정
   // 1650px 이하에서는 4열을 2열로 바꿔 카드가 가로로 과하게 눌리지 않게 함
@@ -176,6 +179,7 @@ const Item = styled(NavLink)`
   display: flex;
   flex-direction: column;
   grid-column: span 1;
+  transition: all 0.3s ease;
 
   ${(props) => props.large && `grid-column: span 2;`}
 
@@ -217,6 +221,7 @@ const ItemNum = styled.span`
   flex-shrink: 0;
   color: ${Theme.colors.yellowaccent};
   font-size: ${Theme.fontsize.desktop.section};
+  transition: all 0.3s ease;
 
   // 태블릿에서는 제목 크기를 줄여 화면 비율을 맞춤
   ${({ theme }) => theme.media.tablet} {
@@ -240,6 +245,7 @@ const ItemTextWrap = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
+  transition: all 0.3s ease;
 
   // 모바일에서는 상품명과 재질을 세로로 쌓아 좁은 폭에서도 잘 보이게 함
   ${({ theme }) => theme.media.mobile} {
@@ -260,7 +266,7 @@ const ItemName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
+  transition: all 0.3s ease;
   // 태블릿에서는 본문 글자 크기를 한 단계 줄여 균형을 맞춤
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.content};
@@ -303,7 +309,7 @@ const ItemMaterial = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
+  transition: all 0.3s ease;
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.small};
   }
@@ -326,6 +332,7 @@ const ItemImgWrap = styled.div`
   flex: 1;
   min-width: 0;
   align-items: stretch;
+  transition: all 0.3s ease;
 
   // 태블릿 이하에서는 세로 텍스트 영역을 빼고 이미지만 보이게 해서 답답함을 줄임
   ${({ theme }) => theme.media.tablet} {
@@ -345,6 +352,7 @@ const ItemContentWrap = styled.div`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  transition: all 0.3s ease;
 
   // 태블릿 이하에서는 이미지 옆 세로 설명을 숨겨 이미지 영역을 더 넓게 사용
   ${({ theme }) => theme.media.tablet} {
@@ -372,7 +380,7 @@ const ItemImg = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-
+  transition: all 0.3s ease;
   // 태블릿에서는 이미지 비율과 내부 여백을 조정해 카드가 한쪽으로만 찌그러지지 않게 함
   ${({ theme }) => theme.media.tablet} {
     width: 100%;
@@ -407,6 +415,7 @@ const PageNationWrap = styled.div`
   gap: 70px;
   font-size: ${Theme.fontsize.desktop.content};
   margin-bottom: 40px;
+  transition: all 0.3s ease;
 
   // 태블릿에서는 페이지네이션 간격을 줄이고 줄바꿈을 허용해 공간을 확보
   ${({ theme }) => theme.media.tablet} {
@@ -434,6 +443,7 @@ const CurrentPage = styled.button`
   border: none;
   cursor: pointer;
   color: ${Theme.colors.blacktext};
+  transition: all 0.3s ease;
 
   &.active {
     border-bottom: 2px solid ${Theme.colors.blacktext};

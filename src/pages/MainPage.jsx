@@ -22,7 +22,7 @@ const Contents = styled.div`
   gap: 160px;
   width: 100%;
   padding: 160px 90px 0;
-  transition: 0.3s ease-in-out;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     padding: 120px 70px 0;
@@ -44,10 +44,14 @@ const SofaImageBox = styled.div`
   width: 90%;
   max-width: 1280px;
   margin: 0 auto;
-  transition: 0.45s ease-in-out;
+  transition: all 0.3s ease;
 
   &:hover .sofa-hover-img {
     opacity: 1;
+  }
+
+  @media (max-width: 1300px) {
+    width: 100%;
   }
 `;
 
@@ -57,7 +61,7 @@ const SofaImageWrapper = styled.div`
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  transition: 0.45s ease-in-out;
+  transition: all 0.3s ease;
 `;
 
 /* 초록 박스 이미지 wrapper */
@@ -202,7 +206,7 @@ const LightImageContainer = styled.div`
   width: 100%;
   aspect-ratio: 8 / 8;
   overflow: hidden;
-  transition: 0.45s ease-in-out;
+  transition: all 0.3s ease;
 
   :hover .light-hover-img {
     opacity: 1;
@@ -217,8 +221,12 @@ const LightImageContainer = styled.div`
   }
 
   @media (max-width: 686px) {
-    aspect-ratio: auto;
+    aspect-ratio: 12 / 14;
     min-height: 420px;
+  }
+
+  @media (max-width: 500px) {
+    aspect-ratio: 12 / 16;
   }
 `;
 
@@ -417,7 +425,7 @@ const LeftImageContainer = styled.div`
   width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  transition: 0.45s ease-in-out;
+  transition: all 0.3s ease;
 
   :hover .left-chair-hover-img {
     opacity: 1;
@@ -571,7 +579,7 @@ const RightImageContainer = styled.div`
   flex: 1.15;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  transition: 0.45s ease-in-out;
+  transition: all 0.3s ease;
 
   :hover .right-chair-hover-img {
     opacity: 1;

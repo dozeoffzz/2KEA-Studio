@@ -81,12 +81,12 @@ const ReviewPageContainer = styled.div`
     padding: 0 50px;
   }
 
-  ${({ theme }) => theme.media.mobile} {
+  @media (max-width: 768px) {
     gap: 80px;
     padding: 0 30px;
   }
 
-  @media screen and (max-width: 420px) {
+  @media (max-width: 420px) {
     padding: 0 10px;
   }
 `;
@@ -138,6 +138,7 @@ const FilterWrap = styled.div`
 // 분류
 const FilterLabel = styled.span`
   font-size: ${Theme.fontsize.desktop.medium};
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
@@ -248,6 +249,7 @@ const ReviewList = styled.ul`
   display: flex;
   flex-direction: column;
   width: 100%;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     font-size: ${Theme.fontsize.tablet.medium};
@@ -342,6 +344,7 @@ const ReviewImg = styled.img`
   object-fit: cover;
   width: 98px;
   height: 115px;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.mobile} {
     width: 80px;
@@ -470,6 +473,7 @@ const ReviewContent = styled.p`
   font-size: ${Theme.fontsize.desktop.mini};
   word-break: break-word;
   overflow-wrap: anywhere;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.mobile} {
     margin-bottom: 20px;
@@ -784,9 +788,7 @@ export default function ReviewPage() {
                     {review.images && review.images.length > 0 && (
                       <CarouselWrap>
                         {/* 이미지 4개 이상일 때만 이전 버튼 */}
-                        {review.images?.length > 3 && (
-                          <ArrowBtn onClick={() => handlePrevImage(review.id)}>{"<"}</ArrowBtn>
-                        )}
+                        {review.images?.length > 3 && <ArrowBtn onClick={() => handlePrevImage(review.id)}>{"<"}</ArrowBtn>}
                         <ImgWrap>
                           {review.images
                             ?.slice(imageIndexMap[review.id] || 0, (imageIndexMap[review.id] || 0) + 3)

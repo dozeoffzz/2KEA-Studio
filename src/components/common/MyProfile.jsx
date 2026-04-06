@@ -13,6 +13,7 @@ const MyPageContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: auto;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     height: auto;
@@ -26,9 +27,8 @@ const ProfileWrap = styled.div`
   display: flex;
   justify-content: space-between;
   width: 600px;
+  transition: all 0.3s ease;
 
-  ${({ theme }) => theme.media.tablet} {
-  }
   ${({ theme }) => theme.media.mobile} {
     width: 100%;
     display: flex;
@@ -43,6 +43,7 @@ const ProfileInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 350px;
+
   font-size: ${Theme.fontsize.desktop.medium};
 
   ${({ theme }) => theme.media.tablet} {
@@ -120,6 +121,7 @@ const ProfileImg = styled.div`
   width: 170px;
   height: 170px;
   border-radius: 50%;
+  transition: all 0.3s ease;
 
   img {
     width: 100%;
@@ -134,13 +136,8 @@ const ProfileImg = styled.div`
   }
 
   ${({ theme }) => theme.media.mobile} {
-    width: 150px;
-    height: 150px;
-  }
-
-  @media screen and (max-width: 500px) {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
   }
 `;
 

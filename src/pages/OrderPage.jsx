@@ -18,6 +18,7 @@ const OrderPageContainer = styled.div`
   align-items: center;
   gap: 160px;
   width: 100%;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     padding: 0 20px;
@@ -28,7 +29,7 @@ const OrderPageContainer = styled.div`
     gap: 100px;
   }
 
-  /* @media screen and (max-width: 467px) {
+  /*@media (max-width: 467px) {
     padding: 0 10px;
   } */
 `;
@@ -43,6 +44,7 @@ const OrderInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 35px;
+  transition: all 0.3s ease;
 `;
 
 const OrderDetail = styled.p`
@@ -70,10 +72,12 @@ const DateFilter = styled.li`
   color: ${({ isActive }) => (isActive ? Theme.colors.blacktext : Theme.colors.textsecondary)};
   font-size: ${Theme.fontsize.desktop.medium};
   cursor: pointer;
+  transition: all 0.3s ease;
 `;
 
 const DateInfo = styled.p`
   font-size: ${Theme.fontsize.desktop.mini};
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.mobile} {
     border-bottom: 2px solid ${Theme.colors.grayline};
@@ -85,7 +89,7 @@ const DateInfo = styled.p`
 const MobileBr = styled.br`
   display: none;
 
-  @media screen and (max-width: 440px) {
+  @media (max-width: 440px) {
     display: block;
   }
 `;
@@ -114,7 +118,7 @@ const OrderInfo = styled.ul`
       font-size: ${Theme.fontsize.mobile.small};
     }
   }
-  @media screen and (max-width: 650px) {
+  @media (max-width: 650px) {
     display: none;
   }
 `;
@@ -131,6 +135,7 @@ const OrderListItem = styled.li`
   min-height: 200px;
   border-bottom: 1px solid ${Theme.colors.grayline};
   overflow: hidden;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.mobile} {
     min-height: auto;
@@ -145,6 +150,7 @@ const OrderItemWrap = styled.ul`
   align-items: center;
   text-align: center;
   min-height: 200px;
+  transition: all 0.3s ease;
 
   img {
     width: 120px;
@@ -165,7 +171,7 @@ const OrderItemWrap = styled.ul`
     }
   }
   // 모바일에서는 각 칸마다 상품별로 따로 배치하기
-  @media screen and (max-width: 650px) {
+  @media (max-width: 650px) {
     grid-template-columns: 120px;
     // 각 칸마다 상품별로 따로 배치
     grid-template-areas:
@@ -254,6 +260,7 @@ const OrderSearchBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 22px;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.mobile} {
     gap: 10px;
@@ -266,6 +273,7 @@ const SearchOrder = styled.input`
   height: 30px;
   padding: 0 6px;
   border: 1px solid ${Theme.colors.black};
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     height: 27px;
@@ -304,6 +312,10 @@ const OrderPaginationWrap = styled.ul`
   gap: 37px;
   margin: 0 auto;
   width: 100%;
+
+  ${({ theme }) => theme.media.mobile} {
+    gap: 20px;
+  }
 `;
 
 const PaginationList = styled.li`
@@ -312,6 +324,7 @@ const PaginationList = styled.li`
   align-items: center;
   width: 100px;
   height: 40px;
+  transition: all 0.3s ease;
 `;
 
 const PaginationButton = styled.button`
@@ -604,7 +617,10 @@ export default function OrderPage() {
                 </DateFilter>
               ))}
             </DateFilterWrap>
-            <DateInfo>최근 3개월간의 자료가 조회되며, 지난 주문내역을 조회하실 수 있습니다.</DateInfo>
+            <DateInfo>
+              최근 3개월간의 자료가 조회되며, <MobileBr />
+              지난 주문내역을 조회하실 수 있습니다.
+            </DateInfo>
           </DateFilterContainer>
           <OrderInfo>
             <li>주문일자:</li>

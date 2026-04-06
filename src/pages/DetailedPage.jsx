@@ -47,16 +47,24 @@ const accordionItems = [
 ];
 
 const MainWrap = styled.div`
-  margin-top: 180px;
+  margin-top: 160px;
   width: 100%;
   background-color: ${Theme.colors.white};
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
+
+  ${({ theme }) => theme.media.tablet} {
+    margin-top: 140px;
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-top: 125px;
+  }
 `;
 
 const ImgGallery = styled.section`
   margin-bottom: 104px;
 
-  @media screen and (max-width: 1200px) {
+  @media (max-width: 1200px) {
     margin-bottom: 90px;
   }
 
@@ -75,7 +83,7 @@ const SliderWrap = styled.div`
   height: 44vw;
   max-height: 760px;
   overflow: hidden;
-  transition: 0.45s ease-in-out;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.tablet} {
     height: 52vw;
@@ -129,8 +137,8 @@ const SlideItem = styled.div`
   // 중앙 이미지 강조
   opacity: ${(props) => {
     if (props.$position === "center") return 1;
-    // 양 옆이미지 40%만 보이게 설정
-    if (props.$position === "left" || props.$position === "right") return 0.4;
+    // 양 옆이미지 50%만 보이게 설정
+    if (props.$position === "left" || props.$position === "right") return 0.5;
     // 뒤쪽 이미지 12%만 보이게 설정
     return 0.12;
   }};
@@ -170,10 +178,14 @@ const ArrowButton = styled.button`
   background: none;
   z-index: 10;
   transform: translateY(-50%);
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  :hover {
+    transform: scale(1.1) translateY(-50%);
+  }
 
   img {
     width: 35px;
@@ -188,21 +200,21 @@ const ArrowButton = styled.button`
     }
   }
 
-  @media screen and (max-width: 800px) {
+  @media (max-width: 800px) {
     img {
       width: 25px;
       height: 25px;
     }
   }
 
-  @media screen and (max-width: 600px) {
+  @media (max-width: 600px) {
     img {
       width: 20px;
       height: 20px;
     }
   }
 
-  @media screen and (max-width: 500px) {
+  @media (max-width: 500px) {
     img {
       width: 18px;
       height: 18px;
@@ -213,7 +225,7 @@ const ArrowButton = styled.button`
 const LeftArrow = styled(ArrowButton)`
   left: 19%;
 
-  @media screen and (max-width: 500px) {
+  @media (max-width: 500px) {
     left: 18%;
   }
 `;
@@ -225,7 +237,7 @@ const RightArrow = styled(ArrowButton)`
     transform: rotate(180deg);
   }
 
-  @media screen and (max-width: 500px) {
+  @media (max-width: 500px) {
     right: 18%;
   }
 `;
@@ -254,14 +266,14 @@ const DetailSection = styled.section`
   gap: 160px;
   padding: 0 100px 50px;
   margin-bottom: 100px;
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
 
-  @media screen and (max-width: 1280px) {
+  @media (max-width: 1280px) {
     gap: 36px;
     padding: 0 70px 50px;
   }
 
-  @media screen and (max-width: 1024px) {
+  @media (max-width: 1024px) {
     flex-direction: column;
     gap: 48px;
     padding: 0 40px 50px;
@@ -300,7 +312,7 @@ const DetailImg = styled.img`
   min-width: 600px;
   height: auto;
   display: block;
-  transition: 0.35s ease-in-out;
+  transition: all 0.3s ease;
 
   ${({ theme }) => theme.media.mobile} {
     max-width: 600px;
