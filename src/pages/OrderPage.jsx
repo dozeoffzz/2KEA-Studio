@@ -459,7 +459,6 @@ export default function OrderPage() {
     // 다시 안뒤집으면 useEffect에서만 reverse가 돌아서 데이터 순서가 꼬임
     localStorage.setItem("orderHistory", JSON.stringify([...updated].reverse()));
   };
-
   // 주문 히스토리가 바뀔 때마다 최신 로컬스토리지 읽기
   const allPurchasedItems = useMemo(() => {
     //같은 날짜에 주문한 내역(다차원 배열)을 1차원 상품 배열로 펼치기
