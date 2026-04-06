@@ -1,0 +1,25 @@
+@font-face {
+  font-family: "ZenSerif";
+  src:
+    url("../src/assets/fonts/ZenSerif.woff2") format("woff2"),
+    url("../src/assets/fonts/ZenSerif.woff2") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "ZenSerif";
+}
+body::-webkit-scrollbar {
+  height: 16px;
+}
+body::-webkit-scrollbar-track {
+  background: #fafafa;
+}
+body::-webkit-scrollbar-thumb {
+  background: #0c0c0c;
+  border-radius: 20px;
+  border: 5px solid transparent;
+  background-clip: content-box;
+}
