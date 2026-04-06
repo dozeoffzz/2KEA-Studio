@@ -12,7 +12,7 @@ const SideMenu = styled.div`
   display: flex;
   justify-content: space-around;
   width: 100%;
-  z-index: 999;
+  z-index: 200;
   background: ${Theme.colors.white};
   height: 180px;
 
