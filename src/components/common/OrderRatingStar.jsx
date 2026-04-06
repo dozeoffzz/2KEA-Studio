@@ -5,8 +5,13 @@ import FullStar from "../../assets/imgs/detail/Full.svg";
 import { useState } from "react";
 
 const StarContainer = styled.div`
+  width: 380px;
   display: flex;
   align-items: center;
+
+  ${({ theme }) => theme.media.mobile} {
+    justify-content: center;
+  }
 `;
 
 const StarWrap = styled.div`

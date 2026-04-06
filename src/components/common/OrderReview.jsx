@@ -163,13 +163,22 @@ const UploadPhotoWrap = styled.div`
   width: 400px;
   height: auto;
   overflow: hidden;
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 380px;
+    gap: 10px;
+  }
 `;
 
 const PreviewPhotoWrap = styled.div`
   position: relative;
-  width: 120px;
+  width: calc((100% - 40px) / 3);
   height: 150px;
   flex-shrink: 0;
+
+  ${({ theme }) => theme.media.tablet} {
+    width: calc((100% - 20px) / 3);
+  }
 `;
 
 const PreviewPhoto = styled.img`
