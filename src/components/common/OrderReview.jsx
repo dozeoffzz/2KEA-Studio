@@ -428,6 +428,7 @@ export default function OrderReview({ item, onComplete, editingReview }) {
 
       const reviewData = {
         id: editingReview?.id || crypto.randomUUID(), // 고유 ID (상품 ID는 중복가능성이 높기 때문에 랜덤 UUID로 고유 ID 설정)
+        orderId: item.orderId,
         productId: item.id, // 상품 ID
         name: item.name, // 상품 이름
         rating: rating, // 별점
@@ -440,9 +441,7 @@ export default function OrderReview({ item, onComplete, editingReview }) {
       };
 
       // 작성한 리뷰 추가 및 로컬스토리지 저장
-      const updatedReviews = editingReview
-        ? existingReviews.map((r) => (r.id === editingReview.id ? reviewData : r))
-        : [reviewData, ...existingReviews];
+      const updatedReviews = [reviewData, ...existingReviews];
 
       localStorage.setItem("reviews", JSON.stringify(updatedReviews));
 

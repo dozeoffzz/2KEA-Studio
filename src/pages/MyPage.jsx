@@ -271,6 +271,8 @@ export default function MyPage() {
   const [profileImg, setProfileImg] = useState(defaultProfile);
   // 이미지 호버시 변경을 위해 상태값 저장
   const [hoverImg, setHoverImg] = useState(null);
+  // 헤더 열었을때 사이즈 메뉴 숨기기 위한 상태값
+  const [isHeaderOpen, setIsHeaderOpen] = useState(false);
 
   // 수정사항을 저장하기 위한 상태값
   // 폰 phoneMid, phoneEnd 로 분리
