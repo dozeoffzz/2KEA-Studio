@@ -4,7 +4,7 @@ import SignUpModal from "./components/modals/SignUpModal";
 import { Route, Routes } from "react-router-dom";
 import DetailedPage from "./pages/DetailedPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage";
-import SignupPage from "./pages/SignupPage";
+import SignUpPage from "./pages/SignUpPage";
 import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/LoginPage";
 import MainLayout from "./components/layout/MainLayout";
@@ -35,7 +35,7 @@ export default function App() {
           <Route path="/products/lighting" element={<LightingListPage />} />
           <Route path="/products/:category/:id" element={<DetailedPage />} />
           <Route path="/cart" element={<ShoppingCartPage />} />
-          <Route path="/auth/signup" element={<SignupPage />} />
+          <Route path="/auth/signup" element={<SignUpPage />} />
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/me" element={<MyPage />} />
           <Route path="/auth/me/order" element={<OrderPage />} />
