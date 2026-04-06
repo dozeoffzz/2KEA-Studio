@@ -360,8 +360,6 @@ export default function OrderPage() {
   const [userInfo, setUserInfo] = useState(null);
   // useCartStore에서 카트 아이템 갯수 가져오기
   const cartItem = useCartStore((state) => state.cartItems);
-  //전체 주문 내역 상태
-  const [orderHistory, setOrderHistory] = useState([]);
   //현재 주문내역 페이지 번호
   const [currentPage, setCurrentPage] = useState(1);
   //아코디언 메뉴 오픈 상태
@@ -374,13 +372,6 @@ export default function OrderPage() {
   const [keyword, setKeyword] = useState("");
   // 찾기 버튼 눌렀을 때만
   const [appliedKeyword, setAppliedKeyword] = useState("");
-
-  const [orderData, setOrderData] = useState({
-    totalQuantity: 0,
-    totalPrice: 0,
-    point: 0,
-    delivery: { inDelivery: 0, done: 0 },
-  });
 
   const handleAccordionToggle = (idx) => {
     setOpenAccordion((prev) => (prev === idx ? null : idx));
@@ -399,6 +390,16 @@ export default function OrderPage() {
     };
 
     fetchUser();
+  }, []);
+
+  // 주문 내역
+  const [orderHistory, setOrderHistory] = useState(() => {
+    const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+    // 최신 순서대로 보여주기 위해 reverse 사용
+    return history.reverse();
+  });
+
+  const [orderData, setOrderData] = useState(() => {
     // 상품 주문한 아이템
     const order = JSON.parse(localStorage.getItem("orderData")) || {};
     // 주문하고 얻은 포인트
@@ -408,22 +409,14 @@ export default function OrderPage() {
       inDelivery: 0,
       done: 0,
     };
-    // 주문 내역
-    const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
-    // 최신 순서대로 보여주기 위해 reverse 사용
-    setOrderHistory(history.reverse());
 
-    setOrderData({
-      // 주문한 총 갯수
+    return {
       totalQuantity: order.totalQuantity || 0,
-      // 주문한 총 갯수
       totalPrice: order.totalPrice || 0,
-      // 포인트
       point,
-      // 배송 상태
       delivery,
-    });
-  }, []);
+    };
+  });
 
   const handleConfirmDelivery = (orderId, productId) => {
     //기존 데이터 상태를 복사해서 바로 수정
@@ -569,15 +562,10 @@ export default function OrderPage() {
   //필터링된 아이템 갯수에 따라 페이지 생성
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage) || 1;
 
-  //날짜필터 등 이유로 페이지 수가 줄어들 경우 자동으로 1페이지로 보내기
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(1);
-    }
-  }, [filteredItems, totalPages]);
+  const safePage = currentPage > totalPages ? 1 : currentPage;
 
   // 현재 페이지 번호에 맞춰서 itemsPerPage만큼 즉 4개씩 잘라내기
-  const itemDisplay = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const itemDisplay = filteredItems.slice((safePage - 1) * itemsPerPage, safePage * itemsPerPage);
   // 실제 들어온 데이터보다 남은곳이 많을 경우 남은곳은 빈칸으로 채움
   while (itemDisplay.length < 4) {
     itemDisplay.push(null);
@@ -678,7 +666,12 @@ export default function OrderPage() {
                       )}
                     </OrderItemWrap>
                     <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
-                      <OrderReview item={item} onComplete={handleReviewComplete} />
+                      <OrderReview
+                        item={item}
+                        onComplete={handleReviewComplete}
+                        key={itemLKey}
+                        editingReview={editingReview}
+                      />
                     </OrderReviewWrap>
                   </>
                 ) : (
@@ -702,7 +695,7 @@ export default function OrderPage() {
               </PaginationButton>
             </PaginationList>
             <PaginationList>
-              <PaginationButton type="button" onClick={goToPrevPage} disabled={currentPage === 1}>
+              <PaginationButton type="button" onClick={goToPrevPage} disabled={safePage === 1}>
                 Prev
               </PaginationButton>
             </PaginationList>
@@ -714,7 +707,7 @@ export default function OrderPage() {
               </PageNumber>
             ))}
             <PaginationList>
-              <PaginationButton type="button" onClick={goToNextPage} disabled={currentPage === totalPages}>
+              <PaginationButton type="button" onClick={goToNextPage} disabled={safePage === totalPages}>
                 Next
               </PaginationButton>
             </PaginationList>

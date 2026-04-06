@@ -30,6 +30,7 @@ export default function MainLayout() {
   //초기화 안하면 새로고침 하지 않는이상 로고 애니메이션 오류남
   useEffect(() => {
     if (location.pathname === "/") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsAnimated(false);
     }
   }, [location.pathname]);
@@ -41,7 +42,7 @@ export default function MainLayout() {
       isAnimated,
       setIsAnimated,
     }),
-    [isAnimated, setIsAnimated]
+    [isAnimated, setIsAnimated],
   );
 
   return (
