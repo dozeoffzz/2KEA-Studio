@@ -248,7 +248,7 @@
 <br>
 <br>
 
-<img src="./imgs/readme/readme.png" width="80%" alt="리드미 이미지">
+<img src="https://github.com/dozeoffzz/2KEA-Studio/blob/dev/src/assets/imgs/readme/readme.png?raw=true" width="80%" alt="리드미 이미지">
 
 <br>
 <br>
