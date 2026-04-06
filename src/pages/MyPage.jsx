@@ -456,6 +456,17 @@ export default function MyPage() {
       address: editData.address,
     };
 
+    const rawPhone = userInfo?.phone || "";
+    const cleanPhone = rawPhone.replace(/[^0-9]/g, "");
+
+    setEditData({
+      name: userInfo?.name || "",
+      phoneMid: cleanPhone.slice(3, 7),
+      phoneEnd: cleanPhone.slice(7, 11),
+      email: userInfo?.email || "",
+      address: userInfo?.address || "",
+    });
+
     // 로컬스토리지 저장
     localStorage.setItem("userInfo", JSON.stringify(updatedUser));
 

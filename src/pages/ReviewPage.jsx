@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "@emotion/styled";
 import { Theme } from "../styles/theme";
 import { useCartStore } from "../stores/useCartStore";
-import defaultProfile from "../assets/icons/defaultProfile.svg";
 import { NavLink } from "react-router-dom";
 import MyProfile from "../components/common/MyProfile";
 import { authMeApi } from "../apis/authMeApi";
