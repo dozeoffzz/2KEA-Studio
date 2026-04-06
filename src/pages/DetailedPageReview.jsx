@@ -621,7 +621,9 @@ export default function DetailedPageReview({ reviews, userType }) {
 
   // 평점
   const averageRating =
-    totalReviewCount === 0 ? 0 : (reviews.reduce((acc, review) => acc + review.rating, 0) / totalReviewCount).toFixed(1);
+    totalReviewCount === 0
+      ? 0
+      : (reviews.reduce((acc, review) => acc + review.rating, 0) / totalReviewCount).toFixed(1);
 
   // 별점
   const ratingPercentages = [5, 4, 3, 2, 1].map((score) => {
@@ -691,6 +693,24 @@ export default function DetailedPageReview({ reviews, userType }) {
   {
     /* 리뷰 */
   }
+
+  // 이름 가운데 *로 가려지게
+  function maskName(name) {
+    if (!name) return "";
+
+    // 2글자면 뒤만 가림
+    if (name.length === 2) {
+      return name[0] + "*";
+    }
+
+    // 3글자 이상이면 가운데만 가림
+    if (name.length >= 3) {
+      return name[0] + "*".repeat(name.length - 2) + name[name.length - 1];
+    }
+
+    return name;
+  }
+
   return (
     <ReviewSection>
       <ReviewTitle>REVIEWS</ReviewTitle>
@@ -785,7 +805,7 @@ export default function DetailedPageReview({ reviews, userType }) {
             {visibleReviews.map((review) => (
               <ReviewCard key={review.id}>
                 <ReviewerInfo>
-                  {review.author} : {userType || review.memberType || "일반회원"}
+                  {maskName(review.author)} : {userType || review.memberType || "일반회원"}
                 </ReviewerInfo>
 
                 <StarRow>

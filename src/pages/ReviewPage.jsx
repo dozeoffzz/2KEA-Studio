@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "@emotion/styled";
 import { Theme } from "../styles/theme";
 import { useCartStore } from "../stores/useCartStore";
-import defaultProfile from "../assets/icons/defaultProfile.svg";
 import { NavLink } from "react-router-dom";
 import MyProfile from "../components/common/MyProfile";
 import { authMeApi } from "../apis/authMeApi";
@@ -705,6 +704,22 @@ export default function ReviewPage() {
 
     return pageNumbers;
   };
+  // 이름 가운데 *로 가려지게
+  function maskName(name) {
+    if (!name) return "";
+
+    // 2글자면 뒤만 가림
+    if (name.length === 2) {
+      return name[0] + "*";
+    }
+
+    // 3글자 이상이면 가운데만 가림
+    if (name.length >= 3) {
+      return name[0] + "*".repeat(name.length - 2) + name[name.length - 1];
+    }
+
+    return name;
+  }
   return (
     <ReviewPageContainer>
       <SideMenuBar />
@@ -790,15 +805,13 @@ export default function ReviewPage() {
                   </ReviewCell>
                   <ReviewInfo>
                     {/* 작성자 */}
-                    <ReviewCell>작성자: {review.author}</ReviewCell>
+                    <ReviewCell>작성자: {maskName(review.author)}</ReviewCell>
                     {/* 작성일  */}
                     <ReviewCell>작성일: {formatShortDate(review.date)}</ReviewCell>
                     {/* 구매일 */}
                     <ReviewCell>구매일: {formatShortDate(review.orderDate)}</ReviewCell>
                     {/* 조회수 */}
                     <ReviewCell>조회: {formatViews(review.views)}</ReviewCell>
-                    {/* 헤더랑 열 맞추기용 */}
-                    <ReviewCell></ReviewCell>
                     {/* 삭제 버튼 */}
                     <DeleteBtn onClick={() => handleDelete(review.id)}>삭제</DeleteBtn>
                   </ReviewInfo>

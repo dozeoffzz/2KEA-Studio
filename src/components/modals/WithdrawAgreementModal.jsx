@@ -12,7 +12,7 @@ const Overlay = styled.div`
   align-items: center;
   position: fixed;
   inset: 0;
-  z-index: 998;
+  z-index: 999;
   background-color: ${Theme.colors.overlay};
   backdrop-filter: blur(2px);
 `;
@@ -265,7 +265,7 @@ export default function WithdrawAgreementModal({ isOpen, onClose, onConfirm }) {
     useCartStore.getState().clearCart();
 
     // 탈퇴 완료 안내
-    alert("회원탈퇴가 완료되었습니다.");
+    alert("회원탈퇴 신청이 완료되었습니다.");
 
     // 로그아웃 + 페이지 이동
     window.location.href = "/";
@@ -295,9 +295,9 @@ export default function WithdrawAgreementModal({ isOpen, onClose, onConfirm }) {
 
               <TermsText>
                 <div>
-                  1) 회원탈퇴 시 계정 및 관련 개인정보는 즉시 또는 관련 법령에 따라 일정 기간 보관 후 파기됩니다.
+                  1&gt; 회원탈퇴 시 계정 및 관련 개인정보는 즉시 또는 관련 법령에 따라 일정 기간 보관 후 파기됩니다.
                 </div>
-                <div>2) 삭제된 정보는 어떠한 경우에도 복구되지 않습니다.</div>
+                <div>2&gt; 삭제된 정보는 어떠한 경우에도 복구되지 않습니다.</div>
               </TermsText>
             </TermsCard>
 

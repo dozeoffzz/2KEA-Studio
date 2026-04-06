@@ -1092,17 +1092,17 @@ export default function ShoppingCartPage() {
 
           {/* 수정완료/정보수정 버튼 */}
           <EditInfo>
+            {isEdit && (
+              <EditCancel
+                onClick={() => {
+                  setIsEdit(false);
+                }}
+              >
+                수정취소
+              </EditCancel>
+            )}
+
             <EditInfoBtn onClick={isEdit ? handleSave : handleEditToggle}>
-              {isEdit && (
-                <EditCancel
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsEdit(false);
-                  }}
-                >
-                  수정취소
-                </EditCancel>
-              )}
               {isEdit ? "수정완료" : "정보수정"}
             </EditInfoBtn>
           </EditInfo>

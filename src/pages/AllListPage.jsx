@@ -593,13 +593,19 @@ export default function AllListPage() {
         </ItemListMain>
         <PageNationWrap>
           <PageNationButton onClick={() => setCurrentPage(1)}>First</PageNationButton>
-          <PageNationButton onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}>Prev</PageNationButton>
+          <PageNationButton onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}>
+            Prev
+          </PageNationButton>
           {totalPages.map((list) => (
-            <CurrentPage key={list} onClick={() => setCurrentPage(list)} className={currentPage === list ? "active" : ""}>
+            <CurrentPage
+              key={list}
+              onClick={() => setCurrentPage(list)}
+              className={currentPage === list ? "active" : ""}
+            >
               {list}
             </CurrentPage>
           ))}
-          <PageNationButton onClick={() => setCurrentPage(currentPage < totalPage.length ? currentPage + 1 : totalPage.length)}>
+          <PageNationButton onClick={() => setCurrentPage(currentPage < totalPage ? currentPage + 1 : totalPage)}>
             Next
           </PageNationButton>
           <PageNationButton onClick={() => setCurrentPage(4)}>Last</PageNationButton>

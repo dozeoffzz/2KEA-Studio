@@ -273,6 +273,8 @@ export default function MyPage() {
   const [profileImg, setProfileImg] = useState(defaultProfile);
   // 이미지 호버시 변경을 위해 상태값 저장
   const [hoverImg, setHoverImg] = useState(null);
+  // 헤더 열었을때 사이즈 메뉴 숨기기 위한 상태값
+  const [isHeaderOpen, setIsHeaderOpen] = useState(false);
 
   // 수정사항을 저장하기 위한 상태값
   // 폰 phoneMid, phoneEnd 로 분리
@@ -455,6 +457,17 @@ export default function MyPage() {
       email: editData.email,
       address: editData.address,
     };
+
+    const rawPhone = userInfo?.phone || "";
+    const cleanPhone = rawPhone.replace(/[^0-9]/g, "");
+
+    setEditData({
+      name: userInfo?.name || "",
+      phoneMid: cleanPhone.slice(3, 7),
+      phoneEnd: cleanPhone.slice(7, 11),
+      email: userInfo?.email || "",
+      address: userInfo?.address || "",
+    });
 
     // 로컬스토리지 저장
     localStorage.setItem("userInfo", JSON.stringify(updatedUser));

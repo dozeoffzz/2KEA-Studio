@@ -20,7 +20,7 @@ const Overlay = styled.div`
   pointer-events: ${(props) => (props.isOpen ? "auto" : "none")};
 
   transition: opacity 0.3s ease;
-  z-index: 999;
+  z-index: 997;
 `;
 const HeaderContainer = styled.header`
   padding: 25px 60px;
@@ -30,7 +30,7 @@ const HeaderContainer = styled.header`
   height: ${(props) => (props.isOpen ? "350px" : "120px")};
   flex-shrink: 0;
   background-color: transparent;
-  z-index: 1000;
+  z-index: 998;
 
   background: linear-gradient(
     to bottom,

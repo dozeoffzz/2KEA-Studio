@@ -2,8 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Theme } from "../styles/theme";
 import styled from "@emotion/styled";
 import { useCartStore } from "../stores/useCartStore";
-import defaultProfile from "../assets/icons/defaultProfile.svg";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import MyProfile from "../components/common/MyProfile";
 import { authMeApi } from "../apis/authMeApi";
 import SideMenuBar from "../components/common/SideMenuBar";
@@ -472,22 +471,16 @@ export default function OrderPage() {
     // 다시 안뒤집으면 useEffect에서만 reverse가 돌아서 데이터 순서가 꼬임
     localStorage.setItem("orderHistory", JSON.stringify([...updated].reverse()));
   };
-
   // 주문 히스토리가 바뀔 때마다 최신 로컬스토리지 읽기
   const allPurchasedItems = useMemo(() => {
-    //렌더링 시점에 최신 리뷰 목록 가져오기
-    const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
     //같은 날짜에 주문한 내역(다차원 배열)을 1차원 상품 배열로 펼치기
     return orderHistory.reduce((acc, order) => {
       order.purchasedItems.forEach((item) => {
-        // 해당 상품에 대한 리뷰가 작성되었는지 체크
-        const hasReview = reviewList.some((review) => review.productId === item.id && review.orderDate === order.orderDate);
         //기존 상품에 주문ID, 주문날짜, 리뷰 여부 데이터 합치기
         acc.push({
           ...item,
           orderId: order.id,
           orderDate: order.orderDate,
-          hasReview,
         });
       });
       return acc;
@@ -607,16 +600,8 @@ export default function OrderPage() {
     pageNumbers.push(i);
   }
 
-  const handleReviewComplete = (productId, orderDate) => {
-    setOrderHistory((prev) =>
-      prev.map((order) => ({
-        ...order,
-        purchasedItems: order.purchasedItems.map((item) =>
-          item.id === productId && item.orderDate === orderDate ? { ...item, hasReview: true } : item,
-        ),
-      })),
-    );
-    setOpenAccordion(null); // 아코디언 닫기
+  const handleReviewComplete = () => {
+    setOpenAccordion(null);
   };
   return (
     <OrderPageContainer>
@@ -655,12 +640,7 @@ export default function OrderPage() {
 
             //아코디언 열기
             const AccordionOpen = () => {
-              const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
-              const existingReview = reviewList.find(
-                (review) => review.productId === item.id && review.orderDate === item.orderDate,
-              );
-
-              setEditingReview(existingReview || null); // 기존 리뷰 있으면 세팅, 없으면 null
+              setEditingReview(null); // 항상 새 리뷰
               handleAccordionToggle(`${item.orderId}-${item.id}`); // 아코디언 열기
             };
 
@@ -686,15 +666,19 @@ export default function OrderPage() {
                       <li>{(item.price * item.quantity).toLocaleString()}₩</li>
                       <li>{item.status === "배송완료" ? "배송완료" : "배송중"}</li>
                       {item.status === "배송완료" ? (
-                        <ReviewButton onClick={() => AccordionOpen(item)}>
-                          {item.hasReview ? "리뷰수정" : "리뷰작성"}
+                        <ReviewButton
+                          onClick={() => {
+                            handleAccordionToggle(itemLKey);
+                          }}
+                        >
+                          리뷰작성
                         </ReviewButton>
                       ) : (
                         <ConfirmDeliverButton onClick={ConfirmDelivery}>배송확정</ConfirmDeliverButton>
                       )}
                     </OrderItemWrap>
                     <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
-                      <OrderReview item={item} editingReview={editingReview} onComplete={handleReviewComplete} />
+                      <OrderReview item={item} onComplete={handleReviewComplete} />
                     </OrderReviewWrap>
                   </>
                 ) : (
