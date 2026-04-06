@@ -462,18 +462,14 @@ export default function OrderPage() {
 
   // 주문 히스토리가 바뀔 때마다 최신 로컬스토리지 읽기
   const allPurchasedItems = useMemo(() => {
-    //렌더링 시점에 최신 리뷰 목록 가져오기
-    const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
     //같은 날짜에 주문한 내역(다차원 배열)을 1차원 상품 배열로 펼치기
     return orderHistory.reduce((acc, order) => {
       order.purchasedItems.forEach((item) => {
-        const hasReview = reviewList.some((r) => r.orderId === order.id && r.productId === item.id);
         //기존 상품에 주문ID, 주문날짜, 리뷰 여부 데이터 합치기
         acc.push({
           ...item,
           orderId: order.id,
           orderDate: order.orderDate,
-          hasReview,
         });
       });
       return acc;
@@ -630,7 +626,6 @@ export default function OrderPage() {
 
             //아코디언 열기
             const AccordionOpen = () => {
-              const reviewList = JSON.parse(localStorage.getItem("reviews") || "[]");
               setEditingReview(null); // 항상 새 리뷰
               handleAccordionToggle(`${item.orderId}-${item.id}`); // 아코디언 열기
             };
@@ -656,14 +651,20 @@ export default function OrderPage() {
                       <li>{item.quantity}</li>
                       <li>{(item.price * item.quantity).toLocaleString()}₩</li>
                       <li>{item.status === "배송완료" ? "배송완료" : "배송중"}</li>
-                      {item.status === "배송완료" && !item.hasReview ? (
-                        <ReviewButton onClick={() => AccordionOpen()}>리뷰작성</ReviewButton>
-                      ) : item.status !== "배송완료" ? (
+                      {item.status === "배송완료" ? (
+                        <ReviewButton
+                          onClick={() => {
+                            handleAccordionToggle(itemLKey);
+                          }}
+                        >
+                          리뷰작성
+                        </ReviewButton>
+                      ) : (
                         <ConfirmDeliverButton onClick={ConfirmDelivery}>배송확정</ConfirmDeliverButton>
-                      ) : null}
+                      )}
                     </OrderItemWrap>
                     <OrderReviewWrap openAccordion={ReviewAccordionOpen}>
-                      <OrderReview item={item} editingReview={null} onComplete={handleReviewComplete} />
+                      <OrderReview item={item} onComplete={handleReviewComplete} />
                     </OrderReviewWrap>
                   </>
                 ) : (
