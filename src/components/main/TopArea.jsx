@@ -16,6 +16,7 @@ const TopImageWrapper = styled.div`
   height: 100vh;
   max-height: 968px;
   overflow: hidden;
+  transition: 0.3s ease;
 
   @media (max-width: 1024px) {
     height: 820px;
@@ -61,8 +62,7 @@ const FirstTitle = styled.p`
   white-space: nowrap;
   pointer-events: none;
   opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
-  transform: translate(-50%, -50%)
-    translateY(${({ isLoaded }) => (isLoaded ? "-43vh" : "0")});
+  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-43vh" : "0")});
   transition:
     transform 1s ease-in-out,
     opacity 0.8s ease-in-out;
@@ -71,14 +71,12 @@ const FirstTitle = styled.p`
   @media (max-width: 1024px) {
     font-size: 40px;
     letter-spacing: 0.2rem;
-    transform: translate(-50%, -50%)
-      translateY(${({ isLoaded }) => (isLoaded ? "-37vh" : "0")});
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-37vh" : "0")});
   }
   @media (max-width: 767px) {
     font-size: 32px;
     letter-spacing: 0.15rem;
-    transform: translate(-50%, -50%)
-      translateY(${({ isLoaded }) => (isLoaded ? "-30vh" : "0")});
+    transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "-30vh" : "0")});
   }
 `;
 
@@ -93,8 +91,7 @@ const SecondTitle = styled.p`
   pointer-events: none;
   opacity: ${({ isLoaded }) => (isLoaded ? 0 : 1)};
   visibility: ${({ isLoaded }) => (isLoaded ? "hidden" : "visible")};
-  transform: translate(-50%, -50%)
-    translateY(${({ isLoaded }) => (isLoaded ? "100vh" : "0")});
+  transform: translate(-50%, -50%) translateY(${({ isLoaded }) => (isLoaded ? "100vh" : "0")});
   transition:
     opacity 1s ease-in-out,
     visibility 1s ease-in-out,
@@ -125,12 +122,7 @@ export default function TopArea() {
   return (
     <TopContainer>
       <TopImageWrapper>
-        <TopImage
-          src={topImage}
-          onLoad={loadCompleted}
-          isLoaded={isLoaded}
-          alt="Top Image"
-        />
+        <TopImage src={topImage} onLoad={loadCompleted} isLoaded={isLoaded} alt="Top Image" />
         <FirstTitle isLoaded={isLoaded} isAnimated={isAnimated}>
           2KEA
         </FirstTitle>
