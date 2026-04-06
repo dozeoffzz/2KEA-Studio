@@ -341,21 +341,57 @@ export default function OrderReview({ item, onComplete, editingReview }) {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
-    if (!file) return;
+    //파일이 없거나 이미 5장 이상이면 함수 종료
+    if (!file || images.length >= 5) return;
 
-    if (images.length >= 5) return;
+    // 파일 타입 검증 (이미지 파일만 허용)
+    if (!file.type.startsWith("image/")) {
+      alert("이미지 파일만 업로드 가능합니다.");
+      return;
+    }
 
-    //파일을 가져오는 비동기 도구
+    // 파일을 가져오는 비동기 도구
     const reader = new FileReader();
-    //비동기 작업을 읽기 시작
+    // 가져온 파일을 Base64 문자열로 읽기 시작
     reader.readAsDataURL(file);
-    //완료 시점에 상태 업데이트
-    reader.onloadend = () => {
-      const base64String = reader.result;
-      setImages((prev) => {
-        if (prev.length >= 5) return prev; //혹시 모를 중복 방지용
-        return [...prev, base64String]; // 항상 최신 상태값을 가져와서 합쳐줌
-      });
+    // 성공적으로 파일을 읽었을 때 실행되는 이벤트
+    reader.onload = (event) => {
+      // 메모리 상에 가상의 img 태그 생성
+      const img = new Image();
+      // 읽어낸 Base64 데이터를 이미지 소스로 설정
+      img.src = event.target.result;
+
+      // 이미지 소스가 완전히 로드된 이후 압축 작업
+      img.onload = () => {
+        // 메모리 상에 가상의 캔버스 생성 (화면엔 안보임)
+        const canvas = document.createElement("canvas");
+        // 평면 그림을 그릴 도구 호출
+        const ctx = canvas.getContext("2d");
+
+        // 이미지 리사이징
+        const MAX_WIDTH = 400; // 이미지의 최대 너비 (용량 압축 핵심)
+        const scaleSize = MAX_WIDTH / img.width; // 원본 이미지 대비 축소 비율 계산
+        // 계산된 비율에 맟춰 캔버스 크기 재설정
+        canvas.width = MAX_WIDTH;
+        canvas.height = img.height * scaleSize;
+
+        // 원본 이미지를 설정된 크기에 맞춰 캔버스에 재구성
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // 캔버스에 그려진 이미지를 image/jpeg 형식으로 변환
+        // 압축 품질을 0.6(60%) 로 설정해 용량을 대폭 낮춤
+        const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6);
+
+        //상태 업데이트
+        setImages((prev) => {
+          if (prev.length >= 5) return prev; //중복 방지
+          return [...prev, compressedBase64]; //최신 상태의 이미지 배열에 저장
+        });
+      };
+      // 이미지 로드 실패 시 에러 처리
+      img.onerror = () => {
+        console.error("이미지 로드 중 오류가 발생했습니다.");
+      };
     };
     // 같은 파일 다시 올릴수 있게 input 값 초기화
     e.target.value = "";
