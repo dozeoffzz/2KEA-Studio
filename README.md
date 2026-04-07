@@ -73,7 +73,7 @@
   <br>
   &nbsp;&nbsp;&nbsp;&nbsp;⇒&nbsp;&nbsp; 페이지 url 
   <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2-kea-studio.vercel.app
 </span>
 
 <br>
