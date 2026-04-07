@@ -68,12 +68,12 @@
 <span style="color:#8A6FCF; font-weight:600;">
   &nbsp;&nbsp;&nbsp;&nbsp;⇒&nbsp;&nbsp; 팀 이름 : 2KEA_STUDIO
   <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://github.com/dozeoffzz/2KEA-Studio
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (https://github.com/dozeoffzz/2KEA-Studio)
   <br>
   <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;⇒&nbsp;&nbsp; 페이지 url 
+  &nbsp;&nbsp;&nbsp;&nbsp;⇒&nbsp;&nbsp; [2KEA-STUDIO 바로가기] 
   <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2-kea-studio.vercel.app
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (https://2-kea-studio.vercel.app)
 </span>
 
 <br>
