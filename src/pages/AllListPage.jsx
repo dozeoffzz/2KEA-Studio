@@ -407,6 +407,7 @@ const Img = styled.img`
   height: 100%;
   object-fit: cover;
   opacity: ${(props) => (props.visible ? 1 : 0)};
+  transition: opacity 0.9s ease;
 `;
 
 const PageNationWrap = styled.div`
